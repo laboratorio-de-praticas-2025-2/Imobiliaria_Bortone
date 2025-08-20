@@ -1,0 +1,15 @@
+.image-header {
+  background-image: url('/images/fundo-login-mobile.svg');
+  position: absolute;
+  background-size: cover;
+  background-position: top center;
+  width: 100%;
+  height: 50vh;
+}
+
+@media (min-width: 640px) {
+  .image-header {
+    background-image: url('/images/fundo-login-desktop.svg');
+    height: 85vh;
+  }
+}
