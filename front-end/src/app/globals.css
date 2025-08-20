@@ -3,6 +3,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #374a8c;
+  --secondary: #f39200;
+  --lavender-gray: #beb2bc;
+  --fog-gray: #a5a7a6
 }
 
 @font-face {
@@ -22,6 +26,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-lavender-gray: var(--lavender-gray);
+  --color-fog-gray: var(--fog-gray);
 }
 
 body {
