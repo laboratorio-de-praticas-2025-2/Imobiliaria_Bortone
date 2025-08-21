@@ -90,6 +90,19 @@ input::placeholder,
   margin-top: -60px;
 }
 
+.splash-screen {
+  transition: opacity 0.5s ease;
+  opacity: 1;
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.splash-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
 @media (min-width: 640px) {
   .image-header {
     position: absolute;
