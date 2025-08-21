@@ -63,6 +63,14 @@ input::placeholder,
   filter: brightness(1.5);
 }
 
+.social-media-icon{
+  transition: transform 0.3s ease;
+}
+
+.social-media-icon:hover {
+  transform: scale(1.1);
+}
+
 @media (min-width: 640px) {
   .image-header {
     position: absolute;

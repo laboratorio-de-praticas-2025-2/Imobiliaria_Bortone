@@ -1,6 +1,6 @@
 "use client"
 import '@/styles/login.css';
-import Image from 'next/image';
+import LoginFooter from '@/components/LoginFooter';
 import Link from 'next/link';
 import { Form, Input, Button, Flex } from 'antd';
 
@@ -37,43 +37,7 @@ export default function LoginPage() {
                         </Form.Item>
                     </Flex>
                 </Form>
-                <Flex vertical gap={22}>
-                    <div className="flex flex-row items-center justify-center gap-5 text-[var(--primary)] font-semibold">
-                        <div className="h-[2px] bg-[var(--primary)] w-[5rem]" />
-                        ou
-                        <div className="h-[2px] bg-[var(--primary)]  w-[5rem]" />
-                    </div>
-                    <div className="flex flex-row w-full gap-3.5 justify-center">
-                        <Image
-                        src="/images/icons/google.svg"
-                        alt="Google"
-                        width={40}
-                        height={40}
-                        className="cursor-pointer"
-                        />
-                        <Image
-                        src="/images/icons/facebook.svg"
-                        alt="Facebook"
-                        width={40}
-                        height={40}
-                        className="cursor-pointer"
-                        />
-                        <Image
-                        src="/images/icons/instagram.svg"
-                        alt="Instagram"
-                        width={40}
-                        height={40}
-                        className=" cursor-pointer"
-                        />
-                        <Image
-                        src="/images/icons/linkedin.svg"
-                        alt="LinkedIn"
-                        width={40}
-                        height={40}
-                        className="cursor-pointer"
-                        />
-                    </div>
-                </Flex>
+                <LoginFooter />
             </Flex>
         </Flex>
     </div>
