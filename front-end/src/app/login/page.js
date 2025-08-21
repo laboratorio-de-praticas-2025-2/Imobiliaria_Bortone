@@ -10,7 +10,7 @@ export default function LoginPage() {
         <div className="image-header"/>
         <Flex vertical align='center' gap="large" className='login-content'>
             <h1 className='login-title text-2xl text-[var(--primary)]'>Faça seu login</h1>
-            <Flex vertical style={{ width: '100%' }}>
+            <Flex vertical className='login-form-container'>
                 <Form name='login' autoComplete='off'>
                     <Flex vertical align='center'>
                         <Form.Item 

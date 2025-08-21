@@ -1,56 +1,72 @@
 .image-header {
-  background-image: url('/images/fundo-login-mobile.svg');
+  background-image: url("/images/fundo-login-mobile.svg");
   background-size: cover;
   background-position: top center;
   width: 100%;
   height: 50vh;
 }
 
-.login-content{
-    padding-left: 58px;
-    padding-right: 58px;
-    margin-top: -60px;
+.login-content {
+  padding-left: 58px;
+  padding-right: 58px;
+  margin-top: -60px;
 }
 
-.login-form-item{
-    width: 100%;
+.login-form-container {
+  width: 100%;
 }
 
-.login-form-item .ant-input-outlined{
-    border-color: var(--primary);
-    border-radius: 18px;
-    height: 50px;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+.login-form-item {
+  width: 100%;
 }
 
-input::placeholder, .login-form-item .ant-input-outlined {
+.login-form-item .ant-input-outlined {
+  border-color: var(--primary);
+  border-radius: 18px;
+  height: 50px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+input::placeholder,
+.login-form-item .ant-input-outlined {
   color: #324587 !important;
   font-size: 16px;
 }
 
-.login-title{
-    font-weight: 700;
+.login-title {
+  font-weight: 700;
 }
 
-.redirect-link{
-    color: var(--primary);
-    font-weight: 700;
+.redirect-link {
+  color: var(--primary);
+  font-weight: 700;
 }
 
-.login-button{
-    background: linear-gradient(to bottom, #324587, #0C1121);
-    color: white;
-    font-weight: 700;
-    padding: 12px 42px;
-    font-size: 16px;
-    height: auto;
-    border-radius: 17px;
+.login-button {
+  background: linear-gradient(to bottom, #324587, #0c1121);
+  color: white;
+  font-weight: 700;
+  padding: 12px 42px;
+  font-size: 16px;
+  height: auto;
+  border-radius: 17px;
 }
 
 @media (min-width: 640px) {
   .image-header {
     position: absolute;
-    background-image: url('/images/fundo-login-desktop.svg');
-    height: 85vh;
+    background-image: url("/images/fundo-login-desktop.svg");
+    height: 65vh;
+  }
+
+  .login-content{
+    padding-bottom: 6rem;
+    margin-top: 0;
+    height: 100vh;
+    justify-content: end;
+  }
+
+  .login-form-container{
+    width: 22rem;
   }
 }
