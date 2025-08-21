@@ -1,4 +1,5 @@
 import "./globals.css";
+import '@/styles/login.css';
 import 'antd/dist/reset.css';
 
 export const metadata = {

@@ -1,5 +1,4 @@
 "use client"
-import '@/styles/login.css';
 import LoginFooter from '@/components/LoginFooter';
 import Link from 'next/link';
 import { Form, Input, Button, Flex } from 'antd';
