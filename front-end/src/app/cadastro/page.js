@@ -9,7 +9,7 @@ export default function CadastroPage() {
         <Flex vertical align='center' gap="large" className='login-content'>
             <h1 className='login-title text-2xl text-[var(--primary)]'>Faça seu cadastro</h1>
             <Flex vertical className='login-form-container'>
-                <Form name='login' autoComplete='off'>
+                <Form name='cadastro' autoComplete='off'>
                     <Flex vertical align='center'>
                         <Form.Item 
                             name="name"
