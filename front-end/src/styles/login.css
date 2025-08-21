@@ -42,6 +42,11 @@ input::placeholder,
   font-weight: 700;
 }
 
+.redirect-link:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
 .login-button {
   background: linear-gradient(to bottom, #324587, #0c1121);
   color: white;
@@ -50,6 +55,12 @@ input::placeholder,
   font-size: 16px;
   height: auto;
   border-radius: 17px;
+  transition: background 0.3s ease, filter 0.3s ease;
+}
+
+.login-button:hover {
+  background: linear-gradient(to bottom, #324587, #0c1121) !important;
+  filter: brightness(1.5);
 }
 
 @media (min-width: 640px) {
