@@ -1,0 +1,25 @@
+.header-home{
+    background-image: url('/images/imgBaseLeft.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.nav-link{
+    color: white;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.btn-login{
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    height: 40px;
+}
+
+.btn-login:hover{
+    background-color: white !important;
+    color: black !important;
+    border: 2px solid white !important;
+}
