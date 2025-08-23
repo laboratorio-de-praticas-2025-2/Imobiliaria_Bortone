@@ -12,15 +12,25 @@ export default function Home() {
   return (
     <>
       <Header />
-      <Divider size="large"/>
+      <Divider size="large" />
       <div className="ctacards flex gap-10 px-16 py-7 md:flex-row flex-col">
-        <CTACard title="Faça sua proposta" description="Gostou de um imóvel? Faça uma proposta de valor e siga para as próximas etapas!" buttonText="Fazer Proposta" className="md:w-[75%]"/>
-        <CTACard title="Fale com alguém" description="Não sabe como prosseguir? Seja atendido via chat!" buttonText="Abrir chat" className="md:w-[25%]"/>
+        <CTACard
+          title="Faça sua proposta"
+          description="Gostou de um imóvel? Faça uma proposta de valor e siga para as próximas etapas!"
+          buttonText="Fazer Proposta"
+          className="lg:w-[75%] md:w-[50%]"
+        />
+        <CTACard
+          title="Fale com alguém"
+          description="Não sabe como prosseguir? Seja atendido via chat!"
+          buttonText="Abrir chat"
+          className="lg:w-[25%] md:w-[50%]"
+        />
       </div>
-      <Divider size="large"/>
+      <Divider size="large" />
       {isLoggedIn ? <PropriedadesSelecionadas /> : <PropriedadesPerto />}
-      <Divider size="large"/>
-      
+      <Divider size="large" />
+
       <HomeFooter />
     </>
   );

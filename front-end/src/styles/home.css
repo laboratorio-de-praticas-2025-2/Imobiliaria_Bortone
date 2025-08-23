@@ -121,3 +121,10 @@
     background-position: center;
     min-height: 600px;
 }
+
+@media (max-width: 768px) {
+    .home-footer-content{
+        background-image: url('/images/home-footer-mobile.svg');
+        min-height: 800px;
+    }
+}

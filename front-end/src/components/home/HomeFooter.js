@@ -4,11 +4,11 @@ import PublicidadeSlider from "./PublicidadesSlider";
 
 export default function HomeFooter() {
   return (
-    <footer className="home-footer relative pt-35">
+    <footer className="home-footer relative md:pt-35 ">
       <div className="absolute top-0 left-0 w-full">
         <PublicidadeSlider />
       </div>
-      <div className="home-footer-content flex md:flex-row flex-col justify-between px-16 py-7 text-white items-end pb-28">
+      <div className="home-footer-content flex md:flex-row flex-col md:justify-between justify-end gap-14 px-16 py-7 text-white items-end md:pb-28">
         <Flex vertical gap="large">
           <p className="text-xl font-bold">Contate-nos</p>
           <Flex vertical gap="middle">
