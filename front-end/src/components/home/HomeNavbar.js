@@ -24,7 +24,6 @@ export default function HomeNavbar() {
             >
               <Flex gap="middle" align="center" className="nav-link">
                 {link.name}
-                <FaAngleDown />
               </Flex>
             </Link>
           ))}
