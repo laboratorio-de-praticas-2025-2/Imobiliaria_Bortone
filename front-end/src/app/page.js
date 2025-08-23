@@ -30,7 +30,6 @@ export default function Home() {
       <Divider size="large" />
       {isLoggedIn ? <PropriedadesSelecionadas /> : <PropriedadesPerto />}
       <Divider size="large" />
-
       <HomeFooter />
     </>
   );
