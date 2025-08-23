@@ -19,10 +19,10 @@ export default function Home() {
             className="home-search-bar"
           />
           <Flex vertical gap="large">
-            <span className="text-[var(--primary)] text-6xl font-extrabold uppercase">
+            <span className="text-[var(--primary)] text-6xl uppercase lemon-milk">
               Compre, alugue ou anuncie
             </span>
-            <span className="text-[var(--primary)] text-xl font-extrabold uppercase">
+            <span className="text-[var(--primary)] text-xl uppercase lemon-milk">
               Confira Imóveis à partir de
               <p>R$ 250.000,00</p>
             </span>

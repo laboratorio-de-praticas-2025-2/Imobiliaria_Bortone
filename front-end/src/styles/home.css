@@ -81,3 +81,7 @@
   color: var(--primary) !important;
   width: 27px;
 }
+
+.lemon-milk{
+    font-family: 'Lemon Milk', sans-serif;
+}
