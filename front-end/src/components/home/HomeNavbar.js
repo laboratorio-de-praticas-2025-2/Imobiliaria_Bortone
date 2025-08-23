@@ -30,7 +30,7 @@ export default function HomeNavbar() {
           ))}
         </Space>
 
-        <Button variant="outlined" icon={<FaUser />} shape="round" className="btn-login">
+        <Button variant="outlined" icon={<FaUser />} shape="round" className="btn-login" href="/login">
           Entrar
         </Button>
       </Flex>
