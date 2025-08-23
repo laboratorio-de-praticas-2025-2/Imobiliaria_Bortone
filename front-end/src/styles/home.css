@@ -23,3 +23,56 @@
     color: black !important;
     border: 2px solid white !important;
 }
+
+.home-search-bar .ant-input, .home-search-bar .ant-btn {
+    border-radius: 1000px ;
+    background: transparent;
+    border: 2px solid white;
+    color: white !important;
+    height: 42px
+} 
+
+.home-search-bar .ant-btn{
+    border-left: none;
+}
+
+.home-search-bar .ant-btn:hover{
+    background-color: transparent !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-left: none !important;
+}
+
+.home-search-bar .ant-input{
+    border-right: none;
+}
+
+.home-search-bar .ant-input:focus{
+    box-shadow: none !important;
+    border-color: white !important;
+}
+
+.home-search-bar .ant-input::placeholder {
+    color: white !important;
+}
+
+.btn-marcar-visita{
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    height: 52px;
+    font-weight: 700;
+    width: fit-content;
+}
+
+.btn-marcar-visita:hover{
+    background-color: var(--primary) !important;
+    color: white !important;
+    border: 2px solid var(--primary) !important;
+}
+
+:where(.css-dev-only-do-not-override-1v28nim).ant-btn.ant-btn-round.ant-btn{
+    padding-inline-start: 60px;
+    padding-inline-end: 60px;
+}
+
