@@ -3,8 +3,9 @@ import { Divider } from "antd";
 import CTACard from "@/components/home/CTACard";
 import Header from "@/components/home/Header";
 import PropriedadesSelecionadas from "@/components/home/PropriedadesSelecionadas";
+import PropriedadesPerto from "@/components/home/PropriedadesPerto";
 
-const isLoggedIn = true;
+const isLoggedIn = false;
 
 export default function Home() {
   return (
@@ -16,7 +17,7 @@ export default function Home() {
         <CTACard title="Fale com alguém" description="Não sabe como prosseguir? Seja atendido via chat!" buttonText="Abrir chat" className="md:w-[25%]"/>
       </div>
       <Divider size="large"/>
-      <PropriedadesSelecionadas />
+      {isLoggedIn ? <PropriedadesSelecionadas /> : <PropriedadesPerto />}
     </>
   );
 }
