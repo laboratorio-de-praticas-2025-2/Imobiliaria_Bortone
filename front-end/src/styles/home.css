@@ -113,3 +113,11 @@
     color: white !important;
     filter: brightness(90%);
 }
+
+.home-footer-content{
+    background-image: url('/images/home-footer-desktop.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: 600px;
+}
