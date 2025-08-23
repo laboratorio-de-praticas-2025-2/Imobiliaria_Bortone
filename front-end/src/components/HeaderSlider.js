@@ -27,29 +27,35 @@ export default function HeaderSlider() {
         }}
         loop={true}
         grabCursor={true}
-        slidesPerView={3}
         spaceBetween={16}
+        breakpoints={{
+          320: { slidesPerView: 1 }, 
+          640: { slidesPerView: 2 },  
+          1024: { slidesPerView: 3 },  
+          1440: { slidesPerView: 4 },  
+        }}
         className="w-[90%] mx-auto"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={slide.id} className="flex justify-center">
-            <div className="rounded-xl overflow-hidden w-[28rem]">
+            <div className="rounded-xl overflow-hidden w-full max-w-[28rem]">
               <Image
                 src={slide.url}
                 alt={`Imóvel ${index + 1}`}
                 width={407}
                 height={195}
-                className="w-full object-cover"
+                className="w-full h-auto object-cover"
               />
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
 
-      <button className="custom-prev absolute top-1/2 -translate-y-1/2 z-20">
+      {/* Botões de navegação */}
+      <button className="custom-prev absolute top-1/2 left-0 -translate-y-1/2 z-20">
         <IoIosArrowBack size={30} color="#374a8c" />
       </button>
-      <button className="custom-next absolute top-1/2 -right-0 -translate-y-1/2 z-20">
+      <button className="custom-next absolute top-1/2 right-0 -translate-y-1/2 z-20">
         <IoIosArrowForward size={30} color="#374a8c" />
       </button>
     </div>
