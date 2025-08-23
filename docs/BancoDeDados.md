@@ -212,8 +212,8 @@
 **AlwaysData**<br>
 Strings de conexão 🚨(Acesso Restrito):
 ```yaml
-database: lp-imobiliaria_dev
-host: mysql-lp-imobiliaria.alwaysdata.net
+database: lpbortone_bd_prod
+host: mysql-lpbortone.alwaysdata.net
 port: 3306
 ```
 
