@@ -44,3 +44,7 @@ body {
   color: var(--foreground);
   font-family: 'Glacial Indifference', sans-serif;
 }
+
+p{
+  margin: 0 !important;
+}
