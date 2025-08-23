@@ -76,14 +76,6 @@ input::placeholder,
   border: 1px solid var(--primary);
 }
 
-.social-media-icon{
-  transition: transform 0.3s ease;
-}
-
-.social-media-icon:hover {
-  transform: scale(1.1);
-}
-
 .boas-vindas-content{
   padding-left: 58px;
   padding-right: 58px;
