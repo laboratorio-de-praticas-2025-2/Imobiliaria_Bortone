@@ -76,3 +76,8 @@
     padding-inline-end: 60px;
 }
 
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--primary) !important;
+  width: 27px;
+}

@@ -1,6 +1,7 @@
 "use client";
 import HomeNavbar from "@/components/HomeNavbar";
 import { Flex, Input, Button } from "antd";
+import HeaderSlider from "@/components/HeaderSlider";
 
 const { Search } = Input;
 
@@ -10,7 +11,7 @@ export default function Home() {
   return (
     <div className="header-home">
       <HomeNavbar />
-      <div className="ps-16 pt-7">
+      <div className="px-16 pt-7 flex flex-col gap-24">
         <Flex vertical style={{ width: "50%" }} gap="60px">
           <Search
             placeholder="Pesquisa"
@@ -34,6 +35,7 @@ export default function Home() {
             </Button>
           </Flex>
         </Flex>
+        <HeaderSlider />
       </div>
     </div>
   );
