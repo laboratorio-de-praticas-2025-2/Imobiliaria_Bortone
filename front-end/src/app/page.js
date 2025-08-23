@@ -4,6 +4,7 @@ import CTACard from "@/components/home/CTACard";
 import Header from "@/components/home/Header";
 import PropriedadesSelecionadas from "@/components/home/PropriedadesSelecionadas";
 import PropriedadesPerto from "@/components/home/PropriedadesPerto";
+import PublicidadeSlider from "@/components/home/PublicidadesSlider";
 
 const isLoggedIn = false;
 
@@ -18,6 +19,8 @@ export default function Home() {
       </div>
       <Divider size="large"/>
       {isLoggedIn ? <PropriedadesSelecionadas /> : <PropriedadesPerto />}
+      <Divider size="large"/>
+      <PublicidadeSlider />
     </>
   );
 }
