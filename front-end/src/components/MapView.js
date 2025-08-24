@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css";
 import ImovelMarker from "./ImovelMarker";
 import LocationButton from "./LocationButton";
 import L from "leaflet";
-import "@/app/map.css";
+import "@/app/styles/map.css";
 
 const casaIcon = new L.Icon({
   iconUrl: "icons/casa.png",

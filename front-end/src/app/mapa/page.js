@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { getImoveis } from "@/services/imoveisService";
-import "@/app/map.css";
+import "@/app/styles/map.css";
 
 const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
 

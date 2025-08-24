@@ -4,7 +4,8 @@
   height: 100vh;
   overflow: visible; /* permite que o card flutuante apareça acima do mapa */
 }
-/* Container fixo no canto direito, centralizado verticalmente */
+
+/* Container fixo no canto direito */
 .map-controls {
   position: fixed;
   top: 50%;
@@ -102,7 +103,7 @@
   line-height: 0;
 }
 
-/* Botões internos */
+/* Botões internos do zoom*/
 .zoom-in,
 .zoom-out {
   background-color: #ffffff;
@@ -131,7 +132,7 @@
   border-bottom-right-radius: 8px;
 }
 
-/* Remove espaço entre os botões */
+/* Remove espaço entre os botões do zoom */
 .zoom-button-wrapper button + button {
   margin-top: -1px;
 }
@@ -179,7 +180,7 @@
   line-height: 0;
 }
 
-/* Botões internos */
+/* Botões internos do zoom*/
 .zoom-in,
 .zoom-out {
   background-color: #ffffff;
@@ -208,7 +209,7 @@
   border-bottom-right-radius: 8px;
 }
 
-/* Remove espaço entre os botões */
+/* Remove espaço entre os botões do zoom*/
 .zoom-button-wrapper button + button {
   margin-top: -1px;
 }
