@@ -15,7 +15,7 @@
 | nome           | VARCHAR(100)                      | Nome completo do usuário           |
 | email          | VARCHAR(100)                      | E-mail do usuário (deve ser único) |
 | senha          | VARCHAR(255)                      | Senha criptografada                |
-| nivel          | ENUM('visitante','administrador') | Nível de acesso do usuário         |
+| nivel          | TINYINT(1)                        | Nível de acesso do usuário, 0 = administrador, 1 = visitante         |
 | celular        | VARCHAR(20)                       | Número de celular do usuário       |
 
 </details>
@@ -35,11 +35,11 @@
 | cidade        | VARCHAR(100)      | Cidade onde o imóvel está localizado     |
 | estado        | VARCHAR(2)        | Sigla do estado                          |
 | preco         | DECIMAL(12,2)     | Preço do imóvel                          |
-| status        | VARCHAR(20)       | Status do imóvel (ex.: disponivel, vendido, alugado) |
+| status        | VARCHAR(20)       | Status do imóvel (disponivel, indisponivel), esse campo pode ser usado para lógica de mostrar ou não o imóvel no site/mapa |
 | area          | INT(11)           | Área do imóvel em m²                     |
 | descricao     | TEXT              | Descrição do imóvel                      |
 | data_cadastro | DATE              | Data de cadastro do imóvel               |
-| murado        | TINYINT(1)        | Indica se o imóvel é murado (1 = sim)    |
+| murado        | TINYINT(1)        | Indica se o imóvel é murado (0 = não, 1 = sim)    |
 | latitude      | DECIMAL(10,7)     | Latitude da localização                  |
 | longitude     | DECIMAL(10,7)     | Longitude da localização                 |
 | usuario_id    | INT(11)           | ID do usuário que cadastrou o imóvel (Apenas administradores cadastram imóveis)    |
@@ -60,8 +60,8 @@
 | quartos         | INT(11)       | Número de quartos                        |
 | banheiros       | INT(11)       | Número de banheiros                      |
 | vagas           | INT(11)       | Número de vagas de garagem               |
-| possui_piscina  | TINYINT(1)    | Indica se a casa possui piscina (1 = sim)|
-| possui_jardim   | TINYINT(1)    | Indica se a casa possui jardim (1 = sim) |
+| possui_piscina  | TINYINT(1)    | Indica se a casa possui piscina (0 = não, 1 = sim)|
+| possui_jardim   | TINYINT(1)    | Indica se a casa possui jardim (0 = não, 1 = sim) |
 
 </details>
 
@@ -90,7 +90,7 @@
 |----------------|----------------|-------------------------------------|
 | id             | INT(11)        | Identificador único da imagem       |
 | imovel_id      | INT(11)        | ID do imóvel relacionado            |
-| url_imagem     | VARCHAR(255)   | Nome da Imagem                      |
+| url_imagem     | VARCHAR(255)   | Nome da Imagem + extensão (ex: 7ac66c0f1484d64.png) - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end |
 | descricao      | VARCHAR(255)   | Descrição da imagem                 |
 
 </details>
@@ -105,7 +105,7 @@
 | Nome da Coluna | Tipo de Dado    | Descrição                          |
 |----------------|----------------|-------------------------------------|
 | id             | INT(11)        | Identificador único                 |
-| url_imagem     | VARCHAR(255)   | Nome da imagem                      |
+| url_imagem     | VARCHAR(255)   | Nome da Imagem + extensão (ex: 7ac66c0f1484d64.png) - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end                       |
 | descricao      | VARCHAR(255)   | Descrição                           |
 | usuario_id     | INT(11)        | ID do usuário que cadastrou o banner (Apenas administradores podem cadastrar)|
 | ativo          | TINYINT(1)     | Indica se o banner deve aparecer ou não no carrossel (1 = sim) |
@@ -146,7 +146,7 @@
 |----------------|--------------|-------------------------------------|
 | id             | INT(11)      | Identificador único da pergunta     |
 | pergunta       | TEXT         | Dúvida comum                        |
-| resposta       | TEXT         | Resposta correspondente à dúvida  |
+| resposta       | TEXT         | Resposta do questionamento          |
 | usuario_id     | INT(11)      | ID do usuário Responsável (Apenas Administradores podem cadastrar as perguntas e respostas)  |
 
 </details>
@@ -168,8 +168,7 @@
 </details>
 
 *Tabela para armazenar os dados referentes aos acessos do usuário*
-- Ao acessar a página de determinado imóvel o dado será salvo para o correspondente usuário, esse "histórico" acesso é usado no algoritmo de recomendação
-
+- Ao acessar a página de determinado imóvel o dado será salvo nessa tabela, esse "histórico" de acesso é usado no algoritmo de recomendação.
 
 <br> 
 <details>
@@ -180,13 +179,13 @@
 | id             | INT(11)       | Identificador único da publicidade  |
 | titulo         | VARCHAR(100)  | Título da publicidade               |
 | conteudo       | TEXT          | Conteúdo da publicidade             |
-| url_imagem     | VARCHAR(255)  | Nome da imagem associada à publicidade |
+| url_imagem     | VARCHAR(255)  | Nome da Imagem + extensão (ex: 7ac66c0f1484d64.png) - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end |
 | usuario_id     | INT(11)       | ID do usuário que cadastrou a publicidade |
 
 </details>
 
 *Tabela para armazenar publicidades*
-- Exemplo de caso relacionado com essa tabela: Uma loja de móveis fez um acordo para publicidade com a imobiliária Bertone, então o administrador cadastra os dados relacionados a propaganda
+- Exemplo de caso relacionado com essa tabela: Uma loja de móveis fez um acordo para publicidade com a imobiliária, então o administrador cadastra os dados relacionados a propaganda e então as publicidades cadastradas aparecem no front
 
 
 <br> 
@@ -199,7 +198,7 @@
 | titulo           | VARCHAR(100)  | Título do post                           |
 | conteudo         | TEXT          | Conteúdo do post                         |
 | data_publicacao  | DATE          | Data de publicação do post               |
-| url_imagem       | VARCHAR(255)  | Nome da imagem associada ao post (Apenas uma por post)         |
+| url_imagem       | VARCHAR(255)  | Nome da Imagem associada ao post + extensão (ex: 7ac66c0f1484d64.png) - Apenas uma imagem para cada post no blog! - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end          |
 | usuario_id       | INT(11)       | ID do usuário que publicou a postagem    |
 
 </details>
