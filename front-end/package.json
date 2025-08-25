@@ -16,6 +16,7 @@
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0",
     "react-leaflet": "^5.0.0",
+    "swiper": "^11.2.10",
     "tailwind-scrollbar": "^4.0.2"
   },
   "devDependencies": {

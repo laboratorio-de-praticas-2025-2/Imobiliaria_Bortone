@@ -6,7 +6,7 @@ import { RiMessage2Fill } from "react-icons/ri";
 import { PiBathtub } from "react-icons/pi";
 import { BsDoorOpenFill } from "react-icons/bs";
 
-export default function CardMapa({ imovel, favoritos, toggleFavorito }) {
+export default function CardMapa({ imovel }) {
   return (
     <div
       key={imovel.id}

@@ -3,15 +3,12 @@ import { useRef, useState, useEffect } from "react";
 import Card from "./CardMapa";
 
 export default function CarrosselMapa({ imoveis }) {
-
   const carouselRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startPos, setStartPos] = useState(0);
   const [scrollStart, setScrollStart] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [favoritos, setFavoritos] = useState({});
 
-  // Detectar se é mobile
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
     handleResize();
@@ -48,21 +45,16 @@ export default function CarrosselMapa({ imoveis }) {
     }
   };
 
-  const toggleFavorito = (id) => {
-    setFavoritos((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
   return (
     <div
       ref={carouselRef}
       className={`
-        w-full sm:w-2/3 h-[60vh] sm:h-auto
-        overflow-auto shadow-lg sm:p-6 lg:p-10 cursor-grab hide-scrollbar select-none
+        w-full h-[60vh] sm:h-auto
+        overflow-auto shadow-lg  select-none scrollbar scrollbar-thumb-transparent scrollbar-track-transparent
+        ${isDragging ? "cursor-grabbing" : "cursor-grab"}
         ${isMobile ? "mx-auto" : ""}
       `}
+      style={{ width: `calc(100vw - 400px)` }}
       onMouseDown={handleMouseDown}
       onMouseLeave={handleMouseLeave}
       onMouseUp={handleMouseUp}
@@ -74,12 +66,7 @@ export default function CarrosselMapa({ imoveis }) {
         }`}
       >
         {imoveis.map((imovel) => (
-          <Card
-            key={imovel.id}
-            imovel={imovel}
-            favoritos={favoritos}
-            toggleFavorito={toggleFavorito}
-          />
+          <Card key={imovel.id} imovel={imovel} />
         ))}
       </div>
     </div>
