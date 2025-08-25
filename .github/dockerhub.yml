@@ -1,0 +1,36 @@
+name: Buidl and Push to Docker Hub
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Build and push backend images
+        uses: docker/build-push-action@v5
+        with:
+          context: ./back-end
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/imobiliario-backend:latest
+          
+      - name: Build and push frontend images
+        uses: docker/build-push-action@v5
+        with:
+          context: ./front-end
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/imobiliario-frontend:latest
