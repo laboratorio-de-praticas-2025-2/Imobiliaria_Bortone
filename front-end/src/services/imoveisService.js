@@ -10,6 +10,8 @@ export function getImoveis() {
       imagem: "imovel1.png",
       latitude: -23.55,
       longitude: -46.63,
+      quartos: 3,
+      banheiros: 2,
     },
     {
       id: 2,
@@ -21,6 +23,8 @@ export function getImoveis() {
       imagem: "/imovel2.png",
       latitude: -23.56,
       longitude: -46.62,
+      quartos: 4,
+      banheiros: 3,
     },
     {
       id: 3,
@@ -32,6 +36,8 @@ export function getImoveis() {
       imagem: "/imovel3.png",
       latitude: -23.54,
       longitude: -46.64,
+      quartos: 5,
+      banheiros: 4,
     },
   ];
 }
