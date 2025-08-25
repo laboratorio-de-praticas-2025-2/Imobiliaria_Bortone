@@ -1,7 +1,29 @@
-import SidebarMenu from "@/components/SidebarMenu/SidebarMenu";
-export default function Map() {
-    return (
-        
-        <SidebarMenu />
-    );
+"use client";
+
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { getImoveis } from "@/services/imoveisService";
+import "@/app/styles/map.css";
+
+const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
+
+export default function Mapa() {
+  const [imoveis, setImoveis] = useState([]);
+  const [hoverImovel, setHoverImovel] = useState(null);
+
+  useEffect(() => {
+    setImoveis(getImoveis());
+  }, []);
+
+  return (
+    <div>
+      <div className="map-container">
+        <MapView
+          imoveis={imoveis}
+          hoverImovel={hoverImovel}
+          setHoverImovel={setHoverImovel}
+        />
+      </div>
+    </div>
+  );
 }
