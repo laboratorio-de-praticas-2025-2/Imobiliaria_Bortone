@@ -23,6 +23,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Lemon Milk';
+  src: url('/fonts/LEMONMILK-Medium.otf') format('opentype');
+  font-weight: medium;
+  font-style: normal;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -36,4 +43,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: 'Glacial Indifference', sans-serif;
+}
+
+p{
+  margin: 0 !important;
 }

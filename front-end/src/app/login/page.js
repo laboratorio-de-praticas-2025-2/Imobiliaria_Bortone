@@ -1,5 +1,4 @@
 "use client"
-import LoginFooter from '@/components/LoginFooter';
 import Link from 'next/link';
 import { Form, Input, Button, Flex } from 'antd';
 
@@ -36,7 +35,6 @@ export default function LoginPage() {
                         </Form.Item>
                     </Flex>
                 </Form>
-                <LoginFooter />
             </Flex>
         </Flex>
     </div>

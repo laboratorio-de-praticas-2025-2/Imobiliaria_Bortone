@@ -1,7 +1,5 @@
 "use client";
 import { Button, Flex } from "antd";
-import SocialMediaIcon from "@/components/SocialMediaIcon";
-import { socialMedias } from "@/constants/socialMedias";
 import SplashScreen from "@/components/SplashScreen";
 import { useEffect, useState } from "react";
 
@@ -53,15 +51,6 @@ export default function BoasVindasPage() {
           >
             Login
           </Button>
-          <Flex gap={14}>
-            {socialMedias.map((media) => (
-              <SocialMediaIcon
-                key={media.alt}
-                src={media.src}
-                alt={media.alt}
-              />
-            ))}
-          </Flex>
         </Flex>
       </Flex>
     </div>
