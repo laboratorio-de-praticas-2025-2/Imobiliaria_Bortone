@@ -1,4 +1,4 @@
-name: Build and Push to Docker Hub
+name: Build and Push Docker Images via Compose 
 
 on:
   push:
@@ -19,16 +19,12 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build and push back-end image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./back-end
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/imobiliario-back-end:latest
+      - name: Set up Docker Compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
 
-      - name: Build and push front-end image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./front-end
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/imobiliario-front-end:latest
+      - name: Build and push images
+        run: |
+          docker-compose -f docker-compose.yml build
+          docker-compose -f docker-compose.yml push
+
+      
