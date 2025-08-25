@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "leaflet": "^1.9.4",
+    "react-leaflet": "^5.0.0"
     "antd": "^5.27.1",
     "next": "15.4.7",
     "react": "19.1.0",

@@ -1,0 +1,37 @@
+export function getImoveis() {
+  return [
+    {
+      id: 1,
+      tipo: "Apartamento",
+      endereco: "Rua A, 123",
+      cidade: "São Paulo",
+      estado: "SP",
+      preco: 450000,
+      imagem: "imovel1.png",
+      latitude: -23.55,
+      longitude: -46.63,
+    },
+    {
+      id: 2,
+      tipo: "Casa",
+      endereco: "Rua B, 456",
+      cidade: "São Paulo",
+      estado: "SP",
+      preco: 750000,
+      imagem: "/imovel2.png",
+      latitude: -23.56,
+      longitude: -46.62,
+    },
+    {
+      id: 3,
+      tipo: "Cobertura",
+      endereco: "Rua C, 789",
+      cidade: "São Paulo",
+      estado: "SP",
+      preco: 1200000,
+      imagem: "/imovel3.png",
+      latitude: -23.54,
+      longitude: -46.64,
+    },
+  ];
+}
