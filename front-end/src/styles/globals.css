@@ -6,9 +6,20 @@
   --primary: #374a8c;
   --secondary: #f39200;
   --lavender-gray: #beb2bc;
-  --fog-gray: #a5a7a6
+  --fog-gray: #a5a7a6;
+  --unselected: #4A5784
 }
-
+.button-text{
+  font-family: 'Glacial Indifference';
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.menu-label {
+  font-family: 'Glacial Indifference';
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--background);
+}
 @font-face {
   font-family: 'Glacial Indifference';
   src: url('/fonts/GlacialIndifference-Regular.otf') format('opentype');

@@ -7,7 +7,7 @@ import "@/app/styles/map.css";
 
 const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
 
-export default function Home() {
+export default function Mapa() {
   const [imoveis, setImoveis] = useState([]);
   const [hoverImovel, setHoverImovel] = useState(null);
 
