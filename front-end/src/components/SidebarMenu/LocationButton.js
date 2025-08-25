@@ -6,7 +6,7 @@ export default function LocationButton({ label, onClick, active }) {
     <Button
       onClick={onClick}
       className={`
-        !w-25 !h-12 !rounded-xl !flex !flex-col !items-center !justify-center !shadow-md transition
+        !w-18 !h-10 md:!w-20 md:!h-12 !rounded-xl !flex !flex-col !items-center !justify-center !shadow-md transition
         ${
           active
             ? "!bg-white !text-[var(--unselected)] !border-none" // Estilo quando ativo
@@ -16,7 +16,7 @@ export default function LocationButton({ label, onClick, active }) {
       type="text"
     >
       <Flex vertical justify="center" align="center">
-      <span className="font-semibold button-text">{label}</span></Flex>
+      <span className="font-semibold button-text ">{label}</span></Flex>
     </Button>
   );
 }

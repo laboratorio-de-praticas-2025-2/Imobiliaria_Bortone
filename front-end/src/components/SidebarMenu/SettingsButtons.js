@@ -3,7 +3,7 @@ import { Flex } from 'antd';
 
 export default function SettingsButtons({ onUndo, onApply }) {
   return (
-    <div className="flex gap-3 pt-7">
+    <div className="flex gap-3 pt-7 pb-6">
       {/* Botão Desfazer */}
       <button
         onClick={onUndo}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import SidebarMenu from "./SidebarMenu";
+import SidebarMenu from "./SidebarDesk";
 import MenuTerreno from "./MenuTerreno";
 
 export default function MenuWrapper() {

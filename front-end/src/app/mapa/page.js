@@ -18,9 +18,9 @@ export default function Mapa() {
 
   return (
     <div>
-      {/* <div className="absolute z-1001">
+      <div className="absolute z-1001">
         <SidebarMenu />
-      </div> */}
+      </div>
       <div
         className="absolute z-1001 md:bottom-0 md:right-0 flex justify-center w-full md:justify-end"
       >
