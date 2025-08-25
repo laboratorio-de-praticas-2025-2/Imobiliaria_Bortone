@@ -1,0 +1,18 @@
+services:
+  front-end:
+    build: ./front-end
+    container_name: imobiliario-frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - back-end
+
+  back-end:
+    build: ./back-end
+    container_name: imobiliario-backend
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
