@@ -1,23 +1,14 @@
 "use client";
-import { useState } from "react";
-import { Button, Flex, Input } from "antd";
+import { Button, Flex } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { navLinks } from "@/constants/navLinks";
 import { FaUser } from "react-icons/fa6";
-import { FaBars } from "react-icons/fa";
-import { createElement } from "react";
-
-const { Search } = Input;
-
-const onSearch = (value) => console.log(value);
 
 export default function MapaNavbar() {
-  const [open, setOpen] = useState(false);
-
   return (
-    <div className="navbar top-0 left-0 w-full z-10 bg-white py-3.5 px-6 md:px-16">
-      <Flex justify="space-between" align="center" className="navbar-map-desktop">
+    <div className="navbar top-0 left-0 w-full z-10 bg-white py-3.5 px-6 md:px-16 hidden md:flex">
+      <Flex justify="space-between" align="center">
         {/* Logo */}
         <Image
           src="/images/LogoAzul.svg"
@@ -46,10 +37,6 @@ export default function MapaNavbar() {
         >
           Entrar
         </Button>
-      </Flex>
-
-      <Flex gap="large" align="center" className="navbar-mapa-mobile">
-        
       </Flex>
 
     </div>

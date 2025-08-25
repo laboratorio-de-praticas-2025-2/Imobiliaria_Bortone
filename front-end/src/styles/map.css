@@ -250,14 +250,6 @@
   border: 2px solid var(--primary) !important;
 }
 
-.navbar-mapa-desktop{
-  display: flex;
-}
-
-.navbar-mapa-mobile{
-  display: none;
-}
-
 @media (max-width: 768px) {
   .cards-carrossel {
     width: 100%
