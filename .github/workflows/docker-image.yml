@@ -28,3 +28,7 @@ jobs:
         
         env:
           DOCKER_HUB_USERNAME: ${{secrets.DOCKER_HUB_USERNAME}}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+
