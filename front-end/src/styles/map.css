@@ -216,7 +216,46 @@
 }
 
 .cards-carrossel {
-   width:calc(100vw - 400px)
+  width:calc(100vw - 400px)
+}
+
+.button-text{
+  font-family: 'Glacial Indifference';
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.menu-label {
+  font-family: 'Glacial Indifference';
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--background);
+}
+
+.nav-mapa-link{
+  color: var(--primary);
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.btn-login-map{
+  background-color: var(--primary);
+  border: 2px solid var(--primary);
+  color: white;
+  height: 40px;
+}
+
+.btn-login-map:hover{
+  background-color: white !important;
+  color: var(--primary) !important;
+  border: 2px solid var(--primary) !important;
+}
+
+.navbar-mapa-desktop{
+  display: flex;
+}
+
+.navbar-mapa-mobile{
+  display: none;
 }
 
 @media (max-width: 768px) {
@@ -224,3 +263,4 @@
     width: 100%
   }
 }
+

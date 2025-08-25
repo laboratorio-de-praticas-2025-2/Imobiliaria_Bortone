@@ -1,12 +1,12 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
+import MenuWrapper from "@/components/mapa/SidebarMenu/MenuWrapper";
+import MapaNavbar from "@/components/mapa/MapaNavbar";
+import CarrosselMapa from "@/components/mapa/CarrosselMapa";
 import { getImoveis } from "@/services/imoveisService";
-import SidebarMenu from "@/components/SidebarMenu/SidebarMenu";
-import CarrosselMapa from "@/components/CarrosselMapa";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
-const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
+const MapView = dynamic(() => import("@/components/mapa/MapView"), { ssr: false });
 
 export default function Mapa() {
   const [imoveis, setImoveis] = useState([]);
@@ -18,12 +18,11 @@ export default function Mapa() {
 
   return (
     <div>
-      {/* <div className="absolute z-1001">
-        <SidebarMenu />
-      </div> */}
-      <div
-        className="absolute z-1001 md:bottom-0 md:right-0 flex justify-center w-full md:justify-end"
-      >
+      <MapaNavbar />
+      <div className="absolute z-1002">
+        <MenuWrapper />
+      </div>
+      <div className="absolute z-1001 md:bottom-0 md:right-0 flex justify-center w-full md:justify-end">
         <CarrosselMapa imoveis={imoveis} />
       </div>
       <div className="map-container">
