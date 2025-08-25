@@ -4,8 +4,7 @@ services:
     container_name: imobiliario-frontend
     ports:
       - "3000:3000"
-    env_file:
-      - .env
+    
     depends_on:
       - back-end
 
@@ -14,5 +13,7 @@ services:
     container_name: imobiliario-backend
     ports:
       - "4000:4000"
-    env_file:
-      - .env
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
