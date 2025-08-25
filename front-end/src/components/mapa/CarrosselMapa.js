@@ -1,5 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import Card from "./CardMapa";
 
 export default function CarrosselMapa({ imoveis }) {
@@ -96,11 +97,15 @@ export default function CarrosselMapa({ imoveis }) {
             <div className="w-12 h-1.5 bg-gray-400 rounded-full"></div>
           </div>
 
-          <div className={`overflow-auto h-full px-4 pb-6 z-10 ${isExpanded && "pt-30"}`}>
+          <div
+            className={`overflow-auto h-full px-6 pb-6 z-10 ${
+              isExpanded && "pt-30"
+            }`}
+          >
             {isExpanded && (
               <div className="px-4 pb-2 items-center flex justify-center">
-                <button className="bg-gradient-to-b from-[#324587] to-[#0C1121] text-sm px-4 py-2 rounded-full shadow">
-                  <p className="text-gray-400 font-bold">
+                <button className="bg-gradient-to-b from-[#324587] to-[#0C1121] text-sm px-4 py-2 rounded-full shadow flex ">
+                  <p className="text-gray-400 font-bold p-2">
                     Ordenado por: <span className="text-white">Relevância</span>
                   </p>
                 </button>
