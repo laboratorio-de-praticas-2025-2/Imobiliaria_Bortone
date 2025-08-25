@@ -181,6 +181,8 @@
 | conteudo       | TEXT          | Conteúdo da publicidade             |
 | url_imagem     | VARCHAR(255)  | Nome da Imagem + extensão (ex: 7ac66c0f1484d64.png) - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end |
 | usuario_id     | INT(11)       | ID do usuário que cadastrou a publicidade |
+| ativo          | TINYINT(1)     | Indica se a publicidade está ativa e deve aparecer no site (0 = não, 1 = sim) |
+
 
 </details>
 
