@@ -214,3 +214,13 @@
   margin-top: -1px;
 }
 }
+
+.cards-carrossel {
+   width:calc(100vw - 400px)
+}
+
+@media (max-width: 768px) {
+  .cards-carrossel {
+    width: 100%
+  }
+}

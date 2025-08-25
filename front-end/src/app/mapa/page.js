@@ -9,7 +9,6 @@ import CarrosselMapa from "@/components/CarrosselMapa";
 const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
 
 export default function Mapa() {
-  const SIDEBAR_W = 400;
   const [imoveis, setImoveis] = useState([]);
   const [hoverImovel, setHoverImovel] = useState(null);
 
@@ -19,11 +18,11 @@ export default function Mapa() {
 
   return (
     <div>
-      <div className="absolute z-1001">
+      {/* <div className="absolute z-1001">
         <SidebarMenu />
-      </div>
+      </div> */}
       <div
-        className="absolute z-1001 bottom-0 right-0"
+        className="absolute z-1001 md:bottom-0 md:right-0 flex justify-center w-full md:justify-end"
       >
         <CarrosselMapa imoveis={imoveis} />
       </div>

@@ -10,7 +10,7 @@ export default function CardMapa({ imovel }) {
   return (
     <div
       key={imovel.id}
-      className="group shrink-0 min-w-[260px] sm:min-w-[260px] lg:min-w-[280px] max-w-sm h-auto p-4 
+      className="group shrink-0 min-w-[260px] sm:min-w-[260px] lg:min-w-[280px] h-auto p-4 
       border-0 rounded-lg shadow-lg bg-white transform transition-transform duration-300 hover:scale-105"
     >
       {/* Imagem do imóvel */}
