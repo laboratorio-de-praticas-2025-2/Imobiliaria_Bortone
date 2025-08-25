@@ -1,7 +1,7 @@
 services:
   front-end:
     build: ./front-end
-    container_name: ${DOCKER_HUB_USERNAME}/imobiliario-frontend:latest
+    image: ${DOCKER_HUB_USERNAME}/imobiliario-frontend:latest
     ports:
       - "3000:3000"
     
@@ -10,7 +10,7 @@ services:
 
   back-end:
     build: ./back-end
-    container_name: ${DOCKER_HUB_USERNAME}/imobiliario-backend:latest
+    image: ${DOCKER_HUB_USERNAME}/imobiliario-backend:latest
     ports:
       - "4000:4000"
     environment:
