@@ -27,4 +27,5 @@ jobs:
           docker-compose -f docker-compose.yml build
           docker-compose -f docker-compose.yml push
 
-      
+      env:
+        DOCKER_HUB_USERNAME: ${{secrets.DOCKER_HUB_USERNAME}}
