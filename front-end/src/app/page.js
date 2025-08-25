@@ -33,7 +33,7 @@ export default function Home() {
     <>
       <Header />
       <Divider size="large" />
-      <div className="ctacards flex gap-10 px-16 py-7 md:flex-row flex-col">
+      <div className="ctacards flex gap-10 md:px-16 md:py-7 px-6 py-8 md:flex-row flex-col">
         <CTACard
           title="Faça sua proposta"
           description="Gostou de um imóvel? Faça uma proposta de valor e siga para as próximas etapas!"
