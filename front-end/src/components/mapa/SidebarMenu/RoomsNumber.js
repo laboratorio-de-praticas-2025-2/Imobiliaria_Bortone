@@ -12,7 +12,7 @@ export default function RoomsNumber() {
       <h2 className="menu-label">Quantidade de cômodos</h2>
         <div className="px-2">
 
-      <p className="text-gray-400 font-semibold mb-2">Quartos</p>
+      <p className="text-gray-400 font-semibold pb-0">Quartos</p>
       <div className="flex gap-2 mb-4">
         {["1", "2", "3", "4", "5+"].map((num) => (
           <SquaredButton
@@ -26,7 +26,7 @@ export default function RoomsNumber() {
         ))}
       </div>
 
-      <p className="text-gray-400 font-semibold mb-2">Banheiros</p>
+      <p className="text-gray-400 font-semibold ">Banheiros</p>
       <div className="flex gap-2">
         {["1", "2", "3", "4", "5+"].map((num) => (
           <SquaredButton

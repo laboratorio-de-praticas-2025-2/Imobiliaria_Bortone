@@ -15,7 +15,7 @@ export default function MenuTerreno({ activeType, setActiveType }) {
             <PriceRange>Faixa de preço</PriceRange>
             <PropertySize>Tamanho da Propriedade</PropertySize>
         </div>
-        <div className="pb-5">
+        <div className="pb-15">
             <Location />
             <SettingsButtons />
         </div>

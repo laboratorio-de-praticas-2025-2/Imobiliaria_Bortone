@@ -24,7 +24,7 @@ export default function Location() {
   return (
     <div className='pt-7'>
       <h2 className="menu-label pb-5">Localização</h2>
-      <Row>
+      <Row gutter={[16, 16]} justify="center" >
         <Col span={8} align="center">
             <LocationButton 
             label="Bairro 1" 

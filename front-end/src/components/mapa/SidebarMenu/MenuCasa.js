@@ -10,17 +10,16 @@ import SettingsButtons from './SettingsButtons';
 
 export default function MenuCasa({ activeType, setActiveType }) {
   return (
-    <div className='grid h-full content-between '>
+    <div className='grid h-full'>
         <div>
             <PropertyType activeType={activeType} setActiveType={setActiveType} />
             <PriceRange>Faixa de preço</PriceRange>
             <RoomsNumber />
+            
             <Options />
             <PropertySize>Tamanho da Propriedade</PropertySize>
-
-        </div>
-        <div className="pb-5">
             <SettingsButtons />
+
         </div>
     </div>
   );

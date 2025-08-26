@@ -28,11 +28,13 @@ export default function PriceRange({ children }) {
               trackHoverBg: "var(--secondary)",
               handleColor: "var(--secondary)",
               handleActiveColor: "var(--secondary)",
-              dotSize: 100
+              dotSize: 100,
+              
             },
           },
         }}
       >
+        
         <Slider
           range={{ draggableTrack: true }}
           min={25000}
