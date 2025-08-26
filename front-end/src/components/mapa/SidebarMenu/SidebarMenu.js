@@ -1,5 +1,5 @@
 import SidebarMobile from "./SidebarMobile";
-import MenuToggleButton from "@/components/MenuToggleButton";
+import MenuToggleButton from "@/components/mapa/MenuToggleButton";
 import { Drawer, Input } from "antd";
 import SidebarDesk from "./SidebarDesk";
 import OrderButton from "@/components/mapa/OrderButton";
