@@ -306,9 +306,9 @@
   .cards-carrossel {
     height: 100%;
   }
-  
-  .sidebar-desk{
-    height: 100%
+
+  .map-container{
+    height: 100vh
   }
 
   :where(.css-dev-only-do-not-override-1v28nim).ant-drawer{
