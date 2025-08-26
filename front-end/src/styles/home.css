@@ -1,0 +1,192 @@
+.header-home {
+    background-image: url('/images/imgBaseLeft.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.header-home::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 30%;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%);
+}
+
+.nav-link{
+    color: white;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.btn-login{
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    height: 40px;
+}
+
+.btn-login:hover{
+    background-color: white !important;
+    color: black !important;
+    border: 2px solid white !important;
+}
+
+.home-search-bar .ant-input, .home-search-bar .ant-btn {
+    border-radius: 1000px ;
+    background: transparent;
+    border: 2px solid white;
+    color: white !important;
+    height: 42px
+} 
+
+.home-search-bar .ant-btn{
+    border-left: none;
+}
+
+.home-search-bar .ant-btn:hover{
+    background-color: transparent !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-left: none !important;
+}
+
+.home-search-bar .ant-input{
+    border-right: none;
+}
+
+.home-search-bar .ant-input:focus{
+    box-shadow: none !important;
+    border-color: white !important;
+}
+
+.home-search-bar .ant-input::placeholder {
+    color: white !important;
+}
+
+.btn-marcar-visita{
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    height: 52px;
+    font-weight: 700;
+    width: fit-content;
+}
+
+.btn-marcar-visita:hover{
+    background-color: var(--primary) !important;
+    color: white !important;
+    border: 2px solid var(--primary) !important;
+}
+
+:where(.css-dev-only-do-not-override-1v28nim).ant-btn.ant-btn-round.ant-btn{
+    padding-inline-start: 60px;
+    padding-inline-end: 60px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--primary) !important;
+  width: 27px;
+}
+
+.lemon-milk{
+    font-family: 'Lemon Milk', sans-serif;
+}
+
+.cta-card-button{
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 18px 84px;
+    width: fit-content;
+    font-weight: 500;
+    transition: background-color 0.3s ease, filter 0.3s ease;
+}
+
+.cta-card-button:hover{
+    background-color: var(--primary)!important;
+    color: white !important;
+    filter: brightness(90%);
+}
+
+.home-footer-content{
+    background-image: url('/images/home-footer-desktop.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: 600px;
+}
+
+.navbar-desktop{
+    display: flex;
+}
+
+.entrar-btn-mobile{
+    background-color: var(--primary);
+    height: 40px;
+}
+
+.entrar-btn-mobile:hover{
+    background-color: var(--primary)!important;
+    color: white !important;
+    filter: brightness(90%);
+}
+
+.nav-search-mobile .ant-input-affix-wrapper {
+    border-radius: 1000px !important;
+    background-color: #E4E7F4 !important;
+    height: 42px !important
+} 
+
+.nav-search-mobile .ant-input-affix-wrapper input::placeholder {
+    color: gray !important;
+    font-size: 12px
+}
+
+.nav-search-mobile .ant-input-affix-wrapper:focus, .ant-input-affix-wrapper-focused {
+    box-shadow: none !important;
+    border-color: var(--primary) !important;
+}
+
+.nav-search-mobile .ant-input-group-addon{
+    display: none !important;
+}
+
+.navbar-mobile{
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .home-footer-content{
+        background-image: url('/images/home-footer-mobile.svg');
+        min-height: 800px;
+    }
+
+    .btn-marcar-visita{
+        background-color: white;
+        border: 2px solid white;
+        font-size: 14px;
+    }
+
+    .home-search-bar{
+        display:none;
+    }
+
+    .navbar-desktop{
+        display: none;
+    }
+
+    .navbar-mobile{
+        display: flex;
+    }
+
+    .cta-card-button{
+        border-radius: 1000px;
+        font-size: 16px;
+    }
+}

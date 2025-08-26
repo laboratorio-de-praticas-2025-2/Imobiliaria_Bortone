@@ -1,0 +1,19 @@
+services:
+  front-end:
+    build: ./front-end
+    image: ${DOCKER_HUB_USERNAME}/imobiliario-frontend:latest
+    ports:
+      - "3000:3000"
+    
+    depends_on:
+      - back-end
+
+  back-end:
+    build: ./back-end
+    image: ${DOCKER_HUB_USERNAME}/imobiliario-backend:latest
+    ports:
+      - "4000:4000"
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
