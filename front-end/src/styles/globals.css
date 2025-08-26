@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin 'tailwind-scrollbar';
 
 :root {
   --background: #ffffff;
@@ -6,9 +7,56 @@
   --primary: #374a8c;
   --secondary: #f39200;
   --lavender-gray: #beb2bc;
-  --fog-gray: #a5a7a6
+  --fog-gray: #a5a7a6;
+  --unselected: #4A5784
+}
+.button-text{
+  font-family: 'Glacial Indifference';
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.menu-label {
+  font-family: 'Glacial Indifference';
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--background);
+}
+.button-text{
+  font-family: 'Glacial Indifference';
+  font-size: 14px;
+  font-weight: 700;
+}
+.menu-label {
+  font-family: 'Glacial Indifference';
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--background);
+  text-align: left; /* padrão: centralizado */
 }
 
+@media (max-width: 768px) {
+    .button-text{
+    font-family: 'Glacial Indifference';
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .menu-label {
+    font-size: 1rem; 
+    text-align: center; 
+  }
+}
+
+@media (max-width: 480px) {
+    .button-text{
+    font-family: 'Glacial Indifference';
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  .menu-label {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+}
 @font-face {
   font-family: 'Glacial Indifference';
   src: url('/fonts/GlacialIndifference-Regular.otf') format('opentype');
