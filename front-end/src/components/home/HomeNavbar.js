@@ -29,8 +29,17 @@ export default function HomeNavbar() {
         {/* Links desktop */}
         <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
-            <Link href={link.path} key={link.name}>
-              <Flex gap="middle" align="center" className="nav-link">
+            <Link
+              href={link.path}
+              key={link.name}
+              className="h-full bg-amber-300"
+            >
+              <Flex
+                gap="middle"
+                align="center"
+                justify="center"
+                className="nav-link !w-[7vw] !py-2.5 rounded-[3px] hover:!bg-white hover:!text-[var(--primary)] transition-colors"
+              >
                 {link.name}
               </Flex>
             </Link>
