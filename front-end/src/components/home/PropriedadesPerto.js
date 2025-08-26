@@ -5,9 +5,9 @@ import { HiMapPin } from "react-icons/hi2";
 export default function PropriedadesPerto() {
     return (
         <div className="px-4 md:px-16 py-7 flex gap-7 flex-col">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-                <p className="lemon-milk text-3xl text-[var(--primary)]">IMÓVEIS PERTO DE VOCÊ</p>
-                <p className="lemon-milk text-[var(--primary)] text-xl flex items-center gap-1.5">
+            <div className="flex flex-row justify-between items-center">
+                <p className="lemon-milk md:text-3xl text-xl text-[var(--primary)]">IMÓVEIS PERTO DE VOCÊ</p>
+                <p className="lemon-milk text-[var(--primary)] md:text-xl text-xs flex items-center gap-1.5">
                     <HiMapPin/>
                     REGISTRO, SÃO PAULO
                 </p>

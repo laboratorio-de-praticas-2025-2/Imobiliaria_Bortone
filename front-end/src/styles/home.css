@@ -122,9 +122,71 @@
     min-height: 600px;
 }
 
+.navbar-desktop{
+    display: flex;
+}
+
+.entrar-btn-mobile{
+    background-color: var(--primary);
+    height: 40px;
+}
+
+.entrar-btn-mobile:hover{
+    background-color: var(--primary)!important;
+    color: white !important;
+    filter: brightness(90%);
+}
+
+.nav-search-mobile .ant-input-affix-wrapper {
+    border-radius: 1000px !important;
+    background-color: #E4E7F4 !important;
+    height: 42px !important
+} 
+
+.nav-search-mobile .ant-input-affix-wrapper input::placeholder {
+    color: gray !important;
+    font-size: 12px
+}
+
+.nav-search-mobile .ant-input-affix-wrapper:focus, .ant-input-affix-wrapper-focused {
+    box-shadow: none !important;
+    border-color: var(--primary) !important;
+}
+
+.nav-search-mobile .ant-input-group-addon{
+    display: none !important;
+}
+
+.navbar-mobile{
+    display: none;
+}
+
 @media (max-width: 768px) {
     .home-footer-content{
         background-image: url('/images/home-footer-mobile.svg');
         min-height: 800px;
+    }
+
+    .btn-marcar-visita{
+        background-color: white;
+        border: 2px solid white;
+        font-size: 14px;
+    }
+
+    .home-search-bar{
+        display:none;
+    }
+
+    .navbar-desktop{
+        display: none;
+    }
+
+    .navbar-mobile{
+        display: flex;
+    }
+
+    .cta-card-button{
+        border-radius: 1000px;
+        font-size: 16px;
     }
 }
