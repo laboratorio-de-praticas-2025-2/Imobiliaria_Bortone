@@ -25,8 +25,8 @@ export default function LocationInput() {
   }, []); 
 
   return (
-    <div className="w-full max-w-lg">
-      <div className="w-full max-w-lg relative">
+    <div className="w-[23vw]">
+      <div className="w-full relative">
         {/* Ícone de localização */}
         <PiMapPinFill className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--primary)] w-4 h-4" />
 
