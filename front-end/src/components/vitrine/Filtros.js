@@ -1,6 +1,6 @@
 import LocationInput from "./LocationInput"
 import DropdownFilter from "./DropdownFilter"
-import PesquisaAvancada from "./PesquisaAvancada";
+import PesquisaAvancada from "./PesquisaAvancada/PesquisaAvancada";
 import { Flex, Space } from "antd"
 
 const optionsBuy = ["Comprar", "Alugar"];
