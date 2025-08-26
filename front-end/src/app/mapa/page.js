@@ -5,6 +5,7 @@ import CarrosselMapa from "@/components/mapa/CarrosselMapa";
 import { getImoveis } from "@/services/imoveisService";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import SidebarMenu from "@/components/mapa/SidebarMenu/SidebarMenu";
 
 const MapView = dynamic(() => import("@/components/mapa/MapView"), { ssr: false });
 
@@ -20,9 +21,9 @@ export default function Mapa() {
     <div>
       <MapaNavbar />
       <div className="absolute z-1002">
-        <MenuWrapper />
+        <SidebarMenu />
       </div>
-      <div className="absolute z-1001 md:bottom-0 md:right-0 flex justify-center w-full md:justify-end">
+      <div className="absolute z-900 sm:bottom-0 sm:right-0 flex justify-center w-full md:justify-end h-fit">
         <CarrosselMapa imoveis={imoveis} />
       </div>
       <div className="map-container">

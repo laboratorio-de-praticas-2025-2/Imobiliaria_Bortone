@@ -6,7 +6,7 @@ export default function LocationButton({ label, onClick, active }) {
     <Button
       onClick={onClick}
       className={`
-        !w-18 !h-10 md:!w-20 md:!h-12 !rounded-xl !flex !flex-col !items-center !justify-center !shadow-md transition
+        !w-22 !h-10 md:!w-20 md:!h-12 !rounded-xl !flex !flex-col !items-center !justify-center !shadow-md transition 
         ${
           active
             ? "!bg-white !text-[var(--unselected)] !border-none" // Estilo quando ativo

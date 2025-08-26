@@ -10,7 +10,6 @@ export default function SidebarDesk() {
   return (
     <div
       className="
-        h-screen 
         bg-gradient-to-b from-[#2E3F7C] to-[#0C1121] 
         pt-7 px-8 
         overflow-auto scrollbar-thin scrollbar-thumb-[#3C54A9] scrollbar-track-transparent
@@ -19,6 +18,7 @@ export default function SidebarDesk() {
         md:w-[400px]  /* desktop: largura fixa */
 
         lg:w-[325px]  /* desktop: largura fixa */
+        sidebar-desk
       "
     >
       {propertyType === "Casa" && (

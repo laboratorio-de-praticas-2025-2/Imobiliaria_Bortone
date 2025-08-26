@@ -1,7 +1,7 @@
-import SidebarMobile from "@/components/SidebarMenu/SidebarMobile";
+import SidebarMobile from "./SidebarMobile";
 import MenuToggleButton from "@/components/MenuToggleButton";
 import { Drawer, Button,ConfigProvider } from "antd";
-import SidebarDesk from "@/components/SidebarMenu/SidebarDesk";
+import SidebarDesk from "./SidebarDesk";
 import {  useState } from "react";
 
 export default function SidebarMenu() {
@@ -26,7 +26,7 @@ export default function SidebarMenu() {
         closable={false}
         width="100%"     // largura total
         height="100%"    // altura total
-        className="!bg-gradient-to-b from-[#2E3F7C] to-[#0C1121] !p-0 !justify-center"
+        className="!bg-gradient-to-b from-[#2E3F7C] to-[#0C1121] !p-0 !justify-center "
     >
         <SidebarMobile /> 
       </Drawer>

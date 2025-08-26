@@ -1,7 +1,7 @@
 .map-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 71.74px); /* altura total da viewport menos a altura da navbar */
   overflow: visible; /* permite que o card flutuante apareça acima do mapa */
 }
 
@@ -216,7 +216,12 @@
 }
 
 .cards-carrossel {
-  width:calc(100vw - 400px)
+  width:calc(100vw - 330px);
+  height: fit-content
+}
+
+.sidebar-desk{
+  height: calc(100vh - 71.74px);
 }
 
 .button-text{
@@ -250,9 +255,35 @@
   border: 2px solid var(--primary) !important;
 }
 
-@media (max-width: 768px) {
+.ant-drawer-body {
+  scrollbar-width: thin;
+  scrollbar-color: #3C54A9 transparent;
+}
+
+.ant-drawer-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ant-drawer-body::-webkit-scrollbar-thumb {
+  background-color: #3C54A9;
+  border-radius: 6px;
+}
+
+.ant-drawer-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (max-width: 1024px) {
   .cards-carrossel {
-    width: 100%
+    width: 100%;
+  }
+
+  .cards-carrossel {
+    height: 100%;
+  }
+  
+  .sidebar-desk{
+    height: 100%
   }
 }
 

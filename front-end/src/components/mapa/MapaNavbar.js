@@ -7,8 +7,7 @@ import { FaUser } from "react-icons/fa6";
 
 export default function MapaNavbar() {
   return (
-    <div className="navbar top-0 left-0 w-full z-10 bg-white py-3.5 px-6 md:px-16 hidden md:flex">
-      <Flex justify="space-between" align="center">
+    <div className="navbar top-0 left-0 w-full z-10 bg-white py-3.5 px-6 md:px-16 hidden md:flex justify-between">
         {/* Logo */}
         <Image
           src="/images/LogoAzul.svg"
@@ -37,8 +36,6 @@ export default function MapaNavbar() {
         >
           Entrar
         </Button>
-      </Flex>
-
     </div>
   );
 }
