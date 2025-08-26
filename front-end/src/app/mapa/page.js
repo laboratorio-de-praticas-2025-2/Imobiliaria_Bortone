@@ -1,5 +1,4 @@
 "use client";
-import MenuWrapper from "@/components/mapa/SidebarMenu/MenuWrapper";
 import MapaNavbar from "@/components/mapa/MapaNavbar";
 import CarrosselMapa from "@/components/mapa/CarrosselMapa";
 import { getImoveis } from "@/services/imoveisService";

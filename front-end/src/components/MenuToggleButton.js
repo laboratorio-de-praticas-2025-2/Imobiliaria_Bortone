@@ -17,15 +17,15 @@ export default function MenuToggleButton({ onToggle }) {
       style={{
         width: "50px",
         height: "50px",
-        minWidth: "40px",
         background: "var(--background)",
         border: "var(--fog-gray) 2px solid",
-        borderRadius: "50%",
+        borderRadius: "1000px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: 0,
+        padding: '15px',
       }}
+      className="!shadow-lg"
       icon={
         open ? (
           <CloseOutlined style={{ fontSize: 20, color: "#374a8c" }} />
