@@ -7,7 +7,7 @@ export default function ImoveisPage() {
       <>
         <HomeNavbar />
         <Filtros/>
-        <Divider size="large" />
+        <Divider size="large" style={{margin: 0}} />
       </>
     );
 }

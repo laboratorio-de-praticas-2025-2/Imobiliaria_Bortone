@@ -12,11 +12,11 @@ export default function DropdownFilter({options, placeholder}) {
   };
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left ">
       {/* Botão */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-between w-32 rounded-full bg-[#EEF0F9] px-4 py-2 !text-[var(--primary)] font-medium focus:outline-none"
+        className="flex items-center justify-between w-32 rounded-full bg-[#EEF0F9] px-4 py-2 !text-[var(--primary)] font-medium focus:outline-none cursor-pointer hover:bg-[#E0E3F1] transition-colors"
       >
         {selected}
         <FaAngleDown className="ml-2 h-4 w-4 text-[var(--primary)]" />
