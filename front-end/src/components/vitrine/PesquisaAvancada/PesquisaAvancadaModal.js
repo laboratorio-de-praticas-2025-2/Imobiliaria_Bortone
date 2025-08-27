@@ -2,6 +2,7 @@ import { Flex } from "antd";
 import ToggleCompraAluguel from "./ToggleCompraAluguel";
 import SliderPreco from "./SliderPreco";
 import QuantidadeComodos from "./QuantidadeComodos";
+import BotaoPesquisar from "./BotaoPesquisar";
 import { useState } from "react";
 
 export default function PesquisaAvancadaModal() {
@@ -13,9 +14,18 @@ export default function PesquisaAvancadaModal() {
       <Flex vertical align="center" justify="center" className="!gap-13">
         <Flex vertical align="end" className="!gap-8 w-[100%]">
           <ToggleCompraAluguel />
-          <SliderPreco/>
-          <QuantidadeComodos title="Quartos" selected={selectedQuartos} setSelected={setSelectedQuartos}/>
-          <QuantidadeComodos title="Banheiros" selected={selectedBanheiros} setSelected={setSelectedBanheiros}/>
+          <SliderPreco />
+          <QuantidadeComodos
+            title="Quartos"
+            selected={selectedQuartos}
+            setSelected={setSelectedQuartos}
+          />
+          <QuantidadeComodos
+            title="Banheiros"
+            selected={selectedBanheiros}
+            setSelected={setSelectedBanheiros}
+          />
+          <BotaoPesquisar onClick={() => console.log("Pesquisar")} />
         </Flex>
       </Flex>
     </div>
