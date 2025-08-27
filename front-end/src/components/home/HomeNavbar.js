@@ -32,7 +32,7 @@ export default function HomeNavbar() {
             <Link
               href={link.path}
               key={link.name}
-              className="h-full bg-amber-300"
+              className="h-full"
             >
               <Flex
                 gap="middle"
