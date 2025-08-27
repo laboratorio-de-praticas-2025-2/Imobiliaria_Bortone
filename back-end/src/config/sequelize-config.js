@@ -2,11 +2,11 @@ import { Sequelize } from "sequelize";
 import "dotenv/config";
 
 const connection = new Sequelize({
-  dialect: process.env.DB_DIALECT,
-  host: process.env.DB_HOST,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
+  DB_DIALECT: process.env.DB_DIALECT,
+  DB_HOST: process.env.DB_HOST,
+  DB_USER: process.env.DB_USER,
+  DB_PASS: process.env.DB_PASS,
+  DB_DATABASE: process.env.DB_DATABASE,
 });
 
 export default connection;
