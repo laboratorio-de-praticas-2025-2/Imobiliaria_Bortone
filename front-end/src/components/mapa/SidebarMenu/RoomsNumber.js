@@ -27,13 +27,28 @@ export default function RoomsNumber() {
         </div>
 
         <p className="text-gray-400 font-semibold pb-2">Banheiros</p>
-        <div className="flex gap-2">
+        <div className="flex gap-2 mb-4">
           {["1", "2", "3", "4", "5+"].map((num) => (
             <SquaredButton
               key={num}
               active={selectedBathroom === num}
               onClick={() =>
                 setSelectedBathroom(selectedBathroom === num ? null : num)
+              }
+            >
+              {num}
+            </SquaredButton>
+          ))}
+        </div>
+
+        <p className="text-gray-400 font-semibold pb-2">Vagas de garagem</p>
+        <div className="flex gap-2 mb-4">
+          {["1", "2", "3", "4", "5+"].map((num) => (
+            <SquaredButton
+              key={num}
+              active={selectedBedroom === num}
+              onClick={() =>
+                setSelectedBedroom(selectedBedroom === num ? null : num)
               }
             >
               {num}

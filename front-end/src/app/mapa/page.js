@@ -2,10 +2,17 @@
 import MapaNavbar from "@/components/mapa/MapaNavbar";
 import CarrosselMapa from "@/components/mapa/CarrosselMapa";
 import { getImoveis } from "@/services/imoveisService";
+import { mockImoveis } from "@/constants/imoveis";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import SidebarMenu from "@/components/mapa/SidebarMenu/SidebarMenu";
 import SplashScreen from "@/components/SplashScreen";
+import { Input } from "antd";
+import OrderButton from "@/components/mapa/OrderButton";
+
+const { Search } = Input;
+
+const onSearch = (value) => console.log(value);
 
 const MapView = dynamic(() => import("@/components/mapa/MapView"), { ssr: false });
 
@@ -37,11 +44,21 @@ export default function Mapa() {
   return (
     <div>
       <MapaNavbar />
+      <div className="absolute z-1002 ml-90 mt-4.5 lg:flex hidden w-[52%]">
+        <Search
+          placeholder="Pesquisar"
+          onSearch={onSearch}
+          style={{ width: "50%" }}
+          allowClear
+          className="nav-search-map"
+        />
+        <OrderButton onToggle={() => console.log("Ordenar")} />
+      </div>
       <div className="absolute z-1002">
         <SidebarMenu />
       </div>
       <div className="absolute z-900 sm:bottom-0 sm:right-0 flex justify-center w-full md:justify-end h-fit">
-        <CarrosselMapa imoveis={imoveis} />
+        <CarrosselMapa imoveis={mockImoveis} />
       </div>
       <div className="map-container">
         <MapView

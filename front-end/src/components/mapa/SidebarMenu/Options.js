@@ -30,8 +30,9 @@ export default function Options() {
             label="Piscina" 
             onClick={() => handleSelectOption("Piscina")}
             active={selectedOptions.includes("Piscina")}
-            children={<MdPool className="w-11 h-11" />}
-          />
+          >
+            <MdPool className="w-11 h-11" />
+          </RectangularButton>
         </Col>
         <Col xs={8} sm={24} md={12} align="center">
           <RectangularButton 
@@ -39,8 +40,9 @@ export default function Options() {
             label="Jardim" 
             onClick={() => handleSelectOption("Jardim")}
             active={selectedOptions.includes("Jardim")}
-            children={<IoMdFlower className="w-11 h-11" />}
-          />
+          >
+            <IoMdFlower className="w-11 h-11" />
+          </RectangularButton>
         </Col>
         <Col xs={8} sm={24} md={12} align="center">
           <RectangularButton 
@@ -48,8 +50,9 @@ export default function Options() {
             label="Murado" 
             onClick={() => handleSelectOption("Murado")}
             active={selectedOptions.includes("Murado")}
-            children={<PiWallFill className="w-11 h-11" />}
-          />
+          >
+            <PiWallFill className="w-11 h-11" />
+          </RectangularButton>
         </Col>
       </Row>
     </div>
