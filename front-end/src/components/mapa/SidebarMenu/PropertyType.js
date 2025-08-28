@@ -14,8 +14,9 @@ export default function PropertyType({ activeType, setActiveType }) {
             label="Casa"
             active={activeType === "Casa"}
             onClick={() => setActiveType("Casa")}
-            children={<PiHouseLineFill className="w-11 h-11" />}
-          />
+          >
+            <PiHouseLineFill className="w-11 h-11" />
+          </RectangularButton>
         </Col>
         <Col span={12} align="left" className="md:align-right pl-2">
           <RectangularButton
@@ -23,8 +24,9 @@ export default function PropertyType({ activeType, setActiveType }) {
             label="Terreno"
             active={activeType === "Terreno"}
             onClick={() => setActiveType("Terreno")}
-            children={<MdTerrain className="w-11 h-11" />}
-          />
+          >
+            <MdTerrain className="w-11 h-11" />
+          </RectangularButton>
         </Col>
       </Row>
     </div>
