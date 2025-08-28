@@ -49,7 +49,7 @@ export const mockImoveis = [
   },
   {
     id: 3,
-    tipo: "Apartamento",
+    tipo: "Terreno",
     endereco: "Rua São Francisco, 89",
     cidade: "São Paulo",
     estado: "SP",
@@ -58,11 +58,6 @@ export const mockImoveis = [
     area: 189,
     descricao: "Apartamento funcional, ideal para famílias.",
     data_cadastro: "2025-08-01",
-    quartos: 3,
-    banheiros: 2,
-    vagas: 1,
-    possui_piscina: false,
-    possui_jardim: false,
     imagens: [
       {
         url_imagem: "/images/slide1.png",
@@ -73,7 +68,7 @@ export const mockImoveis = [
   },
   {
     id: 4,
-    tipo: "Apartamento",
+    tipo: "Terreno",
     endereco: "Rua Fátima, 201",
     cidade: "São Paulo",
     estado: "SP",
@@ -82,11 +77,6 @@ export const mockImoveis = [
     area: 193,
     descricao: "Apartamento compacto e aconchegante.",
     data_cadastro: "2025-08-01",
-    quartos: 3,
-    banheiros: 2,
-    vagas: 1,
-    possui_piscina: false,
-    possui_jardim: false,
     imagens: [
       {
         url_imagem: "/images/slide1.png",
