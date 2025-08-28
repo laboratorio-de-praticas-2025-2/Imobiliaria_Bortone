@@ -15,7 +15,7 @@ export default function CardMapa({ imovel }) {
     >
       {/* Imagem do imóvel */}
       <div className="w-full h-28 sm:h-36 border-0 rounded-lg overflow-hidden relative">
-        <img
+        <Image
           src={imovel.imagem}
           alt={`Imagem do imóvel ${imovel.id}`}
           className="w-full h-full object-cover rounded-md transform transition-transform duration-500 group-hover:scale-105"

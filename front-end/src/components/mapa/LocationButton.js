@@ -29,7 +29,7 @@ export default function LocationButton() {
 
   return (
     <button className="locate-button" onClick={handleClick} disabled={loading}>
-      {loading ? "🔄 Localizando..." : <img src="/icons/seta.png" alt="Localizar" className="icone-localizacao" />}
+      {loading ? "🔄 Localizando..." : <Image src="/icons/seta.png" alt="Localizar" className="icone-localizacao" />}
     </button>
   );
 }
