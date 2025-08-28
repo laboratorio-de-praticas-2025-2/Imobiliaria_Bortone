@@ -26,8 +26,12 @@ let history = {};  // { userId: [ { userId, text } ] }
 let nextUserId = 1;
 
 function send(ws, data) {
-  if (ws.readyState === ws.OPEN) {
-    ws.send(JSON.stringify(data));
+  try {
+    if (ws.readyState === ws.OPEN) {
+      ws.send(JSON.stringify(data));
+    }
+  } catch (err) {
+    console.error("Erro ao enviar mensagem:", err);
   }
 }
 
@@ -40,9 +44,16 @@ wss.on("connection", (ws) => {
   let currentId = null;
 
   ws.on("message", (msg) => {
-    try {
-      const data = JSON.parse(msg);
+    let data;
 
+    try {
+      data = JSON.parse(msg);
+    } catch (err) {
+      console.error("Mensagem inválida:", msg);
+      return;
+    }
+
+    try {
       if (data.type === "connect") {
         role = data.role;
 
@@ -69,8 +80,10 @@ wss.on("connection", (ws) => {
 
         if (role === "user") {
           newMsg = { userId: currentId, text: data.text };
+          if (!history[currentId]) history[currentId] = [];
           history[currentId].push(newMsg);
           if (history[currentId].length > 100) history[currentId].shift();
+          console.log(history); 
 
           broadcastAgents({ type: "message", userId: currentId, msg: newMsg });
         }
@@ -111,12 +124,18 @@ wss.on("connection", (ws) => {
   });
 
   ws.on("close", () => {
-    if (role === "agent") delete agents[currentId];
-    if (role === "user") {
-      delete users[currentId];
-      delete history[currentId];
-      broadcastAgents({ type: "users", users: Object.keys(users) });
-      broadcastAgents({ type: "end", userId: currentId });
+    try {
+      if (role === "agent") {
+        delete agents[currentId];
+      }
+      if (role === "user") {
+        delete users[currentId];
+        delete history[currentId];
+        broadcastAgents({ type: "users", users: Object.keys(users) });
+        broadcastAgents({ type: "end", userId: currentId });
+      }
+    } catch (err) {
+      console.error("Erro ao fechar conexão:", err);
     }
   });
 });

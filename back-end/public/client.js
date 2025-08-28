@@ -14,8 +14,8 @@ ws.onmessage = (event) => {
     }
   }
 
-  if (data.type === "history") data.messages.forEach(m => addMessage("Você", m.text));
-  if (data.type === "message") addMessage("Atendente", data.msg.text);
+  if (data.type === "history") data.messages.forEach(m => addMessage(m.userId, m.text));
+  if (data.type === "message") addMessage(data.msg.userId, data.msg.text);
   if (data.type === "end") {
     addMessage("Sistema", data.msg);
     chat.innerHTML = ""; // 🔹 limpa histórico local ao encerrar

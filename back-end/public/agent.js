@@ -1,4 +1,5 @@
-const agentId = "atendente01";
+let agentId = prompt("Digite o nome do Atendente: ");
+if (!agentId) agentId = "Agente";
 const ws = new WebSocket("ws://localhost:3000");
 
 const chat = document.getElementById("chat");
