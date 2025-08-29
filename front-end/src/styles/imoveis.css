@@ -14,18 +14,22 @@
 
 .imoveis-search-bar{
     width: 48%;
+    height: 43px;
     background-color: #EEF0F9;
-    border-radius: 1000px ;
+    border-radius: 28px ;
     color: #304383;
 }
 
 .imoveis-search-bar .ant-input, .imoveis-search-bar .ant-btn {
     border-radius: 1000px ;
     background: transparent;
-    border: 2px solid white;
+    border: 2px solid rgb(255, 255, 255);
     color: #304383 !important;
     height: 42px
 } 
+.imoveis-search-bar .ant-input-group-addon{
+  display: none;
+}
 
 .imoveis-search-bar .ant-btn{
     border-left: none;
@@ -86,8 +90,8 @@
 .imoveis-carousel .custom-next {
   right: 30;
   background-color: #EEF0F9;
-  width: 70px;
-  height: 70px;
+  width: 65px;
+  height: 65px;
   border-radius: 5cap;
   display: flex;
   align-items: center;
@@ -100,7 +104,7 @@
 
 .carousel-img{
   width: 100%;
-  height: 560px;
+  height: 520px;
 }
 
 /*=-=-=-=-=-=-=-=-=-=-*/
@@ -115,7 +119,7 @@
 
 .descricao{
   width: 65%;
-  height: 380px;
+  height: 319px;
   background-color: #EEF0F9;
   border-bottom-right-radius: 5cap;
 }
@@ -125,28 +129,63 @@
   height: 190px;
   background-color: #e4ff8200;
   color: #304383;
-  font-size: 40px;
   padding-left: 3%;
-  padding-top: 2%;
+  padding-top: 3.5%;
   font-weight:bolder;
+}
+.t1 {
+  display: flex;
+  background-color: #00000000;
+}
+
+.t1 p{
+  font-size: 33px;
+}
+
+.t2{
+  width: 100%;
+  height: 25%;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff00;
+  padding-top: 2%;
+}
+
+.t2 p{
+  font-size: 27px;
+  padding-top: 0.8%;
+  padding-right: 2%;
+  padding-left: 2%;
+}
+
+.icon_p{
+  width: 27px !important;
+  height: 27px !important;
+
+}
+
+.icon_b{
+  width: 27px !important;
+  height: 27px !important;
+  margin-left: 5%;
 }
 
 .Dtexto p {
-  padding-bottom: 12px;
+  padding-bottom: 5px;
 }
 
 .Gimovel{
-   font-size: 23px;
-   padding-top: 7.6%;
+   font-size: 20px;
+   padding-top: 8%;
    font-weight: lighter;
 }
 
 .Dbotoes{
   width: 100%;
-  height: 190px;
+  height: 37%;
   background-color: #58f56d00;
   color: #304383;
-  font-size: 23px;
+  font-size: 17px;
   font-weight: lighter;
   display: flex;
   align-items: end;
@@ -154,8 +193,8 @@
 
 .btn1{
   background-color: #304383;
-  width: 27%;
-  height: 70px;
+  width: 29%;
+  height: 60px;
   border-radius: 5cap;
   color: white;
   margin-bottom: 2%;
@@ -169,8 +208,8 @@
 
 .btn2{
   background-color: #EEF0F9;
-  width: 27%;
-  height: 70px;
+  width: 29%;
+  height: 60px;
   border-radius: 5cap;
   border-color: #304383;
   border-width: 0.2cap;
@@ -180,7 +219,7 @@
 
 .valor{
   width: 35%;
-  height: 380px;
+  height: 319px;
   background-color: rgba(179, 255, 0, 0);
   display: flex;
   flex-direction: column;
@@ -195,12 +234,15 @@
 }
 
 .Ivalor p{
-  font-size: 23px;
-  padding-bottom: 4%;
+  padding-bottom: 7%;
+}
+
+.Vtxt{
+  font-size: 18px;
 }
 
 .preco{
-  font-size: 40 !important;
+  font-size: 30px !important;
   font-weight: bolder;
 }
 
@@ -212,7 +254,7 @@
   background-color: #47969600;
   padding-left: 10%;
   padding-bottom: 4%;
-  font-size: 23px;
+  font-size: 16px;
 }
 
 .a {
@@ -226,17 +268,12 @@
   background-color: #7a90f100;
 }
 
-.a img {
-  width: 17px;
-  height: 25px;
-}
-
-.icon_color{
+.icon_comp{
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   background-color: #EEF0F9;
   border-radius: 1000px;
 }
@@ -244,10 +281,10 @@
 .SimComp_botao{
   background-color: #304383;
   width: 80%;
-  height: 70px;
+  height: 60px;
   border-radius: 5cap;
   color: white;
-  font-size: 23px;
+  font-size: 18px;
   font-weight: lighter;
   cursor: pointer;
 }
@@ -259,7 +296,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  padding-bottom: 0.8%;
+  padding-bottom: 3%;
 }
 
 /*=-=-=-=-=-=*/
@@ -282,6 +319,27 @@
   height: 100%;
 }
 
+.ir_loc{
+  background-color: #ffffff;
+  width: 33%;
+  height: 96px;
+  z-index: 1;
+  position: absolute;
+  margin-left: 1.5%;
+  margin-top: 0.7%;
+  border-color: #8794BE;
+  border-width: 1px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content:space-around;
+}
+
+.icon_setaD{
+  width: 15.32px;
+  height: 17.28px;
+}
+
 .mapa-pequeno {
   width: 100%;
   height: 100%;
@@ -297,18 +355,21 @@
   justify-content: flex-start;
   gap: 10px;
   background-color: rgba(240, 248, 255, 0);
-  font-size: 20px;
+  font-size: 18px;
   margin-right: 2%;
   position: relative;
+  color:#304383
 }
 
 .map_desc h2 {
   font-weight: bold;
+  font-size: 22px !important;
+  color: #304383;
 }
 
 .map_desc p {
   margin: 0;
-  font-size: 17px;
+  font-size: 18px;
 }
 
 .btn-ver-mais {
@@ -316,8 +377,8 @@
   bottom: 10%;     
   right: 10%;      
   z-index: 10;
-  color: white;
-  font-size: 17px;
+  color: #304383;
+  font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -325,16 +386,14 @@
   border-radius: 8px;
   cursor: pointer;
   left: 47%;
-transform: translateX(-50%);
+  transform: translateX(-50%);
 }
 
 .btn-ver-mais p{
   color: #304383;
 }
 
-.btn-ver-mais img {
-  width: 20px;
-  height: 20px;
+.btn-ver-mais Image {
   object-fit: contain;
 }
 

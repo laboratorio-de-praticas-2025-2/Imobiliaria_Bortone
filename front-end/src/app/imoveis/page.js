@@ -107,8 +107,15 @@ L.marker([-24.4875, -47.8436], { icon: customIcon }).addTo(map);
         <div className="todo">
           <div className="descricao">
             <div className="Dtexto">
-              <p>Apartamento para venda  •  226m²</p>
-              <p>3 quartos •  2 banheiros</p>
+              <div className="t1">
+                <p> Apartamento para venda  •  226m² </p>
+              </div>
+              <div className="t2"> 
+                <Image src="/images/icon_porta.png" alt="icon_p" width={27} height={27} className="icon_p"/>
+                <p className="Ttxt1"> 3 quartos</p>
+                <Image src="/images/icon_banheira.png" alt="icon_b" width={27} height={27} className="icon_b"/>
+                <p> 2 banheiros </p>
+              </div>
               <p className="Gimovel">Gostou do imóvel?</p>
             </div>
             <div className="Dbotoes">
@@ -119,13 +126,13 @@ L.marker([-24.4875, -47.8436], { icon: customIcon }).addTo(map);
 
           <div className="valor">
             <div className="Ivalor">
-              <p>Valor deste imóvel</p>
+              <p className="Vtxt">Valor deste imóvel</p>
               <p className="preco">R$285.000,00</p>
             </div>
             <div className="share">
               <a href="#" className="a">
-                <div className="icon_color">
-                  <img src="./images/icon_Compartilhar.png" />
+                <div className="icon_comp">
+                  <Image src="/images/icon_Compartilhar.png" alt="icon_compartilhar" width={17} height={25}/>
                 </div>
                 <p>Compartilhar</p>
               </a>
@@ -139,6 +146,10 @@ L.marker([-24.4875, -47.8436], { icon: customIcon }).addTo(map);
         {/* Mapa pequeno com Leaflet */}
         <div className="todo2">
           <div className="map_loc">
+            <button className="ir_loc"> 
+              <p> a </p>
+              <Image src="/images/icon_setaD.png" alt="icon_setaD" width={1} height={1} className="icon_setaD"/>
+            </button>
             <div id="map-pequeno" className="mapa-pequeno" />
           </div>
           <div className="map_desc">
@@ -146,7 +157,7 @@ L.marker([-24.4875, -47.8436], { icon: customIcon }).addTo(map);
           <p>Casa ampla com quintal e garagem.Lorem ipsum dolor sit amet. Id quia architecto eos maiores deserunt est libero eaque! Aut rerum porro vel omnis labore ea nisi rerum aut amet voluptas aut voluptatem rerum. Ut dignissimos laborum et natus mollitia non suscipit modi At quas ipsum qui maxime pariatur a voluptatem tempora sit doloribus dolorem! Qui voluptate quos eum dicta omnis sed perferendis saepe nam nostrum eius id dolores officia est dolores internos sit recusandae reiciendis. Lorem ipsum dolor sit amet. Id quia architecto eos maiores deserunt est libero eaque! Aut rerum porro vel omnis labore ea nisi rerum aut amet voluptas aut voluptatem rerum. Ut dignissimos laborum et natus mollitia non suscipit modi At quas ipsum qui maxime pariatur a voluptatem tempora sit...
           </p>
           <button className="btn-ver-mais">
-            <img src="/images/seta_baixo.png" alt="Ver mais" />
+            <Image src="/images/seta_baixo.png" alt="Ver mais" width={20} height={20} />
             <p>Ver mais</p>
           </button>
           </div>
