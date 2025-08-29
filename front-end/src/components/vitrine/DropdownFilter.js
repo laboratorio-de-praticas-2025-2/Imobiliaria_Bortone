@@ -1,30 +1,45 @@
 "use client";
-import { FaAngleDown } from "react-icons/fa6";
 import { useState } from "react";
+import { FaAngleDown } from "react-icons/fa6";
+import { HiX } from "react-icons/hi";
 
-export default function DropdownFilter({options, placeholder}) {
+export default function DropdownFilter({
+  options,
+  classname,
+  selected,
+  placeholder,
+  handleSelect,
+  setSelected,
+}) {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(placeholder || options[0]);
 
-  const handleSelect = (option) => {
-    setSelected(option);
+  const handleClear = (e) => {
+    e.stopPropagation();
+    setSelected(placeholder);
     setOpen(false);
   };
 
   return (
-    <div className="relative inline-block text-left ">
+    <div className="relative inline-block text-left w-[80%]">
       {/* Botão */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-between w-32 rounded-full bg-[#EEF0F9] px-4 py-2 !text-[var(--primary)] font-medium focus:outline-none cursor-pointer hover:bg-[#E0E3F1] transition-colors"
+        className={`flex items-center justify-between w-32 rounded-full bg-[#EEF0F9] px-4 py-2 !text-[var(--primary)] font-medium focus:outline-none cursor-pointer hover:bg-[#E0E3F1] transition-colors ${classname}`}
       >
         {selected}
-        <FaAngleDown className="ml-2 h-4 w-4 text-[var(--primary)]" />
+        {setSelected && selected !== placeholder ? (
+          <HiX
+            className="ml-2 h-4 w-4 text-[var(--primary)] cursor-pointer"
+            onClick={handleClear}
+          />
+        ) : (
+          <FaAngleDown className="ml-2 h-4 w-4 text-[var(--primary)]" />
+        )}
       </button>
 
       {/* Menu */}
       {open && (
-        <div className="absolute mt-2 w-32 rounded-2xl bg-white shadow-lg ring-1 ring-black/5 z-10">
+        <div className="absolute mt-2 w-full rounded-2xl bg-white shadow-lg ring-1 ring-black/5 z-10">
           <div className="flex flex-col gap-0.5">
             {options.map((option) => (
               <button
