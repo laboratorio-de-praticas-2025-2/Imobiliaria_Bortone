@@ -9,6 +9,7 @@ import SidebarMenu from "@/components/mapa/SidebarMenu/SidebarMenu";
 import SplashScreen from "@/components/SplashScreen";
 import { Input } from "antd";
 import OrderButton from "@/components/mapa/OrderButton";
+import { FiltersProvider } from "@/context/FiltersContext";
 
 const { Search } = Input;
 
@@ -42,7 +43,7 @@ export default function Mapa() {
   }
 
   return (
-    <div>
+    <FiltersProvider>
       <MapaNavbar />
       <div className="absolute z-1002 ml-90 mt-4.5 lg:flex hidden w-[52%]">
         <Search
@@ -67,6 +68,6 @@ export default function Mapa() {
           setHoverImovel={setHoverImovel}
         />
       </div>
-    </div>
+    </FiltersProvider>
   );
 }

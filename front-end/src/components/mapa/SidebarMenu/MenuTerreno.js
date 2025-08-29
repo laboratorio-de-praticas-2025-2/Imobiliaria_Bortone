@@ -1,25 +1,30 @@
 "use client";
 
-import PropertyType from './PropertyType';
-import PriceRange from './PriceRange';
+import { useFilters } from "@/context/FiltersContext";
 import { Col, Row } from "antd";
-import PropertySize from './PropertySize';
-import Location from './Location';
-import SettingsButtons from './SettingsButtons';
-import RectangularButton from './RectangularButton';
-import { useState } from 'react';
+import { useState } from "react";
 import { PiWallFill } from "react-icons/pi";
+import Location from "./Location";
+import PriceRange from "./PriceRange";
+import PropertySize from "./PropertySize";
+import PropertyType from "./PropertyType";
+import RectangularButton from "./RectangularButton";
+import SettingsButtons from "./SettingsButtons";
 
 export default function MenuTerreno({ activeType, setActiveType }) {
+  const { updateFilters } = useFilters();
   const [selectedOptions, setSelectedOptions] = useState([]);
-  
+
   const handleSelectOption = (optionLabel) => {
     setSelectedOptions((prevSelectedOptions) => {
-      if (prevSelectedOptions.includes(optionLabel)) {
-        return prevSelectedOptions.filter((item) => item !== optionLabel);
-      } else {
-        return [...prevSelectedOptions, optionLabel];
-      }
+      const updatedOptions = prevSelectedOptions.includes(optionLabel)
+        ? prevSelectedOptions.filter((item) => item !== optionLabel)
+        : [...prevSelectedOptions, optionLabel];
+
+      // Atualiza os filtros no contexto
+      updateFilters("terreno", { murado: updatedOptions.includes("Murado") });
+
+      return updatedOptions;
     });
   };
 
@@ -27,8 +32,8 @@ export default function MenuTerreno({ activeType, setActiveType }) {
     <div className="grid h-full content-between">
       <div>
         <PropertyType activeType={activeType} setActiveType={setActiveType} />
-        <PriceRange>Faixa de preço</PriceRange>
-        <PropertySize>Tamanho da Propriedade</PropertySize>
+        <PriceRange type="terreno">Faixa de preço</PriceRange>
+        <PropertySize type="terreno">Tamanho da Propriedade</PropertySize>
       </div>
       <div className="pt-7">
         <h2 className="menu-label pb-3">Opções</h2>
@@ -46,7 +51,7 @@ export default function MenuTerreno({ activeType, setActiveType }) {
       </div>
       <div className="pb-15">
         <Location />
-        <SettingsButtons />
+        <SettingsButtons type={"terreno"} />
       </div>
     </div>
   );
