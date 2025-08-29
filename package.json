@@ -1,0 +1,29 @@
+{
+  "name": "imobiliaria_bortone",
+  "version": "1.0.0",
+  "description": "```bash\r /projeto-imobiliario\r │\r ├── backend/                # API em Express.js (regra de negócio e dados)\r │   ├── src/\r │   │   ├── config/          # Configurações globais (ex: conexão MySQL, variáveis de ambiente)\r │   │   ├── models/          # Definição dos modelos de dados (ex: Usuario, Imovel, Agendamento)\r │   │   ├── services/        # Lógica de negócio (ex: regras para cadastro, login, agendamento)\r │   │   ├── controllers/     # Controladores que recebem requisições e chamam os services\r │   │   ├── routes/          # Definição das rotas da API (REST: /users, /imoveis, /agendamentos)\r │   │   ├── middlewares/     # Autenticação, autorização, tratamento de erros, logs\r │   │   ├── utils/           # Funções auxiliares (gerar token JWT, formatar datas, etc.)\r │   │   ├── tests/           # Testes unitários e de integração do backend\r │   │   └── app.js           # Configuração principal do Express (carrega rotas, middlewares, DB)\r │   │\r │   └── package.json         # Dependências e scripts do backend\r │\r ├── frontend/               # Aplicação em Next.js (UI e lógica do cliente)\r │   ├── public/              # Arquivos públicos (imagens, favicon, fontes estáticas)\r │   ├── src/\r │   │   ├── pages/           # Rotas de navegação do Next.js\r │   │   │   ├── index.js        # Página inicial (carrossel, header, vitrine)\r │   │   │   ├── imoveis/        # Listagem e detalhe de imóveis\r │   │   │   ├── auth/           # Páginas de login e cadastro\r │   │   │   ├── agendamentos/   # Páginas para visualizar/criar agendamentos\r │   │   │   └── admin/          # CMS (usuários, imóveis, anúncios, blog)\r │   │   │\r │   │   ├── components/      # Componentes reutilizáveis (botões, cards, header, footer)\r │   │   ├── layouts/         # Estruturas de layout (layout padrão, layout admin)\r │   │   ├── hooks/           # Hooks customizados (ex: useAuth, useFetch)\r │   │   ├── context/         # Context API (ex: contexto de autenticação, carrinho, etc.)\r │   │   ├── services/        # Comunicação com backend (APIs de imóveis, usuários, agendamentos)\r │   │   ├── utils/           # Funções auxiliares do front (formatação, validação)\r │   │   ├── styles/          # Estilos globais e módulos CSS/Tailwind\r │   │   ├── constants/       # Constantes usadas em várias partes (rotas, configs)\r │   │   └── tests/           # Testes de UI e integração do frontend\r │   │\r │   └── package.json         # Dependências e scripts do frontend\r │\r ├── docker-compose.yml       # Se for usar Docker para rodar backend, frontend e banco\r ├── .env                     # Variáveis de ambiente (não versionar)\r └── README.md                # Documentação do projeto\r ```",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laboratorio-de-praticas-2025-2/Imobiliaria_Bortone.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/laboratorio-de-praticas-2025-2/Imobiliaria_Bortone/issues"
+  },
+  "homepage": "https://github.com/laboratorio-de-praticas-2025-2/Imobiliaria_Bortone#readme",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.3",
+    "sequelize": "^6.37.7"
+  }
+}
