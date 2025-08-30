@@ -29,25 +29,20 @@ export default function Location() {
             <LocationButton 
             label="Bairro 1" 
             onClick={() => handleSelectOption("Bairro 1")}
-            // Verifica se "Piscina" está no array de opções selecionadas
             active={selectedOptions.includes("Bairro 1")}
             />        
         </Col>
         <Col span={8} align="center">
             <LocationButton 
-            icon="/icons/jardim.svg" 
             label="Bairro 2" 
             onClick={() => handleSelectOption("Bairro 2")}
-            // Verifica se "Jardim" está no array de opções selecionadas
             active={selectedOptions.includes("Bairro 2")}
             />
         </Col>
         <Col span={8} align="center">
             <LocationButton 
-            icon="/icons/jardim.svg" 
             label="Bairro 3" 
             onClick={() => handleSelectOption("Bairro 3")}
-            // Verifica se "Jardim" está no array de opções selecionadas
             active={selectedOptions.includes("Bairro 3")}
             />
         </Col>
@@ -55,19 +50,15 @@ export default function Location() {
       <Row className='pt-5 '>
         <Col span={12} align="right" className="pr-2">
             <LocationButton 
-            icon="/icons/murado.svg" 
             label="Bairro 4" 
             onClick={() => handleSelectOption("Bairro 4")}
-            // Verifica se "Murado" está no array de opções selecionadas
             active={selectedOptions.includes("Bairro 4")}
             />
         </Col>
         <Col span={12} align="left" className="pl-2">
             <LocationButton 
-            icon="/icons/murado.svg" 
             label="Bairro 5" 
             onClick={() => handleSelectOption("Bairro 5")}
-            // Verifica se "Murado" está no array de opções selecionadas
             active={selectedOptions.includes("Bairro 5")}
             />
         </Col>

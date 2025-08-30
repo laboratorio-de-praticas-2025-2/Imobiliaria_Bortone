@@ -26,7 +26,6 @@ export default function Options() {
       <Row gutter={[16, 16]} justify="center">
         <Col xs={8} sm={24} md={12} align="center">
           <RectangularButton
-            icon="/icons/piscina.svg"
             label="Piscina"
             onClick={() => handleSelectOption("Piscina")}
             active={selectedOptions.includes("Piscina")}
@@ -36,7 +35,6 @@ export default function Options() {
         </Col>
         <Col xs={8} sm={24} md={12} align="center">
           <RectangularButton
-            icon="/icons/jardim.svg"
             label="Jardim"
             onClick={() => handleSelectOption("Jardim")}
             active={selectedOptions.includes("Jardim")}
@@ -46,7 +44,6 @@ export default function Options() {
         </Col>
         <Col xs={8} sm={24} md={12} align="center">
           <RectangularButton
-            icon="/icons/murado.svg"
             label="Murado"
             onClick={() => handleSelectOption("Murado")}
             active={selectedOptions.includes("Murado")}

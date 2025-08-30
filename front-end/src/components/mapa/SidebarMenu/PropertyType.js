@@ -20,7 +20,6 @@ export default function PropertyType({ activeType, setActiveType }) {
         </Col>
         <Col span={12} align="left" className="md:align-right pl-2">
           <RectangularButton
-            icon="/icons/terreno.svg"
             label="Terreno"
             active={activeType === "Terreno"}
             onClick={() => setActiveType("Terreno")}
