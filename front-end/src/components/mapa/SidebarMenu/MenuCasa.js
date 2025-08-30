@@ -1,6 +1,5 @@
 "use client";
 
-import { Flex } from 'antd';
 import PropertyType from './PropertyType';
 import PriceRange from './PriceRange';
 import RoomsNumber from './RoomsNumber';
@@ -10,17 +9,16 @@ import SettingsButtons from './SettingsButtons';
 
 export default function MenuCasa({ activeType, setActiveType }) {
   return (
-    <div className='grid h-full'>
-        <div>
-            <PropertyType activeType={activeType} setActiveType={setActiveType} />
-            <PriceRange>Faixa de preço</PriceRange>
-            <RoomsNumber />
-            
-            <Options />
-            <PropertySize>Tamanho da Propriedade</PropertySize>
-            <SettingsButtons />
+    <div className="grid h-full">
+      <div>
+        <PropertyType activeType={activeType} setActiveType={setActiveType} />
+        <PriceRange type="casa">Faixa de preço</PriceRange>
+        <RoomsNumber />
 
-        </div>
+        <Options />
+        <PropertySize type="casa">Tamanho da Propriedade</PropertySize>
+        <SettingsButtons type={"casa"} />
+      </div>
     </div>
   );
 }
