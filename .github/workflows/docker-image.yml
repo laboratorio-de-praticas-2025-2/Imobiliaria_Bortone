@@ -23,6 +23,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y docker-compose
 
       - name: Build and push images
+
         run: docker-compose -f docker-compose.yml build && docker-compose -f docker-compose.yml push
         
         env:
@@ -30,3 +31,4 @@ jobs:
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
+
