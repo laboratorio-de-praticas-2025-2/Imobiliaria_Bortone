@@ -2,23 +2,36 @@
 import { FilterDataProvider } from "@/context/FilterDataContext";
 import { useEffect, useState } from "react";
 import InnerImoveisPage from "./InnerImoveisPage";
+import { mockImoveis } from "@/constants/imoveis";
 
 export default function ImoveisPage() {
-  const [qtdImoveis, setQtdImoveis] = useState(0);
+  const [imoveis, setImoveis] = useState([]);
 
-  const handleGetImoveis = () => {
-    // Lógica para buscar imóveis com base nos filtros aplicados
-    // Atualize a quantidade de imóveis encontrados
-    setQtdImoveis(42); // Exemplo: atualiza com um valor fictício
-  };
-
-  useEffect(() => {
-    handleGetImoveis();
-  }, []);
+  const handleGetImoveis = async () => {
+      // Chamada à API para buscar os imóveis
+      setImoveis(mockImoveis); // Substitua mockImoveis pela resposta da API
+    };
+  
+    // EXEMPLO PARA A REQUISIÇÃO DE IMÓVEIS ENVIANDO PAGINA E ITENS POR PÁGINA
+    // const fetchImoveis = async (page, itemsPerPage) => {
+    //   try {
+    //     const data = await getImoveis(page, itemsPerPage);
+    //     setImoveis(data);
+    //   } catch (error) {
+    //     console.error("Erro ao carregar imóveis:", error);
+    //   }
+    // };
+    // useEffect(() => {
+    //   fetchImoveis(currentPage, itemsPerPage);
+    // }, [currentPage, itemsPerPage]);
+  
+    useEffect(() => {
+      handleGetImoveis();
+    }, []);
 
   return (
     <FilterDataProvider>
-      <InnerImoveisPage qtdImoveis={qtdImoveis} />
+      <InnerImoveisPage imoveis={imoveis} />
     </FilterDataProvider>
   );
 }

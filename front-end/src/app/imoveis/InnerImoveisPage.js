@@ -3,10 +3,17 @@ import HomeNavbar from "@/components/home/HomeNavbar";
 import Filtros from "@/components/vitrine/Filtros";
 import { useFilterData } from "@/context/FilterDataContext";
 import { Divider } from "antd";
-import TabelaImoveis from "@/components/vitrine/GridImoveis";
+import GridImoveis from "@/components/vitrine/GridImoveis";
 import HomeFooter from "@/components/home/HomeFooter";
+import { useEffect, useState } from "react";
 
-export default function InnerImoveisPage({ qtdImoveis }) {
+export default function InnerImoveisPage({imoveis}) {
+  const [qtdImoveis, setQtdImoveis] = useState(0);
+
+  useEffect(() =>{
+    setQtdImoveis(imoveis.length);
+  }, [imoveis]);
+
   const {
     filterData: { regiao },
   } = useFilterData();
@@ -25,7 +32,7 @@ export default function InnerImoveisPage({ qtdImoveis }) {
         </p>
       </div>
       <div className="pb-11 md:px-17 sm:px-3 px-0 flex justify-center">
-        <TabelaImoveis />
+        <GridImoveis imoveis={imoveis} />
       </div>
       <Divider size="large" style={{ margin: 0 }} />
       <HomeFooter />
