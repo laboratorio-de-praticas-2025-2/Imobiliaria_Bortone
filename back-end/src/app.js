@@ -2,9 +2,13 @@ import express from "express";
 
 const app = express();
 
+import userRoutes from './routes/userRoutes.js'
+
 import connection from "./config/sequelize-config.js";
 
 app.use(express.urlencoded({ extended: false }));
+
+app.use('/', userRoutes)
 
 connection
   .authenticate()
