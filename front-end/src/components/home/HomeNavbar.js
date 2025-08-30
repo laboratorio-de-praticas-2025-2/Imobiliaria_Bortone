@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { navLinks } from "@/constants/navLinks";
 import { FaUser } from "react-icons/fa6";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
 import { createElement } from "react";
 
 const { Search } = Input;
@@ -29,8 +29,17 @@ export default function HomeNavbar() {
         {/* Links desktop */}
         <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
-            <Link href={link.path} key={link.name}>
-              <Flex gap="middle" align="center" className="nav-link">
+            <Link
+              href={link.path}
+              key={link.name}
+              className="h-full"
+            >
+              <Flex
+                gap="middle"
+                align="center"
+                justify="center"
+                className="nav-link !w-[7vw] !py-2.5 rounded-[3px] hover:!bg-white hover:!text-[var(--primary)] transition-colors"
+              >
                 {link.name}
               </Flex>
             </Link>
