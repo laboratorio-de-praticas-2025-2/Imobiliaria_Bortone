@@ -1,4 +1,3 @@
-
 import { RiHome2Line } from "react-icons/ri";
 import { FaSignHanging } from "react-icons/fa6";
 import { HiMapPin } from "react-icons/hi2";
