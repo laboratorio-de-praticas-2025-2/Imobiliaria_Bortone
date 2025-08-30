@@ -6,7 +6,6 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import SidebarMenu from "@/components/mapa/SidebarMenu/SidebarMenu";
 import SplashScreen from "@/components/SplashScreen";
-import Popup from "@/components/Popup";
 
 const MapView = dynamic(() => import("@/components/mapa/MapView"), { ssr: false });
 
@@ -37,7 +36,6 @@ export default function Mapa() {
 
   return (
     <div>
-    <Popup />
       <MapaNavbar />
       <div className="absolute z-1002">
         <SidebarMenu />
