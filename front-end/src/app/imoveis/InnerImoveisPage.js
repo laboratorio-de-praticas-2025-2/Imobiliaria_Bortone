@@ -3,7 +3,7 @@ import HomeNavbar from "@/components/home/HomeNavbar";
 import Filtros from "@/components/vitrine/Filtros";
 import { useFilterData } from "@/context/FilterDataContext";
 import { Divider } from "antd";
-import TabelaImoveis from "@/components/vitrine/TabelaImoveis";
+import TabelaImoveis from "@/components/vitrine/GridImoveis";
 
 export default function InnerImoveisPage({ qtdImoveis }) {
   const {
