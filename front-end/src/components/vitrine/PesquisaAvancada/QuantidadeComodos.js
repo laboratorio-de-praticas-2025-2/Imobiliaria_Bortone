@@ -5,15 +5,15 @@ export default function QuantidadeComodos({title, setSelected, selected, quantit
     return (
       <div className="w-full slider-preco-container">
         <Flex vertical gap={16}>
-          <p className="text-[var(--primary)] font-bold text-end">{title}</p>
-          <Flex gap={12} justify="end">
+          <p className="text-[var(--primary)] font-bold md:text-end">{title}</p>
+          <Flex gap={12} className="md:!justify-end">
             {quantity.map((value, index) => (
-              <QuantidadeBotao 
-                key={index} 
-                label={value} 
+              <QuantidadeBotao
+                key={index}
+                label={value}
                 active={selected === value}
                 onClick={() => setSelected(selected === value ? null : value)}
-                />
+              />
             ))}
           </Flex>
         </Flex>

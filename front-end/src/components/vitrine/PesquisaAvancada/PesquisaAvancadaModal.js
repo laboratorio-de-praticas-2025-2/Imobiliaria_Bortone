@@ -6,10 +6,7 @@ import QuantidadeComodos from "./QuantidadeComodos";
 import SliderArea from "./SliderArea";
 import SliderPreco from "./SliderPreco";
 import ToggleCompraAluguel from "./ToggleCompraAluguel";
-
-const options = ["Casa", "Terreno"];
-const quantityOptions = ["1", "2", "3", "4+"];
-const quantityVagasOptions = ["0", "1", "2", "3+"];
+import { options, quantityOptions, quantityVagasOptions } from "@/constants/filters";
 
 export default function PesquisaAvancadaModal() {
   const [selectedQuartos, setSelectedQuartos] = useState(null);

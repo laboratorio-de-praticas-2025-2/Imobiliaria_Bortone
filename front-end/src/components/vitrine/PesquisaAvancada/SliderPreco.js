@@ -16,7 +16,7 @@ export default function SliderPreco() {
   return (
     <div className="w-full slider-preco-container">
       <Flex vertical gap={16}>
-        <p className="text-[var(--primary)] font-bold text-end">Valor</p>
+        <p className="text-[var(--primary)] font-bold md:text-end">Valor</p>
         <ConfigProvider
           theme={{
             components: {

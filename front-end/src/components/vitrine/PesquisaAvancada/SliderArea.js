@@ -16,7 +16,7 @@ export default function SliderArea() {
   return (
     <div className="w-full slider-preco-container">
       <Flex vertical gap={16}>
-        <p className="text-[var(--primary)] font-bold text-end">Área</p>
+        <p className="text-[var(--primary)] font-bold md:text-end">Área</p>
         <ConfigProvider
           theme={{
             components: {
