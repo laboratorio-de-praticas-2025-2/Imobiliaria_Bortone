@@ -78,7 +78,7 @@ export default function MapView({ imoveis }) {
             top: `${cardPosition.y - 45}px`,
           }}
         >
-          <Image
+          <img
             src={hoverImovel.imagem}
             alt="Imagem do imóvel"
             className="w-full h-32 object-cover mb-2 rounded"

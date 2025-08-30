@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { useMap } from "react-leaflet";
+import { PiNavigationArrowFill } from "react-icons/pi";
 
 export default function LocationButton() {
   const map = useMap();
@@ -29,7 +31,11 @@ export default function LocationButton() {
 
   return (
     <button className="locate-button" onClick={handleClick} disabled={loading}>
-      {loading ? "🔄 Localizando..." : <Image src="/icons/seta.png" alt="Localizar" className="icone-localizacao" />}
+      {loading ? (
+        "🔄 Localizando..."
+      ) : (
+        <PiNavigationArrowFill className="icone-localizacao" />
+      )}
     </button>
   );
 }

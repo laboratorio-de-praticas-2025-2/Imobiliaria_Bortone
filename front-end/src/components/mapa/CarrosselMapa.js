@@ -85,7 +85,7 @@ export default function CarrosselMapa({ imoveis }) {
           onTouchEnd={handleTouchEnd}
         >
           {isExpanded && (
-            <Image
+            <img
               src="images/top-carousel.svg"
               alt="topo"
               className="absolute z-1"
