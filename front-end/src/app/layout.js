@@ -4,6 +4,7 @@ import '@/styles/map.css';
 import "@/styles/home.css";
 import 'antd/dist/reset.css';
 import "@/styles/blog.css";
+import "@/styles/faq.css";
 
 export const metadata = {
   title: "Imobiliária Bortone",
