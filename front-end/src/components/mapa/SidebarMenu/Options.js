@@ -1,21 +1,30 @@
 "use client";
+
 import React, { useState } from "react";
 import RectangularButton from "./RectangularButton";
 import { Col, Row } from "antd";
 import { MdPool } from "react-icons/md";
+import { useFilters } from "@/context/FiltersContext";
 import { IoMdFlower } from "react-icons/io";
 import { PiWallFill } from "react-icons/pi";
 
 export default function Options() {
+  const { updateFilters } = useFilters();
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleSelectOption = (optionLabel) => {
     setSelectedOptions((prevSelectedOptions) => {
-      if (prevSelectedOptions.includes(optionLabel)) {
-        return prevSelectedOptions.filter((item) => item !== optionLabel);
-      } else {
-        return [...prevSelectedOptions, optionLabel];
-      }
+      const updatedOptions = prevSelectedOptions.includes(optionLabel)
+        ? prevSelectedOptions.filter((item) => item !== optionLabel)
+        : [...prevSelectedOptions, optionLabel];
+        
+      updateFilters("casa", {
+        possui_piscina: updatedOptions.includes("Piscina"),
+        possui_jardim: updatedOptions.includes("Jardim"),
+        murado: updatedOptions.includes("Murado"),
+      });
+
+      return updatedOptions;
     });
   };
 
