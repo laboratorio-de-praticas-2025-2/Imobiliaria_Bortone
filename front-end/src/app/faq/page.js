@@ -1,6 +1,7 @@
 import { Divider } from "antd";
 import HomeNavbar from "@/components/home/HomeNavbar";
 import HomeFooter from "@/components/home/HomeFooter";
+import FaqContent from "@/components/faq/FaqContent";
 
 export default function FaqPage() {
     return (
@@ -14,6 +15,7 @@ export default function FaqPage() {
             Ficou com alguma dúvida? <p>Nós temos as repostas!</p>
           </p>
         </div>
+        <FaqContent />
         <Divider size="large" />
         <HomeFooter />
       </>
