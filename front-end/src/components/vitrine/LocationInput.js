@@ -1,9 +1,11 @@
 "use client";
+import { useFilterData } from "@/context/FilterDataContext";
 import { useEffect, useRef } from "react";
 import { PiMapPinFill } from "react-icons/pi";
 
 export default function LocationInput() {
   const inputRef = useRef(null);
+  const { updateFilterData } = useFilterData();
 
   useEffect(() => {
     if (!window.google || !inputRef.current) return;
@@ -18,11 +20,32 @@ export default function LocationInput() {
 
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
-      console.log("Endereço selecionado:", place.formatted_address);
+      const addressComponents = place.address_components || [];
+
+      let city = "";
+      let state = "";
+
+      addressComponents.forEach((component) => {
+        if (component.types.includes("administrative_area_level_2")) {
+          city = component.long_name;
+        }
+        if (component.types.includes("administrative_area_level_1")) {
+          state = component.long_name;
+        }
+      });
+
+      const formattedAddress =
+        city && state ? `${city}, ${state}` : city || state;
+
+      // Atualiza a localização no contexto global
+      updateFilterData({ regiao: formattedAddress });
+
+      console.log("Endereço selecionado:", formattedAddress);
       console.log("Latitude:", place.geometry?.location.lat());
       console.log("Longitude:", place.geometry?.location.lng());
     });
-  }, []); 
+
+  }, [updateFilterData]);
 
   return (
     <div className="w-[23vw]">

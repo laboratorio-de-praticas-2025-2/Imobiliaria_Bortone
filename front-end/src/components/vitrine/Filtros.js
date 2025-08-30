@@ -3,28 +3,26 @@ import LocationInput from "./LocationInput"
 import DropdownFilter from "./DropdownFilter"
 import PesquisaAvancada from "./PesquisaAvancada/PesquisaAvancada";
 import { Flex, Space } from "antd"
-import { useState } from "react";
+import { useFilterData } from "@/context/FilterDataContext";
 
 const optionsBuy = ["Comprar", "Alugar"];
 const optionsRooms = ["1", "2", "3", "+4"];
 const optionsBathrooms = ["1", "2", "3", "+4"];
 
 export default function Filtros() {
-    const [selectedBuy, setSelectedBuy] = useState(optionsBuy[0]);
-    const [selectedRooms, setSelectedRooms] = useState("Quartos");
-    const [selectedBathrooms, setSelectedBathrooms] = useState("Banheiros");
+    const { filterData, updateFilterData } = useFilterData();
 
     const handleSelectBuy = (option) => {
-        setSelectedBuy(option);
+      updateFilterData({ tipo_negociacao: option });
     };
 
     const handleSelectRooms = (option) => {
-        setSelectedRooms(option);
-    }
+      updateFilterData({ quartos: option === "Quartos" ? null : option });
+    };
 
     const handleSelectBathrooms = (option) => {
-        setSelectedBathrooms(option);
-    }
+      updateFilterData({ banheiros: option === "Banheiros" ? null : option });
+    };
 
     return (
       <div className="py-7 px-18">
@@ -33,22 +31,22 @@ export default function Filtros() {
             <LocationInput />
             <DropdownFilter
               options={optionsBuy}
-              selected={selectedBuy}
+              selected={filterData.tipo_negociacao}
               handleSelect={handleSelectBuy}
             />
-            <DropdownFilter 
-                options={optionsRooms} 
-                placeholder={"Quartos"} 
-                selected={selectedRooms}
-                handleSelect={handleSelectRooms}
-                setSelected={setSelectedRooms}
+            <DropdownFilter
+              options={optionsRooms}
+              placeholder={"Quartos"}
+              selected={filterData.quartos || "Quartos"}
+              handleSelect={handleSelectRooms}
+              setSelected={(value) => updateFilterData({ quartos: value === "Quartos" ? null : value })}
             />
             <DropdownFilter
               options={optionsBathrooms}
               placeholder={"Banheiros"}
-                selected={selectedBathrooms}
-                handleSelect={handleSelectBathrooms}
-                setSelected={setSelectedBathrooms}
+              selected={filterData.banheiros || "Banheiros"}
+              handleSelect={handleSelectBathrooms}
+              setSelected={(value) => updateFilterData({ banheiros: value === "Banheiros" ? null : value })}
             />
           </Space>
           <PesquisaAvancada />
