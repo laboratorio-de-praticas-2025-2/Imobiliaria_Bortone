@@ -10,7 +10,7 @@ export default function ImageCarroussel({ imovel }) {
   return (
     <div className="w-full">
       {/* Box fixo p/ o carrossel */}
-      <div className="relative w-full aspect-video overflow-hidden rounded-xl">
+      <div className="relative w-full aspect-video overflow-hidden sm:rounded-xl">
         <Swiper
           modules={[Navigation, Pagination]}
           navigation

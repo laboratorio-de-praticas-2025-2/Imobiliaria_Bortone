@@ -7,11 +7,31 @@ export default function GridImoveis() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
   const [windowWidth, setWindowWidth] = useState(0);
+  const [imoveis, setImoveis] = useState([]);
+
+  const handleGetImoveis = async () => {
+    // Chamada à API para buscar os imóveis
+    setImoveis(mockImoveis); // Substitua mockImoveis pela resposta da API
+  };
+
+  // EXEMPLO PARA A REQUISIÇÃO DE IMÓVEIS ENVIANDO PAGINA E ITENS POR PÁGINA
+  // const fetchImoveis = async (page, itemsPerPage) => {
+  //   try {
+  //     const data = await getImoveis(page, itemsPerPage);
+  //     setImoveis(data);
+  //   } catch (error) {
+  //     console.error("Erro ao carregar imóveis:", error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchImoveis(currentPage, itemsPerPage);
+  // }, [currentPage, itemsPerPage]);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     handleResize();
     window.addEventListener("resize", handleResize);
+    handleGetImoveis();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -24,17 +44,17 @@ export default function GridImoveis() {
     setCurrentPage(1);
   }, [windowWidth]);
 
-  const totalPages = Math.ceil(mockImoveis.length / itemsPerPage);
+  const totalPages = Math.ceil(imoveis.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = mockImoveis.slice(startIndex, endIndex);
+  const currentItems = imoveis.slice(startIndex, endIndex);
 
   const handlePrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
   const handleNext = () =>
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
   const showMoreMobile = () => {
-    setItemsPerPage((prev) => Math.min(prev + 4, mockImoveis.length));
+    setItemsPerPage((prev) => Math.min(prev + 4, imoveis.length));
   };
 
   return (
@@ -54,7 +74,7 @@ export default function GridImoveis() {
         handleNext={handleNext}
         windowWidth={windowWidth}
         showMoreMobile={
-          windowWidth < 640 && currentItems.length < mockImoveis.length
+          windowWidth < 640 && currentItems.length < imoveis.length
             ? showMoreMobile
             : null
         }
