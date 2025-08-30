@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import '@/styles/login.css';
 import '@/styles/map.css';
 import "@/styles/home.css";
+import "@/styles/imoveis.css";
 import 'antd/dist/reset.css';
 import Script from "next/script";
 
