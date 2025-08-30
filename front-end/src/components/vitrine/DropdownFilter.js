@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import useHandleClickOutside from "@/hooks/useHandleClickOutside";
+import { useRef, useState } from "react";
 import { FaAngleDown } from "react-icons/fa6";
 import { HiX } from "react-icons/hi";
 
@@ -12,6 +13,9 @@ export default function DropdownFilter({
   setSelected,
 }) {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useHandleClickOutside(dropdownRef, () => setOpen(false));
 
   const handleClear = (e) => {
     e.stopPropagation();
@@ -20,7 +24,7 @@ export default function DropdownFilter({
   };
 
   return (
-    <div className="relative inline-block text-left w-[80%]">
+    <div ref={dropdownRef} className="relative inline-block text-left w-[80%]">
       {/* Botão */}
       <button
         onClick={() => setOpen(!open)}
