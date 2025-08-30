@@ -68,6 +68,10 @@ export const mockImoveis = [
         url_imagem: "/images/slide1.png",
         descricao: "Cozinha planejada",
       },
+      {
+        url_imagem: "/images/slide1.png",
+        descricao: "Quarto principal",
+      },
     ],
     bairro: "Vila São Francisco",
   },
