@@ -4,7 +4,7 @@ services:
     image: ${DOCKER_HUB_USERNAME}/imobiliario-frontend:latest
     ports:
       - "3000:3000"
-    enviroment:
+    environment:
       NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
     
     depends_on:
