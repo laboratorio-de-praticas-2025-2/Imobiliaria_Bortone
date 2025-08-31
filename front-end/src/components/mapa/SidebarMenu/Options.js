@@ -1,11 +1,12 @@
 "use client";
-import { useFilters } from "@/context/FiltersContext";
-import { Col, Row } from "antd";
-import { useState } from "react";
-import { IoMdFlower } from "react-icons/io";
-import { MdPool } from "react-icons/md";
-import { PiWallFill } from "react-icons/pi";
+
+import React, { useState } from "react";
 import RectangularButton from "./RectangularButton";
+import { Col, Row } from "antd";
+import { MdPool } from "react-icons/md";
+import { useFilters } from "@/context/FiltersContext";
+import { IoMdFlower } from "react-icons/io";
+import { PiWallFill } from "react-icons/pi";
 
 export default function Options() {
   const { updateFilters } = useFilters();
@@ -34,7 +35,6 @@ export default function Options() {
       <Row gutter={[16, 16]} justify="center">
         <Col xs={8} sm={24} md={12} align="center">
           <RectangularButton
-            icon="/icons/piscina.svg"
             label="Piscina"
             onClick={() => handleSelectOption("Piscina")}
             active={selectedOptions.includes("Piscina")}
@@ -44,7 +44,6 @@ export default function Options() {
         </Col>
         <Col xs={8} sm={24} md={12} align="center">
           <RectangularButton
-            icon="/icons/jardim.svg"
             label="Jardim"
             onClick={() => handleSelectOption("Jardim")}
             active={selectedOptions.includes("Jardim")}
@@ -54,7 +53,6 @@ export default function Options() {
         </Col>
         <Col xs={8} sm={24} md={12} align="center">
           <RectangularButton
-            icon="/icons/murado.svg"
             label="Murado"
             onClick={() => handleSelectOption("Murado")}
             active={selectedOptions.includes("Murado")}

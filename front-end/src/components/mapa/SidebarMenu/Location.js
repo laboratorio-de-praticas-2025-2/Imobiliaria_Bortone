@@ -34,17 +34,15 @@ export default function Location() {
           />
         </Col>
         <Col span={8} align="center">
-          <LocationButton
-            icon="/icons/jardim.svg"
-            label="Bairro 2"
+            <LocationButton 
+            label="Bairro 2" 
             onClick={() => handleSelectOption("Bairro 2")}
             active={selectedOptions.includes("Bairro 2")}
           />
         </Col>
         <Col span={8} align="center">
-          <LocationButton
-            icon="/icons/jardim.svg"
-            label="Bairro 3"
+            <LocationButton 
+            label="Bairro 3" 
             onClick={() => handleSelectOption("Bairro 3")}
             active={selectedOptions.includes("Bairro 3")}
           />
@@ -52,17 +50,15 @@ export default function Location() {
       </Row>
       <Row className="pt-5 ">
         <Col span={12} align="right" className="pr-2">
-          <LocationButton
-            icon="/icons/murado.svg"
+            <LocationButton 
             label="Bairro 4"
             onClick={() => handleSelectOption("Bairro 4")}
             active={selectedOptions.includes("Bairro 4")}
           />
         </Col>
         <Col span={12} align="left" className="pl-2">
-          <LocationButton
-            icon="/icons/murado.svg"
-            label="Bairro 5"
+            <LocationButton 
+            label="Bairro 5" 
             onClick={() => handleSelectOption("Bairro 5")}
             active={selectedOptions.includes("Bairro 5")}
           />

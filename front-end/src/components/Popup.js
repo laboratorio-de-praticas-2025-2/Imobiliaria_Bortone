@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { IoClose } from "react-icons/io5";
 
 export default function Popup({onClose}) {
   return (
@@ -8,16 +9,10 @@ export default function Popup({onClose}) {
       <div className="bg-gradient-to-t from-[#0C1121] to-[#324587] absolute flex flex-col md:flex-row items-center gap-6 p-9 rounded-4xl shadow-xl z-[9999] max-w-3xl w-[90%] mx-auto">
         {/* Botão Fechar */}
         <button
-          className="bg-amber-50 absolute top-3 right-5 w-8 h-8 rounded-full justify-center p-2 duration-300 hover:scale-110 hover:bg-red-500"
+          className="bg-amber-50 absolute top-3 right-5 w-8 h-8 rounded-full justify-center duration-300 hover:scale-110 hover:bg-red-500 flex items-center !text-[var(--primary)]"
           onClick={onClose}
         >
-          <Image
-            src="/images/icons/fechar.png"
-            width={32}
-            height={32}
-            className="w-auto h-auto"
-            alt="Fechar"
-          />
+          <IoClose size={30} />
         </button>
 
         {/* Imagem */}
@@ -52,7 +47,7 @@ export default function Popup({onClose}) {
                       hover:scale-105 hover:shadow-white/40"
               onClick={() => {
                 window.location.href = "/imoveis"; // Redireciona para a página de imóveis
-                onClose(); // Fecha o popup 
+                onClose(); // Fecha o popup
               }}
             >
               Veja Agora
