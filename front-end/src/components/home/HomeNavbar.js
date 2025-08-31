@@ -12,11 +12,11 @@ const { Search } = Input;
 
 const onSearch = (value) => console.log(value);
 
-export default function HomeNavbar() {
+export default function HomeNavbar({className}) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="navbar top-0 left-0 w-full z-10 bg-white md:bg-[#050D2D73] py-3.5 px-6 md:px-16">
+    <div className={`navbar top-0 left-0 w-full z-10 bg-white md:bg-[#050D2D73] py-3.5 px-6 md:px-16 ${className}`}>
       <Flex justify="space-between" align="center" className="navbar-desktop">
         {/* Logo */}
         <Image
