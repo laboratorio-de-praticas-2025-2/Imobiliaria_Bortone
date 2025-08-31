@@ -136,10 +136,17 @@
 .t1 {
   display: flex;
   background-color: #00000000;
+  display: flex;
+  align-items: center;
 }
 
 .t1 p{
   font-size: 33px;
+}
+
+.T1ponto{
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .t2{
@@ -161,7 +168,6 @@
 .icon_p{
   width: 27px !important;
   height: 27px !important;
-
 }
 
 .icon_b{
@@ -176,7 +182,7 @@
 
 .Gimovel{
    font-size: 20px;
-   padding-top: 8%;
+   padding-top: 5%;
    font-weight: lighter;
 }
 
@@ -193,7 +199,7 @@
 
 .btn1{
   background-color: #304383;
-  width: 29%;
+  width: 23%;
   height: 60px;
   border-radius: 5cap;
   color: white;
@@ -208,7 +214,7 @@
 
 .btn2{
   background-color: #EEF0F9;
-  width: 29%;
+  width: 23%;
   height: 60px;
   border-radius: 5cap;
   border-color: #304383;
@@ -234,7 +240,7 @@
 }
 
 .Ivalor p{
-  padding-bottom: 7%;
+  padding-bottom: 3%;
 }
 
 .Vtxt{
@@ -305,23 +311,24 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
   height: 300px;
   background-color: rgba(0, 255, 255, 0);
   margin-top: 5%;
   padding: 0 2%;
-  gap: 2%;
+  gap: 0.5%
 }
 
 .map_loc {
-  flex: 0 0 37.5%;
+  flex: 0 0 31.5%;
   height: 100%;
+  background-color: #30438300;
 }
 
 .ir_loc{
   background-color: #ffffff;
-  width: 33%;
+  width: 26.5%;
   height: 96px;
   z-index: 1;
   position: absolute;
@@ -335,6 +342,21 @@
   justify-content:space-around;
 }
 
+.ir_loc_txt {
+  width: 80%;
+  height: 55px;
+  font-size: 22px;
+  color: black;
+  display: block;
+  text-align: left;
+  background-color: #30438300;
+}
+
+.p2{
+  padding-top: 6px;
+  font-size: 16px;
+}
+
 .icon_setaD{
   width: 15.32px;
   height: 17.28px;
@@ -342,22 +364,22 @@
 
 .mapa-pequeno {
   width: 100%;
-  height: 100%;
+  height: 306px;
   border-radius: 1.3cap;
   z-index: 0;
 }
 
 .map_desc {
-  flex: 0 10% 60%;
+  width: 80%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 10px;
-  background-color: rgba(240, 248, 255, 0);
+  background-color: rgba(3, 40, 73, 0);
   font-size: 18px;
   margin-right: 2%;
-  position: relative;
+  margin-left: 2%;
   color:#304383
 }
 
@@ -373,20 +395,22 @@
 }
 
 .btn-ver-mais {
-  position: absolute;
-  bottom: 10%;     
-  right: 10%;      
-  z-index: 10;
+  width: 12%;
+  height: 22px;
   color: #304383;
   font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
   border-radius: 8px;
   cursor: pointer;
-  left: 47%;
-  transform: translateX(-50%);
+  background-color: #0aeb4200;
+  margin-left: 40%;
+
+}
+
+.setaVmais{
+  margin-right: 10px;
 }
 
 .btn-ver-mais p{
@@ -403,5 +427,19 @@
   background-color: #D7D7D7;
   width: 100%;
   margin: 40px 0; 
+}
+
+
+
+
+.descricao-reduzida {
+  display: -webkit-box;
+  -webkit-line-clamp: 9; /* número de linhas visíveis */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.descricao-expandida {
+  display: block;
 }
 

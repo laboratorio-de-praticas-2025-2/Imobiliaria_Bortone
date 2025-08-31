@@ -10,43 +10,46 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import "swiper/css";
 import "swiper/css/navigation";
 import "@/styles/imoveis.css";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
+import { mockImoveis} from "@/constants/imoveis";
 
+const imovelAtual = mockImoveis[1];
 
 const { Search } = Input;
 const onSearch = (value) => console.log(value);
 
-const slides = [
-  { id: 1, url: "/images/imovel1.png" },
-  { id: 2, url: "/images/imovel2.png" },
-  { id: 3, url: "/images/imovel3.png" },
-];
+const slides = imovelAtual.imagens.map((img, index) => ({
+  id: index + 1,
+  url: img.url_imagem,
+}));
 
 export default function Mapa() {
+  const [verMais, setVerMais] = useState(false);
+
+  const toggleVerMais = () => setVerMais(!verMais);
+
   useEffect(() => {
-  const mapContainer = document.getElementById("map-pequeno");
-  if (!mapContainer || mapContainer.children.length > 0) return;
+    const mapContainer = document.getElementById("map-pequeno");
+    if (!mapContainer || mapContainer.children.length > 0) return;
 
-  import("leaflet").then(L => {
-    const map = L.map(mapContainer).setView([-23.7092, -47.8433], 13);
+    import("leaflet").then(L => {
+      const map = L.map(mapContainer, { zoomControl: false }).setView([-23.7092, -47.8433], 13);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "© OpenStreetMap contributors",
-    }).addTo(map);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+      }).addTo(map);
 
-  
-    const customIcon = L.icon({
-    iconUrl: '/images/icon_loc.png',
-    iconSize: [32, 32], // tamanho do ícone
-    iconAnchor: [16, 32], // ponto do ícone que será ancorado no mapa
-    popupAnchor: [0, -32] // onde o popup vai aparecer em relação ao ícone
-  });
+      const customIcon = L.icon({
+        iconUrl: '/images/icon_loc.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+      });
 
-L.marker([-24.4875, -47.8436], { icon: customIcon }).addTo(map);
-
-  });
-}, []);
+      L.marker([-23.5505, -46.6333], { icon: customIcon }).addTo(map);
+    });
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -108,14 +111,35 @@ L.marker([-24.4875, -47.8436], { icon: customIcon }).addTo(map);
           <div className="descricao">
             <div className="Dtexto">
               <div className="t1">
-                <p> Apartamento para venda  •  226m² </p>
+                {imovelAtual.tipo === 'Casa' || imovelAtual.tipo === 'Apartamento' ? (
+                  <>
+                    <p>{imovelAtual.tipo}</p>
+                    <p className="T1ponto"> • </p>
+                    <p>{imovelAtual.area}m²</p>
+                  </>
+                ) : imovelAtual.tipo === 'Terreno' ? (
+                  <>
+                    <p>{imovelAtual.tipo}</p>
+                  </>
+                ) : null}
               </div>
-              <div className="t2"> 
-                <Image src="/images/icon_porta.png" alt="icon_p" width={27} height={27} className="icon_p"/>
-                <p className="Ttxt1"> 3 quartos</p>
-                <Image src="/images/icon_banheira.png" alt="icon_b" width={27} height={27} className="icon_b"/>
-                <p> 2 banheiros </p>
+
+              <div className="t2">
+                {imovelAtual.tipo === 'Casa' || imovelAtual.tipo === 'Apartamento' ? (
+                  <>
+                    <Image src="/images/icon_porta.png" alt="icon_p" width={27} height={27} className="icon_p"/>
+                    <p className="Ttxt1">{imovelAtual.quartos} quartos</p>
+                    <Image src="/images/icon_banheira.png" alt="icon_b" width={27} height={27} className="icon_b"/>
+                    <p>{imovelAtual.banheiros} banheiros</p>
+                  </>
+                ) : imovelAtual.tipo === 'Terreno' ? (
+                  <>
+                    <Image src="/images/icon_metroq.png" alt="icon_area" width={27} height={27} className="icon_area"/>
+                    <p>{imovelAtual.area}m²</p>
+                  </>
+                ) : null}
               </div>
+
               <p className="Gimovel">Gostou do imóvel?</p>
             </div>
             <div className="Dbotoes">
@@ -127,7 +151,7 @@ L.marker([-24.4875, -47.8436], { icon: customIcon }).addTo(map);
           <div className="valor">
             <div className="Ivalor">
               <p className="Vtxt">Valor deste imóvel</p>
-              <p className="preco">R$285.000,00</p>
+              <p className="preco">R$ {imovelAtual.preco}</p>
             </div>
             <div className="share">
               <a href="#" className="a">
@@ -147,19 +171,31 @@ L.marker([-24.4875, -47.8436], { icon: customIcon }).addTo(map);
         <div className="todo2">
           <div className="map_loc">
             <button className="ir_loc"> 
-              <p> a </p>
-              <Image src="/images/icon_setaD.png" alt="icon_setaD" width={1} height={1} className="icon_setaD"/>
+              <div className="ir_loc_txt">
+                <p>{imovelAtual.endereco}</p>
+                <p className="p2">{imovelAtual.cidade}</p>
+              </div>
+              <div className="ir_loc_icon" link="#">
+                <Image 
+                  src="/images/icon_setaD.png" 
+                  alt="icon_setaD" 
+                  width={15} 
+                  height={17} 
+                  className="icon_setaD"
+                />
+              </div>
             </button>
             <div id="map-pequeno" className="mapa-pequeno" />
           </div>
           <div className="map_desc">
-          <h2>Descrição</h2>
-          <p>Casa ampla com quintal e garagem.Lorem ipsum dolor sit amet. Id quia architecto eos maiores deserunt est libero eaque! Aut rerum porro vel omnis labore ea nisi rerum aut amet voluptas aut voluptatem rerum. Ut dignissimos laborum et natus mollitia non suscipit modi At quas ipsum qui maxime pariatur a voluptatem tempora sit doloribus dolorem! Qui voluptate quos eum dicta omnis sed perferendis saepe nam nostrum eius id dolores officia est dolores internos sit recusandae reiciendis. Lorem ipsum dolor sit amet. Id quia architecto eos maiores deserunt est libero eaque! Aut rerum porro vel omnis labore ea nisi rerum aut amet voluptas aut voluptatem rerum. Ut dignissimos laborum et natus mollitia non suscipit modi At quas ipsum qui maxime pariatur a voluptatem tempora sit...
-          </p>
-          <button className="btn-ver-mais">
-            <Image src="/images/seta_baixo.png" alt="Ver mais" width={20} height={20} />
-            <p>Ver mais</p>
-          </button>
+            <h2>Descrição</h2>
+            <p className={verMais ? "descricao-expandida" : "descricao-reduzida"}>
+              {imovelAtual.descricao} 
+            </p>
+            <button className="btn-ver-mais" onClick={toggleVerMais}>
+              <Image src="/images/seta_baixo.png" alt="Ver mais" width={20} height={20} className="setaVmais" />
+              <p>{verMais ? "Ver menos" : "Ver mais"}</p>
+            </button>
           </div>
 
         </div>

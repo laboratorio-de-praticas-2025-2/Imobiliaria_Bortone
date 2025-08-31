@@ -25,7 +25,7 @@ export const mockImoveis = [
   },
   {
     id: 2,
-    tipo: "Apartamento",
+    tipo: "Terreno",
     endereco: "Av. Central, 45",
     cidade: "São Paulo",
     estado: "SP",
@@ -41,7 +41,7 @@ export const mockImoveis = [
     possui_jardim: false,
     imagens: [
       {
-        url_imagem: "/images/slide1.png",
+        url_imagem: "/images/imovel1.png",
         descricao: "Sala de estar",
       },
     ],
