@@ -92,6 +92,7 @@
 .icone-localizacao {
   width: 100%;
   height: 90%;
+  transform: rotate(90deg);
 }
 
 .zoom-button-wrapper {
@@ -164,11 +165,6 @@
 .locate-button:disabled {
   background-color: #999;
   cursor: not-allowed;
-}
-
-.icone-localizacao {
-  width: 100%;
-  height: 90%;
 }
 
 .zoom-button-wrapper {
