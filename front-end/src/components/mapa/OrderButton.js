@@ -12,31 +12,28 @@ export default function OrderButton({ onToggle }) {
     };
 
     return (
-        <Button
-            onClick={handleClick}
+      <Button onClick={handleClick} className="!shadow-lg order-button">
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            transition: "transform 0.3s",
+          }}
+        >
+          <span className="text-[#374A8C57] font-bold hidden lg:flex">
+            Ordenar: <span className="text-[var(--primary)]">Relevância</span>
+          </span>
+          <span
             style={{
-                width: "50px",
-                height: "50px",
-                background: "var(--background)",
-                border: "var(--fog-gray) 2px solid",
-                borderRadius: "1000px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "15px",
+              display: "inline-flex",
+              transition: "transform 0.3s",
+              transform: rotated ? "rotate(180deg)" : "rotate(0deg)",
             }}
-            className="!shadow-lg"
-            icon={
-                <span
-                    style={{
-                        display: "inline-block",
-                        transition: "transform 0.3s",
-                        transform: rotated ? "rotate(180deg)" : "rotate(0deg)",
-                    }}
-                >
-                    <HiArrowsUpDown size={20} color="374a8c" />
-                </span>
-            }
-        />
+          >
+            <HiArrowsUpDown size={20} color="374a8c" />
+          </span>
+        </span>
+      </Button>
     );
 }

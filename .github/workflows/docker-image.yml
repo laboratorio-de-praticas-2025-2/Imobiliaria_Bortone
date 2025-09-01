@@ -31,4 +31,8 @@ jobs:
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
+          DB_DIALECT: ${{secrets.DB_DIALECT}}
+          DB_DATABASE: ${{secrets.DB_DATABASE}}
+          NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{secrets.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}}
+          
 
