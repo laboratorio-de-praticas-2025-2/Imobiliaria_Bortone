@@ -1,4 +1,4 @@
-const { Publicidade } = require("../models/model");
+const { Publicidade } = require("../models/publicidade");
 
 class PublicidadeService {
   async updatePublicidade(id, novosDados) {
@@ -18,6 +18,22 @@ class PublicidadeService {
       await publicidade.save();
 
       return publicidade;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deletePublicidade(id) {
+    try {
+      const publicidade = await Publicidade.findByPk(id);
+
+      if (!publicidade) {
+        throw new Error(`Publicidade com ID ${id} não encontrada.`);
+      }
+
+      await publicidade.destroy();
+
+      return { message: `Publicidade com ID ${id} foi deletada com sucesso.` };
     } catch (error) {
       throw error;
     }
