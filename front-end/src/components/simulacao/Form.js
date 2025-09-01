@@ -4,12 +4,16 @@ import { useState } from "react";
 
 export default function Form() {
   const handleClick = () => {
-    window.location.href = "/simulacao/simulador"; // Ou URL completa
+    window.location.href = "/simulacao/simulador";
   };
-  const [values, setValues] = useState([100000]);
-  const handleInputChange = (e) => {
-    const value = Math.max(20000, Math.min(1000000, Number(e.target.value))); // Limita entre 1-1000000
-    setValues(value || 20000); // Caso seja inválido, define 1
+  const [value, setValue] = useState(100000);
+
+  // Função para formatar o valor como moeda brasileira
+  const formatCurrency = (valor) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(valor);
   };
 
   return (
@@ -32,10 +36,7 @@ export default function Form() {
         <div className="mb-4 pt-2 w-3xs justify-self-center">
           <Input
             type="number"
-            placeholder="R$"
-            min={1}
-            max={32}
-            value={values}
+            value={formatCurrency(value)}
             readOnly
             className="w-[35%] border border-gray-200 rounded px-3 py-2 focus:outline-none text-left h-12"
           />
@@ -46,8 +47,8 @@ export default function Form() {
             theme={{
               components: {
                 Slider: {
-                  railBg: "var(--secondary)", // trilha vazia
-                  trackBg: "var(--primary)", // preenchida
+                  railBg: "var(--secondary)",
+                  trackBg: "var(--primary)",
                   trackHoverBg: "var(--primary)",
                   handleColor: "var(--primary)",
                   handleActiveColor: "var(--secondary)",
@@ -59,18 +60,18 @@ export default function Form() {
             <Slider
               min={20000}
               max={1000000}
-              step={100}
-              value={values}
-              onChange={(values) => setValues(values)}
+              step={1}
+              value={value}
+              onChange={(newValue) => setValue(newValue)}
             />
           </ConfigProvider>
           <div className="flex  w-full">
             <p className="flex-none text-gray-400 font-thin text-[10px] pb-3">
-              200.000
+              {formatCurrency(20000)}
             </p>
             <div className="grow"></div>
             <p className="flex-none text-gray-400 font-thin text-[10px] pb-3">
-              1.000.000
+              {formatCurrency(1000000)}
             </p>
           </div>
         </div>
