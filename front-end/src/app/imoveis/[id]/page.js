@@ -1,5 +1,6 @@
 "use client";
 
+import ShareButton from "@/components/blog/ShareButton";
 import HomeFooter from "@/components/home/HomeFooter";
 import HomeNavbar from "@/components/home/HomeNavbar";
 import { mockImoveis } from "@/constants/imoveis";
@@ -15,6 +16,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { PiBathtub } from "react-icons/pi";
+import { BsDoorOpenFill } from "react-icons/bs";
 
 const { Search } = Input;
 const onSearch = (value) => console.log(value);
@@ -144,22 +147,18 @@ export default function Mapa() {
                 {imovelAtual.tipo === "Casa" ||
                 imovelAtual.tipo === "Apartamento" ? (
                   <>
-                    <Image
-                      src="/images/icon_porta.png"
-                      alt="icon_p"
-                      width={27}
-                      height={27}
-                      className="icon_p"
-                    />
-                    <p className="Ttxt1">{imovelAtual.quartos} quartos</p>
-                    <Image
-                      src="/images/icon_banheira.png"
-                      alt="icon_b"
-                      width={27}
-                      height={27}
-                      className="icon_b"
-                    />
-                    <p>{imovelAtual.banheiros} banheiros</p>
+                    <div className="h-auto flex items-center justify-center !text-lg md:!text-2xl">
+                      <BsDoorOpenFill />
+                    </div>
+                    <p className="!text-lg md:!text-2xl">
+                      {imovelAtual.quartos} quartos
+                    </p>
+                    <div className="h-auto flex items-center justify-center !text-lg md:!text-2xl">
+                      <PiBathtub />
+                    </div>
+                    <p className="!text-lg md:!text-2xl">
+                      {imovelAtual.banheiros} banheiros
+                    </p>
                   </>
                 ) : imovelAtual.tipo === "Terreno" ? (
                   <>
@@ -181,6 +180,9 @@ export default function Mapa() {
               <button className="btn1">Agendar visita</button>
               <button className="btn2">Propor valor</button>
             </div>
+            <div className="md:pl-[10%] flex md:hidden absolute bottom-10 pl-[4%]">
+              <ShareButton />
+            </div>
           </div>
 
           <div className="valor">
@@ -188,21 +190,17 @@ export default function Mapa() {
               <p className="Vtxt">Valor deste imóvel</p>
               <p className="preco">R$ {imovelAtual.preco.toLocaleString()}</p>
             </div>
-            <div className="share">
-              <a href="#" className="a">
-                <div className="icon_comp">
-                  <Image
-                    src="/images/icon_Compartilhar.png"
-                    alt="icon_compartilhar"
-                    width={17}
-                    height={25}
-                  />
-                </div>
-                <p>Compartilhar</p>
-              </a>
+            <div className="md:pl-[10%] hidden md:flex">
+              <ShareButton />
             </div>
             <div className="Ibotao">
-              <Link className="SimComp_botao" href="/simulacao">Simular Financiamento</Link>
+              <Link
+                className="SimComp_botao !text-sm md:!text-xl"
+                href="/simulacao"
+              >
+                Simular{" "}
+                <span className="hidden md:flex">&nbsp;financiamento</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -210,7 +208,7 @@ export default function Mapa() {
         {/* Mapa pequeno com Leaflet */}
         <div className="todo2">
           <div className="map_loc">
-            <button className="ir_loc">
+            <Link className="ir_loc" href="/mapa">
               <div className="ir_loc_txt">
                 <p>{imovelAtual.endereco}</p>
                 <p className="p2">{imovelAtual.cidade}</p>
@@ -225,7 +223,7 @@ export default function Mapa() {
                   link="/mapa"
                 />
               </div>
-            </button>
+            </Link>
             <div id="map-pequeno" className="mapa-pequeno" />
           </div>
           <div className="map_desc">
