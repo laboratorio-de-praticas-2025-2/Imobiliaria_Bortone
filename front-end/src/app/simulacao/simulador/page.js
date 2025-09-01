@@ -8,12 +8,12 @@ export default function SimulacaoCompra() {
   return (
     <div className="">
       <HomeNavbar />
-      <div className="image-bg absolute " />
-      <Row className="  ">
-        <Col span={14} className="content-end  ">
+      <div className="image-bg absolute  " />
+      <Row className=" !h-[80vh] ">
+        <Col span={15} className="content-end  ">
           <Filter className="" />
         </Col>
-        <Col span={10}>
+        <Col span={9} className="content-center pt-10  ">
           <RequestForm />
 
         </Col>
