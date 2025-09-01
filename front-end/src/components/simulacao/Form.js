@@ -3,6 +3,10 @@ import Slider from "./SliderSimu";
 import { Button, ConfigProvider } from "antd";
 
 export default function Form() {
+    const handleClick = () => {
+    window.location.href = '/simulacao/simulador'; // Ou URL completa
+  };
+
   return (
     <div className=" justify-self-center lg:pb-10">
       <div className=" md:w-110 lg:h-85 bg-white p-7 md:p-10 rounded-3xl  relative z-20 text-center">
@@ -31,10 +35,9 @@ export default function Form() {
         <div className="mb-4">
           <Slider />
         </div>
-
-        <Button className="w-full !bg-[var(--secondary)] !text-white !h-10 rounded-lg ">
-           <span className=" font-bold">Simular Agora</span>
-        </Button>
+          <Button className="w-full !bg-[var(--secondary)] !text-white !h-10 rounded-lg " onClick={handleClick}>
+            <span className=" font-bold">Simular Agora</span>
+          </Button>
       </div>
     </div>
   );

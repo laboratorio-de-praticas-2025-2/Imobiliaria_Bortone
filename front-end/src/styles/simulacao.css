@@ -1,9 +1,9 @@
 .image-header {
   position: absolute;
-  left: 0;
-  bottom: 0;
+
+  bottom: -0;
   background-image: url("/images/simulacao-mobile.png");
-  background-position:  bottom; /* <- volta a grudar no topo no desktop */
+  background-position:  bottom ; /* <- volta a grudar no topo no desktop */
   background-size: 100vw;
   background-repeat: no-repeat;
   width: 100%;
@@ -42,10 +42,7 @@
     height: 73vh;
   }
 }
-.header-simu{
-  font-family: 'Glacial Indifference';
-  font-size: 36px;
-}
+
 .form{
   font-family: 'Glacial Indifference';
   font-size: 24px;

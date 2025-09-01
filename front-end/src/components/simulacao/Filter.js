@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Button, Col, Row } from "antd";
 
 export default function Filter() {
-  const [active, setActive] = useState("one");
+  const [simulationType, setSimulationType] = useState("financiamento");
+  const [propertyType, setPropertyType] = useState("casa");
 
   return (
     <div className="flex justify-center w-full pt-20">
@@ -16,9 +17,9 @@ export default function Filter() {
                 </p>
                 <div>
                   <Button
-                    onClick={() => setActive("financiamento")}
+                    onClick={() => setSimulationType("financiamento")}
                     className={`!px-6 !py-6 !font-bold !rounded-l-xl justify-center w-35  !rounded-none ${
-                      active === "financiamento"
+                      simulationType === "financiamento"
                         ? "!bg-[var(--primary)] !text-white"
                         : "!bg-white !text-[var(--primary)]"
                     }`}
@@ -27,9 +28,9 @@ export default function Filter() {
                   </Button>
 
                   <Button
-                    onClick={() => setActive("aluguel")}
+                    onClick={() => setSimulationType("aluguel")}
                     className={`!px-6 !py-6 !font-bold !rounded-r-xl w-35 !rounded-none ${
-                      active === "aluguel"
+                      simulationType === "aluguel"
                         ? "!bg-[var(--primary)] !text-white"
                         : "!bg-white !text-[var(--primary)]"
                     }`}
@@ -42,13 +43,13 @@ export default function Filter() {
             <Col className="!flex  !justify-center " xs={24} lg={12}>
               <div className="w-fit flex flex-col items-center">
                 <p className="font-bold text-[14px] text-[var(--primary)] pb-3">
-                  Escolha o tipo de simulação:
+                  Escolha o tipo de imóvel:
                 </p>
                 <div>
                   <Button
-                    onClick={() => setActive("casa")}
+                    onClick={() => setPropertyType("casa")}
                     className={`!px-6 !py-6 !font-bold  !rounded-l-xl w-35 !rounded-none ${
-                      active === "casa"
+                      propertyType === "casa"
                         ? "!bg-[var(--primary)] !text-white"
                         : "!bg-white !text-[var(--primary)]"
                     }`}
@@ -57,9 +58,9 @@ export default function Filter() {
                   </Button>
 
                   <Button
-                    onClick={() => setActive("terreno")}
+                    onClick={() => setPropertyType("terreno")}
                     className={`!px-6 !py-6 !font-bold !rounded-r-xl w-35 !rounded-none ${
-                      active === "terreno"
+                      propertyType === "terreno"
                         ? "!bg-[var(--primary)] !text-white"
                         : "!bg-white !text-[var(--primary)]"
                     }`}

@@ -6,32 +6,22 @@ import { Col, Row } from "antd";
 
 export default function Simulacao() {
   return (
-    <div className="min-h-screen flex fundo flex-col bg-simulacao ">
+    // <div className="min-h-screen flex fundo flex-col bg-simulacao ">
+    <div className="fundo">
       <HomeNavbar />
-      <div className="hidden lg:block">
-        <Row className="absolute h-[70%] w-full z-100">
-          <Col span={14} className="md:px-25 py-15 lg:px-30">
-            <Header />
-          </Col>
-          <Col span={8} className="self-end px-20">
-            <Form />
-          </Col>
-        </Row>
-      </div>
-      <div className=" block lg:hidden h-full w-full">
-        <div className="h-[50%] absolute">
-          <div className="h-full w-screen place-items-center pt-10">
-            <Header />
-          </div>
-          <div className="w-screen">
-            <Form />
-          </div>
-        </div>
-      </div>
-
-      <div className="md:flex-1 fundo flex items-end  ">
-        <div className="image-header  w-full"></div>
-      </div>
+      <div className="image-header absolute  " />
+      <Row className="!h-[80vh]">
+        <Col xs={24} lg={15} className="flex items-center md:items-start md:self-start md:pl-20 pt-[5vh] md:pt-10">
+          <Header />
+        </Col>
+        <Col
+          xs={24}
+          lg={9}
+          className="flex md:pt-[20vh] items-center pt-[25vh] pb-10 "
+        >
+          <Form />
+        </Col>
+      </Row>
     </div>
   );
 }
