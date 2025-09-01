@@ -7,7 +7,7 @@ export default function RequestForm() {
     const value = Math.max(1, Math.min(32, Number(e.target.value))); // Limita entre 1-32
     setParcelas(value || 1); // Caso seja inválido, define 1
   };
-  
+
   return (
     <div className="flex justify-center w-full ">
       <div className="lg:w-sm 2xl:w-md w-[85vw] shadow-xl rounded-b-2xl">
@@ -21,7 +21,9 @@ export default function RequestForm() {
               Valor da parcela:
             </label>
             <Input
+              type="number"
               placeholder="Digite aqui o valor"
+              step="0.01"
               className="rounded-lg mt-1 h-12 text-center shadow-md"
             />
           </div>
@@ -30,6 +32,8 @@ export default function RequestForm() {
               Valor de entrada:
             </label>
             <Input
+              type="number"
+              step="0.01"
               placeholder="Digite aqui o valor"
               className="rounded-lg mt-1 h-12 text-center shadow-md"
             />
@@ -43,7 +47,7 @@ export default function RequestForm() {
               min={1}
               max={32}
               value={parcelas}
-              onChange={handleInputChange}
+              readOnly
               className="rounded-lg mt-1 h-12 text-center shadow-md"
             />
           </div>

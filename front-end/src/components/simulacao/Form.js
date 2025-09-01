@@ -32,10 +32,11 @@ export default function Form() {
         <div className="mb-4 pt-2 w-3xs justify-self-center">
           <Input
             type="number"
+            placeholder="R$"
             min={1}
             max={32}
             value={values}
-            onChange={handleInputChange}
+            readOnly
             className="w-[35%] border border-gray-200 rounded px-3 py-2 focus:outline-none text-left h-12"
           />
         </div>
@@ -58,7 +59,7 @@ export default function Form() {
             <Slider
               min={20000}
               max={1000000}
-              step={10000}
+              step={100}
               value={values}
               onChange={(values) => setValues(values)}
             />
