@@ -78,8 +78,8 @@ export default function Mapa() {
             spaceBetween={0}
             breakpoints={{
               320: { slidesPerView: 1 },
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 2 },  
+              640: { slidesPerView: 1 },
+              1024: { slidesPerView: 1 },  
               1440: { slidesPerView: 2 },
             }}
           >
@@ -175,13 +175,14 @@ export default function Mapa() {
                 <p>{imovelAtual.endereco}</p>
                 <p className="p2">{imovelAtual.cidade}</p>
               </div>
-              <div className="ir_loc_icon" link="#">
+              <div className="ir_loc_icon">
                 <Image 
                   src="/images/icon_setaD.png" 
                   alt="icon_setaD" 
                   width={15} 
                   height={17} 
                   className="icon_setaD"
+                  link="/mapa"
                 />
               </div>
             </button>

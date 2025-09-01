@@ -20,6 +20,14 @@ export const mockImoveis = [
         url_imagem: "/images/casa.png",
         descricao: "Fachada da casa",
       },
+      {
+        url_imagem: "/images/casa.png",
+        descricao: "Fachada da casa",
+      },
+      {
+        url_imagem: "/images/casa.png",
+        descricao: "Fachada da casa",
+      },
     ],
     bairro: "Vila Ponce",
   },
@@ -40,6 +48,14 @@ export const mockImoveis = [
     possui_piscina: false,
     possui_jardim: false,
     imagens: [
+      {
+        url_imagem: "/images/imovel1.png",
+        descricao: "Sala de estar",
+      },
+      {
+        url_imagem: "/images/imovel1.png",
+        descricao: "Sala de estar",
+      },
       {
         url_imagem: "/images/imovel1.png",
         descricao: "Sala de estar",

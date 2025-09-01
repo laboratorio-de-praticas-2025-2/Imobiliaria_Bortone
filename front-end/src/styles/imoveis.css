@@ -142,6 +142,8 @@
 
 .t1 p{
   font-size: 33px;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: bold;
 }
 
 .T1ponto{
@@ -163,6 +165,8 @@
   padding-top: 0.8%;
   padding-right: 2%;
   padding-left: 2%;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: bold;
 }
 
 .icon_p{
@@ -181,9 +185,10 @@
 }
 
 .Gimovel{
-   font-size: 20px;
-   padding-top: 5%;
-   font-weight: lighter;
+  font-size: 20px;
+  padding-top: 5%;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
 }
 
 .Dbotoes{
@@ -206,6 +211,8 @@
   margin-bottom: 2%;
   margin-left: 2.8%;
   cursor: pointer;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
 }
 
 .Dbotoes button{
@@ -221,6 +228,8 @@
   border-width: 0.2cap;
   margin-bottom: 2%;
   cursor: pointer;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
 }
 
 .valor{
@@ -245,11 +254,14 @@
 
 .Vtxt{
   font-size: 18px;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
 }
 
 .preco{
   font-size: 30px !important;
-  font-weight: bolder;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: bold;
 }
 
 .share {
@@ -261,6 +273,8 @@
   padding-left: 10%;
   padding-bottom: 4%;
   font-size: 16px;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
 }
 
 .a {
@@ -293,6 +307,8 @@
   font-size: 18px;
   font-weight: lighter;
   cursor: pointer;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
 }
 
 .Ibotao{
@@ -350,6 +366,8 @@
   display: block;
   text-align: left;
   background-color: #30438300;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
 }
 
 .p2{
@@ -384,6 +402,7 @@
 }
 
 .map_desc h2 {
+  font-family: 'Glacial Indifference', sans-serif;
   font-weight: bold;
   font-size: 22px !important;
   color: #304383;
@@ -392,6 +411,8 @@
 .map_desc p {
   margin: 0;
   font-size: 18px;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
 }
 
 .btn-ver-mais {
@@ -406,7 +427,8 @@
   cursor: pointer;
   background-color: #0aeb4200;
   margin-left: 40%;
-
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
 }
 
 .setaVmais{
@@ -421,17 +443,6 @@
   object-fit: contain;
 }
 
-.linha-divisoria {
-  border: none;
-  height: 2px;
-  background-color: #D7D7D7;
-  width: 100%;
-  margin: 40px 0; 
-}
-
-
-
-
 .descricao-reduzida {
   display: -webkit-box;
   -webkit-line-clamp: 9; /* número de linhas visíveis */
@@ -443,3 +454,270 @@
   display: block;
 }
 
+.linha-divisoria {
+  border: none;
+  height: 2px;
+  background-color: #D7D7D7;
+  width: 100%;
+  margin: 40px 0; 
+}
+
+
+@media (max-width: 768px) {
+  .imoveis-search-bar{
+    width: 0%;
+    height: 0px;
+}
+
+/*=-=-=-=-=-*/
+
+/* Container do carrossel */
+.imoveis-carousel {
+  width: 100%;
+}
+
+/* Botões de navegação */
+.imoveis-carousel .custom-next {
+  position: absolute;
+  top: 87%;
+  left: 85%;
+}
+
+/* Botão direito */
+.imoveis-carousel .custom-next {
+  background-color: #EEF0F9;
+  width: 63px;
+  height: 63px;
+}
+
+.carousel-img{
+  width: 100%;
+  height: 520px;
+}
+
+/*=-=-=-=-=-*/
+
+.todo {
+  position: relative; /* define o contexto para absolute */
+  width: 100%;
+  height: 521px; /* mantém a altura como antes */
+  background-color: rgba(255, 166, 0, 0);
+}
+
+.descricao {
+  width: 90%;
+  height: 100%; /* ocupa toda a altura do pai */
+  background-color: #EEF0F9;
+  border-bottom-right-radius: 5cap;
+  position: relative; /* mantém no fluxo normal */
+}
+
+.Dtexto {
+  position: relative; /* referencial pros filhos */
+  width: 100%;
+  height: 190px;
+  background-color: #e4ff8200;
+  color: #304383;
+  padding-left: 3%;
+  padding-top: 3.5%;
+  font-weight: bolder;
+}
+
+.t1 {
+  margin-top: 2%;
+}
+
+.t1 p {
+  font-size: 28px;
+}
+
+.t2 {
+  width: 100%;
+  height: 25%;
+  padding-top: 5%;
+}
+
+.t2 p {
+  font-size: 25.67px;
+}
+
+.Gimovel {
+  position: absolute;
+  bottom: -70%;  /* fixa no fundo do pai */
+  left: 5%;      /* alinhamento horizontal */
+  font-size: 20px;
+}
+
+.btn1{
+  width: 320px;
+  height: 60px;
+  margin-left: 5%;
+}
+.Dbotoes{
+  margin-top: 5%;
+  position: absolute;
+}
+
+.Dbotoes button{
+  margin-right: 4%;
+}
+
+.btn2{
+  width: 242px;
+  height: 60px;
+}
+
+.valor {
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  width: 100%;
+  height: 100%; 
+  z-index: 10; 
+  display: flex;
+  justify-content: center;
+  background-color: #00000000;
+}
+
+.share {
+  width: 50%;
+  height: 15%;
+  display: flex;
+  justify-content: flex-start; /* controla alinhamento horizontal */
+  align-items: center;         /* alinha verticalmente */
+  gap: 10px;                   /* espaço entre .Ivalor e .a */
+  position: absolute;
+  top: 82%;     /* ajusta posição do bloco dentro do pai maior */
+  left: -5.5%;
+  background-color: rgba(71, 150, 150, 0); /* transparente */
+  font-size: 15.6px;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
+}
+
+.Ivalor {
+  width: 200px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 4%;
+  color: #304383;
+  background-color: transparent;
+  margin: 0; /* não precisa margin-bottom por estar no flex */
+}
+
+.Ivalor p {
+  font-size: 0px; /* já define aqui em vez de .preco separado */
+  padding: 0; /* remove o padding-bottom que desalinhar */
+}
+
+.a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #304383;
+  background-color: transparent;
+  height: 100%;
+}
+
+.a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+  text-decoration: none;
+  color: #304383;
+  background-color: #7a90f100;
+}
+
+
+.icon_comp{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 54.6px;
+  height: 54.6px;
+  background-color: #ffffff;
+  border-radius: 1000px;
+}
+
+.Ibotao {
+  position: relative; 
+  width: 100%;
+  height: 30%;
+  background-color: #7a90f100;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 3%;
+}
+
+.SimComp_botao {
+  position: absolute; 
+  bottom: 87%;        
+  left: 52%;        
+  width: 35%;
+  height: 60px;
+  font-size: 18px;
+}
+
+/*=-=-=-=-=-=*/
+
+.todo2 {
+  display: flex;
+  width: 100%;
+  height: 700px;
+  flex-wrap: wrap;
+}
+
+.map_loc {
+  flex: 0 0 98%;
+}
+
+.ir_loc{
+  width: 91%;
+  height: 96px;
+}
+
+.ir_loc_txt {
+  width: 80%;
+  height: 55px;
+  font-size: 19.2px;
+}
+
+.p2{
+  padding-top: 6px;
+  font-size: 13.6px;
+}
+
+.mapa-pequeno {
+  width: 100%;
+  height: 306px;
+}
+
+.map_desc {
+  width: 98%;
+  height: 100%;
+  margin-top: -360px;
+}
+
+.map_desc h2 {
+  font-size: 26px !important;
+}
+
+.map_desc p {
+  font-size: 20px;
+}
+
+.btn-ver-mais {
+  width: 20%;
+  height: 22px;
+  font-size: 18px;
+}
+
+.linha-divisoria {
+  height: 0px;
+}
+}
