@@ -10,12 +10,12 @@
   height: 100%;
 }
 .image-bg {
-  background-image: url("/images/simulacao2.png");
+  background-image: url("/images/simulacao-2-mobile.png");
   background-size: 100vw;
   background-position: top center;
   background-repeat: no-repeat;
   width: 100%;
-  height: 80%;
+  height: 100%;
 }
 .fundo {
   background: linear-gradient(
@@ -29,7 +29,7 @@
 
 @media (min-width: 769px) {
   .image-bg {
-    background-image: url("/images/simulacao2.png");
+    background-image: url("/images/simulacao-2.png");
     background-size: 100vw;
     background-position: top center;
     background-repeat: no-repeat;
@@ -52,7 +52,7 @@
 }
 
 .meu-card .ant-input::placeholder {
-  font-size: 12px !important;
+  font-size: 10px !important;
   font-weight: 700;
   color: #8B96BC !important;
 }

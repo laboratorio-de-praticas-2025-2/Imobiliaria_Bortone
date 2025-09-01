@@ -9,13 +9,12 @@ export default function SimulacaoCompra() {
     <div className="">
       <HomeNavbar />
       <div className="image-bg absolute  " />
-      <Row className=" !h-[80vh] ">
-        <Col span={15} className="content-end  ">
-          <Filter className="" />
+      <Row className="!h-[80vh]">
+        <Col xs={24} lg={15} className="flex content-end">
+          <Filter />
         </Col>
-        <Col span={9} className="content-center pt-10  ">
+        <Col xs={24} lg={9} className="flex items-center md:pt-[10vh] pt-[40vh] pb-10 ">
           <RequestForm />
-
         </Col>
       </Row>
     </div>

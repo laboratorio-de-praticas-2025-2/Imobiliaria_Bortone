@@ -6,12 +6,12 @@ export default function RequestForm() {
 
   return (
     <div className="flex justify-center w-full ">
-      <div className="lg:w-sm 2xl:w-md shadow-xl rounded-b-2xl">
+      <div className="lg:w-sm 2xl:w-md w-[85vw] shadow-xl rounded-b-2xl">
         <div className="bg-[var(--primary)] text-white rounded-t-2xl p-5 text-center">
           <span className="form font-light">Solicite uma</span>
           <p className="form font-semibold">simulação de compra</p>
         </div>
-        <div className="grid h-fit bg-white grid-rows-1 justify-items-center content-evenly sm:gap-4 xxl:gap-12 pt-7 text-center py-4 rounded-b-2xl">
+        <div className="grid h-fit bg-white grid-rows-1 justify-items-center content-evenly gap-4 sm:gap-4 xxl:gap-12 pt-7 text-center py-4 rounded-b-2xl">
           <div className="w-3xs">
             <label className="text-[14px] font-bold text-[var(--primary)]  ">
               Valor da parcela:
