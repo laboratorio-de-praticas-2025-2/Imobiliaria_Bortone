@@ -7,6 +7,7 @@ import "@/styles/imoveis.css";
 import { Input } from "antd";
 import "leaflet/dist/leaflet.css";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -185,7 +186,7 @@ export default function Mapa() {
           <div className="valor">
             <div className="Ivalor">
               <p className="Vtxt">Valor deste imóvel</p>
-              <p className="preco">R$ {imovelAtual.preco}</p>
+              <p className="preco">R$ {imovelAtual.preco.toLocaleString()}</p>
             </div>
             <div className="share">
               <a href="#" className="a">
@@ -201,7 +202,7 @@ export default function Mapa() {
               </a>
             </div>
             <div className="Ibotao">
-              <button className="SimComp_botao">Simular Compra</button>
+              <Link className="SimComp_botao" href="/simulacao">Simular Financiamento</Link>
             </div>
           </div>
         </div>

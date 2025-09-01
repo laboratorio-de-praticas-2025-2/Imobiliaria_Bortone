@@ -309,6 +309,9 @@
   cursor: pointer;
   font-family: 'Glacial Indifference', sans-serif;
   font-weight: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .Ibotao{
