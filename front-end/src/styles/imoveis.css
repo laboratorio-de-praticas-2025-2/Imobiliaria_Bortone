@@ -719,3 +719,38 @@
   height: 0px;
 }
 }
+/* Bolinhas da paginação */
+.image-carroussel-imoveis .swiper-pagination-bullet {
+  background-color: #EDECEC !important; /* cor normal */
+  opacity: 1 !important;
+  transform: scale(0.8);
+}
+
+.image-carroussel-imoveis .swiper-pagination-bullet-active {
+  background-color: white !important; /* cor da ativa */
+  transform: scale(1.1);
+}
+
+/* Botões de navegação */
+.image-carroussel-imoveis .swiper-button-next,
+.image-carroussel-imoveis .swiper-button-prev {
+  color: var(--primary) !important; /* muda cor da seta */
+  background: white;
+  border-radius: 9999px; 
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.image-carroussel-imoveis .swiper-button-disabled {
+  display: none;
+}
+
+.image-carroussel-imoveis .swiper-button-next:after,
+.image-carroussel-imoveis .swiper-button-prev:after {
+  font-size: 16px !important; /* tamanho da seta */
+  font-weight: bold;
+}

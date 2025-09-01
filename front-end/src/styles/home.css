@@ -150,7 +150,6 @@
 
 .nav-search-mobile .ant-input-affix-wrapper:focus, .ant-input-affix-wrapper-focused {
     box-shadow: none !important;
-    border-color: var(--primary) !important;
 }
 
 .nav-search-mobile .ant-input-group-addon{
