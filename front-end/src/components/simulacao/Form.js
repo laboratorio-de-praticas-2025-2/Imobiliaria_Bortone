@@ -35,7 +35,7 @@ export default function Form() {
 
         <div className="mb-4 pt-2 w-3xs justify-self-center">
           <Input
-            type="number"
+            type="text"
             value={formatCurrency(value)}
             readOnly
             className="w-[35%] border border-gray-200 rounded px-3 py-2 focus:outline-none text-left h-12"

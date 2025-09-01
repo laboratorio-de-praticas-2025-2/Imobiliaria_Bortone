@@ -33,7 +33,6 @@ export default function RequestForm() {
             </label>
             <Input
               type="number"
-              step="0.01"
               placeholder="Digite aqui o valor"
               className="rounded-lg mt-1 h-12 text-center shadow-md"
             />
