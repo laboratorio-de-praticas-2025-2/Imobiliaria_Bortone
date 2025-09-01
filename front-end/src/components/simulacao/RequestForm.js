@@ -3,13 +3,17 @@ import { useState } from "react";
 
 export default function RequestForm() {
   const [parcelas, setParcelas] = useState(20);
-
+  const handleInputChange = (e) => {
+    const value = Math.max(1, Math.min(32, Number(e.target.value))); // Limita entre 1-32
+    setParcelas(value || 1); // Caso seja inválido, define 1
+  };
+  
   return (
     <div className="flex justify-center w-full ">
       <div className="lg:w-sm 2xl:w-md w-[85vw] shadow-xl rounded-b-2xl">
         <div className="bg-[var(--primary)] text-white rounded-t-2xl p-5 text-center">
           <span className="form font-light">Solicite uma</span>
-          <p className="form font-semibold">simulação de compra</p>
+          <p className="form font-semibold">simulação de financiamento</p>
         </div>
         <div className="grid h-fit bg-white grid-rows-1 justify-items-center content-evenly gap-4 sm:gap-4 xxl:gap-12 pt-7 text-center py-4 rounded-b-2xl">
           <div className="w-3xs">
@@ -35,8 +39,11 @@ export default function RequestForm() {
               Escolha a quantidade de Parcelas:
             </label>
             <Input
+              type="number"
+              min={1}
+              max={32}
               value={parcelas}
-              readOnly
+              onChange={handleInputChange}
               className="rounded-lg mt-1 h-12 text-center shadow-md"
             />
           </div>
@@ -65,7 +72,7 @@ export default function RequestForm() {
           </div>
           <div className="w-3xs">
             <span className="text-[var(--primary)] font-bold">
-              Taxa de juros mensal:{" "}
+              Taxa de juros mensal:
               <span className="text-[#919DC8]">valor</span>
             </span>
           </div>
@@ -76,7 +83,6 @@ export default function RequestForm() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }

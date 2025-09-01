@@ -12,7 +12,7 @@ export default function Header() {
       </span>
       <br />
       <span className="inline-block mt-2 bg-[var(--secondary)] text-white px-3 py-1 font-bold tracking-wide rounded-sm">
-        COMPRA!
+        FINANCIAMENTO!
       </span>
     </h2>
   </div>
