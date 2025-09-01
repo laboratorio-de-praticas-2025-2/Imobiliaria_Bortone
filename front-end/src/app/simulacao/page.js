@@ -9,7 +9,7 @@ export default function Simulacao() {
     // <div className="min-h-screen flex fundo flex-col bg-simulacao ">
     <div className="fundo">
       <HomeNavbar />
-      <div className="image-header absolute  " />
+      <div className="image-bg-bottom absolute  " />
       <Row className="!h-[80vh]">
         <Col xs={24} lg={15} className="flex items-center md:items-start md:self-start md:pl-20 pt-[5vh] md:pt-10">
           <Header />
