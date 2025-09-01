@@ -277,17 +277,6 @@
   font-weight: normal;
 }
 
-.a {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px; 
-  text-decoration: none;
-  color: #304383;
-  background-color: #7a90f100;
-}
-
 .icon_comp{
   display: flex;
   justify-content: center;
