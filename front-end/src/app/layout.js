@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import '@/styles/login.css';
 import '@/styles/map.css';
 import "@/styles/home.css";
+import "@/styles/simulacao.css"
 import "@/styles/imoveis.css";
 import "@/styles/blog.css";
 import "@/styles/faq.css";
