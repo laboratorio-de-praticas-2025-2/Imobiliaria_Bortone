@@ -28,7 +28,7 @@ export default function DropdownFilter({
       {/* Botão */}
       <button
         onClick={() => setOpen(!open)}
-        className={`flex items-center justify-between w-32 rounded-full bg-[#EEF0F9] px-4 py-2 !text-[var(--primary)] font-medium focus:outline-none cursor-pointer hover:bg-[#E0E3F1] transition-colors ${classname}`}
+        className={`flex items-center justify-between rounded-full bg-[#EEF0F9] px-4 py-2 !text-[var(--primary)] font-medium focus:outline-none cursor-pointer hover:bg-[#E0E3F1] transition-colors ${classname}`}
       >
         {selected}
         {setSelected && selected !== placeholder ? (
