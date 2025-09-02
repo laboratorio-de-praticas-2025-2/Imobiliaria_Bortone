@@ -1,0 +1,18 @@
+.search-cms .ant-input-affix-wrapper {
+  border-radius: 1000px !important;
+  background-color: #EEF0F9 !important;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+} 
+
+.search-cms .ant-input-affix-wrapper input::placeholder {
+  color: rgba(55, 74, 140, 0.34) !important;
+}
+
+.search-cms .ant-input-affix-wrapper:focus, .ant-input-affix-wrapper-focused {
+  box-shadow: none !important;
+  border-color: var(--primary) !important;
+}
+
+.search-cms .ant-input-group-addon{
+  display: none !important;
+}
