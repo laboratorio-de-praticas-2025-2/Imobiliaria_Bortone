@@ -68,7 +68,6 @@ export default function RequestForm() {
               <Slider
                 min={1}
                 max={32}
-                step={0.1}
                 value={parcelas}
                 onChange={(value) => setParcelas(value)}
               />
