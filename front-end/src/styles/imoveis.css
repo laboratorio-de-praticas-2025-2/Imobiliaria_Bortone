@@ -96,7 +96,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #304383;
 }
+
 
 .inv {
   display: none;
@@ -352,7 +354,7 @@
   width: 80%;
   height: 55px;
   font-size: 22px;
-  color: black;
+  color:#304383;
   display: block;
   text-align: left;
   background-color: #30438300;
@@ -366,8 +368,9 @@
 }
 
 .icon_setaD{
-  width: 15.32px;
-  height: 17.28px;
+  width: 25.32px;
+  height: 27.28px;
+  color: #304383;
 }
 
 .mapa-pequeno {
@@ -406,7 +409,7 @@
 }
 
 .btn-ver-mais {
-  width: 12%;
+  width: 15%;
   height: 22px;
   color: #304383;
   font-size: 18px;

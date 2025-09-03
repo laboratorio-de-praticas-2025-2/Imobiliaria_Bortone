@@ -19,6 +19,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { PiBathtub } from "react-icons/pi";
 import { BsDoorOpenFill } from "react-icons/bs";
 import dynamic from "next/dynamic";
+import {RxArrowRight, RxChevronDown} from "react-icons/rx";
 
 const { Search } = Input;
 const onSearch = (value) => console.log(value);
@@ -252,14 +253,7 @@ export default function Mapa() {
                 <p className="p2">{imovelAtual.cidade}</p>
               </div>
               <div className="ir_loc_icon">
-                <Image
-                  src="/images/icon_setaD.png"
-                  alt="icon_setaD"
-                  width={15}
-                  height={17}
-                  className="icon_setaD"
-                  link="/mapa"
-                />
+                <RxArrowRight className="icon_setaD"/>
               </div>
             </Link>
 
@@ -281,13 +275,7 @@ export default function Mapa() {
 
             {mostrarBotao && (
               <button className="btn-ver-mais" onClick={toggleVerMais}>
-                <Image
-                  src="/images/seta_baixo.png"
-                  alt="Ver mais"
-                  width={20}
-                  height={20}
-                  className="setaVmais"
-                />
+                <RxChevronDown className="setaVmais"/>
                 <p>{verMais ? "Ver menos" : "Ver mais"}</p>
               </button>
             )}
