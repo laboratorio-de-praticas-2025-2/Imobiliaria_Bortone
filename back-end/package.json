@@ -2,6 +2,12 @@
   "dependencies": {
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "mysql2": "^3.14.4",
+    "node": "^22.19.0",
     "sequelize": "^6.37.7"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon server.js"
   }
 }
