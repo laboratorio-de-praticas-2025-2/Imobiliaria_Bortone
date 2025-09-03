@@ -49,6 +49,10 @@
   color: #c1c1c1 !important;
 }
 
+.custom-form-item {
+  margin-bottom: 0 !important;
+}
+
 /* Label em negrito e cor customizada */
 .custom-form-item .ant-form-item-label > label {
   font-weight: 600;

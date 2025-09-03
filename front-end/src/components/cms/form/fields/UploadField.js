@@ -1,15 +1,15 @@
 "use client";
 import { Upload, Button, Form as FormAntd } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { useState } from "react";
 
 export default function UploadField({
   name,
   label,
-  multiple = true,
+  multiple = false,
   className,
+  fileList,
+  setFileList,
 }) {
-  const [fileList, setFileList] = useState([]);
 
   return (
     <FormAntd.Item
