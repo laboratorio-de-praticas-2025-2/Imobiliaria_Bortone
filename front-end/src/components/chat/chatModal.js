@@ -139,17 +139,6 @@ export default function ChatModal({ onClose }) {
                        focus:ring focus:ring-blue-300"
           />
 
-          {/* Botão Microfone */}
-          <MicrophoneButton
-            onClick={() => setIsRecording((prev) => !prev)}
-            active={isRecording}
-          />
-
-          {/* Indicador de gravação */}
-          {isRecording && (
-            <span className="text-white text-sm ml-2">{recordingTime}s</span>
-          )}
-
         </div>
       </div>
     </div>
