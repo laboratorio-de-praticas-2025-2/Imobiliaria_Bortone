@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-export default function PreviaBanner({ fileList }) {
+export default function PreviaBanner({ fileList }) { 
   return (
     <div className=" w-full sm:min-h-[200px] min-h-[500px] flex items-center justify-center border border-gray-300 rounded-2xl bg-white relative">
       <p className="absolute top-[-18px] left-10 font-bold text-lg">Prévia</p>

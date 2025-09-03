@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Switch, ConfigProvider } from "antd";
 import { BiPencil } from "react-icons/bi";
 import { IoMdTrash } from "react-icons/io";
+import Link from "next/link";
 
 export default function Card({banner}) {
   const [checked, setChecked] = useState(banner.ativo);
@@ -38,12 +39,12 @@ export default function Card({banner}) {
             <Switch checked={checked} onChange={onChange} />
           </ConfigProvider>
         </div>
-        <button>
+        <Link href={`/admin/cms-banner/editar/${banner.id}`}>
           <BiPencil
             size={22}
             className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
           />
-        </button>
+        </Link>
         <button>
           <IoMdTrash
             size={22}

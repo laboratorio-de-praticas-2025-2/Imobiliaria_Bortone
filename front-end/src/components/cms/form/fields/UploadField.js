@@ -2,7 +2,7 @@
 import { Upload, Button, Form as FormAntd } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
-export default function UploadField({
+export default function UploadField({ 
   name,
   label,
   multiple = false,

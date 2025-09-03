@@ -1,7 +1,7 @@
 "use client";
 import { Input, Form as FormAntd } from "antd";
 
-export default function TextField({
+export default function TextField({ 
   name,
   label,
   placeholder,

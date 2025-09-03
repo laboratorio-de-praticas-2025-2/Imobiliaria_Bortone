@@ -4,7 +4,7 @@ import { Input, Form as FormAntd } from "antd";
 const { TextArea } = Input;
 
 export default function TextAreaField({
-  name,
+  name, 
   label,
   placeholder,
   rows = 6,
