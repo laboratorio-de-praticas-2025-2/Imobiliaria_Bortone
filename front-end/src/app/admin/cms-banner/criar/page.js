@@ -6,6 +6,7 @@ import TextField from "@/components/cms/form/fields/TextField";
 import UploadField from "@/components/cms/form/fields/UploadField";
 import { UploadOutlined } from "@ant-design/icons";
 import FormButton from "@/components/cms/form/fields/Button";
+import Image from "next/image";
 
 import { useState } from "react";
 
@@ -24,10 +25,10 @@ export default function CriarBannerPage() {
     <Form.Body title="Banners | Cadastro">
       <Form.FormHeader href="/admin/cms-banner" />
       <Form.FormBody onFinish={onFinish} onFinishFailed={onFinishFailed}>
-        <div className="flex w-full gap-6">
+        <div className="flex flex-col sm:flex-row w-full gap-6">
           {/* Coluna do Formulário */}
-          <div className="w-[60%] flex flex-col gap-3 items-end">
-            <div className="flex w-full justify-between gap-3">
+          <div className="sm:w-[60%] flex flex-col gap-3 items-end">
+            <div className="flex flex-col sm:flex-row w-full justify-between items-center gap-3">
               <TextField
                 name="titulo"
                 label="Título do Banner"
@@ -43,6 +44,20 @@ export default function CriarBannerPage() {
                 fileList={fileList}
                 setFileList={setFileList}
               />
+
+              {fileList.length > 0 ? (
+                <div className="sm:hidden w-100 h-80 bg-gray-200 rounded-3xl my-3.5">
+                  <Image
+                    src={URL.createObjectURL(fileList[0].originFileObj)}
+                    alt="Prévia do banner"
+                    width={400}
+                    height={320}
+                    className="h-full w-full object-cover rounded-3xl"
+                  />
+                </div>
+              ) : (
+                <div className="sm:hidden h-80 w-120 bg-gray-200 rounded-3xl my-3.5" />
+              )}
             </div>
             <TextAreaField
               name="descricao"
@@ -51,10 +66,25 @@ export default function CriarBannerPage() {
               rows={18}
               className="!w-full !h-full"
             />
-            <FormButton text="Publicar" icon={<UploadOutlined />} />
+            <FormButton
+              text="Publicar"
+              className="!hidden !sm:flex"
+              icon={<UploadOutlined />}
+            />
           </div>
 
-          <PreviaBanner fileList={fileList} />
+          <div className="sm:w-[40%] hidden sm:flex">
+            <PreviaBanner fileList={fileList} />
+          </div>
+
+          <div className="sm:hidden w-full flex flex-col gap-3.5 items-center">
+            <PreviaBanner fileList={fileList} />
+            <FormButton
+              text="Publicar"
+              className="!flex !sm:hidden"
+              icon={<UploadOutlined />}
+            />
+          </div>
         </div>
       </Form.FormBody>
     </Form.Body>
