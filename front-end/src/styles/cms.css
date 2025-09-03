@@ -59,8 +59,8 @@
 .custom-input {
   border-radius: 6px !important;
   border: 1px solid #304383 !important;
-  padding: 8px 12px !important;
-  font-size: 18px !important;
+  padding: 6px 12px !important;
+  font-size: 14px !important;
 }
 
 /* Placeholder cinza */
@@ -86,3 +86,7 @@
 .custom-form-item .ant-form-item-label > label::after {
   display: none;
  }
+
+.custom-form-item  .ant-form-item-label >label{
+  font-size: 16px !important
+}
