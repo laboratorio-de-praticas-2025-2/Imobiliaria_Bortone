@@ -1,3 +1,696 @@
+.teste{
+    background-color: rgba(185, 38, 38, 0);
+}
+
+.bpq{
+    width: 100%;
+    height: 100px;
+    background-color: rgba(16, 125, 221, 0);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 3.5%; 
+}
+
+.imoveis-search-bar{
+    width: 48%;
+    height: 43px;
+    background-color: #EEF0F9;
+    border-radius: 28px ;
+    color: #304383;
+}
+
+.imoveis-search-bar .ant-input, .imoveis-search-bar .ant-btn {
+    border-radius: 1000px ;
+    background: transparent;
+    border: 2px solid rgb(255, 255, 255);
+    color: #304383 !important;
+    height: 42px
+} 
+.imoveis-search-bar .ant-input-group-addon{
+  display: none;
+}
+
+.imoveis-search-bar .ant-btn{
+    border-left: none;
+}
+
+.imoveis-search-bar .ant-btn:hover{
+    background-color: transparent !important;
+    color: #304383 !important;
+    border: 2px solid white !important;
+    border-left: none !important;
+}
+
+.imoveis-search-bar .ant-input{
+    border-right: none;
+}
+
+.imoveis-search-bar .ant-input:focus{
+    box-shadow: none !important;
+    border-color: white !important;
+}
+
+.imoveis-search-bar .ant-input::placeholder {
+    color: #304383 !important;
+}
+
+/*=-=-=-=-=-*/
+
+/* Container do carrossel */
+.imoveis-carousel {
+  position: relative;
+  width: 100%;
+}
+
+/* Cada slide */
+.imoveis-carousel .swiper-slide {
+  display: flex;
+  justify-content: center;
+}
+
+/* Card do slide */
+.imoveis-carousel .slide-card {
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Botões de navegação */
+.imoveis-carousel .custom-next {
+  position: absolute;
+  top: 90%;
+  transform: translateY(-50%);
+  z-index: 20;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Botão direito */
+.imoveis-carousel .custom-next {
+  right: 30;
+  background-color: #EEF0F9;
+  width: 65px;
+  height: 65px;
+  border-radius: 5cap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inv {
+  display: none;
+}
+
+.carousel-img{
+  width: 100%;
+}
+
+/*=-=-=-=-=-=-=-=-=-=-*/
+
+.todo{
+  width: 100%;
+  height: 380px;
+  background-color: rgba(255, 166, 0, 0);
+  display: flex;
+  justify-content: space-between;
+}
+
+.descricao{
+  width: 65%;
+  height: 319px;
+  background-color: #EEF0F9;
+  border-bottom-right-radius: 5cap;
+}
+
+.Dtexto{
+  width: 100%;
+  height: 190px;
+  background-color: #e4ff8200;
+  color: #304383;
+  padding-left: 3%;
+  padding-top: 3.5%;
+  font-weight:bolder;
+}
+.t1 {
+  display: flex;
+  background-color: #00000000;
+  display: flex;
+  align-items: center;
+}
+
+.t1 p{
+  font-size: 33px;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: bold;
+}
+
+.T1ponto{
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.t2{
+  width: 100%;
+  height: 25%;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff00;
+  padding-top: 2%;
+}
+
+.t2 p{
+  font-size: 27px;
+  padding-top: 0.8%;
+  padding-right: 2%;
+  padding-left: 2%;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: bold;
+}
+
+.icon_p{
+  width: 27px !important;
+  height: 27px !important;
+}
+
+.icon_b{
+  width: 27px !important;
+  height: 27px !important;
+  margin-left: 5%;
+}
+
+.Dtexto p {
+  padding-bottom: 5px;
+}
+
+.Gimovel{
+  font-size: 20px;
+  padding-top: 5%;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
+}
+
+.Dbotoes{
+  width: 100%;
+  height: 37%;
+  background-color: #58f56d00;
+  color: #304383;
+  font-size: 17px;
+  font-weight: lighter;
+  display: flex;
+  align-items: end;
+}
+
+.btn1{
+  background-color: #304383;
+  width: 23%;
+  height: 60px;
+  border-radius: 5cap;
+  color: white;
+  margin-bottom: 2%;
+  margin-left: 2.8%;
+  cursor: pointer;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
+}
+
+.Dbotoes button{
+  margin-right: 1.7%;
+}
+
+.btn2{
+  background-color: #EEF0F9;
+  width: 23%;
+  height: 60px;
+  border-radius: 5cap;
+  border-color: #304383;
+  border-width: 0.2cap;
+  margin-bottom: 2%;
+  cursor: pointer;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
+}
+
+.valor{
+  width: 35%;
+  height: 319px;
+  background-color: rgba(179, 255, 0, 0);
+  display: flex;
+  flex-direction: column;
+}
+
+.Ivalor{
+  width: 100%;
+  height: 50%;
+  color: #304383;
+  padding-left: 10%;
+  padding-top: 5%;
+}
+
+.Ivalor p{
+  padding-bottom: 3%;
+}
+
+.Vtxt{
+  font-size: 18px;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
+}
+
+.preco{
+  font-size: 30px !important;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: bold;
+}
+
+.share {
+  width: 50%;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  background-color: #47969600;
+  padding-left: 10%;
+  padding-bottom: 4%;
+  font-size: 16px;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
+}
+
+.icon_comp{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  background-color: #EEF0F9;
+  border-radius: 1000px;
+}
+
+.SimComp_botao{
+  background-color: #304383;
+  width: 80%;
+  height: 60px;
+  border-radius: 5cap;
+  color: white;
+  font-size: 18px;
+  font-weight: lighter;
+  cursor: pointer;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Ibotao{
+  width: 100%;
+  height: 30%;
+  background-color: #7a90f100;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 3%;
+}
+
+/*=-=-=-=-=-=*/
+
+.todo2 {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 100%;
+  background-color: rgba(0, 255, 255, 0);
+  margin-top: 5%;
+  padding: 0 2%;
+  gap: 0.5%
+}
+
+.map_loc {
+  flex: 0 0 31.5%;
+  height: 100%;
+  background-color: #30438300;
+}
+
+.ir_loc{
+  background-color: #ffffff;
+  width: 26.5%;
+  height: 96px;
+  z-index: 1;
+  position: absolute;
+  margin-left: 1.5%;
+  margin-top: 0.7%;
+  border-color: #8794BE;
+  border-width: 1px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content:space-around;
+}
+
+.Ltxt {
+  width: 80%;
+  height: 55px;
+  font-size: 22px;
+  color: black;
+  display: block;
+  text-align: left;
+  background-color: #30438300;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
+}
+
+.p2{
+  padding-top: 6px;
+  font-size: 16px;
+}
+
+.icon_setaD{
+  width: 15.32px;
+  height: 17.28px;
+}
+
+.mapa-pequeno {
+  width: 100%;
+  height: 306px;
+  border-radius: 1.3cap;
+  z-index: 0;
+}
+
+.map_desc {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+  background-color: rgba(3, 40, 73, 0);
+  font-size: 18px;
+  margin-right: 2%;
+  margin-left: 2%;
+  color:#304383;
+}
+
+.map_desc h2 {
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: bold;
+  font-size: 22px !important;
+  color: #304383;
+}
+
+.map_desc p {
+  margin: 0;
+  font-size: 18px;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
+}
+
+.btn-ver-mais {
+  width: 12%;
+  height: 22px;
+  color: #304383;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #0aeb4200;
+  margin-left: 40%;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
+}
+
+.setaVmais{
+  margin-right: 10px;
+}
+
+.btn-ver-mais p{
+  color: #304383;
+}
+
+.btn-ver-mais Image {
+  object-fit: contain;
+}
+
+.descricao-reduzida {
+  display: -webkit-box;
+  -webkit-line-clamp: 9; /* número de linhas visíveis */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-height: 100px;
+}
+
+.descricao-expandida {
+  display: block;
+  max-height: none;
+}
+
+.linha-divisoria {
+  border: none;
+  height: 2px;
+  background-color: #D7D7D7;
+  width: 100%;
+  margin: 40px 0; 
+}
+
+
+@media (max-width: 768px) {
+  .imoveis-search-bar{
+    width: 0%;
+    height: 0px;
+}
+
+/*=-=-=-=-=-*/
+
+/* Container do carrossel */
+.imoveis-carousel {
+  width: 100%;
+}
+
+/* Botões de navegação */
+.imoveis-carousel .custom-next {
+  position: absolute;
+  top: 87%;
+  left: 85%;
+}
+
+/* Botão direito */
+.imoveis-carousel .custom-next {
+  background-color: #EEF0F9;
+  width: 63px;
+  height: 63px;
+}
+
+.carousel-img{
+  width: 100%;
+  height: 520px;
+}
+
+/*=-=-=-=-=-*/
+
+.todo {
+  position: relative; /* define o contexto para absolute */
+  width: 100%;
+  height: 521px; /* mantém a altura como antes */
+  background-color: rgba(255, 166, 0, 0);
+}
+
+.descricao {
+  width: 90%;
+  height: 100%; /* ocupa toda a altura do pai */
+  background-color: #EEF0F9;
+  border-bottom-right-radius: 5cap;
+  position: relative; /* mantém no fluxo normal */
+}
+
+.Dtexto {
+  position: relative; /* referencial pros filhos */
+  width: 100%;
+  height: 190px;
+  background-color: #e4ff8200;
+  color: #304383;
+  padding-left: 3%;
+  padding-top: 3.5%;
+  font-weight: bolder;
+}
+
+.t1 {
+  margin-top: 2%;
+}
+
+.t1 p {
+  font-size: 28px;
+}
+
+.t2 {
+  width: 100%;
+  height: 25%;
+  padding-top: 5%;
+}
+
+.t2 p {
+  font-size: 25.67px;
+}
+
+.Gimovel {
+  position: absolute;
+  bottom: -70%;  /* fixa no fundo do pai */
+  left: 5%;      /* alinhamento horizontal */
+  font-size: 20px;
+}
+
+.btn1{
+  width: 320px;
+  height: 60px;
+  margin-left: 5%;
+}
+.Dbotoes{
+  margin-top: 5%;
+  position: absolute;
+}
+
+.Dbotoes button{
+  margin-right: 4%;
+}
+
+.btn2{
+  width: 242px;
+  height: 60px;
+}
+
+.valor {
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  width: 100%;
+  height: 100%; 
+  z-index: 10; 
+  display: flex;
+  justify-content: center;
+  background-color: #00000000;
+}
+
+.share {
+  width: 50%;
+  height: 15%;
+  display: flex;
+  justify-content: flex-start; /* controla alinhamento horizontal */
+  align-items: center;         /* alinha verticalmente */
+  gap: 10px;                   /* espaço entre .Ivalor e .a */
+  position: absolute;
+  top: 82%;     /* ajusta posição do bloco dentro do pai maior */
+  left: -5.5%;
+  background-color: rgba(71, 150, 150, 0); /* transparente */
+  font-size: 15.6px;
+  font-family: 'Glacial Indifference', sans-serif;
+  font-weight: normal;
+}
+
+.Ivalor {
+  width: 200px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 4%;
+  color: #304383;
+  background-color: transparent;
+  margin: 0; /* não precisa margin-bottom por estar no flex */
+}
+
+.Ivalor p {
+  font-size: 0px; /* já define aqui em vez de .preco separado */
+  padding: 0; /* remove o padding-bottom que desalinhar */
+}
+
+.icon_comp{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 54.6px;
+  height: 54.6px;
+  background-color: #ffffff;
+  border-radius: 1000px;
+}
+
+.Ibotao {
+  position: relative; 
+  width: 100%;
+  height: 30%;
+  background-color: #7a90f100;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 3%;
+}
+
+.SimComp_botao {
+  position: absolute; 
+  bottom: 87%;        
+  left: 52%;        
+  width: 35%;
+  height: 60px;
+  font-size: 18px;
+}
+
+/*=-=-=-=-=-=*/
+
+.todo2 {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.map_loc {
+  flex: 0 0 98%;
+}
+
+.ir_loc{
+  width: 91%;
+  height: 96px;
+}
+
+.Ltxt {
+  width: 80%;
+  height: 55px;
+  font-size: 19.2px;
+}
+
+.p2{
+  padding-top: 6px;
+  font-size: 13.6px;
+}
+
+.mapa-pequeno {
+  width: 100%;
+  height: 306px;
+}
+
+.map_desc {
+  width: 98%;
+  height: 100%;
+  margin-top: 50px;
+}
+
+.map_desc h2 {
+  font-size: 26px !important;
+}
+
+.map_desc p {
+  font-size: 20px;
+}
+
+.btn-ver-mais {
+  width: 20%;
+  height: 22px;
+  font-size: 18px;
+}
+
+.linha-divisoria {
+  height: 0px;
+}
+
+}
 /* Bolinhas da paginação */
 .image-carroussel-imoveis .swiper-pagination-bullet {
   background-color: #EDECEC !important; /* cor normal */
