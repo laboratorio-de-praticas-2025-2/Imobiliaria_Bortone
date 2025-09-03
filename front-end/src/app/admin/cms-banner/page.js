@@ -4,6 +4,7 @@ import CMS from "@/components/cms/table";
 import { bannersMock } from "@/constants/banner";
 import { useEffect, useState } from "react";
 import { FaImage } from "react-icons/fa6";
+import Sidebar from "@/components/cms/Sidebar";
 
 export default function CmsBannerPage() {
   const [banners, setBanners] = useState([]);
@@ -27,36 +28,41 @@ export default function CmsBannerPage() {
     console.log("Update filter data:", newData);
 
   return (
-    <CMS.Body title={"Banners"}>
-      <CMS.Table>
-        <CMS.TableHeader
-          buttonText="Novo Banner"
-          buttonIcon={<FaImage />}
-          onSearch={onSearch}
-          href={"/admin/cms-banner/criar"}
-          handleSelectOrder={handleSelectOrder}
-          filterData={filterData}
-          updateFilterData={updateFilterData}
-        />
-        <CMS.TableBody>
-          {paginatedBanners.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
-              {paginatedBanners.map((banner) => (
-                <Card key={banner.id} banner={banner} />
-              ))}
-            </div>
-          ) : (
-            <p>No banners found.</p>
-          )}
-        </CMS.TableBody>
+    <>
+      <Sidebar />
+      <div className="ml-20">
+        <CMS.Body title={"Banners"}>
+          <CMS.Table>
+            <CMS.TableHeader
+              buttonText="Novo Banner"
+              buttonIcon={<FaImage />}
+              onSearch={onSearch}
+              href={"/admin/cms-banner/criar"}
+              handleSelectOrder={handleSelectOrder}
+              filterData={filterData}
+              updateFilterData={updateFilterData}
+            />
+            <CMS.TableBody>
+              {paginatedBanners.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+                  {paginatedBanners.map((banner) => (
+                    <Card key={banner.id} banner={banner} />
+                  ))}
+                </div>
+              ) : (
+                <p>No banners found.</p>
+              )}
+            </CMS.TableBody>
 
-        {/* Paginador controlado */}
-        <CMS.TableFooter
-          postsData={banners}
-          pageSize={pageSize}
-          onPageChange={setCurrentPage}
-        />
-      </CMS.Table>
-    </CMS.Body>
+            {/* Paginador controlado */}
+            <CMS.TableFooter
+              postsData={banners}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+            />
+          </CMS.Table>
+        </CMS.Body>
+      </div>
+    </>
   );
 }
