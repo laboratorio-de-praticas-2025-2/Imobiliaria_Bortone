@@ -1,7 +1,8 @@
 "use client";
-import { Button, Input } from "antd";
+import { Input } from "antd";
 import { IoSearchSharp } from "react-icons/io5";
 import DropdownFilter from "../../vitrine/DropdownFilter";
+import { TbSortAscending } from "react-icons/tb";
 import Link from "next/link";
 
 const { Search } = Input;
@@ -23,8 +24,8 @@ export default function TableHeader({
         href={href}
         className="!bg-white !text-[var(--primary)] !font-bold !border-0 !rounded-full h-12 !text-lg !px-4 hover:!bg-[var(--primary)] hover:!text-white transition-colors flex gap-2 justify-center items-center"
       >
-        {buttonText}
-        {buttonIcon && <span className="ml-2">{buttonIcon}</span>}
+        <p className="hidden md:flex">{buttonText}</p>
+        {buttonIcon && <span className="md:ml-2">{buttonIcon}</span>}
       </Link>
       <div className="flex gap-4 items-center">
         <Search

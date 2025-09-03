@@ -14,9 +14,9 @@ export default function TableFooter({ postsData, pageSize, onPageChange }) {
   const endIndex = startIndex + pageSize;
 
   return (
-    <div className="bg-white p-4 py- relative flex items-center">
+    <div className="bg-white p-4 py- relative flex items-center md:flex-row flex-col">
       {/* Paginação centralizada */}
-      <div className="absolute left-1/2 -translate-x-1/2">
+      <div className="md:absolute md:left-1/2 md:-translate-x-1/2">
           <Pagination
             className="custom-pagination-cms"
             current={currentPage}
@@ -36,7 +36,7 @@ export default function TableFooter({ postsData, pageSize, onPageChange }) {
       </div>
 
       {/* Texto alinhado à direita */}
-      <div className="ml-auto">
+      <div className="md:ml-auto">
         <p className="text-sm text-gray-600">
           Exibindo {startIndex + 1} - {Math.min(endIndex, postsData.length)} de{" "}
           {postsData.length} registros
