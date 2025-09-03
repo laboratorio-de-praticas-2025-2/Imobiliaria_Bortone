@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ImovelCard from "./ImovelCard";
 import GridImoveisFooter from "./GridImoveisFooter";
+import Link from "next/link";
 
 export default function GridImoveis({imoveis}) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,7 +42,9 @@ export default function GridImoveis({imoveis}) {
       {/* Grid */}
       <div className="grid gap-6 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {currentItems.map((imovel, index) => (
-          <ImovelCard key={index} imovel={imovel} />
+          <Link href="/imoveis/[id]" as={`/imoveis/${imovel.id}`} key={index}>
+            <ImovelCard imovel={imovel} />
+          </Link>
         ))}
       </div>
 
