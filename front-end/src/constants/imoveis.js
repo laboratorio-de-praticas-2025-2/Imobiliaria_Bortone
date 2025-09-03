@@ -123,7 +123,7 @@ export const mockImoveis = [
     possui_jardim: true,
     imagens: [
       {
-        url_imagem: "/images/slide1.png",
+        url_imagem: "/images/casa-isolada-no-campo.jpg",
         descricao: "Fachada da casa",
       },
     ],

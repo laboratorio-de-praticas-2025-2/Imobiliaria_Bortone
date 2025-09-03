@@ -131,7 +131,7 @@ export default function Mapa() {
                       alt={`Imóvel ${imovelAtual.id}`}
                       width={407}
                       height={195}
-                      className="carousel-img"
+                      className="carousel-img h-[520px]"
                     />
                   </div>
                 </SwiperSlide>
@@ -145,7 +145,7 @@ export default function Mapa() {
                   alt={`Imóvel ${imovelAtual.id}`}
                   width={407}
                   height={195}
-                  className="carousel-img"
+                  className="carousel-img object-cover rounded-lg aspect-video"
                 />
               </div>
             ))
