@@ -68,7 +68,7 @@ export default function CriarBannerPage() {
             />
             <FormButton
               text="Publicar"
-              className="!hidden !sm:flex"
+              className="!hidden sm:!flex"
               icon={<UploadOutlined />}
             />
           </div>
