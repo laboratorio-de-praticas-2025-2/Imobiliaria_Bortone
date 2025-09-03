@@ -15,7 +15,7 @@ export default function Card({banner}) {
   };
 
   return (
-    <div className="rounded-2xl flex flex-col w-fit bg-white">
+    <div className="rounded-2xl flex flex-col w-fit bg-white mb-5">
       <p className="p-3 text-lg font-bold">{banner.descricao}</p>
       <Image
         src={banner.url_imagem}
@@ -36,7 +36,11 @@ export default function Card({banner}) {
               },
             }}
           >
-            <Switch checked={checked} onChange={onChange} />
+            <Switch
+              checked={checked}
+              onChange={onChange}
+              className="switch-cms"
+            />
           </ConfigProvider>
         </div>
         <Link href={`/admin/cms-banner/editar/${banner.id}`}>

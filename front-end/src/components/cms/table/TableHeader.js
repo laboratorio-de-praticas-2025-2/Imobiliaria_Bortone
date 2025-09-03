@@ -22,7 +22,7 @@ export default function TableHeader({
     <div className="w-full flex justify-between items-center px-4 py-4 bg-[var(--primary)] rounded-t-4xl">
       <Link
         href={href}
-        className="!bg-white !text-[var(--primary)] !font-bold !border-0 !rounded-full h-12 !text-lg !px-4 hover:!bg-[var(--primary)] hover:!text-white transition-colors flex gap-2 justify-center items-center"
+        className="!bg-white !text-[var(--primary)] !font-bold !border-0 !rounded-full h-[34.4px] !text-lg !px-4 hover:!bg-[var(--primary)] hover:!text-white transition-colors flex gap-2 justify-center items-center"
       >
         <p className="hidden md:flex">{buttonText}</p>
         {buttonIcon && <span className="md:ml-2">{buttonIcon}</span>}
@@ -32,7 +32,7 @@ export default function TableHeader({
           placeholder="Pesquisar"
           onSearch={onSearch}
           allowClear
-          className="search-cms !text-[var(--primary)]"
+          className="search-cms !text-[var(--primary)] !h-full"
           prefix={<IoSearchSharp className="text-[var(--primary)]" size={18} />}
         />
         <DropdownFilter
