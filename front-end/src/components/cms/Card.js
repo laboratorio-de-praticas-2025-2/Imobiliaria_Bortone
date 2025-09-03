@@ -19,9 +19,9 @@ export default function Card({banner}) {
       <Image
         src={banner.url_imagem}
         alt={"Imagem do banner " + banner.id}
-        width={325}
+        width={425}
         height={130}
-        className="aspect-video object-cover"
+        className="aspect-[4/2] object-cover"
       />
       <div className="w-full flex justify-end gap-4 p-3">
         <div className="flex items-center gap-3">
