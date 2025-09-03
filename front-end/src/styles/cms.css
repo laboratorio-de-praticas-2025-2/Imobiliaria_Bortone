@@ -48,3 +48,41 @@
 .custom-pagination-cms .ant-pagination-disabled {
   color: #c1c1c1 !important;
 }
+
+/* Label em negrito e cor customizada */
+.custom-form-item .ant-form-item-label > label {
+  font-weight: 600;
+  color: #0d1b3e; /* cor parecida da 2ª imagem */
+}
+
+/* Input com borda arredondada azul */
+.custom-input {
+  border-radius: 6px !important;
+  border: 1px solid #304383 !important;
+  padding: 8px 12px !important;
+  font-size: 18px !important;
+}
+
+/* Placeholder cinza */
+.custom-input::placeholder {
+  color: #a1a1aa !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+.custom-form-item .ant-form-item-required::before {
+  display: none !important;
+}
+
+/* Cria o asterisco no final do label */
+.custom-form-item .ant-form-item-label::after {
+  content: "*" !important;
+  font-weight: 600 !important; 
+  color: #0d1b3e !important; 
+  align-items: center !important; 
+  margin-left: 4px !important;
+}
+
+.custom-form-item .ant-form-item-label > label::after {
+  display: none;
+ }

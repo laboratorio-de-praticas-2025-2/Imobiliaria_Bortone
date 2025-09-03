@@ -1,4 +1,4 @@
-export default function Table({data, columns, children}) {
+export default function Table({children}) {
     return(
         <div className="w-full">
             {children}

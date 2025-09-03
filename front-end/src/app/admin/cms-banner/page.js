@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
-import CMS from "@/components/cms";
-import { FaImage } from "react-icons/fa6";
 import Card from "@/components/cms/Card";
+import CMS from "@/components/cms/table";
 import { bannersMock } from "@/constants/banner";
+import { useEffect, useState } from "react";
+import { FaImage } from "react-icons/fa6";
 
 export default function CmsBannerPage() {
   const [banners, setBanners] = useState([]);
@@ -33,7 +33,7 @@ export default function CmsBannerPage() {
           buttonText="Novo Banner"
           buttonIcon={<FaImage />}
           onSearch={onSearch}
-          onClickNew={onClickNew}
+          href={"/admin/cms-banner/criar"}
           handleSelectOrder={handleSelectOrder}
           filterData={filterData}
           updateFilterData={updateFilterData}
