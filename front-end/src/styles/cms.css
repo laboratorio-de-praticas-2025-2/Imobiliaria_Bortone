@@ -1,18 +1,50 @@
 .search-cms .ant-input-affix-wrapper {
   border-radius: 1000px !important;
-  background-color: #EEF0F9 !important;
+  background-color: #eef0f9 !important;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-} 
+}
 
 .search-cms .ant-input-affix-wrapper input::placeholder {
   color: rgba(55, 74, 140, 0.34) !important;
 }
 
-.search-cms .ant-input-affix-wrapper:focus, .ant-input-affix-wrapper-focused {
+.search-cms .ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
   box-shadow: none !important;
   border-color: var(--primary) !important;
 }
 
-.search-cms .ant-input-group-addon{
+.search-cms .ant-input-group-addon {
   display: none !important;
+}
+.custom-pagination-cms .ant-pagination-item a {
+  font-weight: 600 !important;
+  font-size: 17px !important;
+  color: #181f3b !important;
+}
+
+/* Item ativo */
+.custom-pagination-cms .ant-pagination-item-active {
+  background-color: #f3f3f3 !important;
+  border: none !important;
+  border-radius: 5px !important;
+}
+
+.custom-pagination-cms .ant-pagination-item-active a {
+  color: #181f3b !important;
+  font-weight: 500 !important;
+}
+
+.custom-pagination-cms .ant-pagination-item:hover {
+  border-radius: 5px !important;
+}
+
+.custom-pagination-cms .ant-pagination-next,
+.custom-pagination-cms .ant-pagination-prev {
+  color: #181f3b !important;
+  font-weight: 500 !important;
+}
+
+.custom-pagination-cms .ant-pagination-disabled {
+  color: #c1c1c1 !important;
 }
