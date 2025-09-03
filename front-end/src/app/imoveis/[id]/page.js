@@ -10,7 +10,7 @@ import "leaflet/dist/leaflet.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -18,16 +18,54 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { PiBathtub } from "react-icons/pi";
 import { BsDoorOpenFill } from "react-icons/bs";
+import dynamic from "next/dynamic";
 
 const { Search } = Input;
 const onSearch = (value) => console.log(value);
+
+// Componente de mapa carregado dinamicamente
+const LeafletMap = dynamic(
+  () =>
+    Promise.resolve(() => {
+      useEffect(() => {
+        const mapContainer = document.getElementById("map-pequeno");
+        if (!mapContainer || mapContainer.children.length > 0) return;
+
+        import("leaflet").then((L) => {
+          const map = L.map(mapContainer, { zoomControl: false }).setView(
+            [-23.5505, -46.6333],
+            13
+          );
+
+          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "© OpenStreetMap contributors",
+          }).addTo(map);
+
+          const customIcon = L.icon({
+            iconUrl: "/images/icon_loc.png",
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32],
+          });
+
+          L.marker([-23.5505, -46.6333], { icon: customIcon }).addTo(map);
+        });
+      }, []);
+
+      return <div id="map-pequeno" className="mapa-pequeno" />;
+    }),
+  { ssr: false } // garante que só renderize no cliente
+);
+
 
 export default function Mapa() {
   const [verMais, setVerMais] = useState(false);
   const [imoveis, setImoveis] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [mostrarBotao, setMostrarBotao] = useState(false);
+  const descricaoRef = useRef(null);
 
-  const { id } = useParams(); // pega o id da URL
+  const { id } = useParams();
 
   useEffect(() => {
     setLoading(true);
@@ -36,29 +74,12 @@ export default function Mapa() {
   }, []);
 
   useEffect(() => {
-    const mapContainer = document.getElementById("map-pequeno");
-    if (!mapContainer || mapContainer.children.length > 0) return;
-
-    import("leaflet").then((L) => {
-      const map = L.map(mapContainer, { zoomControl: false }).setView(
-        [-23.7092, -47.8433],
-        13
-      );
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap contributors",
-      }).addTo(map);
-
-      const customIcon = L.icon({
-        iconUrl: "/images/icon_loc.png",
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
-        popupAnchor: [0, -32],
-      });
-
-      L.marker([-23.5505, -46.6333], { icon: customIcon }).addTo(map);
-    });
-  }, []);
+    if (descricaoRef.current) {
+      const alturaTotal = descricaoRef.current.scrollHeight;
+      const alturaLimitada = 100; // altura máxima do .descricao-reduzida
+      setMostrarBotao(alturaTotal > alturaLimitada);
+    }
+  }, [imoveis]);
 
   if (loading) return <div>Carregando...</div>;
 
@@ -85,43 +106,60 @@ export default function Mapa() {
 
         {/* Carrossel */}
         <div className="imoveis-carousel">
-          <Swiper
-            modules={[Navigation]}
-            navigation={{
-              nextEl: ".custom-next",
-              prevEl: ".custom-prev",
-            }}
-            loop={true}
-            grabCursor={true}
-            spaceBetween={0}
-            breakpoints={{
-              320: { slidesPerView: 1 },
-              640: { slidesPerView: 1 },
-              1024: { slidesPerView: 1 },
-              1440: { slidesPerView: 2 },
-            }}
-          >
-            {slides.map((slide, idx) => (
-              <SwiperSlide key={idx} className="flex justify-center">
-                <div className="slide-card w-full">
-                  <Image
-                    src={slide.url_imagem}
-                    alt={`Imóvel ${imovelAtual.id}`}
-                    width={407}
-                    height={195}
-                    className="carousel-img"
-                  />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          <button className="custom-prev inv">
-            <IoIosArrowBack size={30} color="#2C2C2C" />
-          </button>
-
-          <button className="custom-next">
-            <IoIosArrowForward size={30} color="#2C2C2C" />
-          </button>
+          {slides.length > 1 ? (
+            <Swiper
+              modules={[Navigation]}
+              navigation={{
+                nextEl: ".custom-next",
+                prevEl: ".custom-prev",
+              }}
+              loop={true}
+              grabCursor={true}
+              spaceBetween={0}
+              breakpoints={{
+                320: { slidesPerView: 1 },
+                640: { slidesPerView: 1 },
+                1024: { slidesPerView: 1 },
+                1440: { slidesPerView: 2 },
+              }}
+            >
+              {slides.map((slide, idx) => (
+                <SwiperSlide key={idx} className="flex justify-center">
+                  <div className="slide-card w-full">
+                    <Image
+                      src={slide.url_imagem}
+                      alt={`Imóvel ${imovelAtual.id}`}
+                      width={407}
+                      height={195}
+                      className="carousel-img"
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            slides.map((slide, idx) => (
+              <div key={idx} className="slide-card w-full">
+                <Image
+                  src={slide.url_imagem}
+                  alt={`Imóvel ${imovelAtual.id}`}
+                  width={407}
+                  height={195}
+                  className="carousel-img"
+                />
+              </div>
+            ))
+          )}
+          {slides.length > 1 && (
+            <>
+              <button className="custom-prev inv">
+                <IoIosArrowBack size={30} color="#2C2C2C" />
+              </button>
+              <button className="custom-next">
+                <IoIosArrowForward size={30} color="#2C2C2C" />
+              </button>
+            </>
+          )}
         </div>
 
         {/* Descrição e Valor */}
@@ -205,11 +243,11 @@ export default function Mapa() {
           </div>
         </div>
 
-        {/* Mapa pequeno com Leaflet */}
+        {/* Mapa */}
         <div className="todo2">
           <div className="map_loc">
             <Link className="ir_loc" href="/mapa">
-              <div className="ir_loc_txt">
+              <div className="Ltxt">
                 <p>{imovelAtual.endereco}</p>
                 <p className="p2">{imovelAtual.cidade}</p>
               </div>
@@ -224,25 +262,35 @@ export default function Mapa() {
                 />
               </div>
             </Link>
-            <div id="map-pequeno" className="mapa-pequeno" />
+
+            <LeafletMap
+              latitude={imovelAtual.latitude || -23.5505}
+              longitude={imovelAtual.longitude || -46.6333}
+            />
           </div>
+
+          {/* Descrição expandida */}
           <div className="map_desc">
             <h2>Descrição</h2>
             <p
+              ref={descricaoRef}
               className={verMais ? "descricao-expandida" : "descricao-reduzida"}
             >
               {imovelAtual.descricao}
             </p>
-            <button className="btn-ver-mais" onClick={toggleVerMais}>
-              <Image
-                src="/images/seta_baixo.png"
-                alt="Ver mais"
-                width={20}
-                height={20}
-                className="setaVmais"
-              />
-              <p>{verMais ? "Ver menos" : "Ver mais"}</p>
-            </button>
+
+            {mostrarBotao && (
+              <button className="btn-ver-mais" onClick={toggleVerMais}>
+                <Image
+                  src="/images/seta_baixo.png"
+                  alt="Ver mais"
+                  width={20}
+                  height={20}
+                  className="setaVmais"
+                />
+                <p>{verMais ? "Ver menos" : "Ver mais"}</p>
+              </button>
+            )}
           </div>
         </div>
 

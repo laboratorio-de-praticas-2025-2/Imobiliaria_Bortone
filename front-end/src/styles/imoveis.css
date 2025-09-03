@@ -318,7 +318,7 @@
 .todo2 {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: stretch;
   justify-content: flex-start;
   width: 100%;
   background-color: rgba(0, 255, 255, 0);
@@ -349,7 +349,7 @@
   justify-content:space-around;
 }
 
-.ir_loc_txt {
+.Ltxt {
   width: 80%;
   height: 55px;
   font-size: 22px;
@@ -389,7 +389,7 @@
   font-size: 18px;
   margin-right: 2%;
   margin-left: 2%;
-  color:#304383
+  color:#304383;
 }
 
 .map_desc h2 {
@@ -439,10 +439,12 @@
   -webkit-line-clamp: 9; /* número de linhas visíveis */
   -webkit-box-orient: vertical;
   overflow: hidden;
+  max-height: 100px;
 }
 
 .descricao-expandida {
   display: block;
+  max-height: none;
 }
 
 .linha-divisoria {
@@ -602,28 +604,6 @@
   padding: 0; /* remove o padding-bottom que desalinhar */
 }
 
-.a {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  color: #304383;
-  background-color: transparent;
-  height: 100%;
-}
-
-.a {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px; 
-  text-decoration: none;
-  color: #304383;
-  background-color: #7a90f100;
-}
-
-
 .icon_comp{
   display: flex;
   justify-content: center;
@@ -671,7 +651,7 @@
   height: 96px;
 }
 
-.ir_loc_txt {
+.Ltxt {
   width: 80%;
   height: 55px;
   font-size: 19.2px;
@@ -690,7 +670,7 @@
 .map_desc {
   width: 98%;
   height: 100%;
-  margin-top: -360px;
+  margin-top: 50px;
 }
 
 .map_desc h2 {
@@ -710,6 +690,7 @@
 .linha-divisoria {
   height: 0px;
 }
+
 }
 /* Bolinhas da paginação */
 .image-carroussel-imoveis .swiper-pagination-bullet {
