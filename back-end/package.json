@@ -2,6 +2,8 @@
   "dependencies": {
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "mysql2": "^3.14.4",
     "sequelize": "^6.37.7"
-  }
+  },
+  "type": "module"
 }
