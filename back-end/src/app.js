@@ -1,10 +1,14 @@
 import express from "express";
+import router from './routes/recomendacaoImovelRoutes.js';
+import connection from "./config/sequelize-config.js";
 
 const app = express();
 
-import connection from "./config/sequelize-config.js";
+app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
+
+app.use('/', router);
 
 connection
   .authenticate()
