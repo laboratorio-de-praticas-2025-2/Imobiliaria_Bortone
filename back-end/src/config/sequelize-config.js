@@ -1,15 +1,13 @@
 import { Sequelize } from "sequelize";
-import "dotenv/config";
 
 const connection = new Sequelize(
-  process.env.DB_DATABASE,
-  process.env.DB_USER,
-  process.env.DB_PASS,
+  'lp-imobiliaria_dev', 
+  '426814_dados',      
+  'DSM-2C602y',        
   {
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT,
+    host: 'mysql-lp-imobiliaria.alwaysdata.net', 
+    dialect: 'mysql',
   }
 );
-
 
 export default connection;
