@@ -9,7 +9,7 @@ import LocationButton from "./LocationButton";
 import L from "leaflet";
 
 const casaIcon = new L.Icon({
-  iconUrl: "icons/casa.png",
+  iconUrl: "images/icons/casa.png",
   iconSize: [38, 40],
   iconAnchor: [15, 30],
 });

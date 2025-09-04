@@ -5,18 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { navLinks } from "@/constants/navLinks";
 import { FaUser } from "react-icons/fa6";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
 import { createElement } from "react";
 
 const { Search } = Input;
 
 const onSearch = (value) => console.log(value);
 
-export default function HomeNavbar() {
+export default function HomeNavbar({className}) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="navbar top-0 left-0 w-full z-10 bg-white md:bg-[#050D2D73] py-3.5 px-6 md:px-16">
+    <div className={`navbar top-0 left-0 w-full z-10 bg-white md:bg-[#050D2D73] py-3.5 px-6 md:px-16 ${className}`}>
       <Flex justify="space-between" align="center" className="navbar-desktop">
         {/* Logo */}
         <Image
@@ -29,8 +29,17 @@ export default function HomeNavbar() {
         {/* Links desktop */}
         <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
-            <Link href={link.path} key={link.name}>
-              <Flex gap="middle" align="center" className="nav-link">
+            <Link
+              href={link.path}
+              key={link.name}
+              className="h-full"
+            >
+              <Flex
+                gap="middle"
+                align="center"
+                justify="center"
+                className="nav-link !w-[7vw] !py-2.5 rounded-[3px] hover:!bg-white hover:!text-[var(--primary)] transition-colors"
+              >
                 {link.name}
               </Flex>
             </Link>
