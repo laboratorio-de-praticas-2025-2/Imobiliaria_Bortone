@@ -11,30 +11,30 @@ export default function RentalByRegion() {
   const [chartData, setChartData] = useState(null);
 
   // Puxando dados de uma API real, mas a API tá fora do ar no momento ↓
-  // useEffect(() => {
-  //   fetch("https://6a3f34f1-cba4-496f-bbb1-ab1de57caebb.mock.pstmn.io/regioes") // URL da sua API
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       // aqui você ajusta o formato para o Chart.js
-  //       setChartData({
-  //         labels: data.map((item) => item.nome), // exemplo: "Região Sul"
-  //         datasets: [
-  //           {
-  //             data: data.map((item) => item.valor), // exemplo: 25
-  //             backgroundColor: [
-  //               "#243B7B",
-  //               "#F39C12",
-  //               "#B8AEBF",
-  //               "#A6A6A6",
-  //               "#E74C3C",
-  //             ],
-  //             borderWidth: 0,
-  //             cutout: "60%",
-  //           },
-  //         ],
-  //       });
-  //     });
-  // }, []);
+  useEffect(() => {
+    fetch("https://6a3f34f1-cba4-496f-bbb1-ab1de57caebb.mock.pstmn.io/regioes") // URL da sua API
+      .then((res) => res.json())
+      .then((data) => {
+        // aqui você ajusta o formato para o Chart.js
+        setChartData({
+          labels: data.map((item) => item.nome), // exemplo: "Região Sul"
+          datasets: [
+            {
+              data: data.map((item) => item.valor), // exemplo: 25
+              backgroundColor: [
+                "#243B7B",
+                "#F39C12",
+                "#B8AEBF",
+                "#A6A6A6",
+                "#E74C3C",
+              ],
+              borderWidth: 0,
+              cutout: "60%",
+            },
+          ],
+        });
+      });
+  }, []);
 
   // Dados estáticos para demonstração  ↓
   const data = {
@@ -86,14 +86,14 @@ export default function RentalByRegion() {
 
         <div className="items-center justify-items-center w-full h-full">
           <div className="w-fit h-fit">
-            <Doughnut data={data} options={options} />
+            {/* <Doughnut data={data} options={options} /> */}
 
             {/* Puxando dados de uma API real, mas a API tá fora do ar no momento ↓ */}
-            {/* {chartData ? (
+            {chartData ? (
               <Doughnut data={chartData} options={options} />
             ) : (
               <p>Carregando...</p>
-            )} */}
+            )}
           </div>
         </div>
       </div>

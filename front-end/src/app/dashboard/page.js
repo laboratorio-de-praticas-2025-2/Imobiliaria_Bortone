@@ -4,15 +4,14 @@ import { IoOptions } from "react-icons/io5";
 import Infos from "@/components/dash/Infos";
 import RentalByRegion from "@/components/dash/RentalByRegion";
 import PropertySold from "@/components/dash/PropertySold";
+import UsersPerMonth from "@/components/dash/UsersPerMonth";
 export default function Dashboard() {
   const style = { background: "#0092ff", padding: "8px 0" };
 
   return (
     <div className="">
-      <div className="w-[90vw]">
-        <div className="h-[200px] bg-[var(--secondary)]">
-          <div className="">
-            <Row>
+        <div className="w-[90vw] pb-4">
+            <Row className="">
               <Col className="gutter-row" md={7} xs={24}>
                 <div style={style}>
                   <span className="text-white text-[40px] font-[700] ">
@@ -33,22 +32,16 @@ export default function Dashboard() {
               <Col className="gutter-row" md={7} xs={24}>
                 <div style={style}></div>
               </Col>
-            </Row>{" "}
-          </div>
+            </Row>
+          <Section  />
         </div>
-
-        <div className="w-[90vw] justify-self-center">
-          <Section />
-        </div>
-      </div>
-
       <div className="w-[90vw]">
         <Row gutter={{ xs: 8, sm: 16 }}>
           <Col lg={14} xs={24}>
             <Infos />
-            <Row>
+            <Row className="py-4">
               <Col className="gutter-row" span={24}>
-                <div style={style}>a-6</div>
+                <UsersPerMonth />
               </Col>
             </Row>
           </Col>
