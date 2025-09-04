@@ -57,7 +57,6 @@ const LeafletMap = dynamic(
   { ssr: false } // garante que só renderize no cliente
 );
 
-
 export default function Mapa() {
   const [verMais, setVerMais] = useState(false);
   const [imoveis, setImoveis] = useState([]);

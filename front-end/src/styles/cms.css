@@ -82,34 +82,34 @@
 /* Cria o asterisco no final do label */
 .custom-form-item .ant-form-item-label::after {
   content: "*" !important;
-  font-weight: 600 !important; 
-  color: #0d1b3e !important; 
-  align-items: center !important; 
+  font-weight: 600 !important;
+  color: #0d1b3e !important;
+  align-items: center !important;
   margin-left: 4px !important;
 }
 
 .custom-form-item .ant-form-item-label > label::after {
   display: none;
- }
-
-.custom-form-item  .ant-form-item-label >label{
-  font-size: 16px !important
 }
 
-.switch-cms .ant-switch-inner{
+.custom-form-item .ant-form-item-label > label {
+  font-size: 16px !important;
+}
+
+.switch-cms .ant-switch-inner {
   background-color: white;
   border: 1.4px solid black;
-  box-shadow: inset 0 0 0 1px white !important
+  box-shadow: inset 0 0 0 1px white !important;
 }
 
-.switch-cms .ant-switch-handle::before{
-  background-color: var(--secondary)
+.switch-cms .ant-switch-handle::before {
+  background-color: var(--secondary);
 }
 
-.ant-switch-checked .ant-switch-inner{
-  background-color: #7F92D4 !important;
+.ant-switch-checked .ant-switch-inner {
+  background-color: #7f92d4 !important;
 }
 
-.ant-switch-checked .ant-switch-handle::before{
-  background-color: #374A8C !important;
+.ant-switch-checked .ant-switch-handle::before {
+  background-color: #374a8c !important;
 }

@@ -2,7 +2,6 @@
 import { Input } from "antd";
 import { IoSearchSharp } from "react-icons/io5";
 import DropdownFilter from "../../vitrine/DropdownFilter";
-import { TbSortAscending } from "react-icons/tb";
 import Link from "next/link";
 
 const { Search } = Input;
