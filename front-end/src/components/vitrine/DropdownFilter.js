@@ -48,7 +48,7 @@ export default function DropdownFilter({
 
       {/* Menu */}
       {open && (
-        <div className="absolute mt-2 w-full rounded-2xl bg-white shadow-lg ring-1 ring-black/5 z-10">
+        <div className="absolute mt-2 min-w-full right-0 rounded-2xl bg-white shadow-lg ring-1 ring-black/5 z-10">
           <div className="flex flex-col gap-0.5">
             {options.map((option) => (
               <button

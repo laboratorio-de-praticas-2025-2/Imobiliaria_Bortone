@@ -19,7 +19,7 @@ export default function TableHeader({
   updateFilterData,
 }) {
   return (
-    <div className="w-full flex justify-between items-center px-4 py-4 bg-[var(--primary)] rounded-t-4xl">
+    <div className="w-full flex justify-between items-center px-4 py-4 bg-[var(--primary)] rounded-t-4xl gap-2">
       <Link
         href={href}
         className="!bg-white !text-[var(--primary)] !font-bold !border-0 !rounded-full h-[34.4px] !text-lg !px-4 hover:!bg-[var(--primary)] hover:!text-white transition-colors flex gap-2 justify-center items-center"
@@ -27,7 +27,7 @@ export default function TableHeader({
         <p className="hidden md:flex">{buttonText}</p>
         {buttonIcon && <span className="md:ml-2">{buttonIcon}</span>}
       </Link>
-      <div className="flex gap-4 items-center">
+      <div className="flex md:gap-4 gap-2 items-center">
         <Search
           placeholder="Pesquisar"
           onSearch={onSearch}
@@ -44,7 +44,7 @@ export default function TableHeader({
             updateFilterData({ order: value === "Ordenar por" ? null : value })
           }
           classP="hidden md:flex"
-          width={"w-full"}
+          width={"md:w-full w-[20%]"}
         />
       </div>
     </div>
