@@ -19,7 +19,7 @@ export default (sequelize, DataTypes) => {
     },
     usuario_id: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false, // torna o campo obrigatório
       references: {
         model: 'usuario',
         key: 'id'
