@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "antd": "^5.27.1",
+    "@ant-design/compatible": "^5.1.4",
+    "antd": "^5.27.2",
+    "dotenv": "^17.2.1",
     "leaflet": "^1.9.4",
     "next": "15.4.7",
     "react": "19.1.0",

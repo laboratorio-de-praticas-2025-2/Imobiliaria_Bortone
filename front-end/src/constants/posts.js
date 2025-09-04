@@ -1,0 +1,154 @@
+export const postsData = [
+  {
+    id: 1,
+    title: "Vila Ponce: Charme, Tranquilidade e Localização",
+    image: "/images/post1.jpeg",
+    date: "28/08/2025",
+    content:
+      "Descubra a Vila Ponce, um bairro que une o sossego de uma área residencial com a conveniência de estar perto de tudo. A área é conhecida por suas ruas arborizadas e vizinhança acolhedora, criando um ambiente perfeito para quem busca paz e qualidade de vida. Morar aqui significa ter a tranquilidade de uma vida mais calma, sem abrir mão da praticidade de estar a poucos minutos de comércios, escolas e serviços essenciais. A Vila Ponce oferece uma combinação rara e desejada: a sensação de refúgio e, ao mesmo tempo, a proximidade com o centro da cidade. É o lugar ideal para famílias que valorizam segurança, espaços ao ar livre e um ritmo de vida mais sereno, mas que precisam de fácil acesso às conveniências urbanas. Venha conhecer as oportunidades de imóveis que temos disponíveis, desde casas charmosas a terrenos para construir o seu projeto de vida.",
+  },
+  {
+    id: 2,
+    title: "Pontos para se visitar em Registro",
+    image: "/images/post2.jpg",
+    date: "26/08/2025",
+    content:
+      "Explore os melhores lugares de Registro! A cidade, conhecida como a capital do Vale do Ribeira, oferece uma rica mistura de cultura, natureza e história. Para os amantes da natureza, uma visita ao Parque Municipal Nelson Aparecido Vitti é imperdível, com trilhas ecológicas e áreas de lazer perfeitas para um dia em família. Se você busca imersão cultural, o Museu da Colonização Japonesa e a Praça da Árvore Centenária contam a história de como a cidade se desenvolveu e celebram sua diversidade. Para o lazer e compras, o Centro da cidade e o Mercado Municipal são pontos de encontro vibrantes, onde é possível encontrar produtos frescos e artesanato local. Não perca a oportunidade de explorar a gastronomia variada da cidade, de pratos típicos a restaurantes temáticos. Registro é uma cidade que surpreende a cada esquina, com algo novo a oferecer a todos os gostos e idades.",
+  },
+  {
+    id: 3,
+    title: "Como é viver em Registro?",
+    image: "/images/post3.jpg",
+    date: "24/08/2025",
+    content:
+      "Curioso sobre como é a vida em Registro? Viver aqui é experimentar um ritmo de vida mais tranquilo e acolhedor, típico de uma cidade do interior, mas com uma estrutura completa de serviços e comércio. A comunidade é conhecida por ser receptiva e calorosa, o que facilita a adaptação de novos moradores. A cidade conta com excelentes escolas, hospitais de qualidade e uma rede de transporte que conecta facilmente os bairros. Além disso, a segurança e a proximidade com a natureza são fatores que elevam a qualidade de vida. As opções de lazer são variadas, de atividades ao ar livre em parques a eventos culturais e esportivos. O custo de vida é mais acessível em comparação com as grandes metrópoles, permitindo uma vida mais confortável e menos estressante. Se você busca um lugar para criar raízes, com um ambiente familiar e uma comunidade unida, Registro pode ser o seu próximo lar.",
+  },
+  {
+    id: 4,
+    title: "8 motivos para amar sua cidade",
+    image: "/images/post4.jpg",
+    date: "18/08/2025",
+    content:
+      "Seja você um morador de longa data ou um recém-chegado, este artigo celebra as belezas e particularidades de Registro. Prepare-se para se apaixonar novamente por cada detalhe da sua cidade! Listamos 8 razões irresistíveis para amar viver aqui: 1. A riqueza histórica e cultural, evidente em cada canto; 2. A natureza exuberante que cerca a cidade, proporcionando paz e bem-estar; 3. A gastronomia variada e deliciosa; 4. O calor e a receptividade da população; 5. O desenvolvimento contínuo da infraestrutura; 6. A segurança e o ambiente familiar; 7. A proximidade com o litoral e outras cidades turísticas; 8. E a sensação de pertencimento a uma comunidade forte e unida. Estes motivos e muitos outros fazem de Registro um lugar único e especial para chamar de lar.",
+  },
+  {
+    id: 5,
+    title: "Melhores bairros para se morar em Registro",
+    image: "/images/post5.jpeg",
+    date: "12/08/2025",
+    content:
+      "Qual é o bairro ideal para você? A escolha do bairro certo é crucial para garantir a qualidade de vida que você e sua família merecem. Para quem busca tranquilidade e um ambiente mais residencial, bairros como o **Jardim Paulistano** e a **Vila Ponce** são excelentes opções, com ruas calmas e vizinhança acolhedora. Se a sua prioridade é estar perto de tudo, o **Centro** de Registro oferece a praticidade de ter comércio, escolas e serviços a poucos passos de casa. Já para quem valoriza áreas de lazer e espaços abertos, bairros próximos aos parques da cidade podem ser a melhor escolha. Outra área promissora é o **Agrochá**, que tem atraído muitos investidores e novos moradores devido ao seu potencial de crescimento e valorização. Cada bairro tem sua própria personalidade, e nosso guia detalhado irá ajudá-lo a encontrar o lar perfeito que se encaixa no seu estilo de vida, orçamento e necessidades.",
+  },
+  {
+    id: 6,
+    title: "Vila Fátima: O que fazer neste bairro?",
+    image: "/images/post6.jpeg",
+    date: "10/08/2025",
+    content:
+      "A Vila Fátima oferece um mix vibrante de comércio, lazer e residências, tornando-se um dos bairros mais dinâmicos de Registro. Se você mora ou está de passagem pela região, há várias opções para aproveitar o dia. Para os amantes de esportes, o Ginásio de Esportes e as quadras locais são pontos de encontro frequentes para partidas de basquete, futebol e vôlei. O comércio local é diversificado, com lojas, padarias e restaurantes que atendem a todas as necessidades. À noite, a Vila Fátima ganha vida com bares e lanchonetes que são perfeitos para um happy hour com amigos. O bairro também oferece um ambiente seguro e familiar, com praças e áreas verdes ideais para um passeio tranquilo. A infraestrutura completa e a atmosfera acolhedora fazem da Vila Fátima um ótimo lugar para se viver e visitar.",
+  },
+  {
+    id: 7,
+    title: "Melhores imóveis na beira da estrada",
+    image: "/images/post7.jpeg",
+    date: "01/08/2025",
+    content:
+      "Para quem busca a conveniência de fácil acesso e visibilidade, imóveis localizados nas principais rodovias de Registro são uma excelente opção. Seja para abrir um negócio, como um restaurante, loja ou escritório, ou para moradia, a localização estratégica oferece inúmeras vantagens. O fluxo constante de veículos e a fácil identificação dos estabelecimentos garantem um alto potencial de clientes. Além disso, muitos desses imóveis possuem grandes terrenos, perfeitos para estacionamento ou para a expansão do seu projeto. A proximidade com cidades vizinhas e a facilidade de deslocamento para outras regiões do Vale do Ribeira tornam esses imóveis ainda mais atrativos. Se você procura um local com grande potencial de valorização e retorno sobre o investimento, explore nossa seleção de imóveis na beira da estrada, ideal para quem quer empreender ou morar em um local com fácil acesso a tudo.",
+  },
+  {
+    id: 8,
+    title: "Morar no centro de Registro: Prós e Contras",
+    image: "/images/post2.jpg",
+    date: "25/07/2025",
+    content:
+      "Viver no coração de Registro é sinônimo de praticidade. Analisamos as vantagens, como a proximidade de serviços e lazer, e os desafios, como o trânsito e o movimento, para te ajudar a decidir.",
+  },
+  {
+    id: 9,
+    title: "As melhores dicas para comprar seu primeiro imóvel",
+    image: "/images/post2.jpg",
+    date: "20/07/2025",
+    content:
+      "O sonho da casa própria está mais perto do que você imagina. Nossas dicas vão te guiar pelo processo de compra, desde a busca ideal até a negociação, garantindo uma transição tranquila.",
+  },
+  {
+    id: 10,
+    title: "Jardim Paulistano: Um bairro tranquilo e familiar",
+    image: "/images/post2.jpg",
+    date: "15/07/2025",
+    content:
+      "O Jardim Paulistano se destaca pela sua atmosfera serena, ideal para quem busca um refúgio da agitação. Com ruas arborizadas e vizinhança acolhedora, é o local perfeito para criar raízes.",
+  },
+  {
+    id: 11,
+    title: "Imóveis na zona rural: Paz e natureza perto de você",
+    image: "/images/post2.jpg",
+    date: "08/07/2025",
+    content:
+      "Fuja do caos da cidade! Descubra como é ter um lar em meio à natureza, desfrutando de ar puro, espaços amplos e tranquilidade. Uma vida mais simples e conectada com o ambiente.",
+  },
+  {
+    id: 12,
+    title: "Guia de restaurantes e bares em Registro",
+    image: "/images/post2.jpg",
+    date: "01/07/2025",
+    content:
+      "A gastronomia de Registro é rica e variada. De pratos típicos a cozinhas internacionais, este guia lista os melhores estabelecimentos para você saborear o que a cidade tem de melhor.",
+  },
+  {
+    id: 13,
+    title: "Conheça o Parque Municipal Nelson Aparecido Vitti",
+    image: "/images/post2.jpg",
+    date: "25/06/2025",
+    content:
+      "Visite um dos principais cartões-postais de Registro. O Parque Nelson Aparecido Vitti oferece trilhas, áreas de lazer e uma vista deslumbrante, perfeito para um dia de diversão e relaxamento em família.",
+  },
+  {
+    id: 14,
+    title: "Imóveis com piscina para o verão",
+    image: "/images/post2.jpg",
+    date: "18/06/2025",
+    content:
+      "Com o calor se aproximando, nada melhor do que ter uma piscina em casa. Selecionamos os melhores imóveis com área de lazer para você aproveitar o verão com conforto e privacidade.",
+  },
+  {
+    id: 15,
+    title: "Alugar ou comprar um imóvel? Ajudamos você a decidir",
+    image: "/images/post2.jpg",
+    date: "10/06/2025",
+    content:
+      "A decisão entre alugar e comprar um imóvel pode ser desafiadora. Analisamos os fatores financeiros e pessoais envolvidos para que você faça a escolha certa, de acordo com seus objetivos.",
+  },
+  {
+    id: 16,
+    title: "Dicas de decoração para seu novo apartamento",
+    image: "/images/post2.jpg",
+    date: "05/06/2025",
+    content:
+      "Mude-se com estilo! Com dicas práticas e criativas, este post vai te ajudar a transformar seu apartamento em um verdadeiro lar, refletindo sua personalidade em cada detalhe da decoração.",
+  },
+  {
+    id: 17,
+    title: "Bairro Agrochá: Oportunidade de investimento",
+    image: "/images/post2.jpg",
+    date: "28/05/2025",
+    content:
+      "O Agrochá é um dos bairros de Registro com maior potencial de crescimento. Se você busca um investimento sólido e promissor, esta região oferece excelentes oportunidades de valorização e retorno.",
+  },
+  {
+    id: 18,
+    title: "Como valorizar seu imóvel para a venda",
+    image: "/images/post2.jpg",
+    date: "20/05/2025",
+    content:
+      "Quer vender seu imóvel por um preço justo e em tempo hábil? Conheça as estratégias para aumentar o valor da sua propriedade, desde pequenas reformas até a apresentação visual, e feche o negócio dos seus sonhos.",
+  },
+  {
+    id: 19,
+    title: "Os eventos mais esperados do ano em Registro",
+    image: "/images/post2.jpg",
+    date: "15/05/2025",
+    content:
+      "Fique por dentro da agenda cultural de Registro! Preparamos um calendário com os principais eventos da cidade, como festivais de música, feiras e festas locais, para você aproveitar ao máximo.",
+  },
+];
