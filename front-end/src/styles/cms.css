@@ -113,3 +113,8 @@
 .ant-switch-checked .ant-switch-handle::before {
   background-color: #374a8c !important;
 }
+
+.custom-radio-group .ant-radio-checked .ant-radio-inner {
+  border-color: #F39200 !important;
+  background-color: #F39200 !important;
+}

@@ -2,26 +2,21 @@
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import Form from "@/components/cms/form";
 import FormButton from "@/components/cms/form/fields/Button";
-import PreviaBanner from "@/components/cms/form/fields/PreviaBanner";
-import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import TextField from "@/components/cms/form/fields/TextField";
-import UploadField from "@/components/cms/form/fields/UploadField";
 import Sidebar from "@/components/cms/Sidebar";
-import { bannersMock } from "@/mock/banner";
-import { UploadOutlined } from "@ant-design/icons";
-import Image from "next/image";
+import { usersMock } from "@/mock/users";
+import RadioField from "@/components/cms/form/fields/RadioField";
 import { useEffect, useState } from "react";
 
-export default function EditarBannerPage({ params }) {
+export default function EditarUserPage({ params }) {
   const id = params?.id;
-  const [fileList, setFileList] = useState([]);
-  const [banner, setBanner] = useState(null);
+  const [user, setUser] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [formValues, setFormValues] = useState(null);
 
   useEffect(() => {
-    const found = bannersMock.find((b) => String(b.id) === String(id));
-    setBanner(found);
+    const found = usersMock.find((b) => String(b.id) === String(id));
+    setUser(found);
   }, [id]);
 
   const onFinish = (values) => {
@@ -32,14 +27,14 @@ export default function EditarBannerPage({ params }) {
   const onConfirm = () => {
     console.log("Edit Success:", formValues);
     setIsConfirmModalVisible(false);
-    window.location.href = "/admin/cms-banner";
+    window.location.href = "/admin/cms-usuarios";
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Edit Failed:", errorInfo);
   };
 
-  if (!banner) return <div>Carregando...</div>;
+  if (!user) return <div>Carregando...</div>;
 
   return (
     <>
@@ -52,75 +47,60 @@ export default function EditarBannerPage({ params }) {
       )}
       <Sidebar />
       <div className="md:ml-20">
-        <Form.Body title="Banners | Edição">
-          <Form.FormHeader href="/admin/cms-banner" />
+        <Form.Body title="Usuários | Edição">
+          <Form.FormHeader href="/admin/cms-usuarios" />
           <Form.FormBody
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             initialValues={{
-              titulo: banner.descricao,
-              descricao: banner.descricao,
+              nome: user.nome,
+              email: user.email,
+              nivel: user.nivel,
+              celular: user.celular,
             }}
           >
-            <div className="flex flex-col sm:flex-row w-full gap-6">
-              <div className="sm:w-[60%] flex flex-col gap-3 items-end">
-                <div className="flex flex-col sm:flex-row w-full justify-between items-center gap-3">
-                  <TextField
-                    name="titulo"
-                    label="Título do Banner"
-                    placeholder="Título do Banner"
-                    className="!w-[100%]"
-                  />
-
-                  <UploadField
-                    name="imagem"
-                    label="Imagem do Banner"
-                    multiple={false}
-                    className="!w-fit"
-                    fileList={fileList}
-                    setFileList={setFileList}
-                  />
-
-                  {fileList.length > 0 ? (
-                    <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5">
-                      <Image
-                        src={URL.createObjectURL(fileList[0].originFileObj)}
-                        alt="Prévia do banner"
-                        width={400}
-                        height={320}
-                        className="h-full w-full object-cover rounded-3xl"
-                      />
-                    </div>
-                  ) : (
-                    <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5" />
-                  )}
-                </div>
-                <TextAreaField
-                  name="descricao"
-                  label="Descrição"
-                  placeholder="Corpo da descrição"
-                  rows={18}
-                  className="!w-full !h-full"
+            <div className="flex flex-col sm:flex-row w-full">
+              {/* Coluna do Formulário */}
+              <div className="sm:w-[50%] flex flex-col gap-6 items-end">
+                <TextField
+                  name="nome"
+                  label="Nome"
+                  placeholder="Nome do Usuário"
+                  className="!w-[100%]"
                 />
-                <FormButton
-                  text="Salvar"
-                  className="!hidden sm:!flex"
-                  onClick={() => setIsConfirmModalVisible(true)}
-                  icon={<UploadOutlined />}
-                />
-              </div>
 
-              <div className="sm:w-[40%] hidden sm:flex">
-                <PreviaBanner fileList={fileList} />
-              </div>
-
-              <div className="sm:hidden w-full flex flex-col gap-3.5 items-center">
-                <PreviaBanner fileList={fileList} />
-                <FormButton
-                  text="Salvar"
-                  className="!flex !sm:hidden"
-                  icon={<UploadOutlined />}
+                <TextField
+                  name="email"
+                  label="Email"
+                  placeholder="Email do Usuário"
+                  className="!w-[100%]"
                 />
+
+                <RadioField
+                  name="nivel"
+                  label="Nível"
+                  options={[
+                    { label: "Administrador", value: "administrador" },
+                    { label: "Usuário Padrão", value: "usuario" },
+                  ]}
+                  className="!w-[100%]"
+                  initialValue={user.nivel}
+                />
+
+                <TextField
+                  name="celular"
+                  label="Celular"
+                  placeholder="Celular do Usuário"
+                  className="!w-[100%]"
+                />
+
+                <TextField
+                  name="senha"
+                  label="Senha"
+                  placeholder="Senha do Usuário"
+                  className="!w-[100%]"
+                />
+                <FormButton text="Salvar Alterações" />
               </div>
             </div>
           </Form.FormBody>
