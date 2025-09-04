@@ -1,16 +1,100 @@
 "use client";
-import Card from "@/components/cms/Card";
+import { Table } from "antd";
 import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
 import { usersMock } from "@/mock/users";
 import { useEffect, useState } from "react";
 import { MdPersonAdd } from "react-icons/md";
+import { BiPencil } from "react-icons/bi";
+import { IoMdTrash } from "react-icons/io";
+import Link from "next/link";
+import ConfirmModal from "@/components/cms/ConfirmModal";
+import { createStyles } from "antd-style";
+
+const useStyle = createStyles(({ css, token }) => {
+  const { antCls } = token;
+  return {
+    customTable: css`
+      ${antCls}-table {
+        ${antCls}-table-container {
+          ${antCls}-table-body,
+          ${antCls}-table-content {
+            scrollbar-width: thin;
+            scrollbar-color: #eaeaea transparent;
+            scrollbar-gutter: stable;
+          }
+        }
+      }
+    `,
+  };
+});
 
 export default function CmsUserPage() {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 8;
+  const pageSize = 10;
   const [filterData, setFilterData] = useState({ order: null });
+  const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const { styles } = useStyle();
+
+  const onDelete = () => {
+    setIsConfirmModalVisible(true);
+  };
+
+  const onConfirmDelete = () => {
+    console.log("Delete Confirmed");
+    setIsConfirmModalVisible(false);
+  };
+
+  const columns = [
+    {
+      title: "id",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Nome",
+      dataIndex: "nome",
+      key: "nome",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Nível",
+      dataIndex: "nivel",
+      key: "nivel",
+    },
+    {
+      title: "Celular",
+      dataIndex: "celular",
+      key: "celular",
+    },
+    {
+      title: "Ações",
+      dataIndex: "acoes",
+      key: "acoes",
+      render: (_, record) => (
+        <div className="flex gap-4">
+          <Link href={`/admin/cms-usuarios/editar/${record.id}`}>
+            <BiPencil
+              size={22}
+              className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
+            />
+          </Link>
+          <button onClick={onDelete}>
+            <IoMdTrash
+              size={22}
+              className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
+            />
+          </button>
+        </div>
+      ),
+      fixed: 'right',
+    },
+  ];
 
   useEffect(() => {
     setUsers(usersMock);
@@ -33,6 +117,13 @@ export default function CmsUserPage() {
 
   return (
     <>
+      {isConfirmModalVisible && (
+        <ConfirmModal
+          message="Você tem certeza que deseja excluir o registro definitivamente?"
+          onConfirm={onConfirmDelete}
+          onCancel={() => setIsConfirmModalVisible(false)}
+        />
+      )}
       <Sidebar />
       <div className="md:ml-20">
         <CMS.Body title={"Usuários"}>
@@ -46,16 +137,15 @@ export default function CmsUserPage() {
               filterData={filterData}
               updateFilterData={updateFilterData}
             />
-            <CMS.TableBody>
-              {paginatedUsers.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-center">
-                  {paginatedUsers.map((user) => (
-                    <Card key={user.id} user={user} />
-                  ))}
-                </div>
-              ) : (
-                <p>No users found.</p>
-              )}
+            <CMS.TableBody table={true}>
+              <Table
+                columns={columns}
+                dataSource={paginatedUsers}
+                rowKey="id"
+                pagination={false}
+                className={styles.customTable}
+                scroll={{ x: 'max-content' }}
+              />
             </CMS.TableBody>
 
             {/* Paginador controlado */}
