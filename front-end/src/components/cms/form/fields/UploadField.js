@@ -1,8 +1,8 @@
 "use client";
-import { Upload, Button, Form as FormAntd } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { Button, Form as FormAntd, Upload } from "antd";
 
-export default function UploadField({ 
+export default function UploadField({
   name,
   label,
   multiple = false,
@@ -10,7 +10,6 @@ export default function UploadField({
   fileList,
   setFileList,
 }) {
-
   return (
     <FormAntd.Item
       label={label}
@@ -22,7 +21,9 @@ export default function UploadField({
       <Upload
         beforeUpload={() => false}
         fileList={fileList}
-        onChange={({ fileList }) => setFileList(fileList)}
+        onChange={({ fileList }) =>
+          setFileList(multiple ? fileList : fileList.slice(-1))
+        }
         multiple={multiple}
         className="!w-fit"
       >
