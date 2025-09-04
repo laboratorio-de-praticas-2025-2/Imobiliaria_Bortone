@@ -21,7 +21,6 @@ export default function CmsBannerPage() {
   const paginatedBanners = banners.slice(startIndex, endIndex);
 
   const onSearch = (value) => console.log("Search:", value);
-  const onClickNew = () => console.log("New Banner");
   const handleSelectOrder = (value) => console.log("Selected order:", value);
   const filterData = {};
   const updateFilterData = (newData) =>
@@ -30,7 +29,7 @@ export default function CmsBannerPage() {
   return (
     <>
       <Sidebar />
-      <div className="ml-20">
+      <div className="md:ml-20">
         <CMS.Body title={"Banners"}>
           <CMS.Table>
             <CMS.TableHeader
