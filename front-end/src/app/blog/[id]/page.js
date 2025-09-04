@@ -1,10 +1,10 @@
 "use client";
-import { useParams } from "next/navigation";
-import { postsData } from "@/constants/posts";
-import HomeNavbar from "@/components/home/HomeNavbar";
-import HomeFooter from "@/components/home/HomeFooter";
-import { Image } from "antd";
 import ShareButton from "@/components/blog/ShareButton";
+import HomeFooter from "@/components/home/HomeFooter";
+import HomeNavbar from "@/components/home/HomeNavbar";
+import { postsData } from "@/mock/posts";
+import { Image } from "antd";
+import { useParams } from "next/navigation";
 
 export default function ContentBlog() {
   const { id } = useParams(); // pega o id da URL

@@ -6,11 +6,11 @@ import PreviaBanner from "@/components/cms/form/fields/PreviaBanner";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import TextField from "@/components/cms/form/fields/TextField";
 import UploadField from "@/components/cms/form/fields/UploadField";
-import { bannersMock } from "@/constants/banner";
+import Sidebar from "@/components/cms/Sidebar";
+import { bannersMock } from "@/mock/banner";
 import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Sidebar from "@/components/cms/Sidebar";
 
 export default function EditarBannerPage({ params }) {
   const id = params?.id;

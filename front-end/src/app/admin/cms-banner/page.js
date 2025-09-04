@@ -2,7 +2,7 @@
 import Card from "@/components/cms/Card";
 import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
-import { bannersMock } from "@/constants/banner";
+import { bannersMock } from "@/mock/banner";
 import { useEffect, useState } from "react";
 import { FaImage } from "react-icons/fa6";
 
