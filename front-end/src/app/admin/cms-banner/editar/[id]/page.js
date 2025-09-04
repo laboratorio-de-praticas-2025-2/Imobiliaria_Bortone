@@ -9,19 +9,14 @@ import UploadField from "@/components/cms/form/fields/UploadField";
 import { bannersMock } from "@/constants/banner";
 import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-
-const getPreviewUrl = (file) => {
-  if (file.originFileObj) return URL.createObjectURL(file.originFileObj);
-  if (file.url) return file.url;
-  return null;
-};
+import { useEffect, useState } from "react";
 
 export default function EditarBannerPage({ params }) {
   const id = params?.id;
   const [fileList, setFileList] = useState([]);
   const [banner, setBanner] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const [formValues, setFormValues] = useState(null);
 
   useEffect(() => {
     const found = bannersMock.find((b) => String(b.id) === String(id));
@@ -29,7 +24,14 @@ export default function EditarBannerPage({ params }) {
   }, [id]);
 
   const onFinish = (values) => {
-    console.log("Edit Success:", values);
+    setFormValues(values);
+    setIsConfirmModalVisible(true);
+  };
+
+  const onConfirm = () => {
+    console.log("Edit Success:", formValues);
+    setIsConfirmModalVisible(false);
+    window.location.href = "/admin/cms-banner";
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -43,7 +45,7 @@ export default function EditarBannerPage({ params }) {
       {isConfirmModalVisible && (
         <ConfirmModal
           message="Você tem certeza que deseja alterar o registro definitivamente?"
-          onConfirm={() => {}}
+          onConfirm={onConfirm}
           onCancel={() => setIsConfirmModalVisible(false)}
         />
       )}
@@ -113,7 +115,6 @@ export default function EditarBannerPage({ params }) {
               <PreviaBanner fileList={fileList} />
               <FormButton
                 text="Salvar"
-                onClick={() => setIsConfirmModalVisible(true)}
                 className="!flex !sm:hidden"
                 icon={<UploadOutlined />}
               />
