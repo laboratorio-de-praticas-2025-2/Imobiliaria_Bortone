@@ -43,6 +43,8 @@ export default function TableHeader({
           setSelected={(value) =>
             updateFilterData({ order: value === "Ordenar por" ? null : value })
           }
+          classP="hidden md:flex"
+          width={"w-full"}
         />
       </div>
     </div>

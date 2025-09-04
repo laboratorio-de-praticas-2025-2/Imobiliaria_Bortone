@@ -1,15 +1,16 @@
 "use client";
 import Card from "@/components/cms/Card";
+import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
 import { bannersMock } from "@/constants/banner";
 import { useEffect, useState } from "react";
 import { FaImage } from "react-icons/fa6";
-import Sidebar from "@/components/cms/Sidebar";
 
 export default function CmsBannerPage() {
   const [banners, setBanners] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
+  const [filterData, setFilterData] = useState({ order: null });
 
   useEffect(() => {
     setBanners(bannersMock);
@@ -21,10 +22,14 @@ export default function CmsBannerPage() {
   const paginatedBanners = banners.slice(startIndex, endIndex);
 
   const onSearch = (value) => console.log("Search:", value);
-  const handleSelectOrder = (value) => console.log("Selected order:", value);
-  const filterData = {};
-  const updateFilterData = (newData) =>
+  const handleSelectOrder = (value) => {
+    setFilterData((prev) => ({ ...prev, order: value }));
+    console.log("Selected order:", value);
+  };
+  const updateFilterData = (newData) => {
+    setFilterData((prev) => ({ ...prev, ...newData }));
     console.log("Update filter data:", newData);
+  };
 
   return (
     <>
@@ -43,7 +48,7 @@ export default function CmsBannerPage() {
             />
             <CMS.TableBody>
               {paginatedBanners.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-center">
                   {paginatedBanners.map((banner) => (
                     <Card key={banner.id} banner={banner} />
                   ))}
