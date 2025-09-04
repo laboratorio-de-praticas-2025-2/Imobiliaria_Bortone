@@ -3,7 +3,7 @@
 
   bottom: -0;
   background-image: url("/images/simulacao-mobile.png");
-  background-position:  bottom ; /* <- volta a grudar no topo no desktop */
+  background-position: bottom; /* <- volta a grudar no topo no desktop */
   background-size: 100vw;
   background-repeat: no-repeat;
   width: 100%;
@@ -37,19 +37,19 @@
     height: 80%;
   }
   .image-bg-bottom {
-   background-image: url("/images/simulacao.png");
+    background-image: url("/images/simulacao.png");
     background-position: top center; /* <- volta a grudar no topo no desktop */
     height: 73vh;
   }
 }
 
-.form{
-  font-family: 'Glacial Indifference';
+.form {
+  font-family: "Glacial Indifference";
   font-size: 24px;
 }
 
 .meu-card .ant-input::placeholder {
   font-size: 10px !important;
   font-weight: 700;
-  color: #8B96BC !important;
+  color: #8b96bc !important;
 }
