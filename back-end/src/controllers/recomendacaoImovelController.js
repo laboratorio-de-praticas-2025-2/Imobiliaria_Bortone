@@ -15,3 +15,7 @@ export const createRecomendacaoImovel = async (req, res) => {
   }
 };
 
+export const getRecommendacoes = (req, res) => {
+  // Lógica de recomendação futura aqui
+  res.status(501).json({ message: 'Este endpoint ainda não está implementado.' });
+};
