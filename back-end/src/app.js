@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 // Exemplo de como importar rotas
 // import publicidadeRoutes from "./routes/publicidadeRoutes.js"; 
 
@@ -7,8 +8,10 @@ const app = express();
 import connection from "./config/sequelize-config.js";
 
 // Middlewares
+app.use(cors()); // Habilita o CORS para todas as origens
 app.use(express.json()); // Para parsear JSON
 app.use(express.urlencoded({ extended: false }));
+
 
 // Rotas
 // Exemplo de como usar as rotas
@@ -34,4 +37,10 @@ app.listen(PORT, function (erro) {
   }
 });
 
+// // Exemplo para produção
+// Para um ambiente de produção, é uma boa prática restringir as origens permitidas, como no exemplo abaixo:
+// const corsOptions = {
+//   origin: 'https://imobiliaria-bortone.vercel.app' // Substitua pelo domínio do seu frontend
+// };
 
+// app.use(cors(corsOptions));
