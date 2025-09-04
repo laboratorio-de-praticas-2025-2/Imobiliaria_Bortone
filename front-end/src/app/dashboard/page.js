@@ -3,6 +3,7 @@ import { Row, Col, Input, Button } from "antd";
 import { IoOptions } from "react-icons/io5";
 import Infos from "@/components/dash/Infos";
 import RentalByRegion from "@/components/dash/RentalByRegion";
+import PropertySold from "@/components/dash/PropertySold";
 export default function Dashboard() {
   const style = { background: "#0092ff", padding: "8px 0" };
 
@@ -43,7 +44,7 @@ export default function Dashboard() {
 
       <div className="w-[90vw]">
         <Row gutter={{ xs: 8, sm: 16 }}>
-          <Col md={14} xs={24}>
+          <Col lg={14} xs={24}>
             <Infos />
             <Row>
               <Col className="gutter-row" span={24}>
@@ -52,15 +53,15 @@ export default function Dashboard() {
             </Row>
           </Col>
 
-          <Col md={10} xs={24}>
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+          <Col lg={10} xs={24}>
+            <Row gutter={{ xs: 8, sm: 16}}>
               <Col className="gutter-row" span={24}>
                 <RentalByRegion />
               </Col>
             </Row>
-            <Row>
+            <Row className="py-4">
               <Col className="gutter-row" span={24}>
-                <div style={style}>a-6</div>
+                <PropertySold />
               </Col>
             </Row>
           </Col>

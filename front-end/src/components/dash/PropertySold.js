@@ -3,11 +3,10 @@
 import { useState, useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Color } from "antd/es/color-picker";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function RentalByRegion() {
+export default function PropertySold() {
   const [chartData, setChartData] = useState(null);
 
   // Puxando dados de uma API real, mas a API tá fora do ar no momento ↓
@@ -25,8 +24,6 @@ export default function RentalByRegion() {
   //               "#243B7B",
   //               "#F39C12",
   //               "#B8AEBF",
-  //               "#A6A6A6",
-  //               "#E74C3C",
   //             ],
   //             borderWidth: 0,
   //             cutout: "60%",
@@ -39,24 +36,21 @@ export default function RentalByRegion() {
   // Dados estáticos para demonstração  ↓
   const data = {
     labels: [
-      "Região Central",
-      "Região Sul",
-      "Região Norte",
-      "Região Leste",
-      "Região Oeste",
+      "Apartamentos",
+      "Casas",
+      "Terrenos",
     ],
     datasets: [
       {
-        data: [45, 25, 15, 10, 5],
+        data: [45, 25, 15],
         backgroundColor: [
           "#243B7B",
           "#F39C12",
           "#B8AEBF",
-          "#A6A6A6",
-          "#E74C3C",
+
         ], // cores
         borderWidth: 0,
-        cutout: "60%", // transforma em donut (se fosse 0%, seria uma pizza cheia)
+        cutout: "0%", // transforma em donut (se fosse 0%, seria uma pizza cheia)
       },
     ],
   };
