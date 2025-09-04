@@ -12,6 +12,11 @@ export default function FaqPage() {
   const [faqData, setFaqData] = useState([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
+  const fetchFaq = async () => {
+    // Simulando uma chamada de API com dados mockados
+    setFaqData(MOCKFAQ);
+  };
+
   useEffect(() => {
     setFaqData(MOCKFAQ);
   }, []);
