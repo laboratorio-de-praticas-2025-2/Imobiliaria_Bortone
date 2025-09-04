@@ -23,8 +23,63 @@ const createPublicidade = async (req, res) => {
       console.error("Erro ao criar a publicidade:", error);
       res.status(500).json({error: "Erro interno no servidor"});
     }
+// Update Imobiliaria Bortone
 
+
+const update = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { titulo, descricao, imagem, link, ativo } = req.body;
+  
+      const publicidade = await Publicidade.findByPk(id);
+  
+      if (!publicidade) {
+        return res.status(404).json({ error: "Publicidade não encontrada" });
+      }
+  
+      await publicidade.update({ titulo, descricao, imagem, link, ativo });
+  
+      return res.status(200).json({
+        message: "Publicidade atualizada com sucesso",
+        publicidade,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        error: "Erro ao atualizar publicidade",
+        details: error.message,
+      });
+    }
+  };
 
 };
 
-export default {createPublicidade};
+// Update Imobiliaria Bortone
+
+
+const updatePublicidade = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { titulo, descricao, imagem, link, ativo } = req.body;
+  
+      const publicidade = await Publicidade.findByPk(id);
+  
+      if (!publicidade) {
+        return res.status(404).json({ error: "Publicidade não encontrada" });
+      }
+  
+      await publicidade.update({ titulo, descricao, imagem, link, ativo });
+  
+      return res.status(200).json({
+        message: "Publicidade atualizada com sucesso",
+        publicidade,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        error: "Erro ao atualizar publicidade",
+        details: error.message,
+      });
+    }
+  };
+
+
+export default {createPublicidade, updatePublicidade};
