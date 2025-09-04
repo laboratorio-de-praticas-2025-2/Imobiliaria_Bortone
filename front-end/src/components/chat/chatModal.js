@@ -6,6 +6,13 @@ import ChatMessage from "./chatMessage.js";
 import { sendMessageMock } from "@/utils/chatService";
 import MicrophoneButton from "./microfoneButton.js";
 
+
+// Import dos ícones
+import { IoIosCloseCircleOutline } from "react-icons/io";
+import { RxAvatar } from "react-icons/rx";
+import { BsEmojiSmile } from "react-icons/bs";
+
+
 export default function ChatModal({ onClose }) {
   const [messages, setMessages] = useState([
     { id: 1, sender: "support", text: "Olá! Como posso ajudar você hoje?" },
@@ -54,30 +61,24 @@ export default function ChatModal({ onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b bg-[#4C62AE]">
           <div className="flex items-center gap-3">
-            <div className="relative w-8 h-8 md:w-10 md:h-10">
-              <Image
-                src="/images/icons/avatar.png"
-                alt="Avatar do suporte"
-                fill
-                className="rounded-full object-cover"
-              />
-            </div>
+
+            <RxAvatar className="rounded-full object-cover 
+              relative w-8 h-8 md:w-10 md:h-10" color="white" />
+
             <h2 className="text-lg md:text-xl text-white pt-2">
               Suporte Grupo Bortone
             </h2>
           </div>
 
+          {/* Botão de Fechar */}
           <button
             onClick={onClose}
-            className="relative w-10 h-10 md:w-12 md:h-12 rounded-full 
-                       flex items-center justify-center transform transition-all duration-200
-                       hover:scale-110 hover:shadow-2xl"
+
           >
-            <Image
-              src="/images/icons/close.png"
-              alt="Fechar chat"
-              fill
-              className="object-contain p-2"
+            <IoIosCloseCircleOutline
+              className="relative w-10 h-10 md:w-12 md:h-12 rounded-full
+                       flex items-center justify-center transform transition-all duration-200
+                       hover:scale-110 hover:shadow-2xl" color="white"
             />
           </button>
         </div>
@@ -93,18 +94,11 @@ export default function ChatModal({ onClose }) {
         <div className="relative flex items-center border-t p-3 gap-3 bg-[#4C62AE]">
           {/* Botão Emoji */}
           <div className="relative">
-            <button
-              onClick={() => setShowEmojis(!showEmojis)}
-              className="relative w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center
-                         transform transition-all duration-200 hover:scale-110 hover:shadow-2xl"
-            >
-              <Image
-                src="/images/icons/emoji.png"
-                alt="Emoji"
-                fill
-                className="object-contain p-2"
-              />
-            </button>
+
+              <BsEmojiSmile className="object-contain p-2
+              relative w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center
+              transform transition-all duration-200 hover:scale-110 hover:shadow-2xl" color="white" onClick={() => setShowEmojis(!showEmojis)}/>
+
 
             {showEmojis && (
               <div className="absolute bottom-12 left-0 w-48 bg-white rounded-lg shadow-lg p-2 flex flex-wrap gap-2 z-50
