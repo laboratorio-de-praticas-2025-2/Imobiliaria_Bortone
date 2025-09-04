@@ -1,4 +1,3 @@
-// controllers/recomendacaoImovelController.js
 import connection from '../config/sequelize-config.js';
 
 export const createRecomendacaoImovel = async (req, res) => {

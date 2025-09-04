@@ -1,4 +1,4 @@
-export const validateRecomendacaoImovel = (req, res, next) => {
+export const validacaoRecomendacaoImovel = (req, res, next) => {
   const { usuario_id, imovel_id, data_visita } = req.body;
 
     if (!usuario_id || !imovel_id || !data_visita) {
