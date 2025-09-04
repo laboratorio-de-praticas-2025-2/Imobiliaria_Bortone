@@ -1,12 +1,12 @@
 import { Sequelize } from "sequelize";
 
 const connection = new Sequelize(
-  'lp-imobiliaria_dev', 
-  '426814_dados',      
-  'DSM-2C602y',        
+  process.env.DB_DATABASE,
+  process.env.DB_USER,
+  process.env.DB_PASS,     
   {
-    host: 'mysql-lp-imobiliaria.alwaysdata.net', 
-    dialect: 'mysql',
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
   }
 );
 
