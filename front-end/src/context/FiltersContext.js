@@ -19,38 +19,38 @@ const INITIAL_FILTERS = {
     preco: [25000, 200000],
     area: [0, 200],
     murado: false,
-    localizacao: []
+    localizacao: [],
   },
 };
 
 export function FiltersProvider({ children }) {
-    const [filters, setFilters] = useState(INITIAL_FILTERS);
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
 
-    const updateFilters = (type, newFilters) => {
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            [type]: { ...prevFilters[type], ...newFilters },
-        }));
-    };
+  const updateFilters = (type, newFilters) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [type]: { ...prevFilters[type], ...newFilters },
+    }));
+  };
 
-    // Função para obter apenas os filtros de casa ou terreno para enviar à API
-    const getFiltersForApi = (type) => {
-        return filters[type];
-    };
+  // Função para obter apenas os filtros de casa ou terreno para enviar à API
+  const getFiltersForApi = (type) => {
+    return filters[type];
+  };
 
-    const removeFilters = () => {
-        setFilters(INITIAL_FILTERS);
-    }
+  const removeFilters = () => {
+    setFilters(INITIAL_FILTERS);
+  };
 
-    return (
-      <FiltersContext.Provider
-        value={{ filters, updateFilters, getFiltersForApi, removeFilters }}
-      >
-        {children}
-      </FiltersContext.Provider>
-    );
+  return (
+    <FiltersContext.Provider
+      value={{ filters, updateFilters, getFiltersForApi, removeFilters }}
+    >
+      {children}
+    </FiltersContext.Provider>
+  );
 }
 
 export function useFilters() {
-    return useContext(FiltersContext);
+  return useContext(FiltersContext);
 }
