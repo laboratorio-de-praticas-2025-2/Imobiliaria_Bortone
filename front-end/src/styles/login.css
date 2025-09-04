@@ -70,13 +70,13 @@ input::placeholder,
   border: 1px solid var(--primary);
 }
 
-.login-sec-button{
+.login-sec-button {
   background: transparent;
   color: var(--primary);
   border: 1px solid var(--primary);
 }
 
-.boas-vindas-content{
+.boas-vindas-content {
   padding-left: 58px;
   padding-right: 58px;
   margin-top: -60px;
@@ -102,18 +102,18 @@ input::placeholder,
     height: 65vh;
   }
 
-  .login-content{
+  .login-content {
     padding-bottom: 6rem;
     margin-top: 0;
     height: 100vh;
     justify-content: end;
   }
 
-  .login-form-container{
+  .login-form-container {
     width: 22rem;
   }
 
-  .boas-vindas-content{
+  .boas-vindas-content {
     padding-bottom: 14rem;
     margin-top: 0;
     height: 100vh;
