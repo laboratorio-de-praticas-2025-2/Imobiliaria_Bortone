@@ -4,7 +4,7 @@ const createPublicidade = async (req, res) => {
     try {
         const { titulo, conteudo, url_imagem, usuario_id} = req.body;
 
-        if (!titulo || !conteudo || !usuario) {
+        if (!titulo || !conteudo || !usuario_id) {
             return res.status(400).json({error: "Título, conteúdo e ID do usuário são obrigatórios."});
         }
 
