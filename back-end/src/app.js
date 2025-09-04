@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
+import connection from "./config/sequelize-config.js";
 // Exemplo de como importar rotas
-// import publicidadeRoutes from "./routes/publicidadeRoutes.js"; 
+ import healthRouter from "./routes/route.js"; 
 
 const app = express();
 
-import connection from "./config/sequelize-config.js";
 
 // Middlewares
 app.use(cors()); // Habilita o CORS para todas as origens
@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Rotas
 // Exemplo de como usar as rotas
-// app.use("/api", publicidadeRoutes); 
+app.use("/", healthRouter);
 
 
 connection
