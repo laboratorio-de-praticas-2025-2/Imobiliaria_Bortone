@@ -13,7 +13,7 @@ class PublicidadeService {
       publicidade.conteudo = novosDados.conteudo || publicidade.conteudo;
       publicidade.url_imagem = novosDados.url_imagem || publicidade.url_imagem;
       publicidade.usuario_id = novosDados.usuario_id || publicidade.usuario_id;
-      publicidade.ativo = novosDados.ativo !== undefined ? novosDados.ativo : publicidade.ativo;
+      
 
       await publicidade.save();
 
