@@ -1,4 +1,5 @@
 "use client";
+import ConfirmModal from "@/components/cms/ConfirmModal";
 import Form from "@/components/cms/form";
 import FormButton from "@/components/cms/form/fields/Button";
 import PreviaBanner from "@/components/cms/form/fields/PreviaBanner";
@@ -15,29 +16,37 @@ const getPreviewUrl = (file) => {
   if (file.url) return file.url;
   return null;
 };
-  
 
 export default function EditarBannerPage({ params }) {
-    const id = params?.id;
-    const [fileList, setFileList] = useState([]);
-    const [banner, setBanner] = useState(null);
+  const id = params?.id;
+  const [fileList, setFileList] = useState([]);
+  const [banner, setBanner] = useState(null);
+  const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
 
-    useEffect(() => {
-        const found = bannersMock.find((b) => String(b.id) === String(id));
-        setBanner(found);
-    }, [id]);
+  useEffect(() => {
+    const found = bannersMock.find((b) => String(b.id) === String(id));
+    setBanner(found);
+  }, [id]);
 
-    const onFinish = (values) => {
-        console.log("Edit Success:", values);
-    };
+  const onFinish = (values) => {
+    console.log("Edit Success:", values);
+  };
 
-    const onFinishFailed = (errorInfo) => {
-        console.log("Edit Failed:", errorInfo);
-    };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Edit Failed:", errorInfo);
+  };
 
-    if (!banner) return <div>Carregando...</div>;
+  if (!banner) return <div>Carregando...</div>;
 
-    return (
+  return (
+    <>
+      {isConfirmModalVisible && (
+        <ConfirmModal
+          message="Você tem certeza que deseja alterar o registro definitivamente?"
+          onConfirm={() => {}}
+          onCancel={() => setIsConfirmModalVisible(false)}
+        />
+      )}
       <Form.Body title="Banners | Edição">
         <Form.FormHeader href="/admin/cms-banner" />
         <Form.FormBody
@@ -67,19 +76,19 @@ export default function EditarBannerPage({ params }) {
                   setFileList={setFileList}
                 />
 
-                 {fileList.length > 0 ? (
-                    <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5">
-                        <Image
-                        src={URL.createObjectURL(fileList[0].originFileObj)}
-                        alt="Prévia do banner"
-                        width={400}
-                        height={320}
-                        className="h-full w-full object-cover rounded-3xl"
-                        />
-                    </div>
-                    ) : (
-                    <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5" />
-                    )}
+                {fileList.length > 0 ? (
+                  <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5">
+                    <Image
+                      src={URL.createObjectURL(fileList[0].originFileObj)}
+                      alt="Prévia do banner"
+                      width={400}
+                      height={320}
+                      className="h-full w-full object-cover rounded-3xl"
+                    />
+                  </div>
+                ) : (
+                  <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5" />
+                )}
               </div>
               <TextAreaField
                 name="descricao"
@@ -91,6 +100,7 @@ export default function EditarBannerPage({ params }) {
               <FormButton
                 text="Salvar"
                 className="!hidden sm:!flex"
+                onClick={() => setIsConfirmModalVisible(true)}
                 icon={<UploadOutlined />}
               />
             </div>
@@ -103,6 +113,7 @@ export default function EditarBannerPage({ params }) {
               <PreviaBanner fileList={fileList} />
               <FormButton
                 text="Salvar"
+                onClick={() => setIsConfirmModalVisible(true)}
                 className="!flex !sm:hidden"
                 icon={<UploadOutlined />}
               />
@@ -110,5 +121,6 @@ export default function EditarBannerPage({ params }) {
           </div>
         </Form.FormBody>
       </Form.Body>
-    );
+    </>
+  );
 }
