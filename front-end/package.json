@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ant-design/compatible": "^5.1.4",
+    "@vercel/speed-insights": "^1.2.0",
     "antd": "^5.27.2",
     "antd-style": "^3.7.1",
     "dotenv": "^17.2.1",
