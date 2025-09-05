@@ -60,19 +60,12 @@ export default function EditarBannerPage() {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             initialValues={{
-              titulo: banner.descricao,
               descricao: banner.descricao,
             }}
           >
             <div className="flex flex-col sm:flex-row w-full gap-6">
               <div className="sm:w-[60%] flex flex-col gap-3 items-end">
                 <div className="flex flex-col sm:flex-row w-full justify-between items-center gap-3">
-                  <TextField
-                    name="titulo"
-                    label="Título do Banner"
-                    placeholder="Título do Banner"
-                    className="!w-[100%]"
-                  />
 
                   <UploadField
                     name="imagem"
