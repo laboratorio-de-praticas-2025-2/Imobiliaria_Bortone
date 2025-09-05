@@ -9,20 +9,11 @@ export default function RadioField({ name, label, options, className, initialVal
       className={`custom-form-item ${className}`}
       labelCol={{ span: 24 }}
     >
-      <ConfigProvider
-        theme={{
-          token: {
-            colorBorder: "#374A8C",
-            colorPrimary: "#F39200",
-          },
-        }}
-      >
-        <Radio.Group
-          options={options}
-          className="custom-radio-group"
-          defaultValue={initialValue}
-        />
-      </ConfigProvider>
+      <Radio.Group
+        options={options}
+        className="custom-radio-group"
+        defaultValue={initialValue}
+      />
     </FormAntd.Item>
   );
 }
