@@ -113,3 +113,22 @@
 .ant-switch-checked .ant-switch-handle::before {
   background-color: #374a8c !important;
 }
+
+.custom-radio-group .ant-radio-checked .ant-radio-inner {
+  border-color: #F39200 !important;
+  background-color: #F39200 !important;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #fff; 
+}
+
+/* linhas ímpares */
+.ant-table-tbody > tr:nth-child(odd) > td {
+  background-color: #f5f5f5; /* cinza claro */
+}
+
+/* linhas pares */
+.ant-table-tbody > tr:nth-child(even) > td {
+  background-color: #ffffff; /* branco */
+}

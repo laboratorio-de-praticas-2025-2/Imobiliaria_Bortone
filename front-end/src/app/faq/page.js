@@ -2,7 +2,7 @@
 import FaqContent from "@/components/faq/FaqContent";
 import HomeFooter from "@/components/home/HomeFooter";
 import HomeNavbar from "@/components/home/HomeNavbar";
-import { MOCKFAQ } from "@/constants/faq";
+import { MOCKFAQ } from "@/mock/faq";
 import { Divider } from "antd";
 import { useEffect, useState } from "react";
 
