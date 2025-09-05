@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Row, Col } from "antd";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -35,20 +36,11 @@ export default function PropertySold() {
 
   // Dados estáticos para demonstração  ↓
   const data = {
-    labels: [
-      "Apartamentos",
-      "Casas",
-      "Terrenos",
-    ],
+    labels: ["Apartamentos", "Casas", "Terrenos"],
     datasets: [
       {
         data: [45, 25, 15],
-        backgroundColor: [
-          "#243B7B",
-          "#F39C12",
-          "#B8AEBF",
-
-        ], // cores
+        backgroundColor: ["#243B7B", "#F39C12", "#B8AEBF"], // cores
         borderWidth: 0,
         cutout: "0%", // transforma em donut (se fosse 0%, seria uma pizza cheia)
       },
@@ -72,25 +64,29 @@ export default function PropertySold() {
   };
 
   return (
-    <div className="group h-[300px] !w-full flex items-center rounded-xl px-10 !bg-[#EEF0F9] !shadow-md">
-      <div className="grid grid-col content-evenly w-full h-full">
-        <span className="text-lg md:text-2xl font-bold lg:text-center text-[var(--primary)] ">
-          Proporção de locações por região
-        </span>
+    <Row className="py-4">
+      <Col className="gutter-row" span={24}>
+        <div className="group h-[300px] !w-full flex items-center rounded-xl px-10 !bg-[#EEF0F9] !shadow-md">
+          <div className="grid grid-col content-evenly w-full h-full">
+            <span className="text-lg md:text-2xl font-bold lg:text-center text-[var(--primary)] ">
+              Proporção de locações por região
+            </span>
 
-        <div className="items-center justify-items-center w-full h-full">
-          <div className="w-fit h-fit">
-            <Doughnut data={data} options={options} />
+            <div className="items-center justify-items-center w-full h-full">
+              <div className="w-fit h-fit">
+                <Doughnut data={data} options={options} />
 
-            {/* Puxando dados de uma API real, mas a API tá fora do ar no momento ↓ */}
-            {/* {chartData ? (
+                {/* Puxando dados de uma API real, mas a API tá fora do ar no momento ↓ */}
+                {/* {chartData ? (
               <Doughnut data={chartData} options={options} />
             ) : (
               <p>Carregando...</p>
             )} */}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </Col>
+    </Row>
   );
 }
