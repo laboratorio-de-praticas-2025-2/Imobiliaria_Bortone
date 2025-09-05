@@ -20,6 +20,9 @@ const Faq = connection.define("faq", {
     allowNull: false,
     // references: adicionar referencia para tabela usuario
   },
+},
+{
+  freezeTableName: true,
 });
 
 Faq.sync({ force: false });

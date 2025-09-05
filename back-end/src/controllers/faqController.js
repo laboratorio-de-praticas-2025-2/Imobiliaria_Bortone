@@ -38,7 +38,7 @@ const deleteFaq = async (req, res) => {
   const { id } = req.params;
   try {
     await FaqService.delete(id);
-    res.status(204);
+    res.status(204).json();
   } catch (error) {
     if (error.message === "FAQ não encontrada") {
       res.status(404).json({ error: error.message });
