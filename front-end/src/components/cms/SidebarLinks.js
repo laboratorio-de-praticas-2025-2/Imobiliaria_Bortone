@@ -1,11 +1,11 @@
 export const sidebarLinks = [
-  { label: "Dashboard", href: "admin/dashboard" },
-  { label: "Relatórios", href: "admin/relatorios" },
-  { label: "Usuários", href: "admin/cms-usuarios" },
-  { label: "Imóveis", href: "admin/cms-imoveis" },
-  { label: "Publicações", href: "admin/cms-publicacoes" },
-  { label: "Publicidades", href: "admin/cms-publicidades" },
-  { label: "Banner", href: "admin/cms-banner" },
+  { label: "Dashboard", href: "dashboard" },
+  { label: "Relatórios", href: "relatorios" },
+  { label: "Usuários", href: "cms-usuarios" },
+  { label: "Imóveis", href: "cms-imoveis" },
+  { label: "Publicações", href: "cms-publicacoes" },
+  { label: "Publicidades", href: "cms-publicidades" },
+  { label: "Banner", href: "cms-banner" },
 ];
 
 export default sidebarLinks;
