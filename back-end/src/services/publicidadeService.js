@@ -1,6 +1,21 @@
-const { Publicidade } = require("../models/publicidade");
+const Publicidade = require("../models/publicidade");
 
 class PublicidadeService {
+  async serviceCreate(dadosPublicidade) {
+    try {
+      const publicidade = await Publicidade.create({
+        titulo: dadosPublicidade.titulo,
+        conteudo: dadosPublicidade.conteudo,
+        url_imagem: dadosPublicidade.url_imagem,
+        usuario_id: dadosPublicidade.usuario_id
+      });
+
+      return publicidade;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async updatePublicidade(id, novosDados) {
     try {
       const publicidade = await Publicidade.findByPk(id);
