@@ -1,4 +1,5 @@
 "use client";
+import { useParams } from "next/navigation";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import Form from "@/components/cms/form";
 import FormButton from "@/components/cms/form/fields/Button";
@@ -12,8 +13,9 @@ import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-export default function EditarBannerPage({ params }) {
-  const id = params?.id;
+export default function EditarBannerPage() {
+   const params = useParams(); 
+   const id = params?.id;
   const [fileList, setFileList] = useState([]);
   const [banner, setBanner] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
