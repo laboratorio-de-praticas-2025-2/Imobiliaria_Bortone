@@ -54,7 +54,7 @@ export default function EditarPublicidadePage() {
       )}
       <Sidebar />
       <div className="md:ml-20">
-        <Form.Body title="Publicidades | Cadastro">
+        <Form.Body title="Publicidades | Edição">
           <Form.FormHeader href="/admin/cms-publicidades" />
           <Form.FormBody
             onFinish={onFinish}
@@ -69,7 +69,7 @@ export default function EditarPublicidadePage() {
                 Prévia *
               </p>
               {fileList.length > 0 ? (
-                <div className="w-[100%] h-80 bg-gray-200 rounded-3xl ">
+                <div className="w-[100%] md:h-[25vh] h-[13vh] bg-gray-200 rounded-3xl ">
                   <Image
                     src={URL.createObjectURL(fileList[0].originFileObj)}
                     alt="Prévia da publicidade"
@@ -79,12 +79,12 @@ export default function EditarPublicidadePage() {
                   />
                 </div>
               ) : (
-                <div className="h-[25vh] w-[100%] bg-[#D4D4D4] rounded-3xl flex items-center justify-center text-white font-semibold text-xl">
+                <div className="md:h-[25vh] h-[13vh] w-[100%] bg-[#D4D4D4] md:rounded-3xl rounded-xl flex items-center justify-center text-white font-semibold md:text-xl text-sm">
                   Imagem de capa
                 </div>
               )}
 
-              <div className="flex gap-6">
+              <div className="flex md:flex-row flex-col md:gap-6 gap-4">
                 <TextField
                   name="titulo"
                   label="Título da campanha de publicidade"

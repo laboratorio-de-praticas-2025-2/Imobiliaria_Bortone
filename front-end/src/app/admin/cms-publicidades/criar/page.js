@@ -24,18 +24,15 @@ export default function CriarPublicidadePage() {
     <>
       <Sidebar />
       <div className="md:ml-20">
-        <Form.Body title="Publicidades | Edição">
+        <Form.Body title="Publicidades | Cadastro">
           <Form.FormHeader href="/admin/cms-publicidades" />
-          <Form.FormBody
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-          >
+          <Form.FormBody onFinish={onFinish} onFinishFailed={onFinishFailed}>
             <div className="flex flex-col w-full gap-2 ">
               <p className="!text-[#0d1b3e] !font-semibold text-[16px]">
                 Prévia *
               </p>
               {fileList.length > 0 ? (
-                <div className="w-[100%] h-80 bg-gray-200 rounded-3xl ">
+                <div className="w-[100%] md:h-[25vh] h-[13vh] bg-gray-200 rounded-3xl ">
                   <Image
                     src={URL.createObjectURL(fileList[0].originFileObj)}
                     alt="Prévia da publicidade"
@@ -45,12 +42,12 @@ export default function CriarPublicidadePage() {
                   />
                 </div>
               ) : (
-                <div className="h-[25vh] w-[100%] bg-[#D4D4D4] rounded-3xl flex items-center justify-center text-white font-semibold text-xl">
+                <div className="md:h-[25vh] h-[13vh] w-[100%] bg-[#D4D4D4] rounded-3xl flex items-center justify-center text-white font-semibold text-xl">
                   Imagem de capa
                 </div>
               )}
 
-              <div className="flex gap-6">
+              <div className="flex md:flex-row flex-col md:gap-6 gap-4">
                 <TextField
                   name="titulo"
                   label="Título da campanha de publicidade"
@@ -76,10 +73,7 @@ export default function CriarPublicidadePage() {
               />
 
               <div className="flex justify-end mt-4">
-                <FormButton
-                  text="Publicar"
-                  icon={<UploadOutlined />}
-                />
+                <FormButton text="Publicar" icon={<UploadOutlined />} />
               </div>
             </div>
           </Form.FormBody>
