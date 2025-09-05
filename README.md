@@ -1,23 +1,27 @@
 # Imobiliaria_Bortone
 
+### [✏️ Figma](https://www.figma.com/design/w1ARo0t9N2womJ0ffCi4Wt/Laborat%C3%B3rio-de-Pratica---UX?node-id=0-1&t=41vb1y7A3luaibf8-1)
+### [🌐 Site](https://imobiliaria-bortone.vercel.app/)
+
 ## Estrutura de diretórios
 
 ```bash
 /projeto-imobiliario
 │
-├── backend/                # API em Express.js (regra de negócio e dados)
-│   ├── src/
-│   │   ├── config/          # Configurações globais (ex: conexão MySQL, variáveis de ambiente)
-│   │   ├── models/          # Definição dos modelos de dados (ex: Usuario, Imovel, Agendamento)
-│   │   ├── services/        # Lógica de negócio (ex: regras para cadastro, login, agendamento)
-│   │   ├── controllers/     # Controladores que recebem requisições e chamam os services
-│   │   ├── routes/          # Definição das rotas da API (REST: /users, /imoveis, /agendamentos)
-│   │   ├── middlewares/     # Autenticação, autorização, tratamento de erros, logs
-│   │   ├── utils/           # Funções auxiliares (gerar token JWT, formatar datas, etc.)
-│   │   ├── tests/           # Testes unitários e de integração do backend
-│   │   └── app.js           # Configuração principal do Express (carrega rotas, middlewares, DB)
-│   │
-│   └── package.json         # Dependências e scripts do backend
+│
+├── backend/                # API em Express.js (regra de negócio e dados)
+│   ├── src/
+│   │   ├── config/          # Configurações globais (ex: conexão MySQL, variáveis de ambiente)
+│   │   ├── models/          # Definição dos modelos de dados (ex: usuario.js, imovel.js)
+│   │   ├── services/        # Lógica de negócio (ex: usuarioService.js, imovelService.js)
+│   │   ├── controllers/     # Controladores que recebem requisições (ex: usuarioController.js)
+│   │   ├── routes/          # Definição das rotas da API (REST: /users, /imoveis, /agendamentos)
+│   │   ├── middlewares/     # Autenticação, autorização, tratamento de erros, logs
+│   │   ├── utils/           # Funções auxiliares (gerar token JWT, formatar datas, etc.)
+│   │   ├── tests/           # Testes unitários e de integração do backend
+│   │   └── app.js           # Configuração principal do Express (carrega rotas, middlewares, DB)
+│   │
+│   └── package.json         # Dependências e scripts do backend
 │
 ├── frontend/               # Aplicação em Next.js (UI e lógica do cliente)
 │   ├── public/              # Arquivos públicos (imagens, favicon, fontes estáticas)

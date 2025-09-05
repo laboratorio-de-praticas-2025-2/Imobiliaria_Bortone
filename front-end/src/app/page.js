@@ -6,7 +6,6 @@ import PropriedadesPerto from "@/components/home/PropriedadesPerto";
 import HomeFooter from "@/components/home/HomeFooter";
 import SplashScreen from "@/components/SplashScreen";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 
 const isLoggedIn = false;
 

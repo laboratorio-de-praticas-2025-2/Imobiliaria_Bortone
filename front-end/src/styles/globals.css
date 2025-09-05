@@ -8,26 +8,26 @@
   --secondary: #f39200;
   --lavender-gray: #beb2bc;
   --fog-gray: #a5a7a6;
-  --unselected: #4A5784
+  --unselected: #4a5784;
 }
-.button-text{
-  font-family: 'Glacial Indifference';
+.button-text {
+  font-family: "Glacial Indifference";
   font-size: 1.2rem;
   font-weight: 700;
 }
 .menu-label {
-  font-family: 'Glacial Indifference';
+  font-family: "Glacial Indifference";
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--background);
 }
-.button-text{
-  font-family: 'Glacial Indifference';
+.button-text {
+  font-family: "Glacial Indifference";
   font-size: 14px;
   font-weight: 700;
 }
 .menu-label {
-  font-family: 'Glacial Indifference';
+  font-family: "Glacial Indifference";
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--background);
@@ -35,20 +35,20 @@
 }
 
 @media (max-width: 768px) {
-    .button-text{
-    font-family: 'Glacial Indifference';
+  .button-text {
+    font-family: "Glacial Indifference";
     font-size: 1rem;
     font-weight: 700;
   }
   .menu-label {
-    font-size: 1rem; 
-    text-align: center; 
+    font-size: 1rem;
+    text-align: center;
   }
 }
 
 @media (max-width: 480px) {
-    .button-text{
-    font-family: 'Glacial Indifference';
+  .button-text {
+    font-family: "Glacial Indifference";
     font-size: 0.9rem;
     font-weight: 700;
   }
@@ -58,22 +58,22 @@
   }
 }
 @font-face {
-  font-family: 'Glacial Indifference';
-  src: url('/fonts/GlacialIndifference-Regular.otf') format('opentype');
+  font-family: "Glacial Indifference";
+  src: url("/fonts/GlacialIndifference-Regular.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Glacial Indifference';
-  src: url('/fonts/GlacialIndifference-Bold.otf') format('opentype');
+  font-family: "Glacial Indifference";
+  src: url("/fonts/GlacialIndifference-Bold.otf") format("opentype");
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Lemon Milk';
-  src: url('/fonts/LEMONMILK-Medium.otf') format('opentype');
+  font-family: "Lemon Milk";
+  src: url("/fonts/LEMONMILK-Medium.otf") format("opentype");
   font-weight: medium;
   font-style: normal;
 }
@@ -90,10 +90,10 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Glacial Indifference', sans-serif;
+  font-family: "Glacial Indifference", sans-serif;
 }
 
-p{
+p {
   margin: 0 !important;
 }
 
