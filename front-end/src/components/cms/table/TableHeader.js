@@ -3,6 +3,8 @@ import { Input } from "antd";
 import { IoSearchSharp } from "react-icons/io5";
 import DropdownFilter from "../../vitrine/DropdownFilter";
 import Link from "next/link";
+import PesquisaAvancadaUser from "./pesquisaavancada/PesquisaAvancada";
+import PesquisaAvancada from "@/components/vitrine/PesquisaAvancada/PesquisaAvancada";
 
 const { Search } = Input;
 
@@ -16,6 +18,7 @@ export default function TableHeader({
   handleSelectOrder,
   filterData,
   updateFilterData,
+  type=undefined
 }) {
   return (
     <div className="w-full flex justify-between items-center px-4 py-4 bg-[var(--primary)] rounded-t-4xl gap-2">
@@ -27,6 +30,8 @@ export default function TableHeader({
         {buttonIcon && <span className="md:ml-2">{buttonIcon}</span>}
       </Link>
       <div className="flex md:gap-4 gap-2 items-center">
+        {type == "user" && <PesquisaAvancadaUser />}
+        {type == "imovel" && <PesquisaAvancada />}
         <Search
           placeholder="Pesquisar"
           onSearch={onSearch}

@@ -1,8 +1,8 @@
 "use client";
 import { FilterDataProvider } from "@/context/FilterDataContext";
+import { mockImoveis } from "@/mock/imoveis";
 import { useEffect, useState } from "react";
 import InnerImoveisPage from "./InnerImoveisPage";
-import { mockImoveis } from "@/constants/imoveis";
 
 export default function ImoveisPage() {
   const [imoveis, setImoveis] = useState([]);

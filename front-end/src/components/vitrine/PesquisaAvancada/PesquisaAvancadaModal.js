@@ -1,3 +1,4 @@
+import { options, quantityOptions, quantityVagasOptions } from "@/mock/filters";
 import { Flex } from "antd";
 import { useState } from "react";
 import DropdownFilter from "../DropdownFilter";
@@ -6,7 +7,6 @@ import QuantidadeComodos from "./QuantidadeComodos";
 import SliderArea from "./SliderArea";
 import SliderPreco from "./SliderPreco";
 import ToggleCompraAluguel from "./ToggleCompraAluguel";
-import { options, quantityOptions, quantityVagasOptions } from "@/constants/filters";
 
 export default function PesquisaAvancadaModal() {
   const [selectedQuartos, setSelectedQuartos] = useState(null);
