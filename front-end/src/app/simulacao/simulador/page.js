@@ -1,19 +1,25 @@
 "use client";
-import { useState } from "react";
-import {  Button, Row, Col } from "antd";
+import { Button, Row, Col } from "antd";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import RequestForm from "@/components/simulacao/RequestForm";
 import Filter from "@/components/simulacao/Filter";
 import HomeNavbar from "@/components/home/HomeNavbar";
+
 export default function SimulacaoCompra() {
-    const handleClick = () => {
-    window.location.href = '/simulacao'; // Ou URL completa
+  const handleClick = () => {
+    window.location.href = "/simulacao";
   };
   return (
     <div className="">
-              <HomeNavbar />
+      <HomeNavbar />
       <div className="absolute top-23 left-5 z-20 block sm:hidden">
-        <Button className="!bg-transparent !border-0" type="text" onClick={handleClick} ><IoIosArrowRoundBack className="text-white text-[40px]"/></Button>
+        <Button
+          className="!bg-transparent !border-0"
+          type="text"
+          onClick={handleClick}
+        >
+          <IoIosArrowRoundBack className="text-white text-[40px]" />
+        </Button>
       </div>
       <div className="image-bg absolute  " />
       <Row className="!h-[80vh]">
