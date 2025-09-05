@@ -4,7 +4,12 @@ const app = express();
 
 import connection from "./config/sequelize-config.js";
 
+import faqRoutes from "./routes/faqRoutes.js";
+
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use("/faq", faqRoutes);
 
 connection
   .authenticate()
