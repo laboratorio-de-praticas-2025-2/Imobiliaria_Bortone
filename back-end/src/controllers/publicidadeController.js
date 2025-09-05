@@ -23,11 +23,14 @@ const createPublicidade = async (req, res) => {
       console.error("Erro ao criar a publicidade:", error);
       res.status(500).json({error: "Erro interno no servidor"});
     }
-}
+};
+
+// Validação de ID numérico
+    if (!/^\d+$/.test(id)) {
+      return res.status(400).json({ error: "ID inválido. O ID deve ser numérico." });
+    };
 
 // Update Imobiliaria Bortone
-
-
 const updatePublicidade = async (req, res) => {
     try {
       const { id } = req.params;
