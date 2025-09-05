@@ -36,6 +36,30 @@ const blogService = {
       throw new Error("Não foi possível buscar o blog.");
     }
   },
+  // Atualizar
+  async update(id, updates) {
+    try {
+      const blog = await Blog.findByPk(id);
+      if (!blog) throw new Error("Blog não encontrado.");
+      await blog.update(updates);
+      return blog;
+    } catch (error) {
+      console.error(`Erro ao atualizar blog ${id}:`, error.message);
+      throw new Error("Não foi possível atualizar o blog.");
+    }
+  },
+  // Deletar
+  async delete(id) {
+    try {
+      const blog = await Blog.findByPk(id);
+      if (!blog) throw new Error("Blog não encontrado.");
+      await blog.destroy();
+      return true;
+    } catch (error) {
+      console.error(`Erro ao remover blog ${id}:`, error.message);
+      throw new Error("Não foi possível remover o blog.");
+    }
+  },
 };
 
 export default blogService;
