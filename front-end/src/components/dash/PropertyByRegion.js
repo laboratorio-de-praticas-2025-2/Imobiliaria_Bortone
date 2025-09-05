@@ -7,7 +7,7 @@ import { Row, Col } from "antd";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function PropertySold() {
+export default function RentalByRegion() {
   const [chartData, setChartData] = useState(null);
 
   // Puxando dados de uma API real, mas a API tá fora do ar no momento ↓
@@ -25,6 +25,8 @@ export default function PropertySold() {
   //               "#243B7B",
   //               "#F39C12",
   //               "#B8AEBF",
+  //               "#A6A6A6",
+  //               "#E74C3C",
   //             ],
   //             borderWidth: 0,
   //             cutout: "60%",
@@ -36,11 +38,23 @@ export default function PropertySold() {
 
   // Dados estáticos para demonstração  ↓
   const data = {
-    labels: ["Apartamentos", "Casas", "Terrenos"],
+    labels: [
+      "Região Central",
+      "Região Sul",
+      "Região Norte",
+      "Região Leste",
+      "Região Oeste",
+    ],
     datasets: [
       {
-        data: [45, 25, 15],
-        backgroundColor: ["#243B7B", "#F39C12", "#B8AEBF"], // cores
+        data: [45, 25, 15, 10, 5],
+        backgroundColor: [
+          "#243B7B",
+          "#F39C12",
+          "#B8AEBF",
+          "#A6A6A6",
+          "#E74C3C",
+        ], // cores
         borderWidth: 0,
         cutout: "0%", // transforma em donut (se fosse 0%, seria uma pizza cheia)
       },
@@ -64,12 +78,12 @@ export default function PropertySold() {
   };
 
   return (
-    <Row className="py-4">
+    <Row gutter={{ xs: 8, sm: 16 }}>
       <Col className="gutter-row" span={24}>
         <div className="group h-[300px] !w-full flex items-center rounded-xl px-10 !bg-[#EEF0F9] !shadow-md">
           <div className="grid grid-col content-evenly w-full h-full">
             <span className="text-lg md:text-2xl font-bold lg:text-center text-[var(--primary)] ">
-              Proporção de imóveis vendidos
+              Proporção de imóveis por região 
             </span>
 
             <div className="items-center justify-items-center w-full h-full">

@@ -8,7 +8,7 @@ export default function SellCard() {
             transition-colors cursor-pointer"
     >
       <div className="grid grid-col  content-evenly  w-full h-full">
-        <span className="w-full lg:text-center text-md lg:text-lg text-[var(--primary)] group-hover:text-white transition-colors">
+        <span className="w-full leading-tight text-md xl:text-lg text-[var(--primary)] group-hover:text-white transition-colors">
           Número total de Locações
         </span>
 

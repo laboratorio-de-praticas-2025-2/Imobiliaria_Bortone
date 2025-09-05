@@ -83,7 +83,7 @@ export default function RentalByRegion() {
         <div className="group h-[300px] !w-full flex items-center rounded-xl px-10 !bg-[#EEF0F9] !shadow-md">
           <div className="grid grid-col content-evenly w-full h-full">
             <span className="text-lg md:text-2xl font-bold lg:text-center text-[var(--primary)] ">
-              Proporção de locações por região
+              Proporção de imóveis por região 
             </span>
 
             <div className="items-center justify-items-center w-full h-full">

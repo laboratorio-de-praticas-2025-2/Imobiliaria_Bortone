@@ -1,10 +1,10 @@
 import Section from "@/components/dash/Section";
 import { Row, Col, Input, Button } from "antd";
 import { IoOptions } from "react-icons/io5";
-import CardsHome from "@/components/dash/CardsHome";
-import RentalByRegion from "@/components/dash/RentalByRegion";
+import CardsSale from "@/components/dash/CardsSale";
+import PropertyByRegion from "@/components/dash/PropertyByRegion";
 import PropertySold from "@/components/dash/PropertySold";
-import UsersPerMonth from "@/components/dash/UsersPerMonth";
+import SalesLineGraph from "@/components/dash/sold/SalesLineGraph";
 export default function Dashboard() {
   const style = { background: "#0092ff", padding: "8px 0" };
 
@@ -36,12 +36,12 @@ export default function Dashboard() {
       <div className="w-[90vw]">
         <Row gutter={{ xs: 8, sm: 16 }}>
           <Col lg={14} xs={24}>
-            <CardsHome />
-            <UsersPerMonth />
+            <CardsSale/>
+            <SalesLineGraph />
           </Col>
 
           <Col lg={10} xs={24}>
-            <RentalByRegion />
+            <PropertyByRegion />
             <PropertySold />
           </Col>
         </Row>
