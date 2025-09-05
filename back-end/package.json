@@ -1,8 +1,24 @@
 {
+  "name": "api-imobiliaria",
+  "version": "1.0.0",
+  "description": "API para gerenciamento da imobiliaria Bortone",
+  "main": "src/app.js",
+  "type": "module",
+  "keywords": [
+    "API",
+    "imobiliária",
+    "Bortone"
+  ],
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "mysql2": "^3.14.4",
+    "nodemon": "^3.1.10",
     "sequelize": "^6.37.7"
   }
 }

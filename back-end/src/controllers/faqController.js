@@ -26,7 +26,11 @@ const updateFaq = async (req, res) => {
     await FaqService.update(id, pergunta, resposta);
     res.status(200).json({ message: "FAQ atualizada com sucesso." });
   } catch (error) {
-    res.status(500).json({ error: "Erro interno do servidor." });
+    if (error.message === "FAQ não encontrada") {
+      res.status(404).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Erro interno do servidor." });
+    }
   }
 };
 
@@ -34,9 +38,13 @@ const deleteFaq = async (req, res) => {
   const { id } = req.params;
   try {
     await FaqService.delete(id);
-    res.status(204).json({ message: "FAQ excluída com sucesso." } );
+    res.status(204);
   } catch (error) {
-    res.status(500).json({ error: "Erro interno do servidor." });
+    if (error.message === "FAQ não encontrada") {
+      res.status(404).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Erro interno do servidor." });
+    }
   }
 };
 
@@ -46,7 +54,11 @@ const getFaqById = async (req, res) => {
     const faq = await FaqService.getById(id);
     res.status(200).json(faq);
   } catch (error) {
-    res.status(500).json({ error: "Erro interno do servidor." });
+    if (error.message === "FAQ não encontrada") {
+      res.status(404).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Erro interno do servidor." });
+    }
   }
 };
 
