@@ -18,6 +18,10 @@ class PublicidadeService {
 
   async updatePublicidade(id, novosDados) {
     try {
+      if (!id || isNaN(id) || Number(id) <= 0) {
+        throw new Error("ID de publicidade inválido.");
+      }
+      
       const publicidade = await Publicidade.findByPk(id);
 
       if (!publicidade) {
