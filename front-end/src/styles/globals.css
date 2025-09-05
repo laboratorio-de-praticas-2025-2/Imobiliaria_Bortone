@@ -98,6 +98,7 @@ p{
 }
 
 
+/* Animções do CHAT */
 @keyframes emojiOpen {
   0% {
     opacity: 0;
@@ -111,4 +112,19 @@ p{
 
 .animate-emojiOpen {
   animation: emojiOpen 0.15s ease-out forwards;
+}
+
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-slideUpFade {
+  animation: slideUpFade 0.2s ease-out forwards;
 }
