@@ -39,7 +39,6 @@ export default function TableHeader({
           className="search-cms !text-[var(--primary)] !h-full"
           prefix={<IoSearchSharp className="text-[var(--primary)]" size={18} />}
         />
-
         <DropdownFilter
           options={optionsOrder}
           placeholder={"Ordenar por"}
