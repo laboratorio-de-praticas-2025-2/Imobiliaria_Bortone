@@ -31,6 +31,7 @@ export default function Home() {
 
   return (
     <>
+      <SpeedInsights />
       <Header />
       <Divider size="large" />
       {isLoggedIn ? <PropriedadesSelecionadas /> : <PropriedadesPerto />}
