@@ -3,9 +3,10 @@
 import { useState, useRef } from "react";
 import ChatMessage from "./chatMessage.js";
 import { sendMessageMock } from "@/utils/chatService";
-import { IoIosCloseCircleOutline } from "react-icons/io";
+import { IoIosCloseCircle , IoIosSend, IoIosMic } from "react-icons/io";
 import { RxAvatar } from "react-icons/rx";
-import { BsEmojiSmile } from "react-icons/bs";
+import { BsEmojiSmileFill  } from "react-icons/bs";
+import { IoSend } from "react-icons/io5";
 
 export default function ChatModal({ onClose }) {
   const [messages, setMessages] = useState([
@@ -35,11 +36,11 @@ export default function ChatModal({ onClose }) {
   return (
     <div
       className="
-    fixed z-[9999]
-    inset-0 w-full h-full rounded-none
-    md:inset-auto md:bottom-4 md:right-4 md:w-[90%] md:max-w-sm md:h-[70vh] md:rounded-2xl
-    bg-white shadow-lg flex flex-col overflow-hidden
-    animate-slideUpFade
+      fixed z-[9999]
+      inset-0 w-full h-full rounded-none
+      md:inset-auto md:bottom-4 md:right-4 md:w-[90%] md:max-w-sm md:h-[70vh] md:rounded-2xl
+      bg-white shadow-lg flex flex-col overflow-hidden
+      animate-slideUpFade
       "
     >
       {/* Header */}
@@ -52,7 +53,7 @@ export default function ChatModal({ onClose }) {
         </div>
 
         <button onClick={onClose}>
-          <IoIosCloseCircleOutline
+          <IoIosCloseCircle 
             className="w-8 h-8 md:w-10 md:h-10 transition-transform hover:scale-110"
             color="white"
           />
@@ -70,7 +71,7 @@ export default function ChatModal({ onClose }) {
       <div className="relative flex items-center border-t p-2 gap-2 bg-[#4C62AE]">
         {/* Emoji */}
         <div className="relative">
-          <BsEmojiSmile
+          <BsEmojiSmileFill 
             className="w-8 h-8 cursor-pointer hover:scale-110 transition"
             color="white"
             onClick={() => setShowEmojis(!showEmojis)}
@@ -106,6 +107,15 @@ export default function ChatModal({ onClose }) {
           className="flex-1 bg-white rounded-3xl px-3 py-2 text-sm focus:outline-none 
                      focus:ring focus:ring-blue-300"
         />
+
+        {/* Botão enviar - só mobile/tablet */}
+        <button
+          onClick={handleSend}
+          className="flex md:hidden w-10 h-10 rounded-full items-center justify-center 
+                     bg-blue-500 hover:scale-110 transition"
+        >
+          <IoSend color="white" className="w-6 h-6 text-white" />
+        </button>
       </div>
     </div>
   );
