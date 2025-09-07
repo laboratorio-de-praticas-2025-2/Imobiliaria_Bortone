@@ -112,7 +112,7 @@ export default function ChatModal({ onClose }) {
         <button
           onClick={handleSend}
           className="flex md:hidden w-10 h-10 rounded-full items-center justify-center 
-                     bg-blue-500 hover:scale-110 transition"
+                      hover:scale-110 transition"
         >
           <IoSend color="white" className="w-6 h-6 text-white" />
         </button>
