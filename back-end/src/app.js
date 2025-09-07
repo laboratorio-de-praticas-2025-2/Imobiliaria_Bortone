@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 // Exemplo de como importar rotas
-// import publicidadeRoutes from "./routes/publicidadeRoutes.js"; 
+import publicidadeRoutes from "./routes/publicidadeRoutes.js"; 
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Rotas
 // Exemplo de como usar as rotas
-// app.use("/api", publicidadeRoutes); 
+app.use("/api", publicidadeRoutes); 
 
 
 connection
