@@ -57,6 +57,25 @@ class PublicidadeService {
       throw error;
     }
   }
+
+    async readPublicidade(id) {
+    try {
+      if (!id || isNaN(id) || Number(id) <= 0) {
+        throw new Error("ID de publicidade inválido.");
+      }
+
+      const publicidade = await Publicidade.findByPk(id);
+
+      if (!publicidade) {
+        throw new Error(`Publicidade com ID ${id} não encontrada.`);
+      }
+
+      return publicidade;
+    } catch (error) {
+      throw error;
+    }
+  }
+  
 }
 
 module.exports = new PublicidadeService();
