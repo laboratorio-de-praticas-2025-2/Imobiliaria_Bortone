@@ -1,4 +1,4 @@
-import Publicidade from "../models/publicidade.js";
+import Publicidade from "../services/publicidade.js";
 
 // GET /publicidade
 export const getAllPublicidades = async (req, res) => {
