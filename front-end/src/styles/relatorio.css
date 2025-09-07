@@ -1,0 +1,293 @@
+.relatorio{
+    font-family: "Glacial Indifference", sans-serif;
+    color: white;       
+    font-size: 36px;     
+    font-weight: bold; 
+}
+
+.gerando_relatorio{
+    font-family: "Glacial Indifference", sans-serif;
+    color: #304383;       
+    font-size: 45px;     
+    font-weight: bold;
+    padding-bottom: 100px;
+}
+
+.gerar_pdf{
+    background-color: #304383;
+    color: white;
+    width: 140px;
+    height: 50px;
+    border-radius: 28px;
+}
+
+.relatorioFinal{
+    width: 100%;
+    height: 30%;
+    display: flex;
+}
+
+.relatorioFinal p{
+    font-family: "Glacial Indifference", sans-serif;
+    color: white;          
+    font-weight: bold; 
+    padding-left: 60px;
+}
+
+.relatorioFinal span{
+    font-family: "Glacial Indifference", sans-serif;
+    color: white;     
+    font-size: 25px;    
+    font-weight: normal; 
+    padding-left: 60px;
+}
+
+.pdf_gerado{
+    font-size: 35px;
+    margin-bottom: 27px !important;
+}
+
+.nome_arquivo{
+    font-size: 25px;
+}
+
+.botoes{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.btn_baixar{
+    background-color: white;
+    color:#304383;
+    width: 240px;
+    height: 59px;
+    border-radius: 50px;
+    font-size: 25;
+    font-family: "Glacial Indifference", sans-serif;        
+    font-weight: bold; 
+}
+
+.btn_compartilhar{
+    border-color: white;
+    border-width: 3;
+    border-radius: 100%;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn_imprimir{
+    border-color: white;
+    border-width: 3;
+    border-radius: 100%;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn_fechar{
+    border-color: white;
+    border-width: 3;
+    border-radius: 100%;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon{
+    width: 18px;
+    height: 20px;
+}
+
+.pdf_modal{
+    width: 56%; 
+    height: 842px;
+}
+
+.col_esquerda_pdf {
+  flex: 1;
+  width: 40%;
+  background-color: #f3f3f3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.col_direita_pdf {
+  flex: 1;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  background: linear-gradient(180deg, #304383 0%, #0B0F1D 100%);
+}
+
+.aviso {
+    position: relative; /* necessário para que o filho absoluto se posicione relativo à div */
+    background-color: white;
+    width: 500px;
+    height: 333px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    justify-content: space-between; /* mantém o botão no final */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.icon_aviso {
+    position: absolute; /* sai do fluxo normal */
+    top: 103px; /* define a distância do topo da div */
+    left: 70px; /* ou ajuste horizontal como quiser */
+    width: 60px;
+    height: 60px;
+    color: #273668;
+}
+
+.miniTextoAviso{
+    width: 62%;
+    height: 50%;
+    margin-left: 160px !important;
+    margin-top: 10px !important;
+}
+
+.aviso p{
+    font-family: "Glacial Indifference", sans-serif;
+    color: #273668;      
+    font-size: 20px;     
+    font-weight: normal;
+}
+
+.aviso span{
+    font-family: "Glacial Indifference", sans-serif;
+    color: #273668;      
+    font-size: 45px;     
+    font-weight: bold;
+    margin-left: 50px;
+    margin-top: 47px;
+}
+
+.btn_recarregar{
+    background-color: #273668;
+    color: white;
+    width: 363px;
+    height: 30%;
+    border-radius: 7px;
+    font-size: 32px;
+ 
+}
+
+@media(max-width: 768px){
+    .texto_nav{
+        font-size: 0px; /* Texto: Relatório */
+    }
+
+    .tabela{
+        margin-left: 30px;
+    }
+
+    .pdf_modal {
+        display: flex;
+        flex-direction: column; 
+        width: 80%;         
+        height: 850px;           
+    }
+    
+    .relatorioFinal{
+        width: 80%;
+        height: 100%;
+    }
+
+    .relatorioFinal p{
+        padding-left: 15px;
+    }
+
+    .relatorioFinal span{
+        padding-left: 15px;
+    }
+
+    .col_esquerda_pdf{
+        width: 100%;            
+        min-height: 70%;       
+        padding: 1rem;
+    }
+
+    .col_direita_pdf{
+        width: 100%;            
+        min-height: 30%;       
+        padding: 1rem;
+    }
+
+    .pdf_gerado{
+        font-size: 24px;
+        margin-bottom: 2px !important;
+    }
+
+    .nome_arquivo{
+        font-size: 20px;
+    }
+
+    .relatorioFinal span{    
+        font-size: 17px;    
+    }
+
+    
+    .btn_baixar{
+        width: 247px;
+        height: 59px;
+        font-size: 25;
+    }
+
+    .icon{
+        width: 18px;
+        height: 20px;
+    }
+
+    .aviso {
+        width: 447px;
+        height: 260px;
+    }
+
+    .icon_aviso {
+        top: 80px;
+        left: 70px;
+    }
+
+    .miniTextoAviso{
+        width: 62%;
+        height: 50%;
+        margin-left: 130px !important;
+        margin-top: 10px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .aviso p{
+        font-family: "Glacial Indifference", sans-serif;
+        color: #273668;      
+        font-size: 20px;     
+        font-weight: normal;
+    }
+
+    .aviso span{
+        font-size: 30px;     
+        margin-left: 0px;
+        margin-top: 35px;
+    }
+
+    .btn_recarregar{
+        font-size: 24px;
+        height: 70% !important;
+    }
+
+    
+}
