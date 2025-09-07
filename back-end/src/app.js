@@ -1,10 +1,17 @@
+import 'dotenv/config';
 import express from "express";
+import agendamentoRouter from './routes/agendamentoRouter.js';
 
 const app = express();
 
 import connection from "./config/sequelize-config.js";
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+
+app.get('/', (req, res) => res.send('API rodando 🚀'));
+app.use('/agendamentos', agendamentoRouter);
 
 connection
   .authenticate()
@@ -15,7 +22,7 @@ connection
     console.log(error);
   });
 
-app.listen(3306, function (erro) {
+app.listen(3000, function (erro) {
   if (erro) {
     console.log("Ocorreu um erro! Erro: ", erro);
   } else {
