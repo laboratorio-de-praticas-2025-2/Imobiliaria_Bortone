@@ -1,13 +1,13 @@
 const Publicidade = require("../models/publicidade");
 
 class PublicidadeService {
-  async serviceCreate(dadosPublicidade) {
+  async createPublicidade(dadosCreatePublicidade) {
     try {
       const publicidade = await Publicidade.create({
-        titulo: dadosPublicidade.titulo,
-        conteudo: dadosPublicidade.conteudo,
-        url_imagem: dadosPublicidade.url_imagem,
-        usuario_id: dadosPublicidade.usuario_id
+        titulo: dadosCreatePublicidade.titulo,
+        conteudo: dadosCreatePublicidade.conteudo,
+        url_imagem: dadosCreatePublicidade.url_imagem,
+        usuario_id: dadosCreatePublicidade.usuario_id
       });
 
       return publicidade;
@@ -16,7 +16,7 @@ class PublicidadeService {
     }
   }
 
-  async updatePublicidade(id, novosDados) {
+  async updatePublicidade(id, dadosUpdatePublicidade) {
     try {
       if (!id || isNaN(id) || Number(id) <= 0) {
         throw new Error("ID de publicidade inválido.");
@@ -28,10 +28,10 @@ class PublicidadeService {
         throw new Error(`Publicidade com ID ${id} não encontrada.`);
       }
 
-      publicidade.titulo = novosDados.titulo || publicidade.titulo;
-      publicidade.conteudo = novosDados.conteudo || publicidade.conteudo;
-      publicidade.url_imagem = novosDados.url_imagem || publicidade.url_imagem;
-      publicidade.usuario_id = novosDados.usuario_id || publicidade.usuario_id;
+      publicidade.titulo = dadosUpdatePublicidade.titulo || publicidade.titulo;
+      publicidade.conteudo = dadosUpdatePublicidade.conteudo || publicidade.conteudo;
+      publicidade.url_imagem = dadosUpdatePublicidade.url_imagem || publicidade.url_imagem;
+      publicidade.usuario_id = dadosUpdatePublicidade.usuario_id || publicidade.usuario_id;
       
 
       await publicidade.save();
