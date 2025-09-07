@@ -6,7 +6,6 @@ import "@/styles/simulacao.css";
 import "@/styles/imoveis.css";
 import "@/styles/blog.css";
 import "@/styles/faq.css";
-import "@/styles/relatorio.css";
 import "@/styles/cms.css";
 import "antd/dist/reset.css";
 import Script from "next/script";
