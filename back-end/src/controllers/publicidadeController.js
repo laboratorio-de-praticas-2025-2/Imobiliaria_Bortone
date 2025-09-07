@@ -81,8 +81,8 @@ export const deletePublicidade = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!/^\d+$/.test(id)) {
-      return res.status(400).json({ error: "ID inválido. O ID deve ser numérico." });
+    if (isNaN(id)) {
+        return res.status(400).json({ message: "ID inválido. O ID deve ser numérico." });
     }
 
     const publicidade = await Publicidade.findByPk(id);
@@ -91,9 +91,11 @@ export const deletePublicidade = async (req, res) => {
     }
 
     await publicidade.destroy();
+
     res.status(204).send();
+
   } catch (error) {
     console.error("Erro ao deletar publicidade:", error);
-    res.status(500).json({ error: "Erro interno no servidor" });
+    res.status(500).json({ error: "Erro interno ao tentar excluir a publicidade." });
   }
 };
