@@ -1,0 +1,55 @@
+.image-bg-bottom {
+  position: absolute;
+
+  bottom: -0;
+  background-image: url("/images/simulacao-mobile.png");
+  background-position: bottom; /* <- volta a grudar no topo no desktop */
+  background-size: 100vw;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+}
+.image-bg {
+  background-image: url("/images/simulacao-2-mobile.png");
+  background-size: 100vw;
+  background-position: top center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+}
+.fundo {
+  background: linear-gradient(
+    160deg,
+    hsla(227, 46%, 36%, 1) 0%,
+    hsla(227, 46%, 36%, 1) 0%,
+    hsla(226, 46%, 11%, 1) 39%,
+    hsla(226, 47%, 9%, 1) 73%
+  );
+}
+
+@media (min-width: 769px) {
+  .image-bg {
+    background-image: url("/images/simulacao-2.png");
+    background-size: 100vw;
+    background-position: top center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 80%;
+  }
+  .image-bg-bottom {
+    background-image: url("/images/simulacao.png");
+    background-position: top center; /* <- volta a grudar no topo no desktop */
+    height: 73vh;
+  }
+}
+
+.form {
+  font-family: "Glacial Indifference";
+  font-size: 24px;
+}
+
+.meu-card .ant-input::placeholder {
+  font-size: 10px !important;
+  font-weight: 700;
+  color: #8b96bc !important;
+}
