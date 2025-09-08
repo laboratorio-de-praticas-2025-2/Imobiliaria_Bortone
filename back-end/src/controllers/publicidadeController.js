@@ -85,12 +85,12 @@ export const deletePublicidade = async (req, res) => {
         return res.status(400).json({ message: "ID inválido. O ID deve ser numérico." });
     }
 
-    const publicidade = await Publicidade.findByPk(id);
-    if (!publicidade) {
+    const deletePublicidade = await Publicidade.findByPk(id);
+    if (!deletePublicidade) {
       return res.status(404).json({ error: "Publicidade não encontrada" });
     }
 
-    await publicidade.destroy();
+    await deletePublicidade.destroy();
 
     res.status(204).send();
 
