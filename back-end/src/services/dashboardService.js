@@ -59,54 +59,97 @@ class DashboardSerivce {
     });
     return results;
   }
+  async alugueisPorMes() {
+    const query = `SELECT 
+        m.mes,
+        t.tipo AS tipoImovel,
+        COALESCE(COUNT(i.id), 0) AS total
+    FROM (
+        -- gera os últimos 12 meses
+        SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL seq MONTH), '%Y-%m') AS mes
+        FROM (
+            SELECT 0 AS seq UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3
+            UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7
+            UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11
+        ) AS seqs
+    ) m
+    CROSS JOIN (
+        SELECT 'Apartamento' AS tipo
+        UNION ALL SELECT 'Casa'
+        UNION ALL SELECT 'Terreno'
+    ) t
+    LEFT JOIN imoveis i
+        ON i.tipo = t.tipo
+        AND i.status = 'locado'
+        AND DATE_FORMAT(i.data_update_status, '%Y-%m') = m.mes
+    GROUP BY m.mes, t.tipo
+    ORDER BY m.mes ASC, t.tipo;`;
+
+    const results = await sequelize.query(query, {
+      type: sequelize.QueryTypes.SELECT,
+      logging: false,
+    });
+
+    // agrupa os resultados por mes
+    const mesesAgrupados = results.reduce((acc, row) => {
+      if (!acc[row.mes]) {
+        acc[row.mes] = { mes: row.mes, Apartamento: 0, Casa: 0, Terreno: 0 };
+      }
+      acc[row.mes][row.tipoImovel] = Number(row.total);
+      return acc;
+    }, {});
+
+    return Object.values(mesesAgrupados);
+  }
 
   // processa os dados para melhor apresentacao no front end
 
- async dashboardData() {
-  try {
-    const estatisticas = await this.estatisticasImoveisUsuarios();
-    const vendas = await this.estatisticasVendas();
+  async dashboardData() {
+    try {
+      const estatisticas = await this.estatisticasImoveisUsuarios();
+      const vendas = await this.estatisticasVendas();
+      const alugueis = await this.alugueisPorMes();
 
-    // faz com que todos os tipos aparecam, mesmo se estiverem com 0 vendas
-    const tiposImoveis = ['Apartamento', 'Casa', 'Terreno'];
-    const vendasRecentes = tiposImoveis.map(tipo => {
-      const registro = vendas.find(v => v.tipoImovel === tipo);
-      return {
-        tipo: tipo,
-        quantidade: registro ? Number(registro.quantidade) : 0,
-        porcentagem: registro ? Number(registro.porcentagem) : 0
+      // faz com que todos os tipos aparecam, mesmo se estiverem com 0 vendas
+      const tiposImoveis = ["Apartamento", "Casa", "Terreno"];
+      const vendasRecentes = tiposImoveis.map((tipo) => {
+        const registro = vendas.find((v) => v.tipoImovel === tipo);
+        return {
+          tipo: tipo,
+          quantidade: registro ? Number(registro.quantidade) : 0,
+          porcentagem: registro ? Number(registro.porcentagem) : 0,
+        };
+      });
+
+      // estrutura os dados
+      const processedData = {
+        imoveis: {
+          total: Number(estatisticas.totalImoveis),
+          porTipo: {
+            apartamentos: Number(estatisticas.totalApartamentos),
+            casas: Number(estatisticas.totalCasas),
+            terrenos: Number(estatisticas.totalTerrenos),
+          },
+          porNegociacao: {
+            venda: Number(estatisticas.totalVenda),
+            locacao: Number(estatisticas.totalLocacao),
+          },
+        },
+        usuarios: {
+          total: Number(estatisticas.totalUsuarios),
+          administradores: Number(estatisticas.totalAdministradores),
+          visitantes: Number(estatisticas.totalVisitantes),
+        },
+        vendasRecentes,
+        alugueisPorMes: alugueis
       };
-    });
 
-    // estrutura os dados
-    const processedData = {
-      imoveis: {
-        total: Number(estatisticas.totalImoveis),
-        porTipo: {
-          apartamentos: Number(estatisticas.totalApartamentos),
-          casas: Number(estatisticas.totalCasas),
-          terrenos: Number(estatisticas.totalTerrenos),
-        },
-        porNegociacao: {
-          venda: Number(estatisticas.totalVenda),
-          locacao: Number(estatisticas.totalLocacao),
-        },
-      },
-      usuarios: {
-        total: Number(estatisticas.totalUsuarios),
-        administradores: Number(estatisticas.totalAdministradores),
-        visitantes: Number(estatisticas.totalVisitantes),
-      },
-      vendasRecentes
-    };
-
-    return processedData;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Erro ao processar dados do dashboard");
+      return processedData;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Erro ao processar dados do dashboard");
+    }
   }
-}
-
 }
 
 export default new DashboardSerivce();
