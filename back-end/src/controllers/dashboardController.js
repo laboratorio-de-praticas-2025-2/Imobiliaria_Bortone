@@ -1,9 +1,9 @@
-import dashboardService from "../services/dashboardService.js";
-class dashboardController {
+import DashboardService from "../services/dashboardService.js";
+class DashboardController {
   // usado pela rota /dashboard 
   async findInfoImoveis(req, res, next) {
     try {
-      const response = await dashboardService.estatisticasImoveisUsuarios();
+      const response = await DashboardService.dashboardData();
       return res.status(200).json(response);
     } catch (error) {
       console.error(error);
@@ -12,4 +12,4 @@ class dashboardController {
   }
 }
 
-export default new dashboardController();
+export default new DashboardController();
