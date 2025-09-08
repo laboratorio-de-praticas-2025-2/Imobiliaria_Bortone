@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { Switch, ConfigProvider } from "antd";
 import { BiPencil } from "react-icons/bi";
 import { IoMdTrash } from "react-icons/io";
 import ConfirmModal from "@/components/cms/ConfirmModal";

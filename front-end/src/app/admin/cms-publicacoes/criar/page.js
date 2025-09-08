@@ -1,6 +1,6 @@
 "use client";
 import Form from "@/components/cms/form";
-import PreviaBanner from "@/components/cms/form/fields/PreviaBanner";
+import PreviaPost from "@/components/cms/form/fields/PreviaPost";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import TextField from "@/components/cms/form/fields/TextField";
 import UploadField from "@/components/cms/form/fields/UploadField";
@@ -13,8 +13,11 @@ import { useState } from "react";
 
 export default function CriarBannerPage() {
   const [fileList, setFileList] = useState([]);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
   const onFinish = (values) => {
+    setFormValues(values);
     console.log("Success:", values);
   };
 
@@ -33,10 +36,17 @@ export default function CriarBannerPage() {
               {/* Coluna do Formulário */}
               <div className="sm:w-[60%] flex flex-col gap-3 items-end">
                 <div className="flex flex-col sm:flex-row w-full justify-between items-center gap-3">
-
+                  <TextField
+                    name="titulo"
+                    label="Título da matéria"
+                    placeholder="Título da matéria"
+                    className="!w-[100%]"
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
+                  />
                   <UploadField
-                    name="imagem"
-                    label="Imagem do Banner"
+                    name="url_imagem"
+                    label="Imagem de Capa"
                     multiple={false}
                     className="!w-fit"
                     fileList={fileList}
@@ -58,11 +68,13 @@ export default function CriarBannerPage() {
                   )}
                 </div>
                 <TextAreaField
-                  name="descricao"
-                  label="Descrição"
-                  placeholder="Corpo da descrição"
+                  name="conteudo"
+                  label="Corpo"
+                  placeholder="Corpo da publicação"
                   rows={18}
                   className="!w-full !h-full"
+                  value={content}
+                  onChange={e => setContent(e.target.value)}
                 />
                 <FormButton
                   text="Publicar"
@@ -72,11 +84,19 @@ export default function CriarBannerPage() {
               </div>
 
               <div className="sm:w-[40%] hidden sm:flex">
-                <PreviaBanner fileList={fileList} />
+                <PreviaPost
+                  fileList={fileList}
+                  title={title}
+                  content={content}
+                />
               </div>
 
               <div className="sm:hidden w-full flex flex-col gap-3.5 items-center">
-                <PreviaBanner fileList={fileList} />
+                <PreviaPost
+                  fileList={fileList}
+                  title={title}
+                  content={content}
+                />
                 <FormButton
                   text="Publicar"
                   className="!flex !sm:hidden"
