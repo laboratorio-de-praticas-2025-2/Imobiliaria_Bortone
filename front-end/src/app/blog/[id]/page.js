@@ -20,17 +20,17 @@ export default function ContentBlog() {
 
         <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-10 px-5 md:px-16">
           <span className="text-[var(--primary)] lg:text-3xl text-[5.5vw] uppercase lemon-milk ">
-            {post.title}
+            {post.titulo}
           </span>
           <span className="text-[var(--primary)] lg:text-lg text-[3.8vw] uppercase lemon-milk ">
-            {post.date}
+            {post.data_publicacao}
           </span>
         </div>
         <hr className="border-t border-[#D7D7D7] py-5" />
 
         <div className="md:px-16">
           <Image
-            src={post.image}
+            src={post.url_imagem}
             alt=""
             width="100%"
             className="w-screen md:w-full max-h-[500px] object-cover rounded-none md:!rounded-[25px]"
@@ -44,7 +44,7 @@ export default function ContentBlog() {
 
         {/* Conteúdo do post */}
         <div className="prose max-w-none text-[20px] text-[var(--primary)] md:pt-6 pt-10 px-4 md:px-16">
-          {post.content}
+          {post.conteudo}
         </div>
 
         {/* ShareButton só em mobile, abaixo do conteúdo */}

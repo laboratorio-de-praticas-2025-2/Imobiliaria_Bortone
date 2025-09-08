@@ -59,14 +59,14 @@
 }
 @font-face {
   font-family: "Glacial Indifference";
-  src: url("/fonts/GlacialIndifference-Regular.otf") format("opentype");
+  src: url("/fonts/glacial-indifference.regular.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Glacial Indifference";
-  src: url("/fonts/GlacialIndifference-Bold.otf") format("opentype");
+  src: url("/fonts/glacial-indifference.bold.otf") format("opentype");
   font-weight: bold;
   font-style: normal;
 }
