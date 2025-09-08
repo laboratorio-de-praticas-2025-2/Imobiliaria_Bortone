@@ -1,15 +1,18 @@
 import express from "express";
-const app = express();
 import cors from "cors";
-
 import connection from "./config/sequelize-config.js";
 
+const app = express();
+
+// Importação das rotas
 import faqRoutes from "./routes/faqRoutes.js";
 
-app.use(cors());
-app.use(express.json());
+// Middlewares
+app.use(cors()); // Habilita o CORS para todas as origens
+app.use(express.json()); // Para parsear JSON
 app.use(express.urlencoded({ extended: false }));
 
+// Rotas
 app.use("/faq", faqRoutes);
 
 connection

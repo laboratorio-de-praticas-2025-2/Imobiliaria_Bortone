@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import FaqContent from "@/components/faq/FaqContent";
 import HomeFooter from "@/components/home/HomeFooter";
 import HomeNavbar from "@/components/home/HomeNavbar";
@@ -10,7 +10,6 @@ export default function FaqPage() {
   const [faqData, setFaqData] = useState([]);
 
   const fetchFaq = async () => {
-    
     // Simulando uma chamada de API com dados mockados
     setFaqData(MOCKFAQ);
   };

@@ -15,7 +15,9 @@ const { Search } = Input;
 
 const onSearch = (value) => console.log(value);
 
-const MapView = dynamic(() => import("@/components/mapa/MapView"), { ssr: false });
+const MapView = dynamic(() => import("@/components/mapa/MapView"), {
+  ssr: false,
+});
 
 export default function Mapa() {
   const [imoveis, setImoveis] = useState([]);

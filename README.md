@@ -1,5 +1,8 @@
 # Imobiliaria_Bortone
 
+### [✏️ Figma](https://www.figma.com/design/w1ARo0t9N2womJ0ffCi4Wt/Laborat%C3%B3rio-de-Pratica---UX?node-id=0-1&t=41vb1y7A3luaibf8-1)
+### [🌐 Site](https://imobiliaria-bortone.vercel.app/)
+
 ## Estrutura de diretórios
 
 ```bash

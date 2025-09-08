@@ -5,6 +5,7 @@ import HomeNavbar from "@/components/home/HomeNavbar";
 import HomeFooter from "@/components/home/HomeFooter";
 import { Image } from "antd";
 import ShareButton from "@/components/blog/ShareButton";
+
 export default function ContentBlog() {
   const { id } = useParams(); // pega o id da URL
   const post = postsData.find((p) => String(p.id) === id);

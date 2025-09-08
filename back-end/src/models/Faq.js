@@ -23,6 +23,7 @@ const Faq = connection.define("faq", {
 },
 {
   freezeTableName: true,
+  timestamps: false,
 });
 
 Faq.sync({ force: false });
