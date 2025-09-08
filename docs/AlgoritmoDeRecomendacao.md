@@ -33,7 +33,7 @@ Uma lista de até **10 imóveis recomendados**, com base em:
 - Similaridade com imóveis visitados
 - Popularidade (fallback para usuários sem histórico)
 
-Cada imóvel pode conter atributos como `id`, `nome`, `tipo`, `cidade`, `bairro`, `preço`, entre outros.
+Cada imóvel pode conter atributos como `id`, `nome`, `tipo`, `cidade`, `estado`, `preço`, entre outros.
 
 ---
 
@@ -46,7 +46,7 @@ A partir do `usuario_id` recebido na requisição, o sistema consulta a tabela `
 Com os dados dos imóveis visitados (tabela `IMOVEIS`), o algoritmo analisa os atributos mais comuns:
 - `tipo`
 - `cidade`
-- `bairro`
+- `estado`
 - `preço`
 
 Esses atributos ajudam a construir o perfil de interesse do usuário.
@@ -65,6 +65,67 @@ Se o usuário não tiver registros na tabela `RECOMENDACAO_IMOVEL`, o algoritmo 
 - **Filtragem baseada em conteúdo**: recomenda imóveis com atributos semelhantes aos já visitados.
 - **Popularidade como fallback**: garante recomendações mesmo sem histórico.
 - **Critério temporal**: pode ser incorporado para dar mais peso a visitas recentes.
+
+---
+
+## Como testar os endpoints
+
+```http
+POST    /recomendacao_imovel       → Adiciona um novo registro em `recomendacao_imovel'
+GET     /recomendacoes             → Lista de 20 imovéis com base nas preferências do usuário
+```
+
+### POST - exemplo de entrada 
+```json
+{
+	"usuario_id": 1,
+	"imovel_id": 2,
+	"data_visita": "2025-03-03"
+}
+```
+
+### POST - exemplo de saída 
+```json
+{
+	"message": "Novo registro na tabela recomendacao_imovel.",
+	"data": {
+		"id": 9750,
+		"usuario_id": 1,
+		"imovel_id": 2,
+		"data_visita": "2025-03-03T00:00:00.000Z"
+	}
+}
+```
+
+### GET - exemplo de entrada
+```json
+http://localhost:4000/recomendacoes?usuario_id=10
+```
+
+### GET - exemplo de saída
+```json
+{
+	"message": "Recomendações geradas com sucesso.",
+	"data": [
+		{
+			"id": 8,
+			"tipo": "Apartamento",
+			"endereco": "Av. Leste, 147",
+			"cidade": "Manaus",
+			"estado": "AM",
+			"preco": "600000.00",
+			"area": 75,
+			"descricao": "Apartamento com vista",
+			"data_cadastro": "2024-10-28",
+			"murado": 1,
+			"latitude": "-3.1190280",
+			"longitude": "-60.0217310",
+			"usuario_id": 4,
+			"tipo_negociacao": "venda",
+			"status": "disponivel",
+			"data_update_status": null
+		}]}
+```
 
 ---
 
