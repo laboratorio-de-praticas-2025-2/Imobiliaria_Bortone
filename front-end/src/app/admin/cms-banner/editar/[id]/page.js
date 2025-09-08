@@ -1,4 +1,5 @@
 "use client";
+import { useParams } from "next/navigation";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import Form from "@/components/cms/form";
 import FormButton from "@/components/cms/form/fields/Button";
@@ -6,14 +7,15 @@ import PreviaBanner from "@/components/cms/form/fields/PreviaBanner";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import TextField from "@/components/cms/form/fields/TextField";
 import UploadField from "@/components/cms/form/fields/UploadField";
-import { bannersMock } from "@/constants/banner";
+import Sidebar from "@/components/cms/Sidebar";
+import { bannersMock } from "@/mock/banner";
 import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Sidebar from "@/components/cms/Sidebar";
 
-export default function EditarBannerPage({ params }) {
-  const id = params?.id;
+export default function EditarBannerPage() {
+   const params = useParams(); 
+   const id = params?.id;
   const [fileList, setFileList] = useState([]);
   const [banner, setBanner] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
@@ -58,19 +60,12 @@ export default function EditarBannerPage({ params }) {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             initialValues={{
-              titulo: banner.descricao,
               descricao: banner.descricao,
             }}
           >
             <div className="flex flex-col sm:flex-row w-full gap-6">
               <div className="sm:w-[60%] flex flex-col gap-3 items-end">
                 <div className="flex flex-col sm:flex-row w-full justify-between items-center gap-3">
-                  <TextField
-                    name="titulo"
-                    label="Título do Banner"
-                    placeholder="Título do Banner"
-                    className="!w-[100%]"
-                  />
 
                   <UploadField
                     name="imagem"

@@ -1,3 +1,4 @@
+// app/layout.js
 import "@/styles/globals.css";
 import "@/styles/login.css";
 import "@/styles/map.css";
@@ -6,9 +7,11 @@ import "@/styles/simulacao.css";
 import "@/styles/imoveis.css";
 import "@/styles/blog.css";
 import "@/styles/faq.css";
-import "@/styles/cms.css";
 import "antd/dist/reset.css";
+import ChatLauncherClient from "@/components/chat/chatLauncherClient";
+import "@/styles/cms.css";
 import Script from "next/script";
+
 
 export const metadata = {
   title: "Imobiliária Bortone",
@@ -24,7 +27,11 @@ export default function RootLayout({ children }) {
           strategy="beforeInteractive"
         />
       </head>
-      <body className={`antialiased`}>{children}</body>
+      <body className="antialiased">
+        {children}
+        {/* Client wrapper que controla abrir/fechar */}
+        <ChatLauncherClient />
+      </body>
     </html>
   );
 }

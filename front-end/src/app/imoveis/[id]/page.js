@@ -3,22 +3,22 @@
 import ShareButton from "@/components/blog/ShareButton";
 import HomeFooter from "@/components/home/HomeFooter";
 import HomeNavbar from "@/components/home/HomeNavbar";
-import { mockImoveis } from "@/constants/imoveis";
+import { mockImoveis } from "@/mock/imoveis";
 import "@/styles/imoveis.css";
 import { Input } from "antd";
 import "leaflet/dist/leaflet.css";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { BsDoorOpenFill } from "react-icons/bs";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { PiBathtub } from "react-icons/pi";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { PiBathtub } from "react-icons/pi";
-import { BsDoorOpenFill } from "react-icons/bs";
-import dynamic from "next/dynamic";
 
 const { Search } = Input;
 const onSearch = (value) => console.log(value);

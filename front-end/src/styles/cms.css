@@ -103,13 +103,32 @@
 }
 
 .switch-cms .ant-switch-handle::before {
-  background-color: var(--secondary);
+  background-color: var(--primary);
 }
 
 .ant-switch-checked .ant-switch-inner {
-  background-color: #7f92d4 !important;
+  background-color: #F8BE66 !important;
 }
 
 .ant-switch-checked .ant-switch-handle::before {
-  background-color: #374a8c !important;
+  background-color: var(--secondary) !important;
+}
+
+.custom-radio-group .ant-radio-checked .ant-radio-inner {
+  border-color: var(--primary) !important;
+  background-color: var(--primary)!important;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #fff; 
+}
+
+/* linhas ímpares */
+.ant-table-tbody > tr:nth-child(odd) > td {
+  background-color: #f5f5f5; /* cinza claro */
+}
+
+/* linhas pares */
+.ant-table-tbody > tr:nth-child(even) > td {
+  background-color: #ffffff; /* branco */
 }

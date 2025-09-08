@@ -6,6 +6,7 @@ import PropriedadesPerto from "@/components/home/PropriedadesPerto";
 import HomeFooter from "@/components/home/HomeFooter";
 import SplashScreen from "@/components/SplashScreen";
 import { useEffect, useState } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const isLoggedIn = false;
 
@@ -30,6 +31,7 @@ export default function Home() {
 
   return (
     <>
+      <SpeedInsights />
       <Header />
       <Divider size="large" />
       {isLoggedIn ? <PropriedadesSelecionadas /> : <PropriedadesPerto />}

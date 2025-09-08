@@ -2,7 +2,7 @@
 import Card from "@/components/cms/Card";
 import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
-import { bannersMock } from "@/constants/banner";
+import { bannersMock } from "@/mock/banner";
 import { useEffect, useState } from "react";
 import { FaImage } from "react-icons/fa6";
 
@@ -50,7 +50,7 @@ export default function CmsBannerPage() {
               {paginatedBanners.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-center">
                   {paginatedBanners.map((banner) => (
-                    <Card key={banner.id} banner={banner} />
+                    <Card key={banner.id} item={banner} />
                   ))}
                 </div>
               ) : (

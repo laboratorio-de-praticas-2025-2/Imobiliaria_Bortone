@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
-import { postsData } from "@/constants/posts";
-import { Row, Col, Card, Pagination, ConfigProvider } from "antd";
+import { postsData } from "@/mock/posts";
+import { Card, Col, ConfigProvider, Pagination, Row } from "antd";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Cards() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,28 +26,28 @@ export default function Cards() {
                 },
               }}
             >
-            <Link href={`/blog/${paginatedPosts[0].id}`}>
-              <Card hoverable>
-                <div className="relative h-120 rounded-3xl overflow-hidden group">
-                  {/* Imagem com filtro */}
-                  <div
-                    className="absolute inset-0 bg-cover bg-center brightness-80  group-hover:brightness-60 group-hover:saturate-70 group-hover:blur-10  transition-all duration-300 "
-                    style={{
-                      backgroundImage: `url(${paginatedPosts[0].image})`,
-                    }}
-                  />
-                  {/* Conteúdo sobreposto sem filtro */}
-                  <div className="relative z-10 p-6 py-10 flex flex-col justify-end h-full">
-                    <h2 className="text-white font-bold md:text-3xl text-xl lemon-milk">
-                      {paginatedPosts[0].title}
-                    </h2>
-                    <p className="text-white text-[16px] lemon-milk">
-                      {paginatedPosts[0].date}
-                    </p>
+              <Link href={`/blog/${paginatedPosts[0].id}`}>
+                <Card hoverable>
+                  <div className="relative h-120 rounded-3xl overflow-hidden group">
+                    {/* Imagem com filtro */}
+                    <div
+                      className="absolute inset-0 bg-cover bg-center brightness-80  group-hover:brightness-60 group-hover:saturate-70 group-hover:blur-10  transition-all duration-300 "
+                      style={{
+                        backgroundImage: `url(${paginatedPosts[0].image})`,
+                      }}
+                    />
+                    {/* Conteúdo sobreposto sem filtro */}
+                    <div className="relative z-10 p-6 py-10 flex flex-col justify-end h-full">
+                      <h2 className="text-white font-bold md:text-3xl text-xl lemon-milk">
+                        {paginatedPosts[0].title}
+                      </h2>
+                      <p className="text-white text-[16px] lemon-milk">
+                        {paginatedPosts[0].date}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            </Link>
+                </Card>
+              </Link>
             </ConfigProvider>
           </Col>
         </Row>
@@ -68,24 +68,24 @@ export default function Cards() {
               }}
             >
               <Link href={`/blog/${post.id}`}>
-              <Card hoverable>
-                <div className="relative h-130 rounded-3xl overflow-hidden group">
-                  {/* Imagem com filtro */}
-                  <div
-                    className="absolute inset-0 bg-cover bg-center brightness-80  group-hover:brightness-60 group-hover:saturate-70 transition-all duration-300"
-                    style={{ backgroundImage: `url(${post.image})` }}
-                  />
-                  {/* Conteúdo sobreposto sem filtro */}
-                  <div className="relative z-10 p-6 py-10 flex flex-col justify-end h-full">
-                    <h2 className="text-white font-bold md:text-3xl text-xl lemon-milk">
-                      {post.title}
-                    </h2>
-                    <p className="text-white text-[16px] lemon-milk">
-                      {post.date}
-                    </p>
+                <Card hoverable>
+                  <div className="relative h-130 rounded-3xl overflow-hidden group">
+                    {/* Imagem com filtro */}
+                    <div
+                      className="absolute inset-0 bg-cover bg-center brightness-80  group-hover:brightness-60 group-hover:saturate-70 transition-all duration-300"
+                      style={{ backgroundImage: `url(${post.image})` }}
+                    />
+                    {/* Conteúdo sobreposto sem filtro */}
+                    <div className="relative z-10 p-6 py-10 flex flex-col justify-end h-full">
+                      <h2 className="text-white font-bold md:text-3xl text-xl lemon-milk">
+                        {post.title}
+                      </h2>
+                      <p className="text-white text-[16px] lemon-milk">
+                        {post.date}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
               </Link>
             </ConfigProvider>
           </Col>

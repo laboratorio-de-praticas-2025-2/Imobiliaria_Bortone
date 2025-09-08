@@ -1,15 +1,15 @@
 "use client";
-import MapaNavbar from "@/components/mapa/MapaNavbar";
 import CarrosselMapa from "@/components/mapa/CarrosselMapa";
-import { getImoveis } from "@/services/imoveisService";
-import { mockImoveis } from "@/constants/imoveis";
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import MapaNavbar from "@/components/mapa/MapaNavbar";
+import OrderButton from "@/components/mapa/OrderButton";
 import SidebarMenu from "@/components/mapa/SidebarMenu/SidebarMenu";
 import SplashScreen from "@/components/SplashScreen";
-import { Input } from "antd";
-import OrderButton from "@/components/mapa/OrderButton";
 import { FiltersProvider } from "@/context/FiltersContext";
+import { mockImoveis } from "@/mock/imoveis";
+import { getImoveis } from "@/services/imoveisService";
+import { Input } from "antd";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
 const { Search } = Input;
 

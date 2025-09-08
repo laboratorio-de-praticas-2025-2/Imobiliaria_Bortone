@@ -1,4 +1,5 @@
 import express from "express";
+import router from './routes/recomendacaoImovelRoutes.js';
 import cors from "cors";
 import connection from "./config/sequelize-config.js";
 
@@ -14,6 +15,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Rotas
 app.use("/faq", faqRoutes);
+// Exemplo de como usar as rotas
+app.use("/", router, healthRouter);
 
 connection
   .authenticate()
