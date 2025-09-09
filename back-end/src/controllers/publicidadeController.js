@@ -24,7 +24,7 @@ export const getPublicidadeById = async (req, res) => {
       return res.status(400).json({ error: "ID inválido. O ID deve ser numérico." });
     }
 
-    // O controller não deve pesquisar o registro referente ao id recebido, e sim chamar o metodo do service
+    // O controller não deve pesquisar o registro referente ao id recebido, e sim chamar o metodo do service, se retornar vazio é porque não existe
     const publicidade = await Publicidade.findByPk(id);
     if (!publicidade) {
       return res.status(404).json({ error: "Publicidade não encontrada" });
