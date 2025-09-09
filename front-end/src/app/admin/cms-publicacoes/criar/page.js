@@ -11,7 +11,7 @@ import Sidebar from "@/components/cms/Sidebar";
 
 import { useState } from "react";
 
-export default function CriarBannerPage() {
+export default function CriarPostPage() {
   const [fileList, setFileList] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -30,7 +30,7 @@ export default function CriarBannerPage() {
       <Sidebar />
       <div className="md:ml-20">
         <Form.Body title="Publicações | Cadastro">
-          <Form.FormHeader href="/admin/cms-banner" />
+          <Form.FormHeader href="/admin/cms-publicacoes" />
           <Form.FormBody onFinish={onFinish} onFinishFailed={onFinishFailed}>
             <div className="flex flex-col sm:flex-row w-full gap-6">
               {/* Coluna do Formulário */}
@@ -42,7 +42,7 @@ export default function CriarBannerPage() {
                     placeholder="Título da matéria"
                     className="!w-[100%]"
                     value={title}
-                    onChange={e => setTitle(e.target.value)}
+                    onChange={(e) => setTitle(e.target.value)}
                   />
                   <UploadField
                     name="url_imagem"
@@ -74,7 +74,7 @@ export default function CriarBannerPage() {
                   rows={18}
                   className="!w-full !h-full"
                   value={content}
-                  onChange={e => setContent(e.target.value)}
+                  onChange={(e) => setContent(e.target.value)}
                 />
                 <FormButton
                   text="Publicar"
