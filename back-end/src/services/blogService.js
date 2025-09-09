@@ -1,5 +1,5 @@
 // import BlogModel
-import Blog from "../Models/Blog.js";
+import Blog from "../models/Blog.js";
 
 const blogService = {
   // Criar
@@ -14,39 +14,36 @@ const blogService = {
         usuario_id,
       });
     } catch (error) {
-      // Retornar os erros de forma mais simples, ex: throw error
+      // Retornar os erros de forma mais simples, ex: console
       console.error("Erro ao criar blog:", error.message);
-      throw new Error("Não foi possível criar o blog.");
     }
   },
   // Buscar todos
   // async getAllPublicacoes
-  async getAll() {
+  async getAllBlog() {
     try {
       return await Blog.findAll();
     } catch (error) {
-      // Retornar os erros de forma mais simples, ex: throw error
+      // Retornar os erros de forma mais simples, ex: console
       console.error("Erro ao buscar todos os blogs:", error.message);
-      throw new Error("Não foi possível listar os blogs.");
     }
   },
   // Buscar por ID
   // async getPublicacaoById
-  async getById(id) {
+  async getByIdBlog(id) {
     try {
       const blog = await Blog.findByPk(id);
       //  O service não deve tratar os erros, apenas procurar o registro pelo id e retornar
       if (!blog) throw new Error("Blog não encontrado.");
       return blog;
     } catch (error) {
-      // Retornar os erros de forma mais simples, ex: throw error
+      // Retornar os erros de forma mais simples, ex: console
       console.error(`Erro ao buscar blog ${id}:`, error.message);
-      throw new Error("Não foi possível buscar o blog.");
     }
   },
   // Atualizar
   // async updatePublicacao
-  async update(id, updates) {
+  async updateBlog(id, updates) {
     try {
       const blog = await Blog.findByPk(id);
       // O service não deve tratar os erros, apenas procurar o registro pelo id e retornar
@@ -54,14 +51,13 @@ const blogService = {
       await blog.update(updates);
       return blog;
     } catch (error) {
-      // Retornar os erros de forma mais simples, ex: throw error
+      // Retornar os erros de forma mais simples, ex: console
       console.error(`Erro ao atualizar blog ${id}:`, error.message);
-      throw new Error("Não foi possível atualizar o blog.");
     }
   },
   // Deletar
   // async deletePublicacao
-  async delete(id) {
+  async deleteBlog(id) {
     try {
       const blog = await Blog.findByPk(id);
       // O service não deve tratar os erros, apenas procurar o registro pelo id e retornar
@@ -69,9 +65,8 @@ const blogService = {
       await blog.destroy();
       return true;
     } catch (error) {
-      // Retornar os erros de forma mais simples, ex: throw error
+      // Retornar os erros de forma mais simples, ex: console
       console.error(`Erro ao remover blog ${id}:`, error.message);
-      throw new Error("Não foi possível remover o blog.");
     }
   },
 };
