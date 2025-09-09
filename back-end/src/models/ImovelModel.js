@@ -1,7 +1,3 @@
-// Esse é apenas um arquivo para manter o diretório ativo
-import { Sequelize } from "sequelize";
-import connection from '../config/sequelize-config.js'
-
 import { Sequelize } from "sequelize";
 import connection from '../config/sequelize-config.js'
 
