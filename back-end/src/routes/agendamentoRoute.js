@@ -9,7 +9,9 @@ import {
 const router = express.Router();
 
 // Rota para envio de email simples (utilitário dentro do módulo de agendamento)
-router.post('/send', sendEmail);
+if (process.env.NODE_ENV !== 'production') {
+  router.post('/send', sendEmail);
+}
 
 // Rota para confirmação de agendamento
 router.post('/schedule', sendScheduleConfirmation);

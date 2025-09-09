@@ -30,21 +30,19 @@ export const sendEmail = async (req, res) => {
 };
   
 export const sendScheduleConfirmation = async (req, res) => {
-  const { host, port, secure, user, pass, helo, from, imobiliariaEmail, appointment } = req.body;
+  const { appointment } = req.body;
+
+  // Rate limiting
+  const clientIP = req.ip || req.connection?.remoteAddress || "unknown";
+  const route = req.originalUrl || req.url || "";
+  
+  if (!agendamentoService.checkRateLimit(clientIP, route)) {
+    return res.status(429).json({ 
+      error: "Too Many Requests - Limite de 5 agendamentos por minuto" 
+    });
+  }
 
   // Validação de campos obrigatórios
-  if (!host || !from) {
-    return res.status(400).json({ 
-      error: "host e from são obrigatórios" 
-    });
-  }
-
-  if (!imobiliariaEmail) {
-    return res.status(400).json({ 
-      error: "imobiliariaEmail é obrigatório" 
-    });
-  }
-
   if (!appointment || !appointment.email || !appointment.name || !appointment.date || !appointment.time) {
     return res.status(400).json({ 
       error: "appointment com name, email, date e time é obrigatório" 
@@ -53,7 +51,7 @@ export const sendScheduleConfirmation = async (req, res) => {
 
   try {
     const result = await agendamentoService.sendScheduleConfirmation({
-      host, port, secure, user, pass, helo, from, imobiliariaEmail, appointment
+      appointment
     });
 
     res.json({ 
