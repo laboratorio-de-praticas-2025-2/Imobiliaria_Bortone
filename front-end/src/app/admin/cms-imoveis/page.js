@@ -202,7 +202,7 @@ export default function CmsUserPage() {
               handleSelectOrder={handleSelectOrder}
               filterData={filterData}
               updateFilterData={updateFilterData}
-              type={"user"}
+              type={"imovel"}
             />
             <CMS.TableBody table={true}>
               <Table

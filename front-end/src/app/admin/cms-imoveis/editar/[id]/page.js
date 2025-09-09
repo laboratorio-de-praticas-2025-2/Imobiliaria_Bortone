@@ -65,14 +65,14 @@ export default function EditarUserPage({ params }) {
                 <TextField
                   name="nome"
                   label="Nome"
-                  placeholder="Nome do Usuário"
+                  placeholder="Nome do Imóvel"
                   className="!w-[100%]"
                 />
 
                 <TextField
                   name="email"
                   label="Email"
-                  placeholder="Email do Usuário"
+                  placeholder="Email do Imóvel"
                   className="!w-[100%]"
                 />
 

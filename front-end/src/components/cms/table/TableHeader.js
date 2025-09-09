@@ -5,7 +5,7 @@ import DropdownFilter from "../../vitrine/DropdownFilter";
 import Link from "next/link";
 import PesquisaAvancadaUser from "./pesquisaavancada/PesquisaAvancada";
 import PesquisaAvancada from "@/components/vitrine/PesquisaAvancada/PesquisaAvancada";
-
+import PesquisaAvancadaModal from "@/components/vitrine/PesquisaAvancada/PesquisaAvancadaModal";
 const { Search } = Input;
 
 const optionsOrder = ["Ordem alfabetica", "Data de inclusão"];
@@ -18,7 +18,7 @@ export default function TableHeader({
   handleSelectOrder,
   filterData,
   updateFilterData,
-  type=undefined
+  type = undefined,
 }) {
   return (
     <div className="w-full flex justify-between items-center px-4 py-4 bg-[var(--primary)] rounded-t-4xl gap-2">
@@ -31,7 +31,18 @@ export default function TableHeader({
       </Link>
       <div className="flex md:gap-4 gap-2 items-center">
         {type == "user" && <PesquisaAvancadaUser />}
-        {type == "imovel" && <PesquisaAvancada />}
+        {type === "imovel" && (
+          <>
+            {/* desktop */}
+            <div className="hidden md:block">
+              <PesquisaAvancada />
+            </div>
+            {/* mobile */}
+            <div className="block md:hidden">
+              <PesquisaAvancadaModal />
+            </div>
+          </>
+        )}
         <Search
           placeholder="Pesquisar"
           onSearch={onSearch}
