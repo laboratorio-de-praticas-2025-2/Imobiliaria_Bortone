@@ -3,22 +3,48 @@ import ShareButton from "@/components/blog/ShareButton";
 import HomeFooter from "@/components/home/HomeFooter";
 import HomeNavbar from "@/components/home/HomeNavbar";
 import { postsData } from "@/mock/posts";
-import { Image } from "antd";
+import { Image, Spin } from "antd";
 import { useParams } from "next/navigation";
 import { useSEO } from "@/hooks/useSEO";
 
 export default function ContentBlog() {
   const { id } = useParams(); // pega o id da URL
-  const post = postsData.find((p) => String(p.id) === id);
-  
-  // SEO dinâmico para post do blog - sempre chamado
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // 🔹 Mockado: busca no array local
+  useEffect(() => {
+    if (!id) return;
+
+    // Simula delay de chamada à API
+    const timeout = setTimeout(() => {
+      const foundPost = postsData.find((p) => String(p.id) === id);
+      setPost(foundPost || null);
+      setLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timeout);
+  }, [id]);
+
+  // 🔹 SEO dinâmico
   useSEO({
     title: post?.title || "Post do Blog",
-    description: post?.excerpt || post?.content?.substring(0, 160) || "Leia nosso post sobre imóveis e mercado imobiliário.",
+    description:
+      post?.excerpt ||
+      post?.content?.substring(0, 160) ||
+      "Leia nosso post sobre imóveis e mercado imobiliário.",
     keywords: "blog, imóveis, mercado imobiliário, dicas, notícias",
     url: `https://imobiliaria-bortone.vercel.app/blog/${id}`,
-    image: post?.image
+    image: post?.image,
   });
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   if (!post) return <div>Post não encontrado.</div>;
 

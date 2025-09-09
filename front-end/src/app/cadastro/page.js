@@ -7,6 +7,48 @@ import { getSEOConfig } from "@/config/seo";
 export default function CadastroPage() {
   // SEO para página de cadastro
   useSEO(getSEOConfig('/cadastro'));
+
+  const [loading, setLoading] = useState(false);
+
+  const onFinish = async (values) => {
+    setLoading(true);
+
+    try {
+      // 🔹 Mock da chamada à API
+      console.log("📡 Enviando cadastro...", values);
+
+      // Simula delay de request
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+
+      // Mock de resposta
+      const mockResponse = {
+        success: true,
+        user: {
+          id: 1,
+          name: values.name,
+          email: values.email,
+        },
+      };
+
+      if (mockResponse.success) {
+        message.success(`Conta criada para ${mockResponse.user.name}!`);
+        // Aqui no futuro: redirecionar para login
+        // router.push("/login")
+      } else {
+        message.error("Erro ao criar conta. Tente novamente.");
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("Erro ao conectar com o servidor.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("❌ Falha no formulário:", errorInfo);
+  };
+
   return (
     <div>
       <div className="image-header" />
@@ -15,7 +57,12 @@ export default function CadastroPage() {
           Faça seu cadastro
         </h1>
         <Flex vertical className="login-form-container">
-          <Form name="cadastro" autoComplete="off">
+          <Form
+            name="cadastro"
+            autoComplete="off"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+          >
             <Flex vertical align="center">
               <Form.Item
                 name="name"
@@ -50,6 +97,7 @@ export default function CadastroPage() {
                     type="primary"
                     htmlType="submit"
                     className="login-button"
+                    loading={loading}
                   >
                     Entrar
                   </Button>
