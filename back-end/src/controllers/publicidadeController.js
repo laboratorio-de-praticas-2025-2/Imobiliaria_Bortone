@@ -2,41 +2,7 @@
 import publicidadeService from "../services/publicidadeService.js";
 import Publicidade from "../services/publicidadeService.js";
 
-// GET /publicidade
-export const getAllPublicidades = async (req, res) => {
-  try {
-    // O controller deve validar os dados recebidos
 
-    // O controller deve chamar os métodos do Service e passar os parametros caso haja filtros de busca
-    const publicidades = await Publicidade.findAll();
-    res.status(200).json(publicidades);
-  } catch (error) {
-    console.error("Erro ao buscar publicidades:", error);
-    res.status(500).json({ error: "Erro interno no servidor" });
-  }
-};
-
-// GET /publicidade/:id
-export const getPublicidadeById = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    if (!/^\d+$/.test(id)) {
-      return res.status(400).json({ error: "ID inválido. O ID deve ser numérico." });
-    }
-
-    // O controller não deve pesquisar o registro referente ao id recebido, e sim chamar o metodo do service, se retornar vazio é porque não existe
-    const publicidade = await Publicidade.findByPk(id);
-    if (!publicidade) {
-      return res.status(404).json({ error: "Publicidade não encontrada" });
-    }
-
-    res.status(200).json(publicidade);
-  } catch (error) {
-    console.error("Erro ao buscar publicidade:", error);
-    res.status(500).json({ error: "Erro interno no servidor" });
-  }
-};
 
 // POST /publicidade
 export const createPublicidade = async (req, res) => {
