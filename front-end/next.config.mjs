@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const isDev = process.env.NODE_ENV !== "production";
 const nextConfig = {
+    images: {
+        formats: ["image/avif", "image/webp"],
+    },
     async headers() {
         const scriptSrc = [
             "script-src 'self' 'unsafe-inline'",
@@ -10,6 +13,7 @@ const nextConfig = {
         ].join(" ");
 
         return [
+          // Segurança padrão em todas as rotas
           {
             source: "/(.*)",
             headers: [
@@ -29,6 +33,33 @@ const nextConfig = {
                   "frame-ancestors 'none'",
                 ].join("; "),
               },
+            ],
+          },
+          // Cache agressivo para fontes estáticas
+          {
+            source: "/fonts/:all*",
+            headers: [
+              { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+            ],
+          },
+          // Cache agressivo para imagens públicas
+          {
+            source: "/images/:all*",
+            headers: [
+              { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+            ],
+          },
+          {
+            source: "/favicon.ico",
+            headers: [
+              { key: "Cache-Control", value: "public, max-age=604800" },
+            ],
+          },
+          // Cache para assets do Next (geralmente já vem otimizado pela Vercel/Next)
+          {
+            source: "/_next/static/:all*",
+            headers: [
+              { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
             ],
           },
         ];

@@ -8,6 +8,8 @@ Caminho: `front-end/next.config.mjs`
 - Define cabeçalhos HTTP de segurança para todas as rotas (`source: "/(.*)"`).
 - Cria uma Content Security Policy (CSP) compatível com Google Maps, OpenStreetMap e Vercel Analytics/Speed Insights.
 - Ajusta fontes de script em ambiente de desenvolvimento para permitir ferramentas de build.
+- Configura caching agressivo para assets estáticos: `/_next/static`, `/images`, `/fonts` e `favicon`.
+- Habilita formatos de imagem modernos (`AVIF`, `WebP`) no Next Image.
 
 ### Ambiente
 - `isDev = process.env.NODE_ENV !== "production"`:
@@ -65,6 +67,13 @@ Se for integrar outro serviço (ex.: um CDN de imagens):
 2. Adicione o domínio na diretiva correta, por exemplo:
    - Para um CDN de imagens: acrescente `https://cdn.exemplo.com` em `img-src`.
 3. Evite adicionar curingas amplos (`*`) ou protocolos não necessários.
+
+### Cache-Control por rota (headers)
+- `/_next/static/*`, `/images/*`, `/fonts/*`: `public, max-age=31536000, immutable` (cache por 1 ano em CDN/navegador, seguro para assets versionados).
+- `/favicon.ico`: `public, max-age=604800` (1 semana).
+
+### Imagens (Next Image)
+- `images.formats = ["image/avif", "image/webp"]`: habilita formatos modernos, reduzindo peso e melhorando LCP.
 
 ### Boas práticas
 - Produção sem `'unsafe-eval'` (já tratado pelo `isDev`).
