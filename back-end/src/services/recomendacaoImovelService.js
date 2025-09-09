@@ -26,7 +26,7 @@ const getTopImoveisVisitados = async (usuario_id) => {
         group: ['imovel_id'],
         // Ordena do mais visitado para o menos visitado.
         order: [[Sequelize.fn('COUNT', Sequelize.col('imovel_id')), 'DESC']],
-        limit: 5,
+
         raw: true
     });
 };
