@@ -5,7 +5,7 @@ import cors from "cors";
 import connection from "./config/sequelize-config.js";
 
 // Rotas
-import agendamentoRouter from './routes/agendamentoRouter.js';
+import agendamentoRouter from './routes/agendamentoRoute.js';
 import recomendacaoRouter from './routes/recomendacaoImovelRoutes.js';
 import healthRouter from "./routes/route.js";
 
