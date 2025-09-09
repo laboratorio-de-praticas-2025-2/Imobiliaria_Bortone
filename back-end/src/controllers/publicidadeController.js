@@ -4,14 +4,29 @@ import Publicidade from "../services/publicidadeService.js";
 // GET /publicidade
 export const getAllPublicidades = async (req, res) => {
   try {
-    // O controller deve validar os dados recebidos
+    const { titulo, usuario_id, page = 1, limit = 10, order = "createdAt" } = req.query;
 
-    // O controller deve chamar os métodos do Service e passar os parametros caso haja filtros de busca
-    const publicidades = await Publicidade.findAll();
-    res.status(200).json(publicidades);
+    // Validação de paginação
+    const pagina = parseInt(page, 10);
+    const limite = parseInt(limit, 10);
+
+    if (isNaN(pagina) || isNaN(limite) || pagina <= 0 || limite <= 0) {
+      return res.status(400).json({ error: "Parâmetros de paginação inválidos" });
+    }
+
+    // Chama o service passando filtros, paginação e ordenação
+    const resultado = await publicidadeService.getAll({
+      titulo,
+      usuario_id,
+      page: pagina,
+      limit: limite,
+      order,
+    });
+
+    return res.status(200).json(resultado);
   } catch (error) {
     console.error("Erro ao buscar publicidades:", error);
-    res.status(500).json({ error: "Erro interno no servidor" });
+    return res.status(500).json({ error: "Erro interno do servidor" });
   }
 };
 
@@ -20,20 +35,22 @@ export const getPublicidadeById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!/^\d+$/.test(id)) {
-      return res.status(400).json({ error: "ID inválido. O ID deve ser numérico." });
+    // Validação de ID numérico
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "ID inválido, deve ser numérico" });
     }
 
-    // O controller não deve pesquisar o registro referente ao id recebido, e sim chamar o metodo do service, se retornar vazio é porque não existe
-    const publicidade = await Publicidade.findByPk(id);
+    const publicidade = await publicidadeService.getById(Number(id));
+
+    // Verificação de existência
     if (!publicidade) {
       return res.status(404).json({ error: "Publicidade não encontrada" });
     }
 
-    res.status(200).json(publicidade);
+    return res.status(200).json(publicidade);
   } catch (error) {
-    console.error("Erro ao buscar publicidade:", error);
-    res.status(500).json({ error: "Erro interno no servidor" });
+    console.error("Erro ao buscar publicidade por ID:", error);
+    return res.status(500).json({ error: "Erro interno do servidor" });
   }
 };
 
