@@ -2,13 +2,10 @@ import express from "express";
 import router from './routes/recomendacaoImovelRoutes.js';
 import cors from "cors";
 import connection from "./config/sequelize-config.js";
-
+import healthRouter from "./routes/route.js";
 const app = express();
-
-// Importação das rotas
 import faqRoutes from "./routes/faqRoutes.js";
-// Exemplo de como importar rotas
-import healthRouter from "./routes/route.js"; 
+
 
 // Middlewares
 app.use(cors()); // Habilita o CORS para todas as origens
