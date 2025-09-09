@@ -1,6 +1,9 @@
+// Alterar o nome do arquivo para blog.js
+
 import connection from "../config/sequelize-config.js";
 import { DataTypes } from "sequelize";
 
+// const BlogModel = ...
 const Blog = connection.define(
   "blog",
   {
@@ -16,4 +19,5 @@ const Blog = connection.define(
   }
 );
 
+// BlogModel
 export default Blog;
