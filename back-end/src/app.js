@@ -1,15 +1,15 @@
 import 'dotenv/config';
 import express from "express";
 import cors from "cors";
-
 import connection from "./config/sequelize-config.js";
-
-// Rotas
 import agendamentoRouter from './routes/agendamentoRoute.js';
 import recomendacaoRouter from './routes/recomendacaoImovelRoutes.js';
 import healthRouter from "./routes/route.js";
+import faqRoutes from "./routes/faqRoutes.js";
 
 const app = express();
+
+
 
 // Middlewares
 app.use(cors()); // Habilita o CORS para todas as origens
@@ -21,6 +21,7 @@ app.get('/', (req, res) => res.send('API rodando 🚀'));
 app.use('/agendamentos', agendamentoRouter);
 app.use('/recomendacoes', recomendacaoRouter);
 app.use('/health', healthRouter);
+app.use("/faq", faqRoutes);
 
 // Banco de dados
 connection
@@ -34,7 +35,6 @@ connection
 
 // Porta
 const PORT = process.env.PORT || 4000;
-
 app.listen(PORT, function (erro) {
   if (erro) {
     console.log("Ocorreu um erro! Erro: ", erro);

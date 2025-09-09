@@ -1,8 +1,12 @@
 "use client";
 import Link from "next/link";
 import { Form, Input, Button, Flex } from "antd";
+import { useSEO } from "@/hooks/useSEO";
+import { getSEOConfig } from "@/config/seo";
 
 export default function LoginPage() {
+  // SEO para página de login
+  useSEO(getSEOConfig('/login'));
   return (
     <div>
       <div className="image-header" />
