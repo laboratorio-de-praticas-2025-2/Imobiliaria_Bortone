@@ -45,4 +45,4 @@ export const deleteRecomendacao = async (id) => {
     }
 };
 
-// Create Read e Delete prontos.
+// Create, Read e Delete prontos.
