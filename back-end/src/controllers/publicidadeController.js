@@ -1,8 +1,12 @@
+// O import está incorreto, o certo seria PublicidadeService
 import Publicidade from "../services/publicidadeService.js";
 
 // GET /publicidade
 export const getAllPublicidades = async (req, res) => {
   try {
+    // O controller deve validar os dados recebidos
+
+    // O controller deve chamar os métodos do Service e passar os parametros caso haja filtros de busca
     const publicidades = await Publicidade.findAll();
     res.status(200).json(publicidades);
   } catch (error) {
@@ -20,6 +24,7 @@ export const getPublicidadeById = async (req, res) => {
       return res.status(400).json({ error: "ID inválido. O ID deve ser numérico." });
     }
 
+    // O controller não deve pesquisar o registro referente ao id recebido, e sim chamar o metodo do service, se retornar vazio é porque não existe
     const publicidade = await Publicidade.findByPk(id);
     if (!publicidade) {
       return res.status(404).json({ error: "Publicidade não encontrada" });
@@ -35,6 +40,7 @@ export const getPublicidadeById = async (req, res) => {
 // POST /publicidade
 export const createPublicidade = async (req, res) => {
   try {
+    // receber o atributo "ativo"
     const { titulo, conteudo, url_imagem, usuario_id } = req.body;
 
     if (!titulo || !conteudo || !usuario_id) {
@@ -44,7 +50,10 @@ export const createPublicidade = async (req, res) => {
     if (typeof usuario_id !== "number" || usuario_id <= 0) {
       return res.status(400).json({ error: "ID do usuário deve ser um número inteiro positivo." });
     }
+    // Verificar se o id do usuário é válido
+    // Verificar o atributo "ativo"
 
+    // O controller deve chamar o método do service e passar os dados recebidos
     const novaPublicidade = await Publicidade.create({ titulo, conteudo, url_imagem, usuario_id });
     res.status(201).json(novaPublicidade);
   } catch (error) {
@@ -57,17 +66,21 @@ export const createPublicidade = async (req, res) => {
 export const updatePublicidade = async (req, res) => {
   try {
     const { id } = req.params;
+    // Receber o atributo "ativo"
     const { titulo, conteudo, url_imagem, usuario_id } = req.body;
 
     if (!/^\d+$/.test(id)) {
       return res.status(400).json({ error: "ID inválido. O ID deve ser numérico." });
     }
 
+    // Validar o id do usuário e o atributo "ativo"
+
     const publicidade = await Publicidade.findByPk(id);
     if (!publicidade) {
       return res.status(404).json({ error: "Publicidade não encontrada" });
     }
 
+    // Chamar o método do service
     await publicidade.update({ titulo, conteudo, url_imagem, usuario_id });
     res.status(200).json({ message: "Publicidade atualizada com sucesso", publicidade });
   } catch (error) {
@@ -90,6 +103,7 @@ export const deletePublicidade = async (req, res) => {
       return res.status(404).json({ error: "Publicidade não encontrada" });
     }
 
+    // Chamar o método do service
     await deletePublicidade.destroy();
 
     res.status(204).send();

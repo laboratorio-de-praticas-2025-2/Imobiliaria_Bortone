@@ -1,6 +1,9 @@
+// Alterar o nome do arquivo para publicidadeModel.js
+
 import { DataTypes } from "sequelize";
 import sequelize from "../config/sequelize-config.js";
 
+// const PublicidadeModel = ...
 const Publicidade = sequelize.define(
   "Publicidade",
   {
@@ -29,6 +32,7 @@ const Publicidade = sequelize.define(
         key: "id",
       },
     },
+    // Adicionar aqui o atributo "ativo" do tipo boolean
   },
   {
     tableName: "publicidade",
@@ -36,4 +40,5 @@ const Publicidade = sequelize.define(
   }
 );
 
+// export default PublicidadeModel;
 export default Publicidade;
