@@ -1,9 +1,11 @@
-# Imobiliaria_Bortone
+# Imobiliária Bortone
+
+Sistema completo de imobiliária com backend Express.js e frontend Next.js.
 
 ## Estrutura de diretórios
 
 ```bash
-/projeto-imobiliario
+/imobiliaria-bortone
 │
 ├── backend/                # API em Express.js (regra de negócio e dados)
 │   ├── src/
@@ -17,33 +19,82 @@
 │   │   ├── tests/           # Testes unitários e de integração do backend
 │   │   └── app.js           # Configuração principal do Express (carrega rotas, middlewares, DB)
 │   │
-│   └── package.json         # Dependências e scripts do backend
+│   ├── package.json         # Dependências e scripts do backend
+│   └── Dockerfile           # Configuração Docker para o backend
 │
 ├── frontend/               # Aplicação em Next.js (UI e lógica do cliente)
 │   ├── public/              # Arquivos públicos (imagens, favicon, fontes estáticas)
 │   ├── src/
-│   │   ├── pages/           # Rotas de navegação do Next.js
-│   │   │   ├── index.js        # Página inicial (carrossel, header, vitrine)
-│   │   │   ├── imoveis/        # Listagem e detalhe de imóveis
-│   │   │   ├── auth/           # Páginas de login e cadastro
-│   │   │   ├── agendamentos/   # Páginas para visualizar/criar agendamentos
-│   │   │   └── admin/          # CMS (usuários, imóveis, anúncios, blog)
+│   │   ├── app/             # App Router do Next.js 13+
+│   │   │   ├── page.js         # Página inicial (carrossel, header, vitrine)
+│   │   │   ├── login/          # Páginas de login
+│   │   │   ├── cadastro/       # Páginas de cadastro
+│   │   │   ├── mapa/           # Páginas do mapa de imóveis
+│   │   │   └── bem-vindo/      # Página de boas-vindas
 │   │   │
 │   │   ├── components/      # Componentes reutilizáveis (botões, cards, header, footer)
-│   │   ├── layouts/         # Estruturas de layout (layout padrão, layout admin)
 │   │   ├── hooks/           # Hooks customizados (ex: useAuth, useFetch)
-│   │   ├── context/         # Context API (ex: contexto de autenticação, carrinho, etc.)
 │   │   ├── services/        # Comunicação com backend (APIs de imóveis, usuários, agendamentos)
-│   │   ├── utils/           # Funções auxiliares do front (formatação, validação)
 │   │   ├── styles/          # Estilos globais e módulos CSS/Tailwind
 │   │   ├── constants/       # Constantes usadas em várias partes (rotas, configs)
-│   │   └── tests/           # Testes de UI e integração do frontend
+│   │   └── utils/           # Funções auxiliares do front (formatação, validação)
 │   │
-│   └── package.json         # Dependências e scripts do frontend
+│   ├── package.json         # Dependências e scripts do frontend
+│   └── Dockerfile           # Configuração Docker para o frontend
 │
-├── docker-compose.yml       # Se for usar Docker para rodar backend, frontend e banco
-├── .env                     # Variáveis de ambiente (não versionar)
-└── README.md                # Documentação do projeto
+├── docs/                   # Documentação do projeto
+├── docker-compose.yml      # Orquestração dos serviços com Docker
+├── package.json            # Scripts principais e dependências globais
+└── README.md               # Documentação do projeto
+```
+
+## 🚀 Como executar o projeto
+
+### Pré-requisitos
+
+- Node.js (versão 18 ou superior)
+- npm ou yarn
+- Docker (opcional)
+
+### Instalação e execução
+
+1. **Clone o repositório**
+
+```bash
+git clone <url-do-repositorio>
+cd imobiliaria-bortone
+```
+
+2. **Instale as dependências**
+
+```bash
+npm run install:all
+```
+
+3. **Execute o projeto em modo desenvolvimento**
+
+```bash
+npm run dev
+```
+
+Este comando irá executar:
+
+- Backend na porta 3001
+- Frontend na porta 3000
+
+### Scripts disponíveis
+
+- `npm run dev` - Executa backend e frontend em modo desenvolvimento
+- `npm run dev:backend` - Executa apenas o backend
+- `npm run dev:frontend` - Executa apenas o frontend
+- `npm run build` - Constrói o frontend para produção
+- `npm run start` - Executa backend e frontend em modo produção
+- `npm run install:all` - Instala dependências de todos os projetos
+
+### Executando com Docker
+
+```bash
+docker-compose up --build
 ```
 
 ## Explicação rápida de cada parte
@@ -77,41 +128,38 @@
 
 1. main ───► branch de produção (release estável)
 2. develop ─► branch de desenvolvimento (integração do que está pronto)
-3. feature/* ─► branches de funcionalidades novas
-4. hotfix/* ─► branches de correções urgentes na produção
+3. feature/\* ─► branches de funcionalidades novas
+4. hotfix/\* ─► branches de correções urgentes na produção
 
 ## Detalhamento
 
-1. main
-Sempre estável.
-Só recebe merges de develop (quando for lançar versão) ou hotfix/*.
-Protegida (não se faz commit direto).
+1.  main
+    Sempre estável.
+    Só recebe merges de develop (quando for lançar versão) ou hotfix/\*.
+    Protegida (não se faz commit direto).
 2.  develop
-Base para integração de features.
-Time inteiro cria branches a partir dela.
-Antes de ir para main, tudo é testado aqui.
-3. feature/*
-Criada a partir de develop.
-Uma para cada tarefa/funcionalidade.
-Exemplo:
-feature/auth-login
-feature/imoveis-listagem
-feature/agendamento-visita 
-    
-    Quando termina: merge via Pull Request → develop.
-    
-4. hotfix/*
-Criada a partir de main.
-Usada só para corrigir bugs urgentes em produção.
-Depois de corrigir: merge em main e também em develop (para não perder).
+    Base para integração de features.
+    Time inteiro cria branches a partir dela.
+    Antes de ir para main, tudo é testado aqui.
+3.  feature/\*
+    Criada a partir de develop.
+    Uma para cada tarefa/funcionalidade.
+    Exemplo:
+    feature/auth-login
+    feature/imoveis-listagem
+    feature/agendamento-visita
+        Quando termina: merge via Pull Request → develop.
+4.  hotfix/\*
+    Criada a partir de main.
+    Usada só para corrigir bugs urgentes em produção.
+    Depois de corrigir: merge em main e também em develop (para não perder).
 
 ## Regras para commits
 
 ### Estrutura da Mensagem
 
 > <tipo>(escopo opcional): descrição curta no imperativo
-[corpo opcional explicando o que mudou e por quê][rodapé opcional para issues ou mudanças críticas]
-> 
+> [corpo opcional explicando o que mudou e por quê][rodapé opcional para issues ou mudanças críticas]
 
 ### Tipos Aceitos
 
@@ -140,16 +188,16 @@ Depois de corrigir: merge em main e também em develop (para não perder).
 1. Sempre em português.
 2. Frases curtas (máx. ~72 caracteres).
 3. Usar modo imperativo:
-✅ adiciona, corrige, remove, implementa
-❌ adicionando, corrigido, adicionado
+   ✅ adiciona, corrige, remove, implementa
+   ❌ adicionando, corrigido, adicionado
 4. Não versionar código quebrado.
 5. Commits pequenos e específicos → evite “commitão” genérico.
 6. Se o commit fechar uma issue:
-feat(agenda): implementa cancelamento de visitas
-Fecha #32
+   feat(agenda): implementa cancelamento de visitas
+   Fecha #32
 
 ### Branches e Commits
 
 1. Nome de branch deve seguir o tipo e contexto: feature/frontend-cadastro-usuario
-fix/backend-agendamento-null
+   fix/backend-agendamento-null
 2. Não usar “WIP” em commits. Se for rascunho, abrir Pull Request em modo rascunho.

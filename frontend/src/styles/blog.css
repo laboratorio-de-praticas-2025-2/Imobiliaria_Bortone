@@ -1,0 +1,55 @@
+.blog-search-bar .ant-input,
+.blog-search-bar .ant-btn {
+  border-radius: 1000px;
+  background: #eef0f9;
+  border: 2px solid #eef0f9;
+  color: #606ea0 !important;
+  height: 42px;
+}
+
+.blog-search-bar .ant-btn {
+  border-left: none;
+  color: #606ea0 !important;
+}
+
+.blog-search-bar .ant-btn:hover {
+  background-color: #eef0f9 !important;
+  color: #606ea0 !important;
+  border: 2px solid #eef0f9 !important;
+  border-left: none !important;
+}
+
+.blog-search-bar .ant-input {
+  border-right: none;
+}
+
+.blog-search-bar .ant-input:focus {
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+.blog-search-bar .ant-input::placeholder {
+  color: #606ea0 !important;
+}
+/* Borda em todos os itens */
+.custom-pagination .ant-pagination-item {
+  border: 2px solid #304383 !important;
+  border-radius: 50% !important;
+}
+
+.custom-pagination .ant-pagination-item a {
+  font-weight: 600 !important;
+  font-size: 17px !important;
+  color: #304383 !important;
+}
+
+/* Item ativo */
+.custom-pagination .ant-pagination-item-active {
+  background-color: #304383 !important;
+  border: 2px solid #304383 !important;
+}
+
+.custom-pagination .ant-pagination-item-active a {
+  color: #ffffff !important;
+  font-weight: 500 !important;
+}
