@@ -83,3 +83,71 @@ export const buscarImoveis = async (data) => {
     throw new Error("Erro ao buscar imóveis: " + error.message);
   }
 };
+
+export const buscarMapa = async (data) => {
+  try {
+    // 🔹 filtros principais de Imóvel
+    const whereImovel = {
+      endereco: data.endereco ? { [Op.like]: `%${data.endereco}%` } : undefined,
+      tipo: data.tipo ? { [Op.like]: `%${data.tipo}%` } : undefined,
+      murado: data.murado !== undefined ? data.murado : undefined,
+      preco: { [Op.between]: [25000, 1000000] }, // faixa fixa
+      area: { [Op.between]: [0, 1000] } // faixa fixa
+    };
+
+    // 🔹 filtros opcionais de Casa
+    const whereCasa = {};
+    if (data.quartos === "1") whereCasa.quartos = 1;
+    if (data.quartos === "2") whereCasa.quartos = 2;
+    if (data.quartos === "3") whereCasa.quartos = 3;
+    if (data.quartos === "4") whereCasa.quartos = 4;
+    if (data.quartos === "5+") whereCasa.quartos = { [Op.gte]: 5 };
+
+    if (data.banheiros === "1") whereCasa.banheiros = 1;
+    if (data.banheiros === "2") whereCasa.banheiros = 2;
+    if (data.banheiros === "3") whereCasa.banheiros = 3;
+    if (data.banheiros === "4") whereCasa.banheiros = 4;
+    if (data.banheiros === "5+") whereCasa.banheiros = { [Op.gte]: 5 };
+
+    if (data.vagas === "1") whereCasa.vagas = 1;
+    if (data.vagas === "2") whereCasa.vagas = 2;
+    if (data.vagas === "3") whereCasa.vagas = 3;
+    if (data.vagas === "4") whereCasa.vagas = 4;
+    if (data.vagas === "5+") whereCasa.vagas = { [Op.gte]: 5 };
+
+    if (data.piscina !== undefined) whereCasa.possui_piscina = data.piscina;
+    if (data.jardim !== undefined) whereCasa.possui_jardim = data.jardim;
+
+    // 🔹 Monta a query
+    const PropriedadesMapa = await Imovel.findAll({
+      where: whereImovel,
+      attributes: [
+        "id",
+        "endereco",
+        "cidade",
+        "estado",
+        "latitude",
+        "longitude",
+        "tipo",
+        "preco",
+        "area",
+        "murado"
+      ],
+      include: [
+        {
+          model: Casa,
+          attributes: ["quartos", "banheiros", "vagas", "possui_piscina", "possui_jardim"],
+          ...(Object.keys(whereCasa).length > 0 && { where: whereCasa })
+        },
+        {
+          model: Terreno,
+          attributes: ["tipo_terreno"]
+        }
+      ]
+    });
+
+    return PropriedadesMapa;
+  } catch (error) {
+    throw new Error("Não foi possível buscar as propriedades com o local, erro: " + error.message);
+  }
+};
