@@ -17,6 +17,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Rotas
+app.use("/faq", faqRoutes);
+// Exemplo de como usar as rotas
+app.use("/", router, healthRouter);
+
 app.get('/', (req, res) => res.send('API rodando 🚀'));
 app.use('/agendamentos', agendamentoRouter);
 app.use('/recomendacoes', recomendacaoRouter);
