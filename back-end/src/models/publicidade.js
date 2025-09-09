@@ -1,5 +1,3 @@
-// Alterar o nome do arquivo para publicidadeModel.js
-
 import { DataTypes } from "sequelize";
 import sequelize from "../config/sequelize-config.js";
 
