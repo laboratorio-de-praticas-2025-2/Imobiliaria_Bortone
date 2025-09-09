@@ -1,5 +1,5 @@
 import RecomendacaoImovel from '../models/recomendacaoImovelModel.js'; 
-import Imovel from '../models/imovelModel.js';
+import Imovel from '../models/Imovel.js';
 import { Sequelize } from 'sequelize';
 // Importa o Lodash para simplificar a manipulação de arrays e objetos.
 import _ from 'lodash'; 
