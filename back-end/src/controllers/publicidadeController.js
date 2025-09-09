@@ -1,4 +1,5 @@
 // O import está incorreto, o certo seria PublicidadeService
+import publicidadeService from "../services/publicidadeService.js";
 import Publicidade from "../services/publicidadeService.js";
 
 // GET /publicidade
@@ -99,12 +100,12 @@ export const deletePublicidade = async (req, res) => {
     }
 
     const deletePublicidade = await Publicidade.findByPk(id);
-    if (!deletePublicidade) {
+    if (!publicidade) {
       return res.status(404).json({ error: "Publicidade não encontrada" });
     }
 
     // Chamar o método do service
-    await deletePublicidade.destroy();
+    await publicidadeService.delete(id);
 
     res.status(204).send();
 
