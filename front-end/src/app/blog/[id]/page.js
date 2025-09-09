@@ -5,10 +5,20 @@ import HomeNavbar from "@/components/home/HomeNavbar";
 import { postsData } from "@/mock/posts";
 import { Image } from "antd";
 import { useParams } from "next/navigation";
+import { useSEO } from "@/hooks/useSEO";
 
 export default function ContentBlog() {
   const { id } = useParams(); // pega o id da URL
   const post = postsData.find((p) => String(p.id) === id);
+  
+  // SEO dinâmico para post do blog - sempre chamado
+  useSEO({
+    title: post?.title || "Post do Blog",
+    description: post?.excerpt || post?.content?.substring(0, 160) || "Leia nosso post sobre imóveis e mercado imobiliário.",
+    keywords: "blog, imóveis, mercado imobiliário, dicas, notícias",
+    url: `https://imobiliaria-bortone.vercel.app/blog/${id}`,
+    image: post?.image
+  });
 
   if (!post) return <div>Post não encontrado.</div>;
 

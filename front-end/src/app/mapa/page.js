@@ -10,6 +10,8 @@ import { getImoveis } from "@/services/imoveisService";
 import { Input } from "antd";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { useSEO } from "@/hooks/useSEO";
+import { getSEOConfig } from "@/config/seo";
 
 const { Search } = Input;
 
@@ -20,6 +22,8 @@ const MapView = dynamic(() => import("@/components/mapa/MapView"), {
 });
 
 export default function Mapa() {
+  // SEO para página de mapa
+  useSEO(getSEOConfig('/mapa'));
   const [imoveis, setImoveis] = useState([]);
   const [hoverImovel, setHoverImovel] = useState(null);
   const [showSplash, setShowSplash] = useState(true);

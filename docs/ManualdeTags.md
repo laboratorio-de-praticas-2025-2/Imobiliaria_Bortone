@@ -1,53 +1,137 @@
-# Guia das Meta Tags Essenciais para SEO e Mídias Sociais
+## Guia de Meta Tags e Integrações — Imobiliária Bortone (Next.js App Router)
 
-### As meta tags são trechos de código HTML que fornecem informações sobre o conteúdo de uma página web para os navegadores, mecanismos de busca e plataformas de mídia social. Elas não são visíveis para o usuário comum, mas são cruciais para a otimização de seu site.
+Este manual documenta as meta tags, links e integrações de análise e desempenho implementadas neste projeto, onde estão definidas e como estender por página.
 
-## 1. Meta Tags Open Graph (OG):
+### Localização das configurações
+- `front-end/src/app/layout.js`: metas globais (SEO, OG/Twitter, robots, Apple Web App, viewport, performance, JSON-LD) e integrações globais do Vercel (`@vercel/analytics` e `@vercel/speed-insights`).
 
-### As meta tags Open Graph são um protocolo criado pelo Facebook para controlar como as informações de seu site são exibidas quando ele é compartilhado nas redes sociais. Elas garantem que seu link seja apresentado de forma profissional e atraente.
+## Metadados globais (layout.js)
+- **title**: Imobiliária Bortone
+- **description**: A sua imobiliária de confiança
+- **applicationName**: Imobiliária Bortone
+- **generator**: Next.js
+- **keywords**: imobiliária, imóveis, comprar casa, alugar apartamento, corretor, financiamento imobiliário
+- **authors / creator / publisher**: Imobiliária Bortone
+- **icons.icon**: `/favicon.ico`
 
-- `og:title`: Define o título que será exibido no compartilhamento. Geralmente, é o nome do seu negócio ou o título da página. Mantenha-o conciso e direto. <br/> Exemplo: `<meta property="og:title" content="One Help Informática - Assistência Técnica e Automação" />`
+### Robots
+- **index / follow**: habilitados
+- **googleBot**: `maxVideoPreview: -1`, `maxImagePreview: "large"`, `maxSnippet: -1`
 
-- `og:description`: Define a descrição que acompanhará o título. É sua chance de convencer o usuário a clicar no link, então crie uma descrição atrativa e informativa sobre o que a pessoa encontrará na página. <br/> Exemplo: `<meta property="og:description" content="Oferecemos serviços de manutenção, automação residencial, consultoria de compras de computadores e venda de equipamentos em Registro, Vale do Ribeira." />`
+### Open Graph (OG)
+- **title / description / siteName**: Imobiliária Bortone
+- **locale**: `pt_BR`
+- **type**: `website`
+- Para imagem de compartilhamento, adicionar `openGraph.images` (recomendado 1200x630, JPEG/PNG otimizada), ex.: `/images/slide1.png`.
 
-- `og:url`: Indica a URL exata da página que está sendo compartilhada. Isso ajuda a evitar problemas de duplicidade de conteúdo. <br/> Exemplo: `<meta property="og:url" content="https://onehelpinformatica.com.br/" />`
+### Twitter Card
+- **card**: `summary_large_image`
+- **title / description**: alinhados ao site
+- Para imagem, adicionar `twitter.images` (mesma referência do OG).
 
-- `og:image`: Define a imagem que será exibida. Uma imagem de alta qualidade e que represente bem seu negócio pode aumentar significativamente o número de cliques. <br/> Exemplo: `<meta property="og:image" content="https://onehelpinformatica.com.br/imgs/OneHelpBlack.jpeg" />`
+## Mobile e PWA
+- **appleWebApp**: `capable: true`, `statusBarStyle: "default"`, `title: "Imobiliária Bortone"`
+- **formatDetection**: `telephone: true`, `email: false`, `address: false`
 
-- `og:type`: Especifica o tipo de conteúdo da página (por exemplo, website, article, product). <br/> Exemplo: `<meta property="og:type" content="website" />`
+### Viewport (export viewport)
+- `width: device-width`, `initialScale: 1`, `maximumScale: 5`
+- `themeColor: #0b2a4a`, `colorScheme: light`, `viewportFit: cover`
 
-- `og:locale`: Informa o idioma e a região do conteúdo (por exemplo, pt_BR para Português do Brasil). <br/> Exemplo: `<meta property="og:locale" content="pt_BR" />`
+## Performance
+- **dns-prefetch / preconnect**: `https://maps.googleapis.com`, `https://maps.gstatic.com`
+- **preload de fontes locais**:
+  - `/fonts/GlacialIndifference-Regular.otf`
+  - `/fonts/GlacialIndifference-Bold.otf`
+  - `/fonts/LEMONMILK-Medium.otf`
+- **Google Maps**: script carregado `beforeInteractive` com `libraries=places` via `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`.
 
-- `og:site_name`: Define o nome do seu site, que será exibido acima do título em algumas plataformas. <br/> Exemplo: <meta property="og:site_name" content="One Help Informatica"/>
+## Dados estruturados (JSON-LD)
+Incluído como `Organization` no `<head>`:
 
-## 2. Meta Tags do Twitter Card
-### As meta tags do Twitter Card funcionam de forma semelhante às do Open Graph, mas são específicas para a plataforma X (antigo Twitter).
+```html
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Imobiliária Bortone",
+  "url": "/",
+  "logo": "/favicon.ico"
+}
+</script>
+```
 
-- `twitter:card`: Define o tipo de cartão que será exibido. O valor summary_large_image cria um cartão com um título, descrição e uma imagem grande acima. <br/> Exemplo: `<meta name="- twitter:card" content="summary_large_image" />`
+## Integrações Vercel
+- **Analytics (global)**: em `layout.js`.
 
-- `twitter:title`: O título que aparecerá no card do Twitter. <br/> Exemplo: `<meta name="- twitter:title" content="Assistência Técnica e Automação Residencial - Registro" />`
+```javascript
+import { Analytics } from "@vercel/analytics/react";
 
-- `twitter:description`: A descrição que acompanhará o título. <br/> Exemplo: `<meta name="- twitter:description" content="Serviços de manutenção, automação, consultoria de compras de computadores e equipamentos em Registro, SP." />`
+// No body global
+<Analytics />
+```
 
-- `twitter:image`: A imagem que será exibida no card. <br/> Exemplo: `<meta name="- twitter:image" content="https://onehelpinformatica.com.br/imgs/OneHelpBlack.jpeg" />`
+- **Speed Insights (global)**: em `layout.js`.
 
-## 3. Meta Tags Essenciais para SEO
-### Essas tags ajudam os mecanismos de busca, como o Google, a entender o conteúdo da sua página.
+```javascript
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
-- `description`: Esta é uma das meta tags mais importantes para o SEO. Ela fornece uma descrição concisa do conteúdo da página. Essa descrição geralmente aparece nos resultados da pesquisa (SERP) logo abaixo do título, por isso, é fundamental que seja bem escrita e inclua palavras-chave relevantes. <br/> Exemplo: `<meta name='description' content='Loja especializada em assistência técnica, automação residencial, consultoria de compras de computadores e venda de equipamentos em Registro, SP, Vale do Ribeira.' />`
+// No body global
+<SpeedInsights />
+```
 
-- `charset="utf-8"`: Define o conjunto de caracteres utilizado na página, garantindo que os textos sejam exibidos corretamente em todos os navegadores e dispositivos. O utf-8 é o padrão global e suporta a maioria dos caracteres especiais. <br/> Exemplo: `<meta charSet="utf-8"/>`
+## Como sobrescrever por página (exemplo)
+Crie `export const metadata` na página alvo (ex.: `front-end/src/app/blog/[id]/page.js`):
 
-`robots`: Instruções para os robôs dos mecanismos de busca. 
+```javascript
+export const metadata = {
+  title: "Título do post | Imobiliária Bortone",
+  description: "Resumo do post",
+  openGraph: {
+    title: "Título do post | Imobiliária Bortone",
+    description: "Resumo do post",
+    type: "article",
+    images: [
+      { url: "/images/slide1.png", width: 1200, height: 630, alt: "Capa" }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Título do post | Imobiliária Bortone",
+    description: "Resumo do post",
+    images: ["/images/slide1.png"]
+  }
+};
+```
 
-- `content="index, follow"`: Permite que os robôs indexem (incluam a página nos resultados) e sigam os links internos da página. Esta é a configuração padrão e a mais comum para a maioria das páginas. <br/> Exemplo: `<meta name='robots' content='index, follow' />`
+## Boas práticas rápidas
+- **OG/Twitter**: use a mesma imagem otimizada (1200x630). Evite SVG para cartões.
+- **Canonical**: adicione quando houver URLs duplicadas/parâmetros.
+- **Noindex**: use `robots: { index: false, follow: false }` em áreas privadas (ex.: admin).
+- **Preload de fontes**: somente para as usadas no first paint; prefira WOFF2 quando disponível.
+- **Acessibilidade**: mantenha `<html lang="pt-br">` e verifique contraste de cores.
 
-- `google-site-verification`: Uma tag usada para verificar a propriedade do seu site junto ao Google Search Console. Isso é essencial para monitorar o desempenho do seu site nas buscas. <br/> Exemplo: `<meta name="google-site-verification" content="BxmEKnfsB-SA6Q" />`
+## Checklist de verificação
+- SEO: título, descrição, keywords, OG/Twitter definidos
+- Mobile: viewport, theme-color, Apple Web App
+- Performance: preconnect/dns-prefetch, preload de fontes necessárias
+- Estruturado: JSON-LD Organization
+- Métricas: Analytics global, Speed Insights global
 
-## 4. Outras Tags e Links Importantes
+## O que cada configuração faz
+- **title/description**: título e resumo exibidos no navegador e buscadores.
+- **keywords**: lista de palavras-chave; sinal fraco para SEO atual, útil como metadado.
+- **applicationName/generator/authors/creator/publisher**: metadados informativos para user agents.
+- **icons**: define o favicon padrão do site.
+- **robots**: controla indexação/seguimento por buscadores; `googleBot` ajusta limites de preview/snippet.
+- **openGraph**: aparência ao compartilhar (Facebook/WhatsApp/LinkedIn); `images` ideal 1200x630.
+- **twitter**: cartões no X/Twitter; `summary_large_image` mostra imagem grande.
+- **appleWebApp**: habilita comportamento tipo app no iOS (status bar e título).
+- **formatDetection**: ativa detecção de telefone clicável em iOS.
+- **viewport**: define escala e `themeColor` (cor da UI em mobile) e `viewportFit` (safe areas).
+- **dns-prefetch/preconnect**: antecipa resolução e conexão a hosts externos, reduzindo latência.
+- **preload de fontes**: prioriza download de fontes críticas evitando FOIT/FOUT.
+- **JSON-LD Organization**: indica a entidade dona do site para buscadores.
+- **@vercel/analytics**: métricas de uso/rota em produção (privacidade-friendly, zero-config na Vercel).
+- **@vercel/speed-insights**: RUM de performance (global para todas as rotas, sem duplicar em páginas).
 
-- `canonical`: A tag `<link rel="canonical" href="..." />` é crucial para evitar conteúdo duplicado. Ela informa ao Google qual é a URL "principal" ou preferida de uma página, especialmente útil quando há mais de uma URL que leva ao mesmo conteúdo (por exemplo, com parâmetros de rastreamento). <br/> Exemplo: `<link rel="canonical" href="https://onehelpinformatica.com.br/" />`
 
-- `viewport`: A tag `<meta name="viewport" content="width=device-width, initial-scale=1.0" />` é fundamental para o design responsivo. Ela garante que a página se adapte corretamente a diferentes tamanhos de tela, como em celulares e tablets, oferecendo uma boa experiência ao usuário. <br/> Exemplo: `<meta name="viewport" content="width=device-width, initial-scale=1.0" />`
-
-- `theme-color`: A tag `<meta name="theme-color" content="#1C2132" />` permite que você personalize a cor da barra de ferramentas do navegador em dispositivos Android. É um pequeno toque que harmoniza a interface do navegador com a paleta de cores do seu site, criando uma experiência mais fluida. <br/> Exemplo: `<meta name="theme-color" content="#1C2132" />`
