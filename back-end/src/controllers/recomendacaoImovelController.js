@@ -19,7 +19,21 @@ export const createRecomendacaoImovel = async (req, res) => {
   }
 };
 
-export const getRecommendacoes = (req, res) => {
-  // Futuramente irei chamar uma função do service para buscar as recomendações
-  res.status(501).json({ message: 'Este endpoint ainda não está implementado.' });
+export const getRecomendacoes = async (req, res) => {
+  const { usuario_id } = req.query; 
+
+  if (!usuario_id) {
+    return res.status(400).json({ error: 'O ID do usuário é obrigatório.' });
+  }
+
+  try {
+    const recomendacoes = await recomendacaoImovelService.getRecomendacoesByUserId(usuario_id);
+    res.status(200).json({
+      message: 'Recomendações geradas com sucesso.',
+      data: recomendacoes,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro ao gerar recomendações: ' + err.message });
+  }
 };
