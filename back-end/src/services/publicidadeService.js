@@ -22,15 +22,13 @@ class PublicidadeService {
 
   // async updatePublicidade (idPublicidade, dadosUpdatePublicidade) ...
   async updatePublicidade(id, dadosUpdatePublicidade) {
-    // O service não deve validar os dados e nem tratar erros, apenas buscar a publicidade referente ao id recebido e fazer as alterações de acordo com os dados recebidos
     try {
+      // O service não deve validar os dados e nem tratar erros, apenas buscar a publicidade referente ao id recebido e fazer as alterações de acordo com os dados recebidos
       if (!id || isNaN(id) || Number(id) <= 0) {
         throw new Error("ID de publicidade inválido.");
       }
       
       const publicidade = await Publicidade.findByPk(id);
-
-      // O service não deve validar os dados e nem tratar erros, apenas buscar a publicidade referente ao id recebido e fazer as alterações de acordo com os dados recebidos
       if (!publicidade) {
         throw new Error(`Publicidade com ID ${id} não encontrada.`);
       }
@@ -53,14 +51,13 @@ class PublicidadeService {
     try {
       const publicidade = await Publicidade.findByPk(id);
 
-      // O service não deve validar os dados, apenas buscar a publicidade referente ao id recebido e deletar
       if (!publicidade) {
         throw new Error(`Publicidade com ID ${id} não encontrada.`);
       }
 
       await publicidade.destroy();
 
-      // O service não retorna mensagens
+      // O service não deve retornar mensagens
       return { message: `Publicidade com ID ${id} foi deletada com sucesso.` };
     } catch (error) {
       throw error;
@@ -68,15 +65,14 @@ class PublicidadeService {
   }
 
     async readPublicidade(id) {
-      // O service não deve validar os dados e nem tratar erros, apenas buscar a publicidade referente ao id recebido e retornar o registro 
     try {
+      // O service não deve validar os dados e nem tratar erros, apenas buscar a publicidade referente ao id recebido e retornar o registro 
       if (!id || isNaN(id) || Number(id) <= 0) {
         throw new Error("ID de publicidade inválido.");
       }
 
       const publicidade = await Publicidade.findByPk(id);
 
-      // O service não deve validar os dados e nem tratar erros, apenas buscar a publicidade referente ao id recebido e retornar o registro
       if (!publicidade) {
         throw new Error(`Publicidade com ID ${id} não encontrada.`);
       }
