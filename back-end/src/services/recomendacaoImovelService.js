@@ -14,7 +14,7 @@ export const createRecomendacao = async (data) => {
     }
 };
 
-// Busca os 5 imóveis mais visitados por um usuário específico.
+// Busca os imóveis mais visitados por um usuário específico.
 const getTopImoveisVisitados = async (usuario_id) => {
     return await RecomendacaoImovel.findAll({
         attributes: [
@@ -73,7 +73,7 @@ const inferirPreferencias = async (idsImoveis) => {
     return preferencias;
 };
 
-// Retorna os 20 imóveis mais populares do sistema (geral), usados como fallback.
+// Retorna até 20 imóveis mais populares do sistema (geral), usados como fallback.
 const getImoveisPopulares = async () => {
     // `attributes` define as colunas que vão vir como resposta.
     const imoveisPopulares = await RecomendacaoImovel.findAll({
@@ -106,13 +106,13 @@ const getImoveisPopulares = async () => {
     });
 };
 
-// Função principal que gera as recomendações de imóveis para um usuário. Se o usuário tiver histórico, usa-o para inferir preferências; caso contrário, retorna imóveis populares.
+// Função principal que gera as recomendações de imóveis para um usuário.
 export const getRecomendacoesByUserId = async (usuario_id) => {
     try {
         // Pega o histórico de imóveis visitados pelo usuário.
         const imoveisVisitados = await getTopImoveisVisitados(usuario_id);
 
-        // Neste caso, retorna os imóveis mais populares do sistema como fallback.
+        // Se o usuário não tiver NENHUM histórico, retorna os imóveis populares.
         if (_.isEmpty(imoveisVisitados)) {
             console.log('Usuário sem histórico. Retornando imóveis populares.');
             return await getImoveisPopulares();
@@ -123,29 +123,45 @@ export const getRecomendacoesByUserId = async (usuario_id) => {
         // Infere as preferências do usuário com base no histórico.
         const preferencias = await inferirPreferencias(idsImoveisVisitados);
 
-        // Constrói o objeto de filtros para a busca, incluindo status 'disponivel'.
-        const filtros = {
+        // Constrói os filtros base (sempre aplicados)
+        const filtrosBase = {
             id: {
                 [Sequelize.Op.notIn]: idsImoveisVisitados
             },
-            status: 'disponivel',
+            status: 'disponivel'
+        };
+
+        // Primeira tentativa (fallback): busca com todos os filtros de preferência
+        let filtros = {
+            ...filtrosBase,
             tipo: preferencias.tipo,
             cidade: preferencias.cidade,
             estado: preferencias.estado
         };
-
-        // Adiciona a condição de preço APENAS se os valores calculados (`precoMin` e `precoMax`) forem números válidos. Isso previne erros de consulta no banco de dados.
         if (!_.isNaN(preferencias.precoMin) && !_.isNaN(preferencias.precoMax)) {
             filtros.preco = {
                 [Sequelize.Op.between]: [preferencias.precoMin, preferencias.precoMax]
             };
         }
+        let imoveisRecomendados = await Imovel.findAll({ where: filtros, limit: 20 });
 
-        // Realiza a busca final no banco de dados com todos os filtros.
-        const imoveisRecomendados = await Imovel.findAll({
-            where: filtros,
-            limit: 20 
-        });
+        // Segunda tentativa (fallback): se a primeira falhar, suaviza a busca
+        if (_.isEmpty(imoveisRecomendados)) {
+            console.log('Nenhuma recomendação encontrada com filtros estritos. Expandindo a busca...');
+            
+            // Remove os filtros de preço, cidade e estado, mantendo apenas o tipo
+            let filtrosExpandidos = {
+                ...filtrosBase,
+                tipo: preferencias.tipo
+            };
+            imoveisRecomendados = await Imovel.findAll({ where: filtrosExpandidos, limit: 20 });
+        }
+        
+        // Terceira tentativa (fallback final): se a busca expandida também falhar
+        if (_.isEmpty(imoveisRecomendados)) {
+             console.log('Nenhuma recomendação encontrada com filtros expandidos. Retornando populares.');
+             return await getImoveisPopulares();
+        }
 
         // Retorna a lista de imóveis recomendados.
         return imoveisRecomendados;
