@@ -15,7 +15,3 @@ Terreno.belongsTo(Imovel, { foreignKey: 'imovel_id' });
 // 🔹 Usuario ↔ Imovel
 Usuario.hasMany(Imovel, { foreignKey: 'usuario_id' });
 Imovel.belongsTo(Usuario, { foreignKey: 'usuario_id' });
-
-// 🔹 Usuario ↔ Blog
-Usuario.hasMany(Blog, { foreignKey: 'usuario_id' });
-Blog.belongsTo(Usuario, { foreignKey: 'usuario_id' });
