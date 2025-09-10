@@ -1,32 +1,56 @@
-// Configuração principal do Express (carrega rotas, middlewares, DB)
-
+import 'dotenv/config';
 import express from "express";
-import routes from "./routes/index.js";
+import cors from "cors";
+import connection from "./config/sequelize-config.js";
+import agendamentoRouter from './routes/agendamentoRoute.js';
+import recomendacaoRouter from './routes/recomendacaoImovelRoutes.js';
+import healthRouter from "./routes/healthRouter.js";
+import faqRoutes from "./routes/faqRoutes.js";
+import initWebSocket from "./config/websocket.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import http from "http";
-import initWebSocket from "./config/websocket.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Parse JSON request bodies
+// Middlewares
+app.use(cors()); // Habilita o CORS para todas as origens
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-// Serve arquivos estáticos da pasta "public"
+// Rotas
+app.use('/', recomendacaoRouter);
+app.use('/agendamentos', agendamentoRouter );
+app.use('/health', healthRouter);
+app.use("/faq", faqRoutes);
 app.use(express.static(path.join(__dirname, "../public")));
-
 app.use("/", routes);
 app.use(errorHandler);
 
 const server = http.createServer(app);
 initWebSocket(server);
 
-server.listen(4000, () => {
-  console.log("🚀 Servidor rodando em http://localhost:4000");
-});
+// Banco de dados
+connection
+  .authenticate()
+  .then(() => {
+    console.log("Conexão com banco de dados realizada com sucesso!");
+  })
+  .catch((error) => {
+    console.log("Erro ao conectar com banco de dados:", error);
+  });
 
+// Porta
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, function (erro) {
+  if (erro) {
+    console.log("Ocorreu um erro! Erro: ", erro);
+  } else {
+    console.log(`Servidor iniciado com sucesso na porta ${PORT}! 🚀`);
+  }
+});
 export default app;
