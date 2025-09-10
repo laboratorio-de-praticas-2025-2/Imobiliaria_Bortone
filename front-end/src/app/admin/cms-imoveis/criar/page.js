@@ -1,7 +1,7 @@
 "use client";
 import Form from "@/components/cms/form";
 import { useState } from "react";
-import RadioField from "@/components/cms/form/fields/RadioField";
+import RadioFieldImovel from "@/components/cms/form/fields/RadioFieldImovel";
 import TextField from "@/components/cms/form/fields/TextField";
 import FormButton from "@/components/cms/form/fields/Button";
 import { MdPersonAdd } from "react-icons/md";
@@ -22,11 +22,73 @@ export default function CriarImovelPage() {
   const [tipoSelecionado, setTipoSelecionado] = useState("Selecione o Tipo");
   const [statusSelecionado, setstatusSelecionado] =
     useState("Selecione o status");
+  const [citiesSelecionado, setCitiesSelecionado] =
+    useState("Selecione a cidade");
+  const [selectedState, setSelectedState] = useState("Selecione o estado");
+  const [selectedParking, setSelectedParking] = useState("Quantidade");
+  const [selectedBedrooms, setSelectedBedrooms] = useState("Quantidade");
+  const [selectedBathrooms, setSelectedBathrooms] = useState("Quantidade");
   const [fileList, setFileList] = useState([]);
-
+  const states = [
+    "Acre",
+    "Alagoas",
+    "Amapá",
+    "Amazonas",
+    "Bahia",
+    "Ceará",
+    "Distrito Federal",
+    "Espírito Santo",
+    "Goiás",
+    "Maranhão",
+    "Mato Grosso",
+    "Mato Grosso do Sul",
+    "Minas Gerais",
+    "Pará",
+    "Paraíba",
+    "Paraná",
+    "Pernambuco",
+    "Piauí",
+    "Rio de Janeiro",
+    "Rio Grande do Norte",
+    "Rio Grande do Sul",
+    "Rondônia",
+    "Roraima",
+    "Santa Catarina",
+    "São Paulo",
+    "Sergipe",
+    "Tocantins",
+  ];
   const options = ["Casa", "Terreno"];
   const status = ["Disponivel", "Indisponivel", "Vendido", "Alugado"];
-
+  const cities = [
+    "Apiaí",
+    "Barra do Chapéu",
+    "Barra do Turvo",
+    "Cajati",
+    "Cananéia",
+    "Capão Bonito",
+    "Eldorado",
+    "Guapiara",
+    "Ibiúna",
+    "Iporanga",
+    "Itapeva",
+    "Itariri",
+    "Jacupiranga",
+    "Juquiá",
+    "Juquitiba",
+    "Miracatu",
+    "Pariquera-Açu",
+    "Pedro de Toledo",
+    "Registro",
+    "Ribeira",
+    "Ribeirão Branco",
+    "Ribeirão Grande",
+    "Sete Barras",
+    "Tapiraí",
+  ];
+  const parkingSpots = ["1", "2", "3", "4", "5+"];
+  const bedrooms = ["1", "2", "3", "4", "5+"];
+  const bathrooms = ["1", "2", "3", "4", "5+"];
   return (
     <>
       <Sidebar />
@@ -67,11 +129,11 @@ export default function CriarImovelPage() {
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
-                      placeholder="Selecione o Tipo"
+                      placeholder="Selecione o status"
                       options={status}
                       selected={statusSelecionado}
                       setSelected={setstatusSelecionado}
-                      handleSelect={(status) => setstatusSelecionado(status)}
+                      handleSelect={(option) => setstatusSelecionado(option)}
                       width={"w-full"}
                       classname="bg-white hover:bg-[#EEF0F9] w-full "
                     />
@@ -97,7 +159,7 @@ export default function CriarImovelPage() {
               <div className="sm:w-[50%] flex flex-col gap-6 items-start">
                 <div className=" flex flex-row gap-6">
                   <FormAntd.Item
-                    label={"Tipo"}
+                    label={"Cidade"}
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
@@ -105,19 +167,19 @@ export default function CriarImovelPage() {
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
-                      placeholder="Selecione o Tipo"
-                      label="Tipo"
-                      options={options}
-                      selected={tipoSelecionado}
-                      setSelected={setTipoSelecionado}
-                      handleSelect={(option) => setTipoSelecionado(option)}
+                      placeholder="Selecione a Cidade"
+                      label="Cidade"
+                      options={cities}
+                      selected={citiesSelecionado}
+                      setSelected={setCitiesSelecionado}
+                      handleSelect={(option) => setCitiesSelecionado(option)}
                       width={"w-full"}
                       classname="bg-white hover:bg-[#EEF0F9] w-full "
                     />
                   </FormAntd.Item>
 
                   <FormAntd.Item
-                    label={"Status"}
+                    label={"Estado"}
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
@@ -125,15 +187,165 @@ export default function CriarImovelPage() {
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
-                      placeholder="Selecione o Tipo"
-                      options={status}
-                      selected={statusSelecionado}
-                      setSelected={setstatusSelecionado}
-                      handleSelect={(status) => setstatusSelecionado(status)}
+                      placeholder="Selecione o Estado"
+                      label="Estado"
+                      options={states}
+                      selected={selectedState}
+                      setSelected={setSelectedState}
+                      handleSelect={(option) => setSelectedState(option)}
                       width={"w-full"}
                       classname="bg-white hover:bg-[#EEF0F9] w-full "
                     />
                   </FormAntd.Item>
+                </div>
+                <div className=" flex flex-row gap-6">
+                  <FormAntd.Item
+                    label={"Imóvel Murado?"}
+                    rules={[
+                      { required: true, message: "Este campo é obrigatório!" },
+                    ]}
+                    className={`custom-form-item `}
+                    labelCol={{ span: 24 }}
+                  >
+                    <RadioFieldImovel
+                      name="murado"
+                      options={[
+                        { label: "Sim", value: "sim" },
+                        { label: "Não", value: "nao" },
+                      ]}
+                      className="!w-fit"
+                      classNameR="!custom-radio-group !p-3 border-1 rounded-full"
+                      style={{
+                        borderColor: "#374a8c",
+                        color: "#374a8c",
+                        fontWeight: "bold",
+                      }}
+                    />
+                  </FormAntd.Item>
+
+                  <FormAntd.Item
+                    label={"Possui Piscina?"}
+                    rules={[
+                      { required: true, message: "Este campo é obrigatório!" },
+                    ]}
+                    className={`custom-form-item `}
+                    labelCol={{ span: 24 }}
+                  >
+                    <RadioFieldImovel
+                      name="piscina"
+                      options={[
+                        { label: "Sim", value: "sim" },
+                        { label: "Não", value: "nao" },
+                      ]}
+                      className="!w-fit"
+                      classNameR="!custom-radio-group !p-3  border-1 rounded-full"
+                      style={{
+                        borderColor: "#374a8c",
+                        color: "#374a8c",
+                        fontWeight: "bold",
+                      }}
+                    />
+                  </FormAntd.Item>
+                </div>
+                <div className=" flex flex-row gap-6">
+                 <FormAntd.Item
+                    label={"Possui Jardim?"}
+                    rules={[
+                      { required: true, message: "Este campo é obrigatório!" },
+                    ]}
+                    className={`custom-form-item `}
+                    labelCol={{ span: 24 }}
+                  >
+                    <RadioFieldImovel
+                      name="jardim"
+                      options={[
+                        { label: "Sim", value: "sim" },
+                        { label: "Não", value: "nao" },
+                      ]}
+                      className="!w-fit"
+                      classNameR=""
+                      style={{
+                        borderColor: "#374a8c",
+                        color: "#374a8c",
+                        fontWeight: "bold",
+                      }}
+                    />
+                  </FormAntd.Item>
+
+                  <FormAntd.Item
+                    label={"Quartos"}
+                    rules={[
+                      { required: true, message: "Este campo é obrigatório!" },
+                    ]}
+                    className={`custom-form-item `}
+                    labelCol={{ span: 24 }}
+                  >
+                    <DropdownField
+                      placeholder="Quantidade"
+                      label="Quartos"
+                      options={bedrooms}
+                      selected={selectedBedrooms}
+                      setSelected={setSelectedBedrooms}
+                      handleSelect={(option) => setSelectedBedrooms(option)}
+                      width={"w-full"}
+                      classname="bg-white hover:bg-[#EEF0F9]  w-full"
+                    />
+                  </FormAntd.Item>
+                </div>
+                <div className=" flex flex-row gap-6">
+                  <FormAntd.Item
+                    label={"Vagas"}
+                    rules={[
+                      { required: true, message: "Este campo é obrigatório!" },
+                    ]}
+                    className={`custom-form-item `}
+                    labelCol={{ span: 24 }}
+                  >
+                    <DropdownField
+                      placeholder="Quantidade"
+                      label="Vagas"
+                      options={parkingSpots}
+                      selected={selectedParking}
+                      setSelected={setSelectedParking}
+                      handleSelect={(option) => setSelectedParking(option)}
+                      width={"w-full"}
+                      classname="bg-white hover:bg-[#EEF0F9]  w-full"
+                    />
+                  </FormAntd.Item>
+
+                  <FormAntd.Item
+                    label={"Banheiros"}
+                    rules={[
+                      { required: true, message: "Este campo é obrigatório!" },
+                    ]}
+                    className={`custom-form-item `}
+                    labelCol={{ span: 24 }}
+                  >
+                    <DropdownField
+                      placeholder="Quantidade"
+                      label="Banheiros"
+                      options={bathrooms}
+                      selected={selectedBathrooms}
+                      setSelected={setSelectedBathrooms}
+                      handleSelect={(option) => setSelectedBathrooms(option)}
+                      width={"w-full"}
+                      classname="bg-white hover:bg-[#EEF0F9] w-full "
+                    />
+                  </FormAntd.Item>
+                </div>
+                <div className=" flex flex-row gap-6">
+                  <TextField
+                    name="area"
+                    label="Área"
+                    placeholder="Insira a área"
+                    className="!w-full"
+                  />
+                  <TextField
+                    name="preco"
+                    label="Preço"
+                    placeholder="Insira o preço"
+                    className="!w-full"
+                  />
                 </div>
                 <FormButton text="Cadastrar" icon={<MdPersonAdd />} />
               </div>
