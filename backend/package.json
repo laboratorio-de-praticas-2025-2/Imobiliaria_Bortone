@@ -1,21 +1,29 @@
 {
-  "name": "chatest",
+  "name": "api-imobiliaria",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "API para gerenciamento da imobiliaria Bortone",
+  "main": "src/app.js",
+  "type": "module",
+  "keywords": [
+    "API",
+    "imobiliária",
+    "Bortone"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app.js"
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "mysql2": "^3.14.4",
+    "sequelize": "^6.37.7",
     "bcrypt": "^6.0.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "nodemon": "^3.1.10",
     "ws": "^8.18.3"
   },
-  "type": "module"
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }

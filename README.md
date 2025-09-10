@@ -1,203 +1,63 @@
-# Imobiliária Bortone
+# 🏠 Imobiliária Bortone
 
-Sistema completo de imobiliária com backend Express.js e frontend Next.js.
+A **Imobiliária Bortone** é uma plataforma digital desenvolvida para conectar pessoas interessados em **alugar ou comprar imóveis**.  
+O objetivo é oferecer uma experiência completa: da **busca inicial** ao **agendamento de visitas**, passando por recomendações personalizadas e gestão via **painel administrativo (CMS)**.  
 
-## Estrutura de diretórios
+---
 
-```bash
-/imobiliaria-bortone
-│
-├── backend/                # API em Express.js (regra de negócio e dados)
-│   ├── src/
-│   │   ├── config/          # Configurações globais (ex: conexão MySQL, variáveis de ambiente)
-│   │   ├── models/          # Definição dos modelos de dados (ex: Usuario, Imovel, Agendamento)
-│   │   ├── services/        # Lógica de negócio (ex: regras para cadastro, login, agendamento)
-│   │   ├── controllers/     # Controladores que recebem requisições e chamam os services
-│   │   ├── routes/          # Definição das rotas da API (REST: /users, /imoveis, /agendamentos)
-│   │   ├── middlewares/     # Autenticação, autorização, tratamento de erros, logs
-│   │   ├── utils/           # Funções auxiliares (gerar token JWT, formatar datas, etc.)
-│   │   ├── tests/           # Testes unitários e de integração do backend
-│   │   └── app.js           # Configuração principal do Express (carrega rotas, middlewares, DB)
-│   │
-│   ├── package.json         # Dependências e scripts do backend
-│   └── Dockerfile           # Configuração Docker para o backend
-│
-├── frontend/               # Aplicação em Next.js (UI e lógica do cliente)
-│   ├── public/              # Arquivos públicos (imagens, favicon, fontes estáticas)
-│   ├── src/
-│   │   ├── app/             # App Router do Next.js 13+
-│   │   │   ├── page.js         # Página inicial (carrossel, header, vitrine)
-│   │   │   ├── login/          # Páginas de login
-│   │   │   ├── cadastro/       # Páginas de cadastro
-│   │   │   ├── mapa/           # Páginas do mapa de imóveis
-│   │   │   └── bem-vindo/      # Página de boas-vindas
-│   │   │
-│   │   ├── components/      # Componentes reutilizáveis (botões, cards, header, footer)
-│   │   ├── hooks/           # Hooks customizados (ex: useAuth, useFetch)
-│   │   ├── services/        # Comunicação com backend (APIs de imóveis, usuários, agendamentos)
-│   │   ├── styles/          # Estilos globais e módulos CSS/Tailwind
-│   │   ├── constants/       # Constantes usadas em várias partes (rotas, configs)
-│   │   └── utils/           # Funções auxiliares do front (formatação, validação)
-│   │
-│   ├── package.json         # Dependências e scripts do frontend
-│   └── Dockerfile           # Configuração Docker para o frontend
-│
-├── docs/                   # Documentação do projeto
-├── docker-compose.yml      # Orquestração dos serviços com Docker
-├── package.json            # Scripts principais e dependências globais
-└── README.md               # Documentação do projeto
-```
+## ✨ Principais Funcionalidades
 
-## 🚀 Como executar o projeto
+- **Busca simples e avançada** com filtros (preço, localização, tipo de imóvel).  
+- **Vitrine de imóveis** com fotos, descrições e detalhes completos.  
+- **Login e cadastro de usuários**.  
+- **Agendamento de visitas** direto pela plataforma.  
+- **Dashboard e relatórios em PDF** para gestores.  
+- **Recomendações personalizadas** baseadas em perfil do usuário.  
+- **CMS para administradores** gerenciar imóveis, usuários, blog e anúncios.  
+- **Mapa interativo** para visualizar imóveis por região.  
+- **Notificações e simulador de financiamento/aluguel** para maior engajamento.
+- **Blog integrado** com artigos sobre mercado imobiliário e dicas para usuários.    
+- **Chat e FAQ** para suporte ao cliente.  
 
-### Pré-requisitos
+---
 
-- Node.js (versão 18 ou superior)
-- npm ou yarn
-- Docker (opcional)
+## 🛠️ Tecnologias Utilizadas
 
-### Instalação e execução
+### 🎨 Design
+![Figma](https://img.shields.io/badge/Figma-0D1117?style=for-the-badge&logo=figma)&nbsp;
 
-1. **Clone o repositório**
+### 💻 Frontend
+![Next.js](https://img.shields.io/badge/Next.js-0D1117?style=for-the-badge&logo=next.js)&nbsp; 
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-0D1117?style=for-the-badge&logo=tailwindcss)&nbsp;
+![Axios](https://img.shields.io/badge/Axios-0D1117?style=for-the-badge&logo=axios)&nbsp;
 
-```bash
-git clone <url-do-repositorio>
-cd imobiliaria-bortone
-```
+### 🔧 Backend
+![Node.js](https://img.shields.io/badge/Node.js-0D1117?style=for-the-badge&logo=node.js)&nbsp;
+![Express.js](https://img.shields.io/badge/Express.js-0D1117?style=for-the-badge&logo=express)&nbsp;
+![MySQL](https://img.shields.io/badge/MySQL-0D1117?style=for-the-badge&logo=mysql)&nbsp;
+![Sequelize](https://img.shields.io/badge/Sequelize-0D1117?style=for-the-badge&logo=sequelize)&nbsp;
+![JWT](https://img.shields.io/badge/JWT-0D1117?style=for-the-badge&logo=jsonwebtokens)&nbsp;
 
-2. **Instale as dependências**
+### 🚀 DevOps / Infra
+![Docker](https://img.shields.io/badge/Docker-0D1117?style=for-the-badge&logo=docker)&nbsp;
+![Vercel](https://img.shields.io/badge/Vercel-0D1117?style=for-the-badge&logo=vercel)&nbsp;
+![Render](https://img.shields.io/badge/Render-0D1117?style=for-the-badge&logo=render)&nbsp;
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-0D1117?style=for-the-badge&logo=githubactions)&nbsp;
+![Debian](https://img.shields.io/badge/Debian-0D1117?style=for-the-badge&logo=debian)&nbsp;
 
-```bash
-npm run install:all
-```
+---
 
-3. **Execute o projeto em modo desenvolvimento**
+## 🔗 Links Úteis
 
-```bash
-npm run dev
-```
+- <a href="https://www.figma.com/design/w1ARo0t9N2womJ0ffCi4Wt/Laborat%C3%B3rio-de-Pratica---UX?node-id=0-1&t=41vb1y7A3luaibf8-1" target="_blank" rel="noreferrer">🎨 Figma</a>  
+- <a href="https://imobiliaria-bortone.vercel.app/" target="_blank" rel="noreferrer">🌐 Site</a>  
 
-Este comando irá executar:
+---
 
-- Backend na porta 3001
-- Frontend na porta 3000
+## 📚 Documentação
 
-### Scripts disponíveis
+ - <a href="https://github.com/laboratorio-de-praticas-2025-2/Imobiliaria_Bortone/blob/main/docs/AlgoritmoDeRecomendacao.md" target="_blank" rel="noreferrer">📖 Algoritmo de Recomendação</a>  
+- <a href="https://github.com/laboratorio-de-praticas-2025-2/Imobiliaria_Bortone/blob/main/docs/ManualdeTags.md" target="_blank" rel="noreferrer">🏷️ Manual de Tags</a>  
+- <a href="https://github.com/laboratorio-de-praticas-2025-2/Imobiliaria_Bortone/blob/main/docs/RegrasGerais.md" target="_blank" rel="noreferrer">⚙️ Regras Gerais</a>  
 
-- `npm run dev` - Executa backend e frontend em modo desenvolvimento
-- `npm run dev:backend` - Executa apenas o backend
-- `npm run dev:frontend` - Executa apenas o frontend
-- `npm run build` - Constrói o frontend para produção
-- `npm run start` - Executa backend e frontend em modo produção
-- `npm run install:all` - Instala dependências de todos os projetos
-
-### Executando com Docker
-
-```bash
-docker-compose up --build
-```
-
-## Explicação rápida de cada parte
-
-### Backend (Express.js)
-
-- config/ → guarda configuração do banco (MySQL), variáveis de ambiente.
-- models/ → define tabelas/entidades (Imóvel, Usuário, Agendamento).
-- services/ → lógica do negócio (validação, cálculos, regras de agendamento).
-- controllers/ → recebem as requisições e repassam para os services.
-- routes/ → define os endpoints (/users, /imoveis, etc).
-- middlewares/ → autenticação JWT, logs, tratamento de erros.
-- utils/ → funções utilitárias (gerar tokens, helpers).
-- tests/ → testes do backend (unitários/integrados).
-
-### Frontend (Next.js)
-
-- pages/ → define rotas (home, login, imóveis, agendamento, admin).
-- components/ → botões, cards de imóvel, formulários reutilizáveis.
-- layouts/ → estrutura de página (menu + conteúdo).
-- hooks/ → lógica de React reaproveitável (ex: useAuth).
-- context/ → estado global com Context API (ex: autenticação).
-- services/ → funções que chamam a API do backend (fetch/axios).
-- utils/ → máscaras, validações, helpers.
-- styles/ → CSS global ou Tailwind.
-- constants/ → strings fixas, rotas e configs.
-
-# Regras de commit
-
-### Branchs
-
-1. main ───► branch de produção (release estável)
-2. develop ─► branch de desenvolvimento (integração do que está pronto)
-3. feature/\* ─► branches de funcionalidades novas
-4. hotfix/\* ─► branches de correções urgentes na produção
-
-## Detalhamento
-
-1.  main
-    Sempre estável.
-    Só recebe merges de develop (quando for lançar versão) ou hotfix/\*.
-    Protegida (não se faz commit direto).
-2.  develop
-    Base para integração de features.
-    Time inteiro cria branches a partir dela.
-    Antes de ir para main, tudo é testado aqui.
-3.  feature/\*
-    Criada a partir de develop.
-    Uma para cada tarefa/funcionalidade.
-    Exemplo:
-    feature/auth-login
-    feature/imoveis-listagem
-    feature/agendamento-visita
-        Quando termina: merge via Pull Request → develop.
-4.  hotfix/\*
-    Criada a partir de main.
-    Usada só para corrigir bugs urgentes em produção.
-    Depois de corrigir: merge em main e também em develop (para não perder).
-
-## Regras para commits
-
-### Estrutura da Mensagem
-
-> <tipo>(escopo opcional): descrição curta no imperativo
-> [corpo opcional explicando o que mudou e por quê][rodapé opcional para issues ou mudanças críticas]
-
-### Tipos Aceitos
-
-- feat: → nova funcionalidade
-- fix: → correção de bug
-- docs: → mudanças somente em documentação
-- style: → ajustes de formatação, espaçamento, ponto e vírgula (sem alterar lógica)
-- refactor: → refatoração de código sem mudar o comportamento
-- test: → inclusão ou alteração de testes
-- chore: → mudanças em dependências, build, configs, scripts
-- perf: → melhorias de performance
-- ci: → mudanças em pipelines/integração contínua
-
-### Exemplos de Commits Válidos
-
-- feat(auth): adiciona fluxo de login com JWT
-- fix(agendamento): corrige cálculo de datas disponíveis
-- docs: adiciona instruções de setup do backend
-- refactor(frontend): organiza componentes de formulário
-- test(backend): cria testes unitários para service de imóveis
-- chore: atualiza dependências do Express para última versão
-- perf(consulta): melhora tempo de resposta no filtro de imóveis
-
-### Regras de Escrita
-
-1. Sempre em português.
-2. Frases curtas (máx. ~72 caracteres).
-3. Usar modo imperativo:
-   ✅ adiciona, corrige, remove, implementa
-   ❌ adicionando, corrigido, adicionado
-4. Não versionar código quebrado.
-5. Commits pequenos e específicos → evite “commitão” genérico.
-6. Se o commit fechar uma issue:
-   feat(agenda): implementa cancelamento de visitas
-   Fecha #32
-
-### Branches e Commits
-
-1. Nome de branch deve seguir o tipo e contexto: feature/frontend-cadastro-usuario
-   fix/backend-agendamento-null
-2. Não usar “WIP” em commits. Se for rascunho, abrir Pull Request em modo rascunho.
+---

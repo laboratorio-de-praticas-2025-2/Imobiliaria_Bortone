@@ -9,6 +9,8 @@ export default function TextAreaField({
   placeholder,
   rows = 6,
   className,
+  value,
+  onChange
 }) {
   return (
     <FormAntd.Item
@@ -22,6 +24,8 @@ export default function TextAreaField({
         placeholder={placeholder}
         autoSize={{ minRows: rows }}
         className="custom-input"
+        value={value}
+        onChange={onChange}
       />
     </FormAntd.Item>
   );

@@ -1,36 +1,30 @@
-version: '3.8'
-
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - "3001:3001"
-    environment:
-      - NODE_ENV=development
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-    networks:
-      - imobiliaria-network
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+  front-end:
+    build: ./front-end
+    image: ${DOCKER_HUB_USERNAME}/imobiliario-frontend:latest
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    networks:
-      - imobiliaria-network
+      NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+    
     depends_on:
-      - backend
+      - back-end
 
-networks:
-  imobiliaria-network:
-    driver: bridge
+  back-end:
+    build: ./back-end
+    image: ${DOCKER_HUB_USERNAME}/imobiliario-backend:latest
+    ports:
+      - "4000:4000"
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_DIALECT: ${DB_DIALECT}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_SECURE: ${SMTP_SECURE}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      SMTP_HELO: ${SMTP_HELO}
+      MAIL_FROM_EMPRESA: ${MAIL_FROM_EMPRESA}
+      MAIL_TO_EMPRESA: ${MAIL_TO_EMPRESA}

@@ -3,8 +3,16 @@ import Header from "@/components/simulacao/Header";
 import Form from "@/components/simulacao/Form";
 import HomeNavbar from "@/components/home/HomeNavbar";
 import { Col, Row } from "antd";
+import { useSEO } from "@/hooks/useSEO";
 
 export default function Simulacao() {
+  // Meta tags dinâmicas para a página de simulação
+  useSEO({
+    title: "Simulação de Financiamento",
+    description: "Simule seu financiamento imobiliário e descubra as melhores condições para comprar seu imóvel.",
+    keywords: "simulação, financiamento, imóvel, compra, banco, crédito imobiliário",
+    url: "https://imobiliaria-bortone.vercel.app/simulacao"
+  });
   return (
     <div className="fundo">
       <HomeNavbar />

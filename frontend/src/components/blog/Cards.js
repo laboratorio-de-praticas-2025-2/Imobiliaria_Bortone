@@ -33,16 +33,16 @@ export default function Cards() {
                     <div
                       className="absolute inset-0 bg-cover bg-center brightness-80  group-hover:brightness-60 group-hover:saturate-70 group-hover:blur-10  transition-all duration-300 "
                       style={{
-                        backgroundImage: `url(${paginatedPosts[0].image})`,
+                        backgroundImage: `url(${paginatedPosts[0].url_imagem})`,
                       }}
                     />
                     {/* Conteúdo sobreposto sem filtro */}
                     <div className="relative z-10 p-6 py-10 flex flex-col justify-end h-full">
                       <h2 className="text-white font-bold md:text-3xl text-xl lemon-milk">
-                        {paginatedPosts[0].title}
+                        {paginatedPosts[0].titulo}
                       </h2>
                       <p className="text-white text-[16px] lemon-milk">
-                        {paginatedPosts[0].date}
+                        {paginatedPosts[0].data_publicacao}
                       </p>
                     </div>
                   </div>
@@ -73,15 +73,15 @@ export default function Cards() {
                     {/* Imagem com filtro */}
                     <div
                       className="absolute inset-0 bg-cover bg-center brightness-80  group-hover:brightness-60 group-hover:saturate-70 transition-all duration-300"
-                      style={{ backgroundImage: `url(${post.image})` }}
+                      style={{ backgroundImage: `url(${post.url_imagem})` }}
                     />
                     {/* Conteúdo sobreposto sem filtro */}
                     <div className="relative z-10 p-6 py-10 flex flex-col justify-end h-full">
                       <h2 className="text-white font-bold md:text-3xl text-xl lemon-milk">
-                        {post.title}
+                        {post.titulo}
                       </h2>
                       <p className="text-white text-[16px] lemon-milk">
-                        {post.date}
+                        {post.data_publicacao}
                       </p>
                     </div>
                   </div>

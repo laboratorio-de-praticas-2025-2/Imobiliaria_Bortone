@@ -19,6 +19,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useSEO } from "@/hooks/useSEO";
 
 const { Search } = Input;
 const onSearch = (value) => console.log(value);
@@ -80,12 +81,21 @@ export default function Mapa() {
     }
   }, [imoveis]);
 
-  if (loading) return <div>Carregando...</div>;
-
+  // Encontrar o imóvel atual
   const post = imoveis.find((p) => p.id === Number(id));
-  if (!post) return <div>Post não encontrado.</div>;
-
   const imovelAtual = post;
+  
+  // SEO dinâmico para imóvel específico - sempre chamado
+  useSEO({
+    title: imovelAtual ? `${imovelAtual.tipo} em ${imovelAtual.endereco}` : "Imóvel",
+    description: imovelAtual ? `${imovelAtual.tipo} com ${imovelAtual.quartos} quartos, ${imovelAtual.banheiros} banheiros em ${imovelAtual.endereco}. ${imovelAtual.descricao?.substring(0, 120) || 'Imóvel de qualidade em excelente localização.'}` : "Imóvel de qualidade em excelente localização.",
+    keywords: imovelAtual ? `${imovelAtual.tipo}, ${imovelAtual.endereco}, imóvel, ${imovelAtual.quartos} quartos, ${imovelAtual.banheiros} banheiros, ${imovelAtual.operacao}` : "imóvel, casa, apartamento",
+    url: `https://imobiliaria-bortone.vercel.app/imoveis/${id}`,
+    image: imovelAtual?.imagens?.[0]?.url_imagem
+  });
+
+  if (loading) return <div>Carregando...</div>;
+  if (!post) return <div>Post não encontrado.</div>;
   const slides = imovelAtual?.imagens || [];
   const toggleVerMais = () => setVerMais(!verMais);
 
