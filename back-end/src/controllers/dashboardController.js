@@ -1,7 +1,7 @@
 import DashboardService from "../services/dashboardService.js";
 class DashboardController {
   // usado pela rota /dashboard 
-  async findInfoImoveis(req, res, next) {
+  async findInfosDashboard(req, res, next) {
     try {
       const response = await DashboardService.dashboardData();
       return res.status(200).json(response);
