@@ -1,23 +1,19 @@
-// Alterar o nome do arquivo para blog.js
-
 import connection from "../config/sequelize-config.js";
 import { DataTypes } from "sequelize";
 
-// const BlogModel = ...
 const Blog = connection.define(
   "blog",
   {
     titulo: { type: DataTypes.STRING(100), allowNull: false },
-    conteudo: { type: DataTypes.TEXT },
-    data_publicacao: { type: DataTypes.DATE },
+    conteudo: { type: DataTypes.TEXT }, // Adicionar allowNull: false
+    data_publicacao: { type: DataTypes.DATE }, // Definir default como now
     url_imagem: { type: DataTypes.STRING(255) },
-    usuario_id: { type: DataTypes.INTEGER },
+    usuario_id: { type: DataTypes.INTEGER }, // Adicionar a referencia ao model usuarios
   },
   {
-    freezeTableName: true, // não pluraliza o nome
-    timestamps: false, // <--- desativa createdAt/updatedAt
+    freezeTableName: true,
+    timestamps: false,
   }
 );
 
-// BlogModel
 export default Blog;
