@@ -15,7 +15,10 @@ import dynamic from "next/dynamic";
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
 });
+
 export default function CriarImovelPage() {
+  const [form] = FormAntd.useForm();
+
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -93,13 +96,15 @@ export default function CriarImovelPage() {
   const parkingSpots = ["1", "2", "3", "4", "5+"];
   const bedrooms = ["1", "2", "3", "4", "5+"];
   const bathrooms = ["1", "2", "3", "4", "5+"];
+
   return (
     <>
       <Sidebar />
       <div className="md:ml-20">
         <Form.Body title="Imóveis | Cadastro">
           <Form.FormHeader href="/admin/cms-imoveis" />
-          <Form.FormBody onFinish={onFinish} onFinishFailed={onFinishFailed}>
+          {/* passa a instância do form para o FormBody */}
+          <Form.FormBody form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}>
             <div className="flex flex-col sm:flex-row w-full gap-6">
               {/* Coluna do Formulário */}
               <div className="sm:w-[50%] flex flex-col gap-6 items-start ">
@@ -352,22 +357,25 @@ export default function CriarImovelPage() {
                   className="!w-full"
                 />
                 <div className=" flex flex-row gap-2 !w-full">
+                  {/* inputs somente leitura; serão preenchidos pelo mapa */}
                   <TextField
                     name="latitude"
                     label="Latitude"
                     placeholder="Latitude"
                     className="!w-full"
+                    readOnly
                   />
                   <TextField
                     name="longitude"
                     label="Longitude"
                     placeholder="Longitude"
                     className="!w-full"
+                    readOnly
                   />
                 </div>
                 <div className=" h-[30vh] map-cms">
-                  <MapPick
-                  />
+                  {/* passa a instância do form para o MapPick */}
+                  <MapPick form={form} />
                 </div>
                 <FormButton text="Cadastrar" icon={<MdPersonAdd />} />
               </div>
