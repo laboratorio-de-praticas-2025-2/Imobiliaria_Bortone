@@ -10,7 +10,11 @@ import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import DropdownField from "@/components/cms/form/fields/Dropdown";
 import { Form as FormAntd } from "antd";
 import UploadField from "@/components/cms/form/fields/UploadField";
+import dynamic from "next/dynamic";
 
+const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
+  ssr: false,
+});
 export default function CriarImovelPage() {
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -96,16 +100,16 @@ export default function CriarImovelPage() {
         <Form.Body title="Imóveis | Cadastro">
           <Form.FormHeader href="/admin/cms-imoveis" />
           <Form.FormBody onFinish={onFinish} onFinishFailed={onFinishFailed}>
-            <div className="flex flex-col sm:flex-row w-full">
+            <div className="flex flex-col sm:flex-row w-full gap-6">
               {/* Coluna do Formulário */}
-              <div className="sm:w-[50%] flex flex-col gap-6 items-start">
-                <div className=" flex flex-row gap-6">
+              <div className="sm:w-[50%] flex flex-col gap-6 items-start ">
+                <div className=" flex flex-row gap-2 !w-full">
                   <FormAntd.Item
                     label={"Tipo"}
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item `}
+                    className={`custom-form-item !w-full`}
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
@@ -125,7 +129,7 @@ export default function CriarImovelPage() {
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item `}
+                    className={`custom-form-item !w-full`}
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
@@ -154,16 +158,15 @@ export default function CriarImovelPage() {
                   rows={12}
                   className="!w-full !h-full"
                 />
-                <FormButton text="Cadastrar" icon={<MdPersonAdd />} />
               </div>
-              <div className="sm:w-[50%] flex flex-col gap-6 items-start">
-                <div className=" flex flex-row gap-6">
+              <div className="sm:w-[50%] flex flex-col gap-6 items-start ">
+                <div className=" flex flex-row gap-2 !w-full">
                   <FormAntd.Item
                     label={"Cidade"}
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item `}
+                    className={`custom-form-item !w-full`}
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
@@ -183,7 +186,7 @@ export default function CriarImovelPage() {
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item `}
+                    className={`custom-form-item !w-full`}
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
@@ -198,13 +201,13 @@ export default function CriarImovelPage() {
                     />
                   </FormAntd.Item>
                 </div>
-                <div className=" flex flex-row gap-6">
+                <div className=" flex flex-row gap-2 !w-full">
                   <FormAntd.Item
                     label={"Imóvel Murado?"}
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item `}
+                    className={`custom-form-item !w-full`}
                     labelCol={{ span: 24 }}
                   >
                     <RadioFieldImovel
@@ -228,7 +231,7 @@ export default function CriarImovelPage() {
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item `}
+                    className={`custom-form-item !w-full`}
                     labelCol={{ span: 24 }}
                   >
                     <RadioFieldImovel
@@ -247,13 +250,13 @@ export default function CriarImovelPage() {
                     />
                   </FormAntd.Item>
                 </div>
-                <div className=" flex flex-row gap-6">
-                 <FormAntd.Item
+                <div className=" flex flex-row gap-2 !w-full">
+                  <FormAntd.Item
                     label={"Possui Jardim?"}
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item `}
+                    className={`custom-form-item !w-full`}
                     labelCol={{ span: 24 }}
                   >
                     <RadioFieldImovel
@@ -262,13 +265,6 @@ export default function CriarImovelPage() {
                         { label: "Sim", value: "sim" },
                         { label: "Não", value: "nao" },
                       ]}
-                      className="!w-fit"
-                      classNameR=""
-                      style={{
-                        borderColor: "#374a8c",
-                        color: "#374a8c",
-                        fontWeight: "bold",
-                      }}
                     />
                   </FormAntd.Item>
 
@@ -277,7 +273,7 @@ export default function CriarImovelPage() {
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item `}
+                    className={`custom-form-item !w-full`}
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
@@ -292,13 +288,13 @@ export default function CriarImovelPage() {
                     />
                   </FormAntd.Item>
                 </div>
-                <div className=" flex flex-row gap-6">
+                <div className=" flex flex-row gap-2 !w-full">
                   <FormAntd.Item
                     label={"Vagas"}
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item `}
+                    className={`custom-form-item !w-full `}
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
@@ -308,8 +304,8 @@ export default function CriarImovelPage() {
                       selected={selectedParking}
                       setSelected={setSelectedParking}
                       handleSelect={(option) => setSelectedParking(option)}
-                      width={"w-full"}
-                      classname="bg-white hover:bg-[#EEF0F9]  w-full"
+                      width={"w-!full"}
+                      classname="bg-white hover:bg-[#EEF0F9]  !w-full"
                     />
                   </FormAntd.Item>
 
@@ -318,7 +314,7 @@ export default function CriarImovelPage() {
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item `}
+                    className={`custom-form-item !w-full `}
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
@@ -333,7 +329,7 @@ export default function CriarImovelPage() {
                     />
                   </FormAntd.Item>
                 </div>
-                <div className=" flex flex-row gap-6">
+                <div className=" flex flex-row gap-2 !w-full">
                   <TextField
                     name="area"
                     label="Área"
@@ -345,6 +341,32 @@ export default function CriarImovelPage() {
                     label="Preço"
                     placeholder="Insira o preço"
                     className="!w-full"
+                  />
+                </div>
+              </div>
+              <div className="sm:w-[50%] flex flex-col gap-6 items-end ">
+                <TextField
+                  name="endereco"
+                  label="Endereço"
+                  placeholder="Digite o Endereço"
+                  className="!w-full"
+                />
+                <div className=" flex flex-row gap-2 !w-full">
+                  <TextField
+                    name="latitude"
+                    label="Latitude"
+                    placeholder="Latitude"
+                    className="!w-full"
+                  />
+                  <TextField
+                    name="longitude"
+                    label="Longitude"
+                    placeholder="Longitude"
+                    className="!w-full"
+                  />
+                </div>
+                <div className=" h-[30vh] map-cms">
+                  <MapPick
                   />
                 </div>
                 <FormButton text="Cadastrar" icon={<MdPersonAdd />} />

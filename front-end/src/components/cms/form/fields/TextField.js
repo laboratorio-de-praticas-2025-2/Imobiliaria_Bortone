@@ -1,12 +1,7 @@
 "use client";
 import { Input, Form as FormAntd } from "antd";
 
-export default function TextField({ 
-  name,
-  label,
-  placeholder,
-  className,
-}) {
+export default function TextField({ name, label, placeholder, className }) {
   return (
     <FormAntd.Item
       label={label}

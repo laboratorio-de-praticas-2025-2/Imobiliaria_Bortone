@@ -1,20 +1,17 @@
 import { Radio, Form as FormAntd, ConfigProvider } from "antd";
 
 export default function RadioFieldImovel({
-  name,
-  label,
   options,
-  className,
   initialValue,
 }) {
   return (
-    <div className="flex items-center w-fit custom-input justify-center !rounded-full px-8 py-2 !text-[var(--primary)] font-medium focus:outline-none cursor-pointer ">
+    <div className="flex items-center  custom-input justify-center !rounded-full  py-2 !text-[var(--primary)] font-medium focus:outline-none cursor-pointer w-[100%] ">
       <ConfigProvider
         theme={{
           components: {
             Radio: {
               colorText: "#374a8c",
-              fontSize: 16
+              fontSize: 16,
             },
           },
         }}

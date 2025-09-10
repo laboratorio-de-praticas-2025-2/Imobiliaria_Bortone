@@ -6,7 +6,10 @@
   ); /* altura total da viewport menos a altura da navbar */
   overflow: visible; /* permite que o card flutuante apareça acima do mapa */
 }
-
+.map-cms {
+  position: relative;
+  width: 100%;
+}
 /* Container fixo no canto direito */
 .map-controls {
   position: fixed;
