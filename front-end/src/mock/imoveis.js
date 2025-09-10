@@ -13,6 +13,7 @@ export const mockImoveis = [
     quartos: 5,
     banheiros: 4,
     vagas: 3,
+    possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
     imagens: [
@@ -45,6 +46,7 @@ export const mockImoveis = [
     quartos: 4,
     banheiros: 3,
     vagas: 2,
+    possui_muro: false,
     possui_piscina: false,
     possui_jardim: false,
     imagens: [
@@ -71,9 +73,13 @@ export const mockImoveis = [
     estado: "SP",
     preco: 631000,
     status: "Disponível",
+    quartos: 4,
+    vagas: 2,
+    banheiros: 3,
     area: 189,
     descricao: "Apartamento funcional, ideal para famílias.",
     data_cadastro: "2025-08-01",
+    possui_muro: false,
     imagens: [
       {
         url_imagem: "/images/slide1.png",
@@ -94,9 +100,13 @@ export const mockImoveis = [
     estado: "SP",
     preco: 460000,
     status: "Disponível",
+    quartos: 2,
+    banheiros: 2,
+    vagas: 4,
     area: 193,
     descricao: "Apartamento compacto e aconchegante.",
     data_cadastro: "2025-08-01",
+    possui_muro: false,
     imagens: [
       {
         url_imagem: "/images/slide1.png",
@@ -119,6 +129,7 @@ export const mockImoveis = [
     quartos: 4,
     banheiros: 3,
     vagas: 2,
+    possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
     imagens: [
@@ -143,6 +154,7 @@ export const mockImoveis = [
     quartos: 2,
     banheiros: 2,
     vagas: 1,
+    possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
     imagens: [
@@ -167,6 +179,7 @@ export const mockImoveis = [
     quartos: 5,
     banheiros: 3,
     vagas: 3,
+    possui_muro: true,
     possui_piscina: true,
     possui_jardim: true,
     imagens: [
@@ -191,6 +204,7 @@ export const mockImoveis = [
     quartos: 4,
     banheiros: 2,
     vagas: 2,
+    possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
     imagens: [
@@ -215,6 +229,7 @@ export const mockImoveis = [
     quartos: 3,
     banheiros: 2,
     vagas: 1,
+    possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
     imagens: [
@@ -239,6 +254,7 @@ export const mockImoveis = [
     quartos: 5,
     banheiros: 4,
     vagas: 3,
+    possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
     imagens: [
@@ -263,6 +279,7 @@ export const mockImoveis = [
     quartos: 5,
     banheiros: 4,
     vagas: 3,
+    possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
     imagens: [
@@ -287,6 +304,7 @@ export const mockImoveis = [
     quartos: 4,
     banheiros: 3,
     vagas: 2,
+    possui_muro: false,
     possui_piscina: false,
     possui_jardim: false,
     imagens: [
@@ -311,6 +329,7 @@ export const mockImoveis = [
     quartos: 3,
     banheiros: 2,
     vagas: 1,
+    possui_muro: false,
     possui_piscina: false,
     possui_jardim: false,
     imagens: [
@@ -336,9 +355,10 @@ export const mockImoveis = [
     area: 193,
     descricao: "Apartamento compacto e aconchegante.",
     data_cadastro: "2025-08-01",
-    quartos: 3,
+    quartos: 2,
     banheiros: 2,
-    vagas: 1,
+    vagas: 4,
+    possui_muro: false,
     possui_piscina: false,
     possui_jardim: false,
     imagens: [

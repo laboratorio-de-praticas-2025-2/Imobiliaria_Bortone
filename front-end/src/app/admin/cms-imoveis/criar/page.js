@@ -147,7 +147,7 @@ export default function CriarImovelPage() {
                       setSelected={setstatusSelecionado}
                       handleSelect={(option) => setstatusSelecionado(option)}
                       width={"w-full"}
-                      classname="bg-white hover:bg-[#EEF0F9] w-full "
+                      classname="bg-white hover:bg-[#EEF0F9] w-fit "
                     />
                   </FormAntd.Item>
                 </div>

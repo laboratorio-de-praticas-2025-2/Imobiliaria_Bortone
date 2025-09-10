@@ -104,7 +104,7 @@ export default function CmsUserPage() {
     },
     {
       title: "Murado",
-      dataIndex: "murado",
+      dataIndex: "possui_muro",
       key: "murado",
       render: (value) => (value ? "Sim" : "-"),
     },
