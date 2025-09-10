@@ -1,0 +1,47 @@
+name: Auto Merge Develop to Main
+
+on:
+    push:
+        branches:
+            - develop
+
+jobs:
+    merge_develop_to_main:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+                token: ${{ secrets.AUTO_MERGE_TOKEN }}
+            - name: Set up Git
+              run: | 
+                git config user.name 'github-actions[bot]'
+                git config user.email 'github-actions[bot]@github.com'
+            
+            - name: Fetch all branches
+              run: |
+                git fetch origin main
+
+            - name: Check for merge conflicts
+              id: check_conflicts
+              run: |
+                if git merge-tree $(git merge-base develop main) develop main | grep -q '<<<<<<<'; then
+                    echo "::set-output name=has_conflicts::true"
+                else
+                    echo "::set-output name=has_conflicts::false"
+                fi
+            
+            - name: Perform auto-merge
+              if: steps.check_conflicts.outputs.has_conflicts == 'false'
+              run: |
+                git checkout main
+                git pull origin main
+                git merge develop --no-ff -m "chore(auto-merge): Merge develop into main"
+                git push origin main
+            
+            - name: Alert on merge conflicts
+              if: steps.check_conflicts.outputs.has_conflicts == 'true'
+              run: | 
+                echo "::error title=Merge Conflict::Automatic merge failed due to conflicts. Please resolve them manually."
+                exit 1 
