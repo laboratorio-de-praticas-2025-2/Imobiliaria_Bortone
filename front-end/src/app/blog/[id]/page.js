@@ -6,6 +6,7 @@ import { postsData } from "@/mock/posts";
 import { Image, Spin } from "antd";
 import { useParams } from "next/navigation";
 import { useSEO } from "@/hooks/useSEO";
+import { useEffect, useState } from "react";
 
 export default function ContentBlog() {
   const { id } = useParams(); // pega o id da URL

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Form, Input, Button, Flex } from "antd";
 import { useSEO } from "@/hooks/useSEO";
 import { getSEOConfig } from "@/config/seo";
+import { useState } from "react";
 
 export default function CadastroPage() {
   // SEO para página de cadastro

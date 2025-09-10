@@ -2,7 +2,7 @@
 import { postsData } from "@/mock/posts";
 import { Card, Col, ConfigProvider, Pagination, Row } from "antd";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Cards() {
   const [posts, setPosts] = useState([]);
