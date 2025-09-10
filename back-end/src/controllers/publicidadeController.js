@@ -1,5 +1,4 @@
 import publicidadeService from "../services/publicidadeService.js";
-import Publicidade from "../services/publicidadeService.js";
 
 // GET /publicidade
 export const getAllPublicidades = async (req, res) => {
@@ -71,7 +70,7 @@ export const createPublicidade = async (req, res) => {
     // Verificar o atributo "ativo"
 
     // O controller deve chamar o método do service e passar os dados recebidos
-    const novaPublicidade = await Publicidade.create({ titulo, conteudo, url_imagem, usuario_id });
+    const novaPublicidade = await publicidadeService.create({ titulo, conteudo, url_imagem, usuario_id });
     res.status(201).json(novaPublicidade);
   } catch (error) {
     console.error("Erro ao criar publicidade:", error);
@@ -92,7 +91,7 @@ export const updatePublicidade = async (req, res) => {
 
     // Validar o id do usuário e o atributo "ativo"
 
-    const publicidade = await Publicidade.findByPk(id);
+    const publicidade = await publicidadeService.findByPk(id);
     if (!publicidade) {
       return res.status(404).json({ error: "Publicidade não encontrada" });
     }
@@ -115,7 +114,7 @@ export const deletePublicidade = async (req, res) => {
         return res.status(400).json({ message: "ID inválido. O ID deve ser numérico." });
     }
 
-    const deletePublicidade = await Publicidade.findByPk(id);
+    const deletePublicidade = await publicidadeService.findByPk(id);
     if (!publicidade) {
       return res.status(404).json({ error: "Publicidade não encontrada" });
     }
