@@ -9,7 +9,7 @@ import Sidebar from "@/components/cms/Sidebar";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import DropdownField from "@/components/cms/form/fields/Dropdown";
 import { Form as FormAntd } from "antd";
-import UploadField from "@/components/cms/form/fields/UploadField";
+import UploadImovel from "@/components/cms/form/fields/UploadImovel";
 import dynamic from "next/dynamic";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
@@ -35,7 +35,6 @@ export default function CriarImovelPage() {
   const [selectedParking, setSelectedParking] = useState("Quantidade");
   const [selectedBedrooms, setSelectedBedrooms] = useState("Quantidade");
   const [selectedBathrooms, setSelectedBathrooms] = useState("Quantidade");
-  const [fileList, setFileList] = useState([]);
   const states = [
     "Acre",
     "Alagoas",
@@ -104,10 +103,14 @@ export default function CriarImovelPage() {
         <Form.Body title="Imóveis | Cadastro">
           <Form.FormHeader href="/admin/cms-imoveis" />
           {/* passa a instância do form para o FormBody */}
-          <Form.FormBody form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}>
-            <div className="flex flex-col sm:flex-row w-full gap-6">
+          <Form.FormBody
+            form={form}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+          >
+            <div className=" flex flex-col sm:flex-row w-full gap-6">
               {/* Coluna do Formulário */}
-              <div className="sm:w-[50%] flex flex-col gap-6 items-start ">
+              <div className="sm:w-[35%] flex flex-col gap-6 items-start ">
                 <div className=" flex flex-row gap-2 !w-full">
                   <FormAntd.Item
                     label={"Tipo"}
@@ -148,23 +151,16 @@ export default function CriarImovelPage() {
                     />
                   </FormAntd.Item>
                 </div>
-                <UploadField
-                  name="imagem"
-                  label="Imagens"
-                  multiple={false}
-                  className="!w-fit"
-                  fileList={fileList}
-                  setFileList={setFileList}
-                />
+                <UploadImovel className={"!w-full"} />
                 <TextAreaField
                   name="descricao"
                   label="Descrição"
                   placeholder="Corpo da descrição"
-                  rows={12}
+                  rows={7}
                   className="!w-full !h-full"
                 />
               </div>
-              <div className="sm:w-[50%] flex flex-col gap-6 items-start ">
+              <div className="sm:w-[30%] flex flex-col gap-6 items-start ">
                 <div className=" flex flex-row gap-2 !w-full">
                   <FormAntd.Item
                     label={"Cidade"}
@@ -176,7 +172,6 @@ export default function CriarImovelPage() {
                   >
                     <DropdownField
                       placeholder="Selecione a Cidade"
-                      label="Cidade"
                       options={cities}
                       selected={citiesSelecionado}
                       setSelected={setCitiesSelecionado}
@@ -349,7 +344,7 @@ export default function CriarImovelPage() {
                   />
                 </div>
               </div>
-              <div className="sm:w-[50%] flex flex-col gap-6 items-end ">
+              <div className="sm:w-[35%] flex flex-col gap-6 items-end ">
                 <TextField
                   name="endereco"
                   label="Endereço"
