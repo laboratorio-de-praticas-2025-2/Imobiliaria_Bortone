@@ -1,0 +1,17 @@
+# Enforce padrão de commits semânticos
+titleOnly: false
+types:
+  - feat
+  - fix
+  - docs
+  - style
+  - refactor
+  - test
+  - chore
+scopes:
+  - frontend
+  - backend
+  - api
+  - db
+  - auth
+  - ci
