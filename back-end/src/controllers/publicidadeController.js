@@ -110,7 +110,7 @@ export const updatePublicidade = async (req, res) => {
     }
 
     // Chamar o método do service
-    await updatePublicidade.update(Number(id)),({ titulo, conteudo, url_imagem, usuario_id, ativo });
+    await publicidadeService.update(Number(id)),({ titulo, conteudo, url_imagem, usuario_id, ativo });
     res.status(200).json({ message: "Publicidade atualizada com sucesso", publicidade });
   } catch (error) {
     console.error("Erro ao atualizar publicidade:", error);
