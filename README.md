@@ -58,4 +58,7 @@ O objetivo é oferecer uma experiência completa: da **busca inicial** ao **agen
 
  - <a href="https://github.com/laboratorio-de-praticas-2025-2/Imobiliaria_Bortone/blob/main/docs/AlgoritmoDeRecomendacao.md" target="_blank" rel="noreferrer">📖 Algoritmo de Recomendação</a>  
 - <a href="https://github.com/laboratorio-de-praticas-2025-2/Imobiliaria_Bortone/blob/main/docs/ManualdeTags.md" target="_blank" rel="noreferrer">🏷️ Manual de Tags</a>  
+- <a href="https://github.com/laboratorio-de-praticas-2025-2/Imobiliaria_Bortone/blob/main/docs/BancoDeDados.md" target="_blank" rel="noreferrer">🎲 Banco de Dados</a>  
 - <a href="https://github.com/laboratorio-de-praticas-2025-2/Imobiliaria_Bortone/blob/main/docs/RegrasGerais.md" target="_blank" rel="noreferrer">⚙️ Regras Gerais</a>  
+
+---
