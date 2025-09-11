@@ -3,8 +3,9 @@ import Form from "@/components/cms/form";
 import { useState } from "react";
 import RadioFieldImovel from "@/components/cms/form/fields/RadioFieldImovel";
 import TextField from "@/components/cms/form/fields/TextField";
+import NumberField from "@/components/cms/form/fields/NumberField";
 import FormButton from "@/components/cms/form/fields/Button";
-import { MdPersonAdd } from "react-icons/md";
+import { LuHousePlus } from "react-icons/lu";
 import Sidebar from "@/components/cms/Sidebar";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import DropdownField from "@/components/cms/form/fields/Dropdown";
@@ -26,6 +27,22 @@ export default function CriarImovelPage() {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+  // adicione próximo aos useState (no topo do componente)
+  const handleTipoSelect = (option) => {
+    setTipoSelecionado(option);
+    if (option && option.toLowerCase() === "terreno") {
+      setSelectedBedrooms("Quantidade");
+      setSelectedBathrooms("Quantidade");
+      setSelectedParking("Quantidade");
+      form.setFieldsValue({
+        possui_jardim: undefined,
+        possui_piscina: undefined,
+        latitude: undefined,
+        longitude: undefined,
+      });
+    }
+  };
+
   const [tipoSelecionado, setTipoSelecionado] = useState("Selecione o Tipo");
   const [statusSelecionado, setstatusSelecionado] =
     useState("Selecione o status");
@@ -120,13 +137,14 @@ export default function CriarImovelPage() {
                     className={`custom-form-item !w-full`}
                     labelCol={{ span: 24 }}
                   >
+                    {/* substitua o DropdownField de "Tipo" pelo handler novo */}
                     <DropdownField
                       placeholder="Selecione o Tipo"
                       label="Tipo"
                       options={options}
                       selected={tipoSelecionado}
                       setSelected={setTipoSelecionado}
-                      handleSelect={(option) => setTipoSelecionado(option)}
+                      handleSelect={handleTipoSelect}
                       width={"w-full"}
                       classname="bg-white hover:bg-[#EEF0F9] w-full "
                     />
@@ -201,8 +219,10 @@ export default function CriarImovelPage() {
                     />
                   </FormAntd.Item>
                 </div>
+                {/* linha com Muro (sempre visível) e Piscina (condicional) */}
                 <div className=" flex flex-row gap-2 !w-full">
                   <FormAntd.Item
+                    name="possui_muro"
                     label={"Imóvel Murado?"}
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
@@ -211,56 +231,6 @@ export default function CriarImovelPage() {
                     labelCol={{ span: 24 }}
                   >
                     <RadioFieldImovel
-                      name="murado"
-                      options={[
-                        { label: "Sim", value: "sim" },
-                        { label: "Não", value: "nao" },
-                      ]}
-                      className="!w-fit"
-                      classNameR="!custom-radio-group !p-3 border-1 rounded-full"
-                      style={{
-                        borderColor: "#374a8c",
-                        color: "#374a8c",
-                        fontWeight: "bold",
-                      }}
-                    />
-                  </FormAntd.Item>
-
-                  <FormAntd.Item
-                    label={"Possui Piscina?"}
-                    rules={[
-                      { required: true, message: "Este campo é obrigatório!" },
-                    ]}
-                    className={`custom-form-item !w-full`}
-                    labelCol={{ span: 24 }}
-                  >
-                    <RadioFieldImovel
-                      name="piscina"
-                      options={[
-                        { label: "Sim", value: "sim" },
-                        { label: "Não", value: "nao" },
-                      ]}
-                      className="!w-fit"
-                      classNameR="!custom-radio-group !p-3  border-1 rounded-full"
-                      style={{
-                        borderColor: "#374a8c",
-                        color: "#374a8c",
-                        fontWeight: "bold",
-                      }}
-                    />
-                  </FormAntd.Item>
-                </div>
-                <div className=" flex flex-row gap-2 !w-full">
-                  <FormAntd.Item
-                    label={"Possui Jardim?"}
-                    rules={[
-                      { required: true, message: "Este campo é obrigatório!" },
-                    ]}
-                    className={`custom-form-item !w-full`}
-                    labelCol={{ span: 24 }}
-                  >
-                    <RadioFieldImovel
-                      name="jardim"
                       options={[
                         { label: "Sim", value: "sim" },
                         { label: "Não", value: "nao" },
@@ -268,81 +238,171 @@ export default function CriarImovelPage() {
                     />
                   </FormAntd.Item>
 
-                  <FormAntd.Item
-                    label={"Quartos"}
-                    rules={[
-                      { required: true, message: "Este campo é obrigatório!" },
-                    ]}
-                    className={`custom-form-item !w-full`}
-                    labelCol={{ span: 24 }}
-                  >
-                    <DropdownField
-                      placeholder="Quantidade"
-                      label="Quartos"
-                      options={bedrooms}
-                      selected={selectedBedrooms}
-                      setSelected={setSelectedBedrooms}
-                      handleSelect={(option) => setSelectedBedrooms(option)}
-                      width={"w-full"}
-                      classname="bg-white hover:bg-[#EEF0F9]  w-full"
-                    />
-                  </FormAntd.Item>
+                  {tipoSelecionado &&
+                    tipoSelecionado.toLowerCase() !== "terreno" && (
+                      <FormAntd.Item
+                        label={"Possui Piscina?"}
+                        name="possui_piscina"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Este campo é obrigatório!",
+                          },
+                        ]}
+                        className={`custom-form-item !w-full`}
+                        labelCol={{ span: 24 }}
+                      >
+                        <RadioFieldImovel
+                          options={[
+                            { label: "Sim", value: "sim" },
+                            { label: "Não", value: "nao" },
+                          ]}
+                        />
+                      </FormAntd.Item>
+                    )}
                 </div>
-                <div className=" flex flex-row gap-2 !w-full">
-                  <FormAntd.Item
-                    label={"Vagas"}
-                    rules={[
-                      { required: true, message: "Este campo é obrigatório!" },
-                    ]}
-                    className={`custom-form-item !w-full `}
-                    labelCol={{ span: 24 }}
-                  >
-                    <DropdownField
-                      placeholder="Quantidade"
-                      label="Vagas"
-                      options={parkingSpots}
-                      selected={selectedParking}
-                      setSelected={setSelectedParking}
-                      handleSelect={(option) => setSelectedParking(option)}
-                      width={"w-!full"}
-                      classname="bg-white hover:bg-[#EEF0F9]  !w-full"
-                    />
-                  </FormAntd.Item>
+                {tipoSelecionado &&
+                  tipoSelecionado.toLowerCase() !== "terreno" && (
+                    <>
+                      <div className=" flex flex-row gap-2 !w-full">
+                        <FormAntd.Item
+                          label={"Possui Jardim?"}
+                          name="possui_jardim"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Este campo é obrigatório!",
+                            },
+                          ]}
+                          className={`custom-form-item !w-full`}
+                          labelCol={{ span: 24 }}
+                        >
+                          <RadioFieldImovel
+                            options={[
+                              { label: "Sim", value: "sim" },
+                              { label: "Não", value: "nao" },
+                            ]}
+                          />
+                        </FormAntd.Item>
 
-                  <FormAntd.Item
-                    label={"Banheiros"}
-                    rules={[
-                      { required: true, message: "Este campo é obrigatório!" },
-                    ]}
-                    className={`custom-form-item !w-full `}
-                    labelCol={{ span: 24 }}
-                  >
-                    <DropdownField
-                      placeholder="Quantidade"
-                      label="Banheiros"
-                      options={bathrooms}
-                      selected={selectedBathrooms}
-                      setSelected={setSelectedBathrooms}
-                      handleSelect={(option) => setSelectedBathrooms(option)}
-                      width={"w-full"}
-                      classname="bg-white hover:bg-[#EEF0F9] w-full "
-                    />
-                  </FormAntd.Item>
-                </div>
+                        <FormAntd.Item
+                          label={"Quartos"}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Este campo é obrigatório!",
+                            },
+                          ]}
+                          className={`custom-form-item !w-full`}
+                          labelCol={{ span: 24 }}
+                        >
+                          <DropdownField
+                            placeholder="Quantidade"
+                            label="Quartos"
+                            options={bedrooms}
+                            selected={selectedBedrooms}
+                            setSelected={setSelectedBedrooms}
+                            handleSelect={(option) =>
+                              setSelectedBedrooms(option)
+                            }
+                            width={"w-full"}
+                            classname="bg-white hover:bg-[#EEF0F9]  w-full"
+                          />
+                        </FormAntd.Item>
+                      </div>
+
+                      <div className=" flex flex-row gap-2 !w-full">
+                        <FormAntd.Item
+                          label={"Vagas"}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Este campo é obrigatório!",
+                            },
+                          ]}
+                          className={`custom-form-item !w-full `}
+                          labelCol={{ span: 24 }}
+                        >
+                          <DropdownField
+                            placeholder="Quantidade"
+                            label="Vagas"
+                            options={parkingSpots}
+                            selected={selectedParking}
+                            setSelected={setSelectedParking}
+                            handleSelect={(option) =>
+                              setSelectedParking(option)
+                            }
+                            width={"w-!full"}
+                            classname="bg-white hover:bg-[#EEF0F9]  !w-full"
+                          />
+                        </FormAntd.Item>
+                        <FormAntd.Item
+                          label={"Banheiros"}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Este campo é obrigatório!",
+                            },
+                          ]}
+                          className={`custom-form-item !w-full `}
+                          labelCol={{ span: 24 }}
+                        >
+                          <DropdownField
+                            placeholder="Quantidade"
+                            label="Banheiros"
+                            options={bathrooms}
+                            selected={selectedBathrooms}
+                            setSelected={setSelectedBathrooms}
+                            handleSelect={(option) =>
+                              setSelectedBathrooms(option)
+                            }
+                            width={"w-full"}
+                            classname="bg-white hover:bg-[#EEF0F9] w-full "
+                          />
+                        </FormAntd.Item>
+                      </div>
+                    </>
+                  )}{" "}
                 <div className=" flex flex-row gap-2 !w-full">
-                  <TextField
+                  <NumberField
                     name="area"
                     label="Área"
                     placeholder="Insira a área"
                     className="!w-full"
                   />
-                  <TextField
+                  <NumberField
                     name="preco"
                     label="Preço"
                     placeholder="Insira o preço"
                     className="!w-full"
                   />
                 </div>
+                {/* MOVA latitude/longitude para cá quando for Terreno */}
+                {tipoSelecionado &&
+                  tipoSelecionado.toLowerCase() === "terreno" && (
+                    <>
+                      <div className=" flex flex-row gap-2 !w-full">
+                        <TextField
+                          name="latitude"
+                          label="Latitude"
+                          placeholder="Latitude"
+                          className="!w-full"
+                          classInput="!bg-[#EEEEEE]"
+                          readOnly
+                        />
+                      </div>
+                      <div className=" flex flex-row gap-2 !w-full">
+                        <TextField
+                          name="longitude"
+                          label="Longitude"
+                          placeholder="Longitude"
+                          className="!w-full"
+                          classInput="!bg-[#EEEEEE]"
+                          readOnly
+                        />
+                      </div>
+                    </>
+                  )}
               </div>
               <div className="sm:w-[35%] flex flex-col gap-6 items-end ">
                 <TextField
@@ -351,28 +411,34 @@ export default function CriarImovelPage() {
                   placeholder="Digite o Endereço"
                   className="!w-full"
                 />
-                <div className=" flex flex-row gap-2 !w-full">
-                  {/* inputs somente leitura; serão preenchidos pelo mapa */}
-                  <TextField
-                    name="latitude"
-                    label="Latitude"
-                    placeholder="Latitude"
-                    className="!w-full"
-                    readOnly
-                  />
-                  <TextField
-                    name="longitude"
-                    label="Longitude"
-                    placeholder="Longitude"
-                    className="!w-full"
-                    readOnly
-                  />
-                </div>
-                <div className=" h-[30vh] map-cms">
+                {tipoSelecionado &&
+                  tipoSelecionado.toLowerCase() != "terreno" && (
+                    <div className=" flex flex-row gap-2 !w-full">
+                      {/* inputs somente leitura; serão preenchidos pelo mapa */}
+
+                      <TextField
+                        name="latitude"
+                        label="Latitude"
+                        placeholder="Latitude"
+                        className="!w-full"
+                        classInput="!bg-[#EEEEEE]"
+                        readOnly
+                      />
+                      <TextField
+                        name="longitude"
+                        label="Longitude"
+                        classInput="!bg-[#EEEEEE]"
+                        placeholder="Longitude"
+                        className="!w-full !border-b-blue-50"
+                        readOnly
+                      />
+                    </div>
+                  )}
+                <div className={`map-cms ${tipoSelecionado?.toLowerCase() === "terreno" ? "h-[38vh]" : "h-[30vh]"}`}>
                   {/* passa a instância do form para o MapPick */}
                   <MapPick form={form} />
                 </div>
-                <FormButton text="Cadastrar" icon={<MdPersonAdd />} />
+                <FormButton text="Cadastrar" icon={<LuHousePlus />} />
               </div>
             </div>
           </Form.FormBody>

@@ -16,19 +16,11 @@ export const mockImoveis = [
     possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
+    ativo: true,
     imagens: [
-      {
-        url_imagem: "/images/casa.png",
-        descricao: "Fachada da casa",
-      },
-      {
-        url_imagem: "/images/casa.png",
-        descricao: "Fachada da casa",
-      },
-      {
-        url_imagem: "/images/casa.png",
-        descricao: "Fachada da casa",
-      },
+      { url_imagem: "/images/casa.png", descricao: "Fachada da casa" },
+      { url_imagem: "/images/casa.png", descricao: "Fachada da casa" },
+      { url_imagem: "/images/casa.png", descricao: "Fachada da casa" },
     ],
     bairro: "Vila Ponce",
   },
@@ -49,19 +41,11 @@ export const mockImoveis = [
     possui_muro: false,
     possui_piscina: false,
     possui_jardim: false,
+    ativo: true,
     imagens: [
-      {
-        url_imagem: "/images/imovel1.png",
-        descricao: "Sala de estar",
-      },
-      {
-        url_imagem: "/images/imovel1.png",
-        descricao: "Sala de estar",
-      },
-      {
-        url_imagem: "/images/imovel1.png",
-        descricao: "Sala de estar",
-      },
+      { url_imagem: "/images/imovel1.png", descricao: "Sala de estar" },
+      { url_imagem: "/images/imovel1.png", descricao: "Sala de estar" },
+      { url_imagem: "/images/imovel1.png", descricao: "Sala de estar" },
     ],
     bairro: "Centro",
   },
@@ -80,15 +64,10 @@ export const mockImoveis = [
     descricao: "Apartamento funcional, ideal para famílias.",
     data_cadastro: "2025-08-01",
     possui_muro: false,
+    ativo: true,
     imagens: [
-      {
-        url_imagem: "/images/slide1.png",
-        descricao: "Cozinha planejada",
-      },
-      {
-        url_imagem: "/images/slide1.png",
-        descricao: "Quarto principal",
-      },
+      { url_imagem: "/images/slide1.png", descricao: "Cozinha planejada" },
+      { url_imagem: "/images/slide1.png", descricao: "Quarto principal" },
     ],
     bairro: "Vila São Francisco",
   },
@@ -107,12 +86,8 @@ export const mockImoveis = [
     descricao: "Apartamento compacto e aconchegante.",
     data_cadastro: "2025-08-01",
     possui_muro: false,
-    imagens: [
-      {
-        url_imagem: "/images/slide1.png",
-        descricao: "Quarto principal",
-      },
-    ],
+    ativo: true,
+    imagens: [{ url_imagem: "/images/slide1.png", descricao: "Quarto principal" }],
     bairro: "Vila Fátima",
   },
   {
@@ -132,12 +107,8 @@ export const mockImoveis = [
     possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
-    imagens: [
-      {
-        url_imagem: "/images/casa-isolada-no-campo.jpg",
-        descricao: "Fachada da casa",
-      },
-    ],
+    ativo: true,
+    imagens: [{ url_imagem: "/images/casa-isolada-no-campo.jpg", descricao: "Fachada da casa" }],
     bairro: "Nosso Teto",
   },
   {
@@ -157,12 +128,8 @@ export const mockImoveis = [
     possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
-    imagens: [
-      {
-        url_imagem: "/images/slide1.png",
-        descricao: "Frente da casa",
-      },
-    ],
+    ativo: true,
+    imagens: [{ url_imagem: "/images/slide1.png", descricao: "Frente da casa" }],
     bairro: "Jardim das Palmeiras",
   },
   {
@@ -182,12 +149,8 @@ export const mockImoveis = [
     possui_muro: true,
     possui_piscina: true,
     possui_jardim: true,
-    imagens: [
-      {
-        url_imagem: "/images/slide1.png",
-        descricao: "Área externa",
-      },
-    ],
+    ativo: true,
+    imagens: [{ url_imagem: "/images/slide1.png", descricao: "Área externa" }],
     bairro: "Jardim Hatari",
   },
   {
@@ -207,12 +170,8 @@ export const mockImoveis = [
     possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
-    imagens: [
-      {
-        url_imagem: "/images/slide1.png",
-        descricao: "Entrada da casa",
-      },
-    ],
+    ativo: true,
+    imagens: [{ url_imagem: "/images/slide1.png", descricao: "Entrada da casa" }],
     bairro: "Vila Ribeirópolis",
   },
   {
@@ -232,12 +191,8 @@ export const mockImoveis = [
     possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
-    imagens: [
-      {
-        url_imagem: "/images/slide1.png",
-        descricao: "Sala de estar",
-      },
-    ],
+    ativo: true,
+    imagens: [{ url_imagem: "/images/slide1.png", descricao: "Sala de estar" }],
     bairro: "Vila Tupy",
   },
   {
@@ -257,12 +212,8 @@ export const mockImoveis = [
     possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
-    imagens: [
-      {
-        url_imagem: "/images/casa.png",
-        descricao: "Fachada da casa",
-      },
-    ],
+    ativo: true,
+    imagens: [{ url_imagem: "/images/casa.png", descricao: "Fachada da casa" }],
     bairro: "Vila Ponce",
   },
   {
@@ -282,12 +233,8 @@ export const mockImoveis = [
     possui_muro: true,
     possui_piscina: false,
     possui_jardim: true,
-    imagens: [
-      {
-        url_imagem: "/images/casa.png",
-        descricao: "Fachada da casa",
-      },
-    ],
+    ativo: true,
+    imagens: [{ url_imagem: "/images/casa.png", descricao: "Fachada da casa" }],
     bairro: "Vila Ponce",
   },
   {
@@ -307,12 +254,8 @@ export const mockImoveis = [
     possui_muro: false,
     possui_piscina: false,
     possui_jardim: false,
-    imagens: [
-      {
-        url_imagem: "/images/slide1.png",
-        descricao: "Sala de estar",
-      },
-    ],
+    ativo: true,
+    imagens: [{ url_imagem: "/images/slide1.png", descricao: "Sala de estar" }],
     bairro: "Centro",
   },
   {
@@ -332,15 +275,10 @@ export const mockImoveis = [
     possui_muro: false,
     possui_piscina: false,
     possui_jardim: false,
+    ativo: true,
     imagens: [
-      {
-        url_imagem: "/images/slide1.png",
-        descricao: "Cozinha planejada",
-      },
-      {
-        url_imagem: "/images/slide1.png",
-        descricao: "Quarto principal",
-      },
+      { url_imagem: "/images/slide1.png", descricao: "Cozinha planejada" },
+      { url_imagem: "/images/slide1.png", descricao: "Quarto principal" },
     ],
     bairro: "Vila São Francisco",
   },
@@ -361,12 +299,8 @@ export const mockImoveis = [
     possui_muro: false,
     possui_piscina: false,
     possui_jardim: false,
-    imagens: [
-      {
-        url_imagem: "/images/slide1.png",
-        descricao: "Quarto principal",
-      },
-    ],
+    ativo: true,
+    imagens: [{ url_imagem: "/images/slide1.png", descricao: "Quarto principal" }],
     bairro: "Vila Fátima",
   },
 ];

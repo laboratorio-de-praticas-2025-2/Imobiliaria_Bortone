@@ -4,9 +4,11 @@ import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
 import { mockImoveis } from "@/mock/imoveis";
 import { useEffect, useState } from "react";
-import { MdPersonAdd } from "react-icons/md";
+import { LuHousePlus } from "react-icons/lu";
 import { BiPencil } from "react-icons/bi";
 import { IoMdTrash } from "react-icons/io";
+import { FaPlay } from "react-icons/fa";
+import { IoMdPause } from "react-icons/io";
 import Link from "next/link";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import { createStyles } from "antd-style";
@@ -46,10 +48,14 @@ export default function CmsUserPage() {
     setIsConfirmModalVisible(false);
   };
 
-  const data = [
-    { key: 1, ativo: true, verificado: false },
-    { key: 2, ativo: false, verificado: true },
-  ];
+  // toggle ativo / pausado
+  const handleToggleActive = (id) => {
+    setImoveis((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, ativo: !item.ativo } : item
+      )
+    );
+  };
 
   const columns = [
     {
@@ -135,18 +141,42 @@ export default function CmsUserPage() {
       key: "piscina",
       render: (value) => (value ? "Sim" : "-"),
     },
+    // Coluna de Pause / Start
     {
       title: "Ações",
-      dataIndex: "acoes",
       key: "acoes",
+      fixed: "right",
+      width: 140, // ajuste conforme precisar
       render: (_, record) => (
         <div className="flex gap-4">
+          {/* pause/play */}
+          <button
+            onClick={() => handleToggleActive(record.id)}
+            aria-label={record.ativo ? "Pausar" : "Iniciar"}
+            className="flex items-center"
+          >
+            {record.ativo ? (
+              <IoMdPause
+                size={22}
+                className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
+              />
+            ) : (
+              <FaPlay
+                size={22}
+                className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
+              />
+            )}
+          </button>
+
+          {/* editar */}
           <Link href={`/admin/cms-imoveis/editar/${record.id}`}>
             <BiPencil
               size={22}
               className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
             />
           </Link>
+
+          {/* excluir */}
           <button onClick={onDelete}>
             <IoMdTrash
               size={22}
@@ -155,7 +185,6 @@ export default function CmsUserPage() {
           </button>
         </div>
       ),
-      fixed: "right",
     },
   ];
 
@@ -163,14 +192,15 @@ export default function CmsUserPage() {
     setImoveis(mockImoveis);
   }, []);
 
-  // fatia os imoveis conforme página
+  // fatia os imoveis conforme página, mantém o boolean 'ativo' e adiciona textos de exibição
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const paginatedMock = imoveis.slice(startIndex, endIndex).map((item) => ({
     ...item,
-    ativo: item.ativo ? "Sim" : "-",
-    verificado: item.verificado ? "Sim" : "-",
+    ativoText: item.ativo ? "Sim" : "-",
+    verificadoText: item.verificado ? "Sim" : "-",
   }));
+
   const onSearch = (value) => console.log("Search:", value);
   const handleSelectOrder = (value) => {
     setFilterData((prev) => ({ ...prev, order: value }));
@@ -196,7 +226,7 @@ export default function CmsUserPage() {
           <CMS.Table>
             <CMS.TableHeader
               buttonText="Novo Imóvel"
-              buttonIcon={<MdPersonAdd />}
+              buttonIcon={<LuHousePlus />}
               onSearch={onSearch}
               href={"/admin/cms-imoveis/criar"}
               handleSelectOrder={handleSelectOrder}
@@ -212,6 +242,8 @@ export default function CmsUserPage() {
                 pagination={false}
                 className={styles.customTable}
                 scroll={{ x: "max-content" }}
+                // aplica transparência na linha quando ativo === false
+                rowClassName={(record) => (record.ativo ? "" : "opacity-50")}
               />
             </CMS.TableBody>
 

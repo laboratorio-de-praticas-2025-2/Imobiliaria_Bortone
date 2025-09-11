@@ -1,13 +1,19 @@
 "use client";
 import { Input, Form as FormAntd } from "antd";
 
-export default function TextField({
+export default function NumberField({
   name,
   label,
-  placeholder,
   className,
-  classInput,
   readOnly = false,
+  value,
+  onChange,
+  placeholder,
+  style,
+  min,
+  max,
+  defaultValue,
+  step = 1,
 }) {
   return (
     <FormAntd.Item
@@ -22,8 +28,17 @@ export default function TextField({
       labelCol={{ span: 24 }}
     >
       <Input
+        min={min}
+        max={max}
+        defaultValue={defaultValue}
+        step={step}
+        style={style}
+        value={value}
+        onChange={onChange}
         placeholder={placeholder}
-        className={`custom-input ${classInput}`} 
+        type="number"
+        controls
+        className="custom-input"
         readOnly={readOnly}
       />
     </FormAntd.Item>
