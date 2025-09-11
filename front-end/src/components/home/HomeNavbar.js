@@ -35,6 +35,7 @@ export default function HomeNavbar({ className }) {
         <Link href="/">
           <Image src="/images/LogoPreta.svg" alt="Logo Bortone" width={113} height={43} />
         </Link>
+
         <div className="flex items-center gap-10">
           {navLinks.map((link) => (
             <Link href={link.path} key={link.name} className="h-full">
@@ -49,29 +50,30 @@ export default function HomeNavbar({ className }) {
             </Link>
           ))}
         </div>
+
         {isLoggedIn ? (
           <div className="relative inline-block text-left">
             <button
               onClick={() => setUserMenuOpen(!userMenuOpen)}
-              className="bg-[#EEF0F9] px-4 py-2 rounded-full cursor-pointer whitespace-nowrap flex items-center gap-1 relative z-10"
+              className="bg-[#EEF0F9] px-4 py-2 rounded-full cursor-pointer whitespace-nowrap flex items-center gap-1 relative z-20"
               style={{ color: "#304383" }}
             >
               <span className="truncate">{user.nome}</span>
               <IoIosArrowDown />
             </button>
-            {/* Dropdown com animação por item */}
+
+            {/* Dropdown */}
             <ul
-              className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-0
-                  ${userMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}
-                  transition-all duration-300 ease-out`}
+              className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-10
+                ${userMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}
+                transition-all duration-300 ease-out`}
               style={{
                 paddingTop: buttonHeightPX,
                 borderRadius: bottomRadius,
               }}
             >
               <li
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center
-                transition-all duration-300 ease-out"
+                className="px-4 py-2 h-[30px] hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
                 style={{
                   color: "#304383",
                   borderTopLeftRadius: topRadius,
@@ -85,8 +87,7 @@ export default function HomeNavbar({ className }) {
               </li>
               {user.nivel === "administrador" && (
                 <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center
-                  transition-all duration-300 ease-out"
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
                   style={{
                     color: "#304383",
                     opacity: userMenuOpen ? 1 : 0,
@@ -98,8 +99,7 @@ export default function HomeNavbar({ className }) {
                 </li>
               )}
               <li
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center
-                transition-all duration-300 ease-out"
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
                 style={{
                   color: "#304383",
                   borderBottomLeftRadius: bottomRadius,
@@ -125,7 +125,8 @@ export default function HomeNavbar({ className }) {
           </Button>
         )}
       </Flex>
-      {/* Navbar Mobile e Tablet */}
+
+      {/* Navbar Mobile */}
       <Flex justify="space-between" align="center" className="flex md:hidden navbar-mobile">
         <Flex align="center" gap="large">
           <button className="text-2xl" onClick={() => setOpen(true)}>
@@ -140,14 +141,15 @@ export default function HomeNavbar({ className }) {
             <div className="relative inline-block text-left">
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="bg-[#EEF0F9] px-4 py-2 rounded-full whitespace-nowrap flex items-center gap-1 cursor-pointer relative z-10"
+                className="bg-[#EEF0F9] px-4 py-2 rounded-full whitespace-nowrap flex items-center gap-1 cursor-pointer relative z-20"
                 style={{ color: "#304383" }}
               >
                 <span className="truncate">{user.nome}</span>
                 <IoIosArrowDown />
               </button>
+
               <ul
-                className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-0
+                className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-10
                   ${userMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}
                   transition-all duration-300 ease-out`}
                 style={{
@@ -156,8 +158,7 @@ export default function HomeNavbar({ className }) {
                 }}
               >
                 <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center
-                  transition-all duration-300 ease-out"
+                  className="px-4 py-2 h-[30px] hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
                   style={{
                     color: "#304383",
                     borderTopLeftRadius: topRadius,
@@ -171,8 +172,7 @@ export default function HomeNavbar({ className }) {
                 </li>
                 {user.nivel === "administrador" && (
                   <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center
-                    transition-all duration-300 ease-out"
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
                     style={{
                       color: "#304383",
                       opacity: userMenuOpen ? 1 : 0,
@@ -184,8 +184,7 @@ export default function HomeNavbar({ className }) {
                   </li>
                 )}
                 <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center
-                  transition-all duration-300 ease-out"
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
                   style={{
                     color: "#304383",
                     borderBottomLeftRadius: bottomRadius,
@@ -212,6 +211,7 @@ export default function HomeNavbar({ className }) {
           )}
         </div>
       </Flex>
+
       {/* Sidebar Mobile */}
       <div
         className={`fixed top-0 left-0 h-full w-[80%] bg-white shadow-lg transform transition-transform duration-300 z-50
@@ -256,6 +256,7 @@ export default function HomeNavbar({ className }) {
           ))}
         </div>
       </div>
+
       {open && (
         <div
           className="fixed inset-0 bg-[rgba(0,0,0,0.5)] z-40"
