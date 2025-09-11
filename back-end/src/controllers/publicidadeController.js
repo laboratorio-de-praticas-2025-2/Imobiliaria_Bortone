@@ -56,8 +56,8 @@ export const getPublicidadeById = async (req, res) => {
 // POST /publicidade
 export const createPublicidade = async (req, res) => {
   try {
-    // receber o atributo "ativo"
-    const { titulo, conteudo, url_imagem, usuario_id } = req.body;
+    
+    const { titulo, conteudo, url_imagem, usuario_id, ativo } = req.body;
 
     if (!titulo || !conteudo || !usuario_id) {
       return res.status(400).json({ error: "Título, conteúdo e ID do usuário são obrigatórios." });
@@ -66,11 +66,24 @@ export const createPublicidade = async (req, res) => {
     if (typeof usuario_id !== "number" || usuario_id <= 0) {
       return res.status(400).json({ error: "ID do usuário deve ser um número inteiro positivo." });
     }
-    // Verificar se o id do usuário é válido
-    // Verificar o atributo "ativo"
 
-    // O controller deve chamar o método do service e passar os dados recebidos
-    const novaPublicidade = await publicidadeService.create({ titulo, conteudo, url_imagem, usuario_id });
+    // Verificar se o id do usuário é válido ✔️
+    const usuario = await Usuario.getById(usuario_id);
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuário não encontrado." });
+    }
+
+    // Verificar o atributo "ativo" ✔️
+    if (ativo !== undefined && typeof ativo !== "boolean") {
+      return res.status(400).json({ error: 'O atributo "ativo" deve ser true ou false.' });
+    }
+    
+    const novaPublicidade = await publicidadeService.create({ 
+      titulo, 
+      conteudo, 
+      url_imagem, 
+      usuario_id, 
+      ativo });
     res.status(201).json(novaPublicidade);
   } catch (error) {
     console.error("Erro ao criar publicidade:", error);
@@ -119,7 +132,6 @@ export const deletePublicidade = async (req, res) => {
       return res.status(404).json({ error: "Publicidade não encontrada" });
     }
 
-    // Chamar o método do service
     await publicidadeService.delete(id);
 
     res.status(204).send();
