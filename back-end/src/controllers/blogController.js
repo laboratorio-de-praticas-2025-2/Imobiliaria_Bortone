@@ -43,10 +43,32 @@ export const getBlogById = async (req, res) => {
   }
 };
 
-// implementar o getAllArtigos
 // essa rota precisa passar os parametros de pesquisa ou ordenação para o service
+export const getAllArtigos = async (req, res) => {
+  try {
+    const blogs = await blogService.getAll();
+    res.status(200).json({ blog: blogs });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Erro interno do servidor." });
+  }
+};
 
-// implementar o updateArtigo
+const updateArtigo = async (req, res) => {
+    try {
+        if (objectId.isValid(req.params.id)) {
+            const id = req.params.id;
+            const { usuario_id, titulo, conteudo, data_publicacao, url_imagem} = req.body;
+            await blogService.update(usuario_id, titulo, conteudo, data_publicacao, url_imagem)
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(400);
+        }
+    } catch (error) {
+        console.log(error) 
+        res.status(500).json({error: "Erro interno do servidor."});
+    }
+};
 
 // Alterar para deleteArtigo
 export const deleteBlog = async (req, res) => {
