@@ -104,13 +104,13 @@ export const updatePublicidade = async (req, res) => {
 
     // Validar o id do usuário e o atributo "ativo"
 
-    const publicidade = await publicidadeService.findByPk(id);
+    const updatePublicidade = await publicidadeService.getById(Number(id));
     if (!publicidade) {
       return res.status(404).json({ error: "Publicidade não encontrada" });
     }
 
     // Chamar o método do service
-    await publicidade.update({ titulo, conteudo, url_imagem, usuario_id });
+    await updatePublicidade.update(Number(id)),({ titulo, conteudo, url_imagem, usuario_id, ativo });
     res.status(200).json({ message: "Publicidade atualizada com sucesso", publicidade });
   } catch (error) {
     console.error("Erro ao atualizar publicidade:", error);
