@@ -5,86 +5,92 @@ class PublicidadeService {
   async createPublicidade(dadosCreatePublicidade) {
     try {
       // const newPublicidade = ...
-      const publicidade = await Publicidade.create({
+      const newPublicidade = await Publicidade.create({
         titulo: dadosCreatePublicidade.titulo,
         conteudo: dadosCreatePublicidade.conteudo,
         url_imagem: dadosCreatePublicidade.url_imagem,
-        usuario_id: dadosCreatePublicidade.usuario_id
+        usuario_id: dadosCreatePublicidade.usuario_id,
         // Definir o atributo "ativo" como false
+        ativo: false
       });
 
       // return newPublicidade;
-      return publicidade;
+      return newPublicidade;
     } catch (error) {
       throw error;
     }
   }
 
   // async updatePublicidade (idPublicidade, dadosUpdatePublicidade) ...
-  async updatePublicidade(id, dadosUpdatePublicidade) {
+  async updatePublicidade(idPublicidade, dadosUpdatePublicidade) {
     try {
       // O service não deve validar os dados e nem tratar erros, apenas buscar a publicidade referente ao id recebido e fazer as alterações de acordo com os dados recebidos
-      if (!id || isNaN(id) || Number(id) <= 0) {
-        throw new Error("ID de publicidade inválido.");
-      }
-      
-      const publicidade = await Publicidade.findByPk(id);
-      if (!publicidade) {
-        throw new Error(`Publicidade com ID ${id} não encontrada.`);
+      const updatePublicidade = await Publicidade.findByPk(idPublicidade);
+      if (!updatePublicidade) {
+        return null;
       }
 
-      publicidade.titulo = dadosUpdatePublicidade.titulo || publicidade.titulo;
-      publicidade.conteudo = dadosUpdatePublicidade.conteudo || publicidade.conteudo;
-      publicidade.url_imagem = dadosUpdatePublicidade.url_imagem || publicidade.url_imagem;
-      publicidade.usuario_id = dadosUpdatePublicidade.usuario_id || publicidade.usuario_id;
-      // Atualizar também o atributo "ativo"
+      updatePublicidade.titulo = dadosUpdatePublicidade.titulo ?? updatePublicidade.titulo;
+      updatePublicidade.conteudo = dadosUpdatePublicidade.conteudo ?? updatePublicidade.conteudo;
+      updatePublicidade.url_imagem = dadosUpdatePublicidade.url_imagem ?? updatePublicidade.url_imagem;
+      updatePublicidade.usuario_id = dadosUpdatePublicidade.usuario_id ?? updatePublicidade.usuario_id;
+      updatePublicidade.ativo = dadosUpdatePublicidade.ativo ?? updatePublicidade.ativo;
 
-      await publicidade.save();
+      await updatePublicidade.save();
 
-      return publicidade;
+      return updatePublicidade;
     } catch (error) {
       throw error;
     }
   }
 
-  async deletePublicidade(id) {
+  async deletePublicidade(idPublicidade) {
     try {
-      const publicidade = await Publicidade.findByPk(id);
-
-      if (!publicidade) {
-        throw new Error(`Publicidade com ID ${id} não encontrada.`);
+      const deletePublicidade = await Publicidade.findByPk(idPublicidade);
+      if (!deletePublicidade) {
+        return null;
       }
-
-      await publicidade.destroy();
-
-      // O service não deve retornar mensagens
-      return { message: `Publicidade com ID ${id} foi deletada com sucesso.` };
+      await deletePublicidade.destroy();
+      return deletePublicidade;
     } catch (error) {
       throw error;
     }
   }
 
-    async readPublicidade(id) {
+    async readPublicidade(idPublicidade) {  
     try {
       // O service não deve validar os dados e nem tratar erros, apenas buscar a publicidade referente ao id recebido e retornar o registro 
-      if (!id || isNaN(id) || Number(id) <= 0) {
-        throw new Error("ID de publicidade inválido.");
+      const readPublicidade = await Publicidade.findByPk(idPublicidade);
+      if (!readPublicidade) {
+        return null;
       }
-
-      const publicidade = await Publicidade.findByPk(id);
-
-      if (!publicidade) {
-        throw new Error(`Publicidade com ID ${id} não encontrada.`);
-      }
-
-      return publicidade;
+      return readPublicidade;
     } catch (error) {
       throw error;
     }
   }
 
   // Adicionar o método GetAllPublicidades, com o opcional de receber parametros para ordenação por data ou por ordem alfabetica
-  
+  async getAllPublicidades(params) {
+    try {
+      const options = {};
+
+      if (params && params.ordenarPor) {
+        const ordemPublicidade = params.direcao === "DESC" ? "DESC" : "ASC";
+
+        if (params.ordenarPor === "data") {
+          options.order = [["createdAt", ordemPublicidade]];
+        } else if (params.ordenarPor === "alfabetica") {
+          options.order = [["titulo", ordemPublicidade]];
+        }
+      }
+
+      const publicidades = await Publicidade.findAll(options);
+      return publicidades;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = new PublicidadeService();
