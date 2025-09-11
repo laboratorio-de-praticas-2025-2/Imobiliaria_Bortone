@@ -1,31 +1,25 @@
-// import PublicidadeModel from ...
-const Publicidade = require("../models/publicidade");
+import PublicidadeModel from "../models/publicidadeModel.js";
 
 class PublicidadeService {
   async createPublicidade(dadosCreatePublicidade) {
     try {
-      // const newPublicidade = ...
-      const newPublicidade = await Publicidade.create({
+      const newPublicidade = await PublicidadeModel.create({
         titulo: dadosCreatePublicidade.titulo,
         conteudo: dadosCreatePublicidade.conteudo,
         url_imagem: dadosCreatePublicidade.url_imagem,
         usuario_id: dadosCreatePublicidade.usuario_id,
-        // Definir o atributo "ativo" como false
         ativo: false
       });
-
-      // return newPublicidade;
       return newPublicidade;
     } catch (error) {
       throw error;
     }
   }
 
-  // async updatePublicidade (idPublicidade, dadosUpdatePublicidade) ...
   async updatePublicidade(idPublicidade, dadosUpdatePublicidade) {
     try {
-      // O service não deve validar os dados e nem tratar erros, apenas buscar a publicidade referente ao id recebido e fazer as alterações de acordo com os dados recebidos
-      const updatePublicidade = await Publicidade.findByPk(idPublicidade);
+ 
+      const updatePublicidade = await PublicidadeModel.findByPk(idPublicidade);
       if (!updatePublicidade) {
         return null;
       }
@@ -46,7 +40,7 @@ class PublicidadeService {
 
   async deletePublicidade(idPublicidade) {
     try {
-      const deletePublicidade = await Publicidade.findByPk(idPublicidade);
+      const deletePublicidade = await PublicidadeModel.findByPk(idPublicidade);
       if (!deletePublicidade) {
         return null;
       }
@@ -59,8 +53,8 @@ class PublicidadeService {
 
     async readPublicidade(idPublicidade) {  
     try {
-      // O service não deve validar os dados e nem tratar erros, apenas buscar a publicidade referente ao id recebido e retornar o registro 
-      const readPublicidade = await Publicidade.findByPk(idPublicidade);
+ 
+      const readPublicidade = await PublicidadeModel.findByPk(idPublicidade);
       if (!readPublicidade) {
         return null;
       }
@@ -73,24 +67,24 @@ class PublicidadeService {
   // Adicionar o método GetAllPublicidades, com o opcional de receber parametros para ordenação por data ou por ordem alfabetica
   async getAllPublicidades(params) {
     try {
-      const options = {};
+      const optionsPublicidade = {};
 
       if (params && params.ordenarPor) {
         const ordemPublicidade = params.direcao === "DESC" ? "DESC" : "ASC";
 
         if (params.ordenarPor === "data") {
-          options.order = [["createdAt", ordemPublicidade]];
+          optionsPublicidade.order = [["id", ordemPublicidade]];
         } else if (params.ordenarPor === "alfabetica") {
-          options.order = [["titulo", ordemPublicidade]];
+          optionsPublicidade.order = [["titulo", ordemPublicidade]];
         }
       }
 
-      const publicidades = await Publicidade.findAll(options);
-      return publicidades;
+      const getAllPublicidades = await PublicidadeModel.findAll(optionsPublicidade);
+      return getAllPublicidades;
     } catch (error) {
       throw error;
     }
   }
 }
 
-module.exports = new PublicidadeService();
+export default new PublicidadeService();
