@@ -1,0 +1,14 @@
+site_name: Imobiliaria Bortone - Documentação
+
+theme:
+  name: material
+  language: pt
+  favicon: assets/favicon.ico
+  logo: assets/logo.svg
+
+nav:
+  - Início: index.md
+  - Manual de Tags: ManualdeTags.md
+  - Configurações do Next: NextConfig.md
+  - Regras Gerais do Repositório: RegrasGerais.md
+  - Algoritimo de Recomendação: AlgoritmoDeRecomendacao.md
