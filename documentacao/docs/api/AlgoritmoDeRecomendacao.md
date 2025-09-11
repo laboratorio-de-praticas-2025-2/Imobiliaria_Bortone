@@ -69,8 +69,8 @@ Se o usuário não tiver registros na tabela `RECOMENDACAO_IMOVEL`, o algoritmo 
 Você pode testar os endpoints no Insomnia.
 
 ```http
-POST    /recomendacao_imovel       → Adiciona um novo registro em `recomendacao_imovel'
-GET     /recomendacoes             → Lista de 20 imovéis com base nas preferências do usuário
+POST    /recomendacao_imovel       → Adiciona um novo registro em `recomendacao_imovel`
+GET     /recomendacoes             → Lista de 20 imóveis com base nas preferências do usuário
 ```
 
 ### POST - exemplo de entrada 
@@ -96,10 +96,8 @@ GET     /recomendacoes             → Lista de 20 imovéis com base nas prefer�
 ```
 
 ### GET - exemplo de entrada
-Para testar o endpoint `GET`, é necessário que a rota esteja assim: 
-```json
-http://localhost:4000/recomendacoes
-```
+Para testar o endpoint `GET`, utilize a URL:
+`http://localhost:4000/recomendacoes`
 
 No campo `Params`, digite `usuario_id` no campo `name` e, `2` no campo `value`.
 
@@ -128,19 +126,19 @@ No campo `Params`, digite `usuario_id` no campo `name` e, `2` no campo `value`.
 		}]}
 ```
 
-O exemplo acima é apenas 1 dos 20 imóveis que podem retornados.
+O exemplo acima é apenas 1 dos 20 imóveis que podem ser retornados.
 
-Agora, se o usuário não possuir registros na tebela `recomendacao_imovel`, ou seja, não possuir um histórico de visitas, o sistema irá buscar os imóveis mais populares, ou seja, aqueles mais visitados e recomendará ao usuário. Para saber se o usuário não possui histórico, procure por algo assim no log da aplicação: `Usuário sem histórico. Retornando imóveis populares.`
+Agora, se o usuário não possuir registros na tabela `recomendacao_imovel` (sem histórico de visitas), o sistema buscará os imóveis mais populares (mais visitados) e os recomendará ao usuário. Para saber se o usuário não possui histórico, procure no log: `Usuário sem histórico. Retornando imóveis populares.`
 
 Se o usuário tem um histórico de visitas menor, por exemplo, apenas uma visita, o sistema tenta outras opções.
 
 O algoritmo funciona em etapas:
 
-- Primeira tentativa: Busca a combinação mais específica de preferências do usuário.
+- Primeira tentativa: busca a combinação mais específica de preferências do usuário.
 
-- Segunda tentativa: Se a primeira busca não tiver resultados, o sistema suaviza os filtros, buscando apenas por imóveis que correspondam ao tipo preferido. Você saberá que essa etapa está em andamento se encontrar a seguinte mensagem no log: `Nenhuma recomendação encontrada com filtros estritos. Expandindo a busca....`
+- Segunda tentativa: se a primeira busca não tiver resultados, o sistema suaviza os filtros, buscando apenas por imóveis que correspondam ao tipo preferido. Log: `Nenhuma recomendação encontrada com filtros estritos. Expandindo a busca...`
 
-- Terceira tentativa: Se a segunda tentativa ainda assim não encontrar resultados, o sistema ignora as preferências e retorna os imóveis mais populares do site. A mensagem no log será: `Nenhuma recomendação encontrada com filtros expandidos. Retornando populares..`
+- Terceira tentativa: se a segunda tentativa ainda assim não encontrar resultados, o sistema ignora as preferências e retorna os imóveis mais populares do site. Log: `Nenhuma recomendação encontrada com filtros expandidos. Retornando populares.`
 
 ---
 
