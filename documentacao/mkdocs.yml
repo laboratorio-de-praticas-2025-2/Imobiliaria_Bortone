@@ -8,7 +8,10 @@ theme:
 
 nav:
   - Início: index.md
-  - Manual de Tags: ManualdeTags.md
-  - Configurações do Next: NextConfig.md
   - Regras Gerais do Repositório: RegrasGerais.md
-  - Algoritmo de Recomendação: AlgoritmoDeRecomendacao.md
+  - Estrutura de Pastas: EstruturaDePastas.md
+  - Configurações do Next: frontend/NextConfig.md
+  - Middleware: frontend/middlwareIndexacao.md
+  - Manual de Tags: frontend/ManualdeTags.md
+  - Algoritmo de Recomendação: api/AlgoritmoDeRecomendacao.md
+  - Banco de Dados: api/BancoDeDados.md

@@ -6,7 +6,6 @@ Este manual documenta as meta tags, links e integrações de análise e desempen
 
 ## Localização das configurações
 
-
 ### 1. `src/app/layout.js`  
 Define **metadados globais padrão** (SEO, OG/Twitter, robots, Apple Web App, viewport, JSON-LD) e integrações globais do Vercel (`@vercel/analytics`, `@vercel/speed-insights`).
 
@@ -158,6 +157,7 @@ export default function ImovelPage({ params }) {
 
 Quando a página não precisar de dados dinâmicos, use export const metadata:
 
+```js
 export const metadata = {
   title: "Sobre nós | Imobiliária Bortone",
   description: "Conheça a história da Imobiliária Bortone",
@@ -172,32 +172,50 @@ export const metadata = {
     images: ["/images/og-sobre.png"],
   },
 };
+```
 
-Boas práticas
+---
 
-OG/Twitter: use sempre a mesma imagem otimizada (1200x630, JPEG/PNG). Evite SVG.
+## Boas práticas
 
-Canonical: adicione quando houver duplicação de URLs.
+- **OG/Twitter**: use sempre a mesma imagem otimizada (1200x630, JPEG/PNG). Evite SVG para cartões.
 
-Noindex: em páginas privadas/admin, configure robots: { index: false, follow: false }.
+- **Canonical**: adicione quando houver duplicação de URLs ou parâmetros.
 
-JSON-LD: sempre manter o bloco Organization. Expandir com WebSite, Article, etc. conforme necessidade.
-
-Acessibilidade: <html lang="pt-br">, contraste de cores adequado.
-
-Checklist de verificação
-
- SEO: título, descrição, OG e Twitter definidos
-
- Mobile: viewport, theme-color, Apple Web App ativos
-
- Performance: preconnect, preload de fontes críticas
-
- Estruturado: JSON-LD Organization presente
-
- Métricas: Analytics e Speed Insights globais
-
- Dinâmico: SEO usado em páginas variáveis (blog, imóveis, etc.)
+- **Noindex**: em páginas privadas/admin, configure robots: { index: false, follow: false }.
 
 
-Quer que eu também monte um **exemplo completo do componente `SEO`** (com `propTypes`/`TS` e to
+- **Acessibilidade**: Mantenha <­html lang="pt-br"> e verifique contraste de cores adequado.
+
+---
+
+## O que cada configuração faz
+- **title/description**: título e resumo exibidos no navegador e buscadores. 
+
+- **keywords**: lista de palavras-chave; sinal fraco para SEO atual, útil como metadado. 
+
+- **applicationName/generator/authors/creator/publisher**: metadados informativos para user agents. 
+
+- **icons**: define o favicon padrão do site. 
+
+- **robots**: controla indexação/seguimento por buscadores; googleBot ajusta limites de preview/snippet. 
+
+- **openGraph**: aparência ao compartilhar (Facebook/WhatsApp/LinkedIn); images ideal 1200x630. 
+
+- **twitter**: cartões no X/Twitter; summary_large_image mostra imagem grande. 
+
+- **appleWebApp**: habilita comportamento tipo app no iOS (status bar e título). 
+
+- **formatDetection**: ativa detecção de telefone clicável em iOS. 
+
+- **viewport**: define escala e themeColor (cor da UI em mobile) e viewportFit (safe areas). 
+
+- **dns-prefetch/preconnect**: antecipa resolução e conexão a hosts externos, reduzindo latência. 
+
+- **preload de fontes**: prioriza download de fontes críticas evitando FOIT/FOUT. 
+
+- **JSON-LD Organization**: indica a entidade dona do site para buscadores. 
+
+- **@vercel/analytics**: métricas de uso/rota em produção (privacidade-friendly, zero-config na Vercel). 
+
+- **@vercel/speed-insights**: RUM de performance (global para todas as rotas, sem duplicar em páginas).

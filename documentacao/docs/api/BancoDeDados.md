@@ -17,7 +17,7 @@
     - Esse atributo é populado por um trigger sempre que o atributo ```status``` é modificado 
 
 ## Diagrama:
-![imagem do diagrama](imgs/BancoDeDados/imoveis_diagrama.mmd.png)
+![imagem do diagrama](assets/imoveis_diagrama.mmd.png)
 
 ## Estrutura:
 
@@ -256,9 +256,9 @@ Para rodar localmente, basta criar um banco MySQL local e executar o script
 ## Maneiras de se conectar e visualizar os dados:
 ### 1. Utilizando um Software de gerenciamento de Banco de dados (HeidiSQL, Dbeaver, MySQL Workbench....):
 #### HeidiSQL:
-![Exemplo de Conexão no HeidiSQL](imgs/BancoDeDados/exemplo-conexao-heidisql.png)
+![Exemplo de Conexão no HeidiSQL](assets/exemplo-conexao-heidisql.png)
 #### Dbeaver:
-![Exemplo de Conexão no MySQLWorkbench](imgs/BancoDeDados/exemplo-conexao-dbeaver.png)
+![Exemplo de Conexão no MySQLWorkbench](assets/exemplo-conexao-dbeaver.png)
 ### 2. Utilizando o phpMyAdmin pela web:
 <strong>Link: [phpmyadmin](https://phpmyadmin.alwaysdata.com/)</strong> <br>
 ```yaml
@@ -266,6 +266,6 @@ MySQL user: Utilizar o user disponibilizado pelo PM do seu produto
 Password: Utilizar a senha disponibilizada pelo PM do seu produto
 ```
 
-![Exemplo de Conexão no phpMyAdmin](imgs/BancoDeDados/exemplo-conexao-phpmyadmin.png)
+![Exemplo de Conexão no phpMyAdmin](assets/exemplo-conexao-phpmyadmin.png)
 
 ### 3. Pelo código em uma aplicação backend utilizando as credenciais de acesso fornecidas
