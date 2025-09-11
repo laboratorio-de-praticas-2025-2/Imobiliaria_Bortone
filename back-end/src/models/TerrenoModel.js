@@ -10,10 +10,6 @@ const Terreno = connection.define("terreno", {
     imovel_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    tipo_terreno: {
-        type: Sequelize.TEXT,
-        allowNull: false,
     }},
     {
     tableName: 'terreno',

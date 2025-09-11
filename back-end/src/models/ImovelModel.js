@@ -8,7 +8,7 @@ const Imovel = connection.define("imoveis", {
         autoIncrement: true,
     },
     tipo: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING,
         allowNull: false,
     },
     endereco: {
@@ -28,7 +28,7 @@ const Imovel = connection.define("imoveis", {
         allowNull: false,
     },
     status: {
-        type: Sequelize.TEXT,
+        type: Sequelize.ENUM('disponivel','indisponivel','vendido','locado'),
         allowNull: false,
     },
     area: {
@@ -48,6 +48,10 @@ const Imovel = connection.define("imoveis", {
         type: Sequelize.BOOLEAN,
         allowNull: false,
     },
+    tipo_negociacao: {
+        type: Sequelize.ENUM('venda','aluguel'),
+        allowNull:false
+    },
     latitude: {
         type: Sequelize.REAL,
         allowNull: false,
@@ -59,6 +63,10 @@ const Imovel = connection.define("imoveis", {
     usuario_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+    },
+    data_update_status: {
+        type: Sequelize.DATETIME,
+        allowNull: false
     }},
     {
     tableName: 'imoveis',
