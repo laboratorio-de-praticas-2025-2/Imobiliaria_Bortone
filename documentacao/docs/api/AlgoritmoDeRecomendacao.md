@@ -1,10 +1,10 @@
-# 📦 Algoritmo de Recomendação de Imóveis
+# Algoritmo de Recomendação de Imóveis
 
 Este módulo é responsável por gerar recomendações personalizadas de imóveis para usuários com base em seu histórico de visitas. A lógica está implementada em Express.js e utiliza consultas SQL para inferir preferências e sugerir novos imóveis.
 
 ---
 
-## 🎯 Objetivo do Algoritmo
+## Objetivo do Algoritmo
 
 Recomendar imóveis relevantes para usuários com base em:
 
@@ -13,7 +13,7 @@ Recomendar imóveis relevantes para usuários com base em:
 
 ---
 
-## 📥 Dados de Entrada
+## Dados de Entrada
 
 A recomendação é baseada na tabela `RECOMENDACAO_IMOVEL`, que registra visitas de usuários a imóveis:
 
@@ -22,11 +22,11 @@ A recomendação é baseada na tabela `RECOMENDACAO_IMOVEL`, que registra visita
 - `imovel_id`: Identificador do imóvel
 - `data_visita`: Data da visita
 
-📌 A entrada real do algoritmo é apenas o `usuario_id`, passado via rota. Os demais dados são consultados automaticamente pelo sistema.
+A entrada real do algoritmo é apenas o `usuario_id`, passado via rota. Os demais dados são consultados automaticamente pelo sistema.
 
 ---
 
-## 📤 Saída Esperada
+## Saída Esperada
 
 Uma lista de até **20 imóveis recomendados**, com base em:
 
@@ -35,7 +35,7 @@ Uma lista de até **20 imóveis recomendados**, com base em:
 
 ---
 
-## ⚙️ Lógica Geral do Algoritmo
+## Lógica Geral do Algoritmo
 
 ### 1. Identificação de Imóveis Visitados
 A partir do `usuario_id` recebido na requisição, o sistema consulta a tabela `RECOMENDACAO_IMOVEL` para identificar os imóveis que esse usuário já visitou. Os 5 imóveis mais frequentes são usados como base para entender suas preferências.
@@ -58,20 +58,20 @@ Se o usuário não tiver registros na tabela `RECOMENDACAO_IMOVEL`, o algoritmo 
 
 ---
 
-## 🧠 Abordagem Utilizada
+## Abordagem Utilizada
 
 - **Filtragem baseada em conteúdo**: recomenda imóveis com atributos semelhantes aos já visitados.
 - **Popularidade como fallback**: garante recomendações mesmo sem histórico.
 
 ---
 
-## 🛠️ Bibliotecas e Ferramentas Sugeridas
+## Bibliotecas utilizada
 
 - [`lodash`](https://lodash.com/): manipulação de arrays e objetos
 
 ---
 
-## ⚠️ Desafios e Limitações
+## Desafios e Limitações
 
 - **Usuários sem histórico**: recomendações genéricas podem ser menos relevantes.
 - **Escalabilidade**: crescimento da tabela de visitas pode impactar performance.
@@ -79,17 +79,17 @@ Se o usuário não tiver registros na tabela `RECOMENDACAO_IMOVEL`, o algoritmo 
 ---
 
 ## Entendendo o código 
-### 🗂️ Modelos de Dados (Sequelize)
+### Modelos de Dados (Sequelize)
 
 Os modelos definem a estrutura das tabelas no banco de dados e são a base para todas as operações de leitura e escrita.
 
 ---
 
-#### 📌 recomendacaoImovelModel.js
+#### recomendacaoImovelModel.js
 
-Este modelo representa a tabela `recomendacao_imovel`, que armazena o histórico de visitas dos usuários a determinados imóveis. Cada registro nesta tabela alimenta a lógica de recomendação.
+Este modelo representa a tabela `recomendacao_imovel`, que armazena o histórico de visitas dos usuários a determinados imóveis.
 
-#### 🧾 Tabela: `recomendacao_imovel`
+#### Tabela: `recomendacao_imovel`
 
 | Campo        | Tipo     | Descrição                                      |
 |--------------|----------|------------------------------------------------|
@@ -100,11 +100,11 @@ Este modelo representa a tabela `recomendacao_imovel`, que armazena o histórico
 
 ---
 
-#### 🏠 Imovel.js
+#### Imovel.js
 
 Este modelo representa a tabela `imoveis`, que contém todos os detalhes dos imóveis disponíveis no sistema. Ele é a fonte de dados para as recomendações geradas.
 
-#### 🧾 Tabela: `imoveis`
+#### Tabela: `imoveis`
 
 | Campo    | Tipo           | Descrição                                      |
 |----------|----------------|------------------------------------------------|
@@ -115,30 +115,31 @@ Este modelo representa a tabela `imoveis`, que contém todos os detalhes dos im�
 | `preco`  | DECIMAL(12, 2) | Preço do imóvel.                              |
 | `status` | ENUM           | Status do imóvel (ex: 'disponivel').          |
 
+
+> Os atributos que estão sendo listados são apenas os utilizados no algoritmo. Não é uma cópia exata da tabela do banco de dados. 
+
 --- 
 
 ### Lógica de Inserção de Dados
 A seguir, o fluxo de inserção de um novo registro de visita na tabela `recomendacao_imovel`, que é o primeiro passo para o sistema de recomendação.
 
 #### `recomendacaoImovelService.js`
-A função createRecomendacao é a camada de serviço responsável por interagir diretamente com o banco de dados.
+A função `createRecomendacao` é a camada de serviço responsável por interagir diretamente com o banco de dados.
 
 ```js
 export const createRecomendacao = async (data) => {
     try {
-        // Cria um novo registro na tabela 'recomendacao_imovel' usando o modelo Sequelize.
         const novaRecomendacao = await RecomendacaoImovel.create(data);
         return novaRecomendacao;
     } catch (error) {
-        // Lança um erro customizado se a inserção falhar.
         throw new Error('Não foi possível criar a recomendação: ' + error.message);
     }
 };
 ```
 
-- *Descrição:* Esta é uma função assíncrona que recebe um objeto data contendo as informações da visita. Ela utiliza o método create do modelo RecomendacaoImovel para inserir um novo registro na tabela correspondente.
+- **Descrição:** Esta é uma função assíncrona que recebe um objeto data contendo as informações da visita. Ela utiliza o método create do modelo RecomendacaoImovel para inserir um novo registro na tabela correspondente.
 
-- *Comportamento:* Se a operação for bem-sucedida, a função retorna o objeto do registro recém-criado. Em caso de falha, ela lança uma exceção com uma mensagem mais clara.
+- **Comportamento:** Se a operação for bem-sucedida, a função retorna o objeto do registro recém-criado. Em caso de falha, ela lança uma exceção com uma mensagem mais clara.
 
 --- 
 
@@ -147,26 +148,23 @@ O middleware `validacaoRecomendacaoImovel` garante que os dados enviados na requ
 
 ```js
 export const validacaoRecomendacaoImovel = (req, res, next) => {
-    const { usuario_id, imovel_id, data_visita } = req.body;
+  const { usuario_id, imovel_id, data_visita } = req.body;
 
-    // Verifica se os campos obrigatórios estão presentes.
     if (!usuario_id || !imovel_id || !data_visita) {
         return res.status(400).json({ error: 'Campos obrigatórios faltando.' });
     }
 
-    // Verifica se os IDs são do tipo 'number'.
     if (typeof usuario_id !== 'number' || typeof imovel_id !== 'number') {
         return res.status(400).json({ error: 'IDs devem ser números.' });
     }
-    
-    // Se a validação passar, permite que a requisição siga para o próximo passo.
-    next();
+  
+  next();
 };
 ```
 
-- *Descrição:* Essa função atua como um filtro pré-requisição. Ela verifica a presença e o tipo de dados dos campos `usuario_id`, `imovel_id` e `data_visita` no corpo da requisição.
+- **Descrição:** Essa função atua como um filtro pré-requisição. Ela verifica a presença e o tipo de dados dos campos `usuario_id`, `imovel_id` e `data_visita` no corpo da requisição.
 
-Comportamento: Se qualquer uma das validações falhar, o middleware interrompe a execução e envia uma resposta de erro `(400 Bad Request)` ao cliente. Se todos os dados estiverem corretos, ele chama `next()`, permitindo que a requisição prossiga para o controlador.
+- **Comportamento:** Se qualquer uma das validações falhar, o middleware interrompe a execução e envia uma resposta de erro `(400 Bad Request)` ao cliente. Se todos os dados estiverem corretos, ele chama `next()`, permitindo que a requisição prossiga para o controlador.
 
 --- 
 
@@ -175,32 +173,29 @@ O controlador `createRecomendacaoImovel` orquestra a requisição. Ele extrai os
 
 ```js
 export const createRecomendacaoImovel = async (req, res) => {
-    const { usuario_id, imovel_id, data_visita } = req.body;
+  const { usuario_id, imovel_id, data_visita } = req.body;
 
-    try {
-        // Chama a função de serviço para criar o registro no banco de dados.
-        const novaRecomendacao = await recomendacaoImovelService.createRecomendacao({
-            usuario_id,
-            imovel_id,
-            data_visita,
-        });
-        
-        // Envia uma resposta de sucesso.
-        res.status(201).json({
-            message: 'Novo registro na tabela recomendacao_imovel.',
-            data: novaRecomendacao,
-        });
-    } catch (err) {
-        // Em caso de erro, exibe a mensagem no console e envia uma resposta de erro genérica.
-        console.error(err);
-        res.status(500).json({ error: 'Erro interno do servidor.' });
-    }
+  try {
+    const novaRecomendacao = await recomendacaoImovelService.createRecomendacao({
+      usuario_id,
+      imovel_id,
+      data_visita
+    });
+    res.status(201).json({
+      message: 'Novo registro na tabela recomendacao_imovel.',
+      data: novaRecomendacao,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro interno do servidor.' });
+  }
 };
+
 ```
 
-- *Descrição:* Este controlador é a ponte entre a rota e a lógica de negócio. Ele recebe a requisição, extrai as informações do corpo e as passa para a função de serviço `createRecomendacao`.
+- **Descrição:** Este controlador é a ponte entre a rota e a lógica de negócio. Ele recebe a requisição, extrai as informações do corpo e as passa para a função de serviço `createRecomendacao`.
 
-- *Comportamento:* Se a chamada ao serviço for bem-sucedida, ele retorna um status `201 Created` com uma mensagem de sucesso e os dados do novo registro. Se houver um erro, ele retorna um status `500 Internal Server Error`.
+- **Comportamento:** Se a chamada ao serviço for bem-sucedida, ele retorna um status `201 Created` com uma mensagem de sucesso e os dados do novo registro. Se houver um erro, ele retorna um status `500 Internal Server Error`.
 
 --- 
 
@@ -214,21 +209,18 @@ import { validacaoRecomendacaoImovel } from '../middlewares/validacaoRecomendaca
 
 const recomendacoesRoutes = express.Router();
 
-// A rota utiliza o middleware de validação antes de chamar o controlador.
 recomendacoesRoutes.post('/recomendacao_imovel', validacaoRecomendacaoImovel, createRecomendacaoImovel);
 
 export default recomendacoesRoutes;
 ```
 
-- *Descrição:* Esta é a definição do endpoint da API.
-
-- *Fluxo de Execução:* A requisição POST para `/recomendacao_imovel` primeiro passa pelo middleware `validacaoRecomendacaoImovel`. Se a validação for aprovada, a requisição é então passada para o controlador `createRecomendacaoImovel` para ser processada. Essa ordem garante que a lógica de negócio só seja executada com dados válidos.
+- **Fluxo de Execução:** A requisição POST para `/recomendacao_imovel` primeiro passa pelo middleware `validacaoRecomendacaoImovel`. Se a validação for aprovada, a requisição é então passada para o controlador `createRecomendacaoImovel` para ser processada. Essa ordem garante que a lógica de negócio só seja executada com dados válidos.
 
 ---
 
 ### Lógica do algoritmo de recomendação 
-A seguir, o fluxo da criação da lista de até 20 imóveis recomendados para o cliente 
-A lógica principal está contida no arquivo recomendacaoImovelService.js, que coordena as etapas de coleta de dados, inferência de preferências e busca por recomendações.
+A seguir, o fluxo da criação da lista de até 20 imóveis recomendados para o cliente. 
+A lógica principal está contida no arquivo `recomendacaoImovelService.js`, que coordena as etapas de coleta de dados, inferência de preferências e busca por recomendações.
 
 --- 
 
@@ -251,9 +243,9 @@ const getTopImoveisVisitados = async (usuario_id) => {
 };
 ```
 
-- **Descrição:** Esta função executa uma consulta agregada no banco de dados. Ela conta quantas vezes cada imovel_id aparece para um determinado usuario_id, agrupando os resultados. O uso de Sequelize.fn permite a execução de funções nativas do SQL, como COUNT().
+- **Descrição:** Esta função executa uma consulta agregada no banco de dados. Ela conta quantas vezes cada `imovel_id` aparece para um determinado `usuario_id`, agrupando os resultados. O uso de Sequelize.fn permite a execução de funções nativas do SQL, como COUNT().
 
-- **Retorno:** A função retorna uma lista de objetos, onde cada objeto contém o imovel_id e a contagem de visitas (visitas) para aquele imóvel, ordenados de forma decrescente.
+- **Retorno:** A função retorna uma lista de objetos, onde cada objeto contém o `imovel_id` e a contagem de visitas (visitas) para aquele imóvel, ordenados de forma decrescente.
 
 --- 
 
@@ -303,9 +295,9 @@ const inferirPreferencias = async (idsImoveis) => {
 
 - **Descrição:** Esta função é a inteligência do sistema. Ela realiza as seguintes operações:
 
-1. ***Consulta de Dados:*** Busca no modelo Imovel os detalhes completos (tipo, cidade, estado, preco) dos imóveis visitados. O operador Sequelize.Op.in permite buscar múltiplos IDs em uma única consulta eficiente.
+1. ***Consulta de Dados:*** Busca no modelo `Imovel` os detalhes completos (tipo, cidade, estado, preco) dos imóveis visitados. O operador Sequelize.Op.in permite buscar múltiplos IDs em uma única consulta eficiente.
 
-2. ***Análise de Frequência (lodash):*** Utiliza a biblioteca lodash para analisar o imoveisReferencia e identificar os valores mais comuns para tipo, cidade e estado. O fluxo é:
+2. ***Análise de Frequência (lodash):*** Utiliza a biblioteca lodash para analisar o `imoveisReferencia` e identificar os valores mais comuns para tipo, cidade e estado. O fluxo é:
 
 	- _.countBy(): Cria um objeto contando a ocorrência de cada valor (ex: { 'Casa': 3, 'Apartamento': 1 }).
 
@@ -322,7 +314,7 @@ const inferirPreferencias = async (idsImoveis) => {
 ---
 
 #### Passo 3: Buscar Imóveis Populares como Fallback
-A função getImoveisPopulares serve como um plano B, ou fallback, para garantir que o sistema sempre retorne uma lista de recomendações, mesmo se o usuário não tiver histórico de visitas ou se a busca personalizada não gerar resultados. Ela encontra os imóveis mais visitados em todo o sistema, independentemente do usuário.
+A função `getImoveisPopulares` serve como um plano B, ou fallback, para garantir que o sistema sempre retorne uma lista de recomendações, mesmo se o usuário não tiver histórico de visitas ou se a busca personalizada não gerar resultados. Ela encontra os imóveis mais visitados em todo o sistema, independentemente do usuário.
 
 ```js
 // Retorna até 20 imóveis mais populares do sistema (geral), usados como fallback.
@@ -361,16 +353,16 @@ const getImoveisPopulares = async () => {
 
 - **Descrição:** Essa função executa um processo em duas etapas:
 
-1. ***Identifica os Populares:*** Primeiro, ela consulta a tabela recomendacao_imovel para encontrar os 20 imóveis que foram mais visitados no total. A consulta usa COUNT e GROUP BY para somar as visitas por imovel_id e ORDER BY para listar os mais populares primeiro.
+1. ***Identifica os Populares:*** Primeiro, ela consulta a tabela recomendacao_imovel para encontrar os 20 imóveis que foram mais visitados no total. A consulta usa COUNT e GROUP BY para somar as visitas por `imovel_id` e ORDER BY para listar os mais populares primeiro.
 
-2. ***Filtra e Retorna Dados Completos:*** Em seguida, a função extrai apenas os ids desses imóveis populares. Com essa lista de ids, ela faz uma nova consulta no modelo Imovel. Essa segunda consulta garante que apenas imóveis que estão disponivel sejam retornados, oferecendo uma lista de recomendações que o usuário pode, de fato, alugar ou comprar.
+2. ***Filtra e Retorna Dados Completos:*** Em seguida, a função extrai apenas os ids desses imóveis populares. Com essa lista de ids, ela faz uma nova consulta no modelo `Imovel`. Essa segunda consulta garante que apenas imóveis que estão `disponivel` sejam retornados, oferecendo uma lista de recomendações que o usuário pode, de fato, alugar ou comprar.
 
 - **Comportamento:** A função retorna uma lista completa de objetos de imóveis, prontos para serem enviados na resposta da API. Ela é a última linha de defesa do algoritmo de recomendação, garantindo que o cliente não receba uma resposta vazia.
 
 --- 
 
 #### Passo 4: Função principal do algoritmo 
-A função getRecomendacoesByUserId é o coração do sistema. Ela orquestra toda a lógica de recomendação, combinando as funções auxiliares para gerar a lista de imóveis. O fluxo é desenhado com uma estratégia de fallback progressivo para garantir que uma resposta seja sempre retornada.
+A função `getRecomendacoesByUserId` é o coração do sistema. Ela orquestra toda a lógica de recomendação, combinando as funções auxiliares para gerar a lista de imóveis. O fluxo é desenhado com uma estratégia de fallback progressivo para garantir que uma resposta seja sempre retornada.
 ```js
 export const getRecomendacoesByUserId = async (usuario_id) => {
     try {
@@ -443,16 +435,16 @@ export const getRecomendacoesByUserId = async (usuario_id) => {
 
 1. ***Busca Estrita:*** A função tenta encontrar imóveis que correspondam a todos os filtros de preferência (tipo, cidade, estado e faixa de preço).
 
-2. ***Fallback para Busca Expandida:*** Caso a primeira busca não retorne resultados (_.isEmpty(imoveisRecomendados)), o algoritmo relaxa os critérios, removendo os filtros de localização e preço e mantendo apenas o tipo preferido.
+2. ***Fallback para Busca Expandida:*** Caso a primeira busca não retorne resultados `(_.isEmpty(imoveisRecomendados))`, o algoritmo relaxa os critérios, removendo os filtros de localização e preço e mantendo apenas o tipo preferido.
 
-3. ***Fallback Final:*** Se a busca expandida ainda não produzir resultados, a função aciona o fallback final, chamando getImoveisPopulares para garantir que o usuário receba uma lista de imóveis.
+3. ***Fallback Final:*** Se a busca expandida ainda não produzir resultados, a função aciona o fallback final, chamando `getImoveisPopulares` para garantir que o usuário receba uma lista de imóveis.
 
-- **Observação de Desenvolvimento:** Todo esse tratamento de fallback foi implementado porque, durante a fase de testes do algoritmo, percebeu-se que ao tentar enviar um usuario_id que possuía apenas um registro na tabela recomendacao_imovel, o retorno da lista de recomendação era vazio. Isso acontecia porque a inferência de preferências, com base em um único ponto de dados, resultava em filtros de busca muito restritivos, levando a um resultado nulo. A lógica de fallback resolveu esse problema, garantindo que a API sempre entregue um conjunto de recomendações ao usuário.
+- **Observação de Desenvolvimento:** Todo esse tratamento de fallback foi implementado porque, durante a fase de testes do algoritmo, percebeu-se que ao tentar enviar um `usuario_id` que possuía apenas um registro na tabela `recomendacao_imovel`, o retorno da lista de recomendação era vazio. Isso acontecia porque a inferência de preferências, com base em um único ponto de dados, resultava em filtros de busca muito restritivos, levando a um resultado nulo. A lógica de fallback resolveu esse problema, garantindo que a API sempre entregue um conjunto de recomendações ao usuário.
 
 --- 
 
 #### Controlador do método GET
-O controlador getRecomendacoes é o ponto de entrada para a requisição de recomendações. Ele gerencia o fluxo da requisição HTTP, validando a entrada e chamando a lógica de negócio para obter os dados.
+O controlador `getRecomendacoes` é o ponto de entrada para a requisição de recomendações. Ele gerencia o fluxo da requisição HTTP, validando a entrada e chamando a lógica de negócio para obter os dados.
 ```js
 export const getRecomendacoes = async (req, res) => {
   const { usuario_id } = req.query; 
@@ -474,20 +466,19 @@ export const getRecomendacoes = async (req, res) => {
 };
 ```
 
-- **Descrição:** Este controlador é responsável por orquestrar a busca por recomendações. Ele primeiro verifica se o usuario_id foi fornecido na requisição. Se estiver ausente, a requisição é rejeitada com um erro 400 Bad Request. Se a validação passar, o controlador chama a função de serviço getRecomendacoesByUserId, que contém toda a lógica do algoritmo.
+- **Descrição:** Este controlador é responsável por orquestrar a busca por recomendações. Ele primeiro verifica se o `usuario_id` foi fornecido na requisição. Se estiver ausente, a requisição é rejeitada com um erro `400 Bad Request`. Se a validação passar, o controlador chama a função de serviço `getRecomendacoesByUserId`, que contém toda a lógica do algoritmo.
 
 - **Comportamento:**
 
-	- Sucesso: Se a chamada ao serviço for bem-sucedida, ele retorna um status 200 OK com uma mensagem de sucesso e a lista de imóveis recomendados no corpo da resposta (data).
+	- Sucesso: Se a chamada ao serviço for bem-sucedida, ele retorna um status `200 OK` com uma mensagem de sucesso e a lista de imóveis recomendados no corpo da resposta (data).
 
-	- Erro: Em caso de qualquer falha na lógica do serviço (como um problema de conexão com o banco de dados), o erro é capturado e uma resposta 500 Internal Server Error é enviada ao cliente. O erro detalhado é registrado no console do servidor para fins de depuração.
+	- Erro: Em caso de qualquer falha na lógica do serviço (como um problema de conexão com o banco de dados), o erro é capturado e uma resposta `500 Internal Server Error` é enviada ao cliente. O erro detalhado é registrado no console do servidor para fins de depuração.
 
 --- 
 
 #### Rota de GET
 Esta rota define o endpoint da API que os clientes utilizarão para solicitar recomendações.
 ```js
-// routes/recomendacaoImovel.js
 import express from 'express';
 import { getRecomendacoes } from '../controllers/recomendacaoImovelController.js';
 
@@ -498,7 +489,7 @@ recomendacoesRoutes.get('/recomendacoes', getRecomendacoes);
 export default recomendacoesRoutes;
 ```
 
-- **Descrição:** A rota GET /recomendacoes é configurada para acionar o controlador getRecomendacoes sempre que uma requisição GET for feita para este caminho.
+- **Descrição:** A rota GET `/recomendacoes` é configurada para acionar o controlador `getRecomendacoes` sempre que uma requisição GET for feita para este caminho.
 
 ---
 
@@ -506,11 +497,13 @@ export default recomendacoesRoutes;
 Você pode testar os endpoints no Insomnia.
 
 ```http
-POST    /recomendacao_imovel       → Adiciona um novo registro em `recomendacao_imovel`
-GET     /recomendacoes             → Lista de 20 imóveis com base nas preferências do usuário
+POST    /recomendacao_imovel       → Adiciona um novo registro em `recomendacao_imovel'
+GET     /recomendacoes             → Lista de 20 imovéis com base nas preferências do usuário
 ```
 
-### POST - exemplo de entrada 
+---
+
+#### POST - exemplo de entrada 
 ```json
 {
 	"usuario_id": 1,
@@ -519,7 +512,7 @@ GET     /recomendacoes             → Lista de 20 imóveis com base nas prefer�
 }
 ```
 
-### POST - exemplo de saída 
+#### POST - exemplo de saída 
 ```json
 {
 	"message": "Novo registro na tabela recomendacao_imovel.",
@@ -532,13 +525,17 @@ GET     /recomendacoes             → Lista de 20 imóveis com base nas prefer�
 }
 ```
 
-### GET - exemplo de entrada
-Para testar o endpoint `GET`, utilize a URL:
-`http://localhost:4000/recomendacoes`
+---
+
+#### GET - exemplo de entrada
+Para testar o endpoint `GET`, é necessário que a rota esteja assim: 
+```json
+http://localhost:4000/recomendacoes
+```
 
 No campo `Params`, digite `usuario_id` no campo `name` e, `2` no campo `value`.
 
-### GET - exemplo de saída
+#### GET - exemplo de saída
 ```json
 {
 	"message": "Recomendações geradas com sucesso.",
@@ -557,22 +554,12 @@ No campo `Params`, digite `usuario_id` no campo `name` e, `2` no campo `value`.
 			"latitude": "-3.1190280",
 			"longitude": "-60.0217310",
 			"usuario_id": 4,
-			"tipo_negociacao": "venda",
+			"tipo_negociacao": "vaenda",
 			"status": "disponivel",
 			"data_update_status": null
 		}]}
 ```
 
-O exemplo acima é apenas 1 dos 20 imóveis que podem ser retornados.
+O exemplo acima é apenas 1 dos 20 imóveis que podem retornados.
 
-Agora, se o usuário não possuir registros na tabela `recomendacao_imovel` (sem histórico de visitas), o sistema buscará os imóveis mais populares (mais visitados) e os recomendará ao usuário. Para saber se o usuário não possui histórico, procure no log: `Usuário sem histórico. Retornando imóveis populares.`
-
-Se o usuário tem um histórico de visitas menor, por exemplo, apenas uma visita, o sistema tenta outras opções.
-
-O algoritmo funciona em etapas:
-
-- Primeira tentativa: busca a combinação mais específica de preferências do usuário.
-
-- Segunda tentativa: se a primeira busca não tiver resultados, o sistema suaviza os filtros, buscando apenas por imóveis que correspondam ao tipo preferido. Log: `Nenhuma recomendação encontrada com filtros estritos. Expandindo a busca...`
-
-- Terceira tentativa: se a segunda tentativa ainda assim não encontrar resultados, o sistema ignora as preferências e retorna os imóveis mais populares do site. Log: `Nenhuma recomendação encontrada com filtros expandidos. Retornando populares.`
+---
