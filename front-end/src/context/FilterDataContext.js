@@ -3,12 +3,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 const FilterDataContext = createContext();
 
 const INITIAL_FILTERS = {
-  cidade: "Registro",
   status: "disponível",
-  tipo: "Casa",
-  precoMin: 250000,
-  precoMax: 1000000,
-  area: [100, 10000],
 };
 
 export function FilterDataProvider({ children }) {
@@ -23,7 +18,6 @@ export function FilterDataProvider({ children }) {
 
   useEffect(() => {
     async function fetchData() {
-      // Exemplo: await api.get('/imoveis', { params: filterData });
       console.log("Chamando API com filtros:", filterData);
     }
     fetchData();

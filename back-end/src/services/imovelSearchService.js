@@ -34,10 +34,14 @@ export const buscarImoveis = async (data) => {
       : [null, null];
 
     const whereImovel = {
+      ...(data.endereco && { endereco: { [Op.like]: `%${data.endereco}%` } }),
       ...(cidade && { cidade: { [Op.like]: `%${cidade}%` } }),
       ...(estado && { estado: { [Op.like]: `%${estado}%` } }),
       ...(data.status && { status: { [Op.like]: `%${data.status}%` } }),
       ...(data.tipo && { tipo: { [Op.like]: `%${data.tipo}%` } }),
+      ...(data.tipo_negociacao && {
+        tipo_negociacao: { [Op.like]: `%${data.tipo_negociacao}%` },
+      }),
       ...(data.precoMin && data.precoMax
         ? { preco: { [Op.between]: [data.precoMin, data.precoMax] } }
         : data.precoMin
@@ -73,7 +77,10 @@ export const buscarImoveis = async (data) => {
           model: Casa,
           as: "casa",
           attributes: ["quartos", "banheiros", "vagas"],
-          ...(Object.keys(whereCasa).length > 0 && { where: whereCasa }),
+          where: {
+            ...(data.quartos && { quartos: data.quartos }),
+            ...(data.banheiros && { banheiros: data.banheiros }),
+          },
         },
         {
           model: Terreno,

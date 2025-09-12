@@ -1,7 +1,6 @@
 "use client";
 import { FilterDataProvider } from "@/context/FilterDataContext";
 import { useFilterData } from "@/context/FilterDataContext";
-import { mockImoveis } from "@/mock/imoveis";
 import { useEffect, useState } from "react";
 import InnerImoveisPage from "./InnerImoveisPage";
 
