@@ -11,11 +11,11 @@ const PublicidadeModel = sequelize.define(
     },
     titulo: {
       type: DataTypes.STRING(100),
-      allowNull: false, // obrigatório para criar
+      allowNull: false,
     },
     conteudo: {
       type: DataTypes.TEXT,
-      allowNull: false, // obrigatório para criar
+      allowNull: false,
     },
     url_imagem: {
       type: DataTypes.STRING(255),
@@ -25,7 +25,7 @@ const PublicidadeModel = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "usuario", //nome exato da tabela no banco
+        model: "usuario",
         key: "id",
       },
     },

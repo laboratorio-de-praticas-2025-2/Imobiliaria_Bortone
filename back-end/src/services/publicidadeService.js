@@ -45,26 +45,24 @@ class PublicidadeService {
         return null;
       }
       await deletePublicidade.destroy();
-      return deletePublicidade;
+      return true;
     } catch (error) {
       throw error;
     }
   }
 
-    async readPublicidade(idPublicidade) {  
+    async getPublicidadeById(idPublicidade) {  
     try {
- 
-      const readPublicidade = await PublicidadeModel.findByPk(idPublicidade);
-      if (!readPublicidade) {
+      const Publicidade = await PublicidadeModel.findByPk(idPublicidade);
+      if (!Publicidade) {
         return null;
       }
-      return readPublicidade;
+      return Publicidade;
     } catch (error) {
       throw error;
     }
   }
 
-  // Adicionar o método GetAllPublicidades, com o opcional de receber parametros para ordenação por data ou por ordem alfabetica
   async getAllPublicidades(params) {
     try {
       const optionsPublicidade = {};
@@ -79,8 +77,8 @@ class PublicidadeService {
         }
       }
 
-      const getAllPublicidades = await PublicidadeModel.findAll(optionsPublicidade);
-      return getAllPublicidades;
+      const AllPublicidades = await PublicidadeModel.findAll(optionsPublicidade);
+      return AllPublicidades;
     } catch (error) {
       throw error;
     }
