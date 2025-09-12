@@ -65,7 +65,7 @@ const Imovel = connection.define("imoveis", {
         allowNull: false,
     },
     data_update_status: {
-        type: Sequelize.DATETIME,
+        type: Sequelize.DATE,
         allowNull: false
     }},
     {

@@ -1,6 +1,8 @@
 import Imovel from '../models/ImovelModel.js';
 import Casa from '../models/CasaModel.js';
 import Terreno from '../models/TerrenoModel.js';
+import ImagemImovel from '../models/ImagemImovelModel.js';
+import { organizarImoveisCarrossel, organizarImoveisMapView } from './organizarImoveisMapaService.js';
 import { Op } from 'sequelize';
 
 export const buscarHome = async (endereco) => {
@@ -68,12 +70,15 @@ export const buscarImoveis = async (data) => {
       include: [
         {
           model: Casa,
+          as: 'casa',
           attributes: ["quartos", "banheiros", "vagas"],
+          required: false,
           ...(Object.keys(whereCasa).length > 0 && { where: whereCasa }),
         },
         {
           model: Terreno,
-          attributes: ["tipo_terreno"],
+          as: 'terreno',
+          required: false,
         },
       ],
     });
@@ -86,37 +91,71 @@ export const buscarImoveis = async (data) => {
 
 export const buscarMapa = async (data) => {
   try {
+    console.log("Dados recebidos:", data);  // Verifique no console o que foi recebido
+
     // 🔹 filtros principais de Imóvel
+    let tipoFilter = {};
+    let includeModels = [];
+
+    // Se for Terreno, inclui apenas o filtro de tipo Terreno
+    if (data.tipo === "Terreno") {
+      tipoFilter = { tipo: "Terreno" };
+      includeModels.push({
+        model: Terreno,  // Apenas Terreno
+        as: 'terreno'
+      });
+    } else if (data.tipo === "Casa" || data.tipo === "Apartamento") {
+      tipoFilter = {
+        tipo: { [Op.or]: ["Casa", "Apartamento"] }  // Filtra por 'Casa' ou 'Apartamento'
+      };
+      includeModels.push({
+        model: Casa,
+        as: 'casa',
+        attributes: ["quartos", "banheiros", "vagas", "possui_piscina", "possui_jardim"],
+        where: {
+          ...(data.quartos && data.quartos !== null && {
+            quartos:
+              data.quartos === "1" ? { [Op.eq]: 1 } :
+              data.quartos === "2" ? { [Op.eq]: 2 } :
+              data.quartos === "3" ? { [Op.eq]: 3 } :
+              data.quartos === "4" ? { [Op.eq]: 4 } :
+              data.quartos === "5+" ? { [Op.gte]: 5 } : undefined
+          }),
+          ...(data.banheiros && data.banheiros !== null && {
+            banheiros:
+              data.banheiros === "1" ? { [Op.eq]: 1 } :
+              data.banheiros === "2" ? { [Op.eq]: 2 } :
+              data.banheiros === "3" ? { [Op.eq]: 3 } :
+              data.banheiros === "4" ? { [Op.eq]: 4 } : 
+              data.banheiros === "5+" ? { [Op.gte]: 5 } : undefined
+          }),
+          ...(data.vagas && data.vagas !== null && {
+            vagas:
+              data.vagas === "1" ? { [Op.eq]: 1 } :
+              data.vagas === "2" ? { [Op.eq]: 2 } :
+              data.vagas === "3" ? { [Op.eq]: 3 } :
+              data.vagas === "4" ? { [Op.eq]: 4 } :
+              data.vagas === "5+" ? { [Op.gte]: 5 } : undefined
+          }),
+          ...(data.possui_piscina !== undefined && data.possui_piscina !== null && { 
+            possui_piscina: data.possui_piscina === true ? 1 : 0 
+          }),
+          ...(data.possui_jardim !== undefined && data.possui_jardim !== null && { 
+            possui_jardim: data.possui_jardim === true ? 1 : 0 
+          }),
+        }
+      });
+    }
+
+    // 🔹 Filtros para o whereImovel
     const whereImovel = {
-      endereco: data.endereco ? { [Op.like]: `%${data.endereco}%` } : undefined,
-      tipo: data.tipo ? { [Op.like]: `%${data.tipo}%` } : undefined,
-      murado: data.murado !== undefined ? data.murado : undefined,
-      preco: { [Op.between]: [25000, 1000000] }, // faixa fixa
-      area: { [Op.between]: [0, 1000] } // faixa fixa
+      ...tipoFilter,
+      ...(data.endereco && data.endereco !== null && { endereco: { [Op.like]: `%${data.endereco}%` } }),
+      ...(data.murado !== undefined && data.murado !== null && { murado: data.murado === true ? 1 : 0 }),  // Converte murado para 1/0
+      preco: data.preco ? { [Op.between]: data.preco } : { [Op.between]: [25000, 1000000] },  // faixa fixa ou a passada
+      area: data.area ? { [Op.between]: data.area } : { [Op.between]: [0, 1000] },  // faixa fixa ou a passada
+      status: "disponivel"  // Status fixo para "disponivel"
     };
-
-    // 🔹 filtros opcionais de Casa
-    const whereCasa = {};
-    if (data.quartos === "1") whereCasa.quartos = 1;
-    if (data.quartos === "2") whereCasa.quartos = 2;
-    if (data.quartos === "3") whereCasa.quartos = 3;
-    if (data.quartos === "4") whereCasa.quartos = 4;
-    if (data.quartos === "5+") whereCasa.quartos = { [Op.gte]: 5 };
-
-    if (data.banheiros === "1") whereCasa.banheiros = 1;
-    if (data.banheiros === "2") whereCasa.banheiros = 2;
-    if (data.banheiros === "3") whereCasa.banheiros = 3;
-    if (data.banheiros === "4") whereCasa.banheiros = 4;
-    if (data.banheiros === "5+") whereCasa.banheiros = { [Op.gte]: 5 };
-
-    if (data.vagas === "1") whereCasa.vagas = 1;
-    if (data.vagas === "2") whereCasa.vagas = 2;
-    if (data.vagas === "3") whereCasa.vagas = 3;
-    if (data.vagas === "4") whereCasa.vagas = 4;
-    if (data.vagas === "5+") whereCasa.vagas = { [Op.gte]: 5 };
-
-    if (data.piscina !== undefined) whereCasa.possui_piscina = data.piscina;
-    if (data.jardim !== undefined) whereCasa.possui_jardim = data.jardim;
 
     // 🔹 Monta a query
     const PropriedadesMapa = await Imovel.findAll({
@@ -131,23 +170,45 @@ export const buscarMapa = async (data) => {
         "tipo",
         "preco",
         "area",
-        "murado"
+        "murado",
+        "status",
+        "descricao",
+        "data_cadastro"
       ],
       include: [
+        ...includeModels, // Inclui dinamicamente os modelos com base no tipo
         {
-          model: Casa,
-          attributes: ["quartos", "banheiros", "vagas", "possui_piscina", "possui_jardim"],
-          ...(Object.keys(whereCasa).length > 0 && { where: whereCasa })
+          model: ImagemImovel,  // Inclui as imagens,
+          as: 'imagem_imovel',
+          attributes: ["url_imagem", "descricao"],
+          required: false,  // Permite que imóveis sem imagem também sejam retornados
         },
-        {
-          model: Terreno,
-          attributes: ["tipo_terreno"]
-        }
-      ]
+      ],
     });
 
-    return PropriedadesMapa;
+    // Verifique se PropriedadesMapa é um array e contém elementos
+    if (!Array.isArray(PropriedadesMapa) || PropriedadesMapa.length === 0) {
+      throw new Error("Imóveis não encontrados ou dados inválidos.");
+    }
+
+    console.log("Imóveis retornados do banco:", JSON.stringify(PropriedadesMapa, null, 2));
+
+    // Organiza os imóveis para o CarrosselMapa
+    const imoveisParaCarrossel = organizarImoveisCarrossel(PropriedadesMapa);
+
+    // Organiza os imóveis para o MapView
+    const imoveisParaMapView = organizarImoveisMapView(PropriedadesMapa);
+    
+    console.log(JSON.stringify(imoveisParaCarrossel, null, 2));
+    console.log(JSON.stringify(imoveisParaMapView, null, 2));
+
+    // Retorna as duas listas organizadas
+    return {
+      carrossel: imoveisParaCarrossel,
+      mapa: imoveisParaMapView
+    };
   } catch (error) {
+    console.error("Erro ao buscar imóveis:", error.message);
     throw new Error("Não foi possível buscar as propriedades com o local, erro: " + error.message);
   }
 };

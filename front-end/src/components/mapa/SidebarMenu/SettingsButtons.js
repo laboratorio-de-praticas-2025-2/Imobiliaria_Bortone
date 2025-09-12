@@ -2,13 +2,33 @@
 import { useFilters } from "@/context/FiltersContext";
 import { Flex } from "antd";
 
-export default function SettingsButtons({ type }) {
+export default function SettingsButtons({ type, setImoveisMapa, setImoveisCarrossel }) {
   const { getFiltersForApi, removeFilters } = useFilters();
 
-  const handleApply = () => {
+  const handleApply = async () => {
     // adicionar a requisição para a API aqui
     const filters = getFiltersForApi(type); 
     console.log("Filtros aplicados:", filters);
+    try {
+      const response = await fetch("http://localhost:4000/imoveis/mapa", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(filters), // Envia os filtros para o backend
+      });
+
+      const data = await response.json();
+      console.log(data)
+      if (data) {
+        // Atualiza a lista de imóveis com os dados retornados do backend
+        setImoveisMapa(data.propriedades.mapa) 
+        setImoveisCarrossel(data.propriedades.carrossel)
+        // Exemplo: setImoveis(data.propriedades);
+      }
+    } catch (error) {
+      console.error("Erro ao aplicar filtros:", error);
+    }
   };
 
   return (

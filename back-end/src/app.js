@@ -1,9 +1,11 @@
 import express from "express";
-import router from "./routes/recomendacaoImovelRoutes.js";
+// import router from "./routes/recomendacaoImovelRoutes.js";
 import cors from "cors";
 import connection from "./config/sequelize-config.js";
+// Importar as associações dos modelos
+import "./models/Associations.js";
 // Exemplo de como importar rotas
-import healthRouter from "./routes/route.js";
+//import healthRouter from "./routes/route.js";
 import searchRouter from "./routes/imovelSearchRoutes.js";
 
 const app = express();
@@ -15,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Rotas
 // Exemplo de como usar as rotas
-app.use("/", router, healthRouter, searchRouter);
+app.use("/", searchRouter);
 
 connection
   .authenticate()
