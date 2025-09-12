@@ -3,10 +3,12 @@ import { createContext, useContext, useState, useEffect } from "react";
 const FilterDataContext = createContext();
 
 const INITIAL_FILTERS = {
-  regiao: "Registro, São Paulo",
-  tipo_negociacao: "Comprar",
-  quartos: null,
-  banheiros: null,
+  cidade: "Registro",
+  status: "disponível",
+  tipo: "Casa",
+  precoMin: 250000,
+  precoMax: 1000000,
+  area: [100, 10000],
 };
 
 export function FilterDataProvider({ children }) {
@@ -20,7 +22,6 @@ export function FilterDataProvider({ children }) {
   };
 
   useEffect(() => {
-    // chamada da API
     async function fetchData() {
       // Exemplo: await api.get('/imoveis', { params: filterData });
       console.log("Chamando API com filtros:", filterData);

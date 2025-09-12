@@ -7,6 +7,7 @@ import QuantidadeComodos from "./QuantidadeComodos";
 import SliderArea from "./SliderArea";
 import SliderPreco from "./SliderPreco";
 import ToggleCompraAluguel from "./ToggleCompraAluguel";
+import { useFilterData } from "@/context/FilterDataContext";
 
 export default function PesquisaAvancadaModal() {
   const [selectedQuartos, setSelectedQuartos] = useState(null);
@@ -16,22 +17,25 @@ export default function PesquisaAvancadaModal() {
   const [preco, setPreco] = useState([150000, 400000]);
   const [area, setArea] = useState([100, 10000]);
   const [tipoNegocio, setTipoNegocio] = useState("Comprar");
+  const { updateFilterData } = useFilterData();
 
   const handlePesquisar = () => {
     const filtros = {
-      tipoNegocio,
       tipo: selectedTipo,
-      preco,
+      status: tipoNegocio === "Comprar" ? "disponível" : "aluguel",
+      precoMin: preco[0],
+      precoMax: preco[1],
       ...(selectedTipo === "Casa" && {
         quartos: selectedQuartos,
         banheiros: selectedBanheiros,
         vagas: selectedVagas,
       }),
-      ...(selectedTipo === "Terreno" && { area }),
+      ...(selectedTipo === "Terreno" && {
+        areaMin: area[0],
+        areaMax: area[1],
+      }),
     };
-
-    console.log("Filtros enviados:", filtros);
-    // Aqui você pode fazer a requisição com os filtros
+    updateFilterData(filtros);
   };
 
   return (
