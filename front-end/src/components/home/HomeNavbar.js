@@ -28,12 +28,21 @@ export default function HomeNavbar({ className }) {
 
   return (
     <div
-      className={`navbar top-0 left-0 w-full z-10 bg-white md:bg-[#050D2D73] py-3.5 px-6 md:px-16 ${className}`}
+      className={`navbar top-0 left-0 w-full !z-[1004] bg-white md:bg-[#050D2D73] py-3.5 px-6 md:px-16 ${className}`}
     >
       {/* Navbar Desktop */}
-      <Flex justify="space-between" align="center" className="hidden md:flex navbar-desktop">
+      <Flex
+        justify="space-between"
+        align="center"
+        className="hidden md:flex navbar-desktop !z-[1004]"
+      >
         <Link href="/">
-          <Image src="/images/LogoPreta.svg" alt="Logo Bortone" width={113} height={43} />
+          <Image
+            src="/images/LogoPreta.svg"
+            alt="Logo Bortone"
+            width={113}
+            height={43}
+          />
         </Link>
 
         <div className="flex items-center gap-10">
@@ -52,7 +61,7 @@ export default function HomeNavbar({ className }) {
         </div>
 
         {isLoggedIn ? (
-          <div className="relative inline-block text-left">
+          <div className="relative inline-block text-left z-1002">
             <button
               onClick={() => setUserMenuOpen(!userMenuOpen)}
               className="bg-[#EEF0F9] px-4 py-2 rounded-full cursor-pointer whitespace-nowrap flex items-center gap-1 relative z-20"
@@ -65,7 +74,11 @@ export default function HomeNavbar({ className }) {
             {/* Dropdown */}
             <ul
               className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-10
-                ${userMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}
+                ${
+                  userMenuOpen
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 -translate-y-2"
+                }
                 transition-all duration-300 ease-out`}
               style={{
                 paddingTop: buttonHeightPX,
@@ -79,7 +92,9 @@ export default function HomeNavbar({ className }) {
                     style={{
                       color: "#304383",
                       opacity: userMenuOpen ? 1 : 0,
-                      transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
+                      transform: userMenuOpen
+                        ? "translateY(0)"
+                        : "translateY(-16px)",
                       transitionDelay: delays[1],
                     }}
                   >
@@ -95,8 +110,11 @@ export default function HomeNavbar({ className }) {
                     borderBottomLeftRadius: bottomRadius,
                     borderBottomRightRadius: bottomRadius,
                     opacity: userMenuOpen ? 1 : 0,
-                    transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
-                    transitionDelay: user.nivel === "administrador" ? delays[2] : delays[1],
+                    transform: userMenuOpen
+                      ? "translateY(0)"
+                      : "translateY(-16px)",
+                    transitionDelay:
+                      user.nivel === "administrador" ? delays[2] : delays[1],
                   }}
                 >
                   Sair
@@ -118,16 +136,25 @@ export default function HomeNavbar({ className }) {
       </Flex>
 
       {/* Navbar Mobile */}
-      <Flex justify="space-between" align="center" className="flex md:hidden navbar-mobile">
+      <Flex
+        justify="space-between"
+        align="center"
+        className="flex md:hidden navbar-mobile "
+      >
         <Flex align="center" gap="large">
           <button className="text-2xl" onClick={() => setOpen(true)}>
             <FaBars color="#304383" />
           </button>
           <Link href="/">
-            <Image src="/images/LogoAzul.svg" alt="Logo Bortone" width={113} height={43} />
+            <Image
+              src="/images/LogoAzul.svg"
+              alt="Logo Bortone"
+              width={113}
+              height={43}
+            />
           </Link>
         </Flex>
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 z-[1003]">
           {isLoggedIn ? (
             <div className="relative inline-block text-left">
               <button
@@ -141,52 +168,52 @@ export default function HomeNavbar({ className }) {
 
               <ul
                 className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-10
-                  ${userMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}
+                  ${
+                    userMenuOpen
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 -translate-y-2"
+                  }
                   transition-all duration-300 ease-out`}
                 style={{
                   paddingTop: buttonHeightPX,
                   borderRadius: bottomRadius,
                 }}
               >
-                <li
-                  className="px-4 py-2 h-[30px] hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
-                  style={{
-                    color: "#304383",
-                    borderTopLeftRadius: topRadius,
-                    borderTopRightRadius: topRadius,
-                    opacity: userMenuOpen ? 1 : 0,
-                    transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
-                    transitionDelay: delays[0],
-                  }}
-                >
-                  Perfil
-                </li>
                 {user.nivel === "administrador" && (
+                  <Link href="/admin/cms-banner">
+                    <li
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
+                      style={{
+                        color: "#304383",
+                        opacity: userMenuOpen ? 1 : 0,
+                        transform: userMenuOpen
+                          ? "translateY(0)"
+                          : "translateY(-16px)",
+                        transitionDelay: delays[1],
+                      }}
+                    >
+                      CMS
+                    </li>
+                  </Link>
+                )}
+                <Link href="/bem-vindo">
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
                     style={{
                       color: "#304383",
+                      borderBottomLeftRadius: bottomRadius,
+                      borderBottomRightRadius: bottomRadius,
                       opacity: userMenuOpen ? 1 : 0,
-                      transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
-                      transitionDelay: delays[1],
+                      transform: userMenuOpen
+                        ? "translateY(0)"
+                        : "translateY(-16px)",
+                      transitionDelay:
+                        user.nivel === "administrador" ? delays[2] : delays[1],
                     }}
                   >
-                    CMS
+                    Sair
                   </li>
-                )}
-                <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
-                  style={{
-                    color: "#304383",
-                    borderBottomLeftRadius: bottomRadius,
-                    borderBottomRightRadius: bottomRadius,
-                    opacity: userMenuOpen ? 1 : 0,
-                    transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
-                    transitionDelay: user.nivel === "administrador" ? delays[2] : delays[1],
-                  }}
-                >
-                  Sair
-                </li>
+                </Link>
               </ul>
             </div>
           ) : (
@@ -205,13 +232,18 @@ export default function HomeNavbar({ className }) {
 
       {/* Sidebar Mobile */}
       <div
-        className={`fixed top-0 left-0 h-full w-[80%] bg-white shadow-lg transform transition-transform duration-300 z-50
+        className={`fixed top-0 left-0 h-full w-[80%] bg-white shadow-lg transform transition-transform duration-300 z-[1100]
           ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex flex-col gap-8 p-4 border-b border-gray-300">
           <Flex justify="space-between" align="center" className="w-full">
             <Link href="/">
-              <Image src="/images/LogoAzul.svg" alt="Logo Bortone" width={113} height={43} />
+              <Image
+                src="/images/LogoAzul.svg"
+                alt="Logo Bortone"
+                width={113}
+                height={43}
+              />
             </Link>
           </Flex>
           <Flex vertical gap="middle">
@@ -220,7 +252,12 @@ export default function HomeNavbar({ className }) {
               visitas, propostas e contatos
             </p>
             {!isLoggedIn && (
-              <Button type="primary" shape="round" className="w-full entrar-btn-mobile" href="/bem-vindo">
+              <Button
+                type="primary"
+                shape="round"
+                className="w-full entrar-btn-mobile"
+                href="/bem-vindo"
+              >
                 Entrar
               </Button>
             )}
