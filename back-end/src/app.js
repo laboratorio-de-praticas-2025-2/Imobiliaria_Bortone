@@ -4,10 +4,10 @@ import cors from "cors";
 import connection from "./config/sequelize-config.js";
 import "./models/Associations.js";
 import searchRouter from "./routes/imovelSearchRoutes.js";
-import agendamentoRouter from "./routes/agendamentoRoute.js";
-import recomendacaoRouter from './routes/recomendacaoImovelRoutes.js';
-import healthRouter from "./routes/healthRouter.js";
-import faqRoutes from "./routes/faqRoutes.js";
+// import agendamentoRouter from "./routes/agendamentoRoute.js";
+// import recomendacaoRouter from './routes/recomendacaoImovelRoutes.js';
+// import healthRouter from "./routes/healthRouter.js";
+// import faqRoutes from "./routes/faqRoutes.js";
 
 const app = express();
 
@@ -17,10 +17,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Rotas
-app.use("/", recomendacaoRouter, searchRouter);
-app.use('/agendamentos', agendamentoRouter );
-app.use('/health', healthRouter);
-app.use("/faq", faqRoutes);
+// app.use("/", recomendacaoRouter, searchRouter);
+app.use("/", searchRouter);
+// app.use('/agendamentos', agendamentoRouter );
+// app.use('/health', healthRouter);
+// app.use("/faq", faqRoutes);
 
 // Banco de dados
 connection
