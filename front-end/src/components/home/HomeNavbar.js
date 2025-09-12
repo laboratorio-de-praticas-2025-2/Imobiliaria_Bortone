@@ -72,45 +72,36 @@ export default function HomeNavbar({ className }) {
                 borderRadius: bottomRadius,
               }}
             >
-              <li
-                className="px-4 py-2 h-[30px] hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
-                style={{
-                  color: "#304383",
-                  borderTopLeftRadius: topRadius,
-                  borderTopRightRadius: topRadius,
-                  opacity: userMenuOpen ? 1 : 0,
-                  transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
-                  transitionDelay: delays[0],
-                }}
-              >
-                Perfil
-              </li>
               {user.nivel === "administrador" && (
+                <Link href="/admin/cms-banner">
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
+                    style={{
+                      color: "#304383",
+                      opacity: userMenuOpen ? 1 : 0,
+                      transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
+                      transitionDelay: delays[1],
+                    }}
+                  >
+                    CMS
+                  </li>
+                </Link>
+              )}
+              <Link href="/bem-vindo">
                 <li
                   className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
                   style={{
                     color: "#304383",
+                    borderBottomLeftRadius: bottomRadius,
+                    borderBottomRightRadius: bottomRadius,
                     opacity: userMenuOpen ? 1 : 0,
                     transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
-                    transitionDelay: delays[1],
+                    transitionDelay: user.nivel === "administrador" ? delays[2] : delays[1],
                   }}
                 >
-                  CMS
+                  Sair
                 </li>
-              )}
-              <li
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
-                style={{
-                  color: "#304383",
-                  borderBottomLeftRadius: bottomRadius,
-                  borderBottomRightRadius: bottomRadius,
-                  opacity: userMenuOpen ? 1 : 0,
-                  transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
-                  transitionDelay: user.nivel === "administrador" ? delays[2] : delays[1],
-                }}
-              >
-                Sair
-              </li>
+              </Link>
             </ul>
           </div>
         ) : (
