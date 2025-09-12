@@ -72,7 +72,6 @@ export const buscarImoveis = async (data) => {
           model: Casa,
           as: 'casa',
           attributes: ["quartos", "banheiros", "vagas"],
-          required: false,
           ...(Object.keys(whereCasa).length > 0 && { where: whereCasa }),
         },
         {

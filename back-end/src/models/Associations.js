@@ -13,7 +13,25 @@ Casa.belongsTo(Imovel, {
     foreignKey: 'imovel_id',
     as: 'imovel'
 });
+// 🔹 Imovel ↔ Casa (1:1)
+Imovel.hasOne(Casa, { 
+    foreignKey: 'imovel_id',
+    as: 'casa'
+});
+Casa.belongsTo(Imovel, { 
+    foreignKey: 'imovel_id',
+    as: 'imovel'
+});
 
+// 🔹 Imovel ↔ Terreno (1:1)
+Imovel.hasOne(Terreno, { 
+    foreignKey: 'imovel_id',
+    as: 'terreno'
+});
+Terreno.belongsTo(Imovel, { 
+    foreignKey: 'imovel_id',
+    as: 'imovel'
+});
 // 🔹 Imovel ↔ Terreno (1:1)
 Imovel.hasOne(Terreno, { 
     foreignKey: 'imovel_id',
