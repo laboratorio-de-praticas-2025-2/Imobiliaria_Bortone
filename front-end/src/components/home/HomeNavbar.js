@@ -19,6 +19,7 @@ export default function HomeNavbar({ className }) {
   // Altere para userMock[null] para simular deslogado, userMock[1] = usuário comum
   const user = usersMock[0] || null;
   const isLoggedIn = !!user;
+
   const buttonHeightPX = 40;
   const topRadius = "20px";
   const bottomRadius = "20px";
@@ -31,9 +32,18 @@ export default function HomeNavbar({ className }) {
       className={`navbar top-0 left-0 w-full z-10 bg-white md:bg-[#050D2D73] py-3.5 px-6 md:px-16 ${className}`}
     >
       {/* Navbar Desktop */}
-      <Flex justify="space-between" align="center" className="hidden md:flex navbar-desktop">
+      <Flex
+        justify="space-between"
+        align="center"
+        className="hidden md:flex navbar-desktop"
+      >
         <Link href="/">
-          <Image src="/images/LogoPreta.svg" alt="Logo Bortone" width={113} height={43} />
+          <Image
+            src="/images/LogoPreta.svg"
+            alt="Logo Bortone"
+            width={113}
+            height={43}
+          />
         </Link>
 
         <div className="flex items-center gap-10">
@@ -55,31 +65,39 @@ export default function HomeNavbar({ className }) {
           <div className="relative inline-block text-left">
             <button
               onClick={() => setUserMenuOpen(!userMenuOpen)}
-              className="bg-[#EEF0F9] px-4 py-2 rounded-full cursor-pointer whitespace-nowrap flex items-center gap-1 relative z-20"
+              className="bg-[#EEF0F9] px-4 py-2 rounded-full cursor-pointer whitespace-nowrap flex items-center gap-1 relative z-[10000]"
               style={{ color: "#304383" }}
             >
               <span className="truncate">{user.nome}</span>
               <IoIosArrowDown />
             </button>
 
-            {/* Dropdown */}
+            {/* Dropdown - botão sempre acima */}
             <ul
-              className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-10
-                ${userMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}
-                transition-all duration-300 ease-out`}
+              className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9999] 
+                          transition-all duration-300 ease-out 
+                          ${
+                            userMenuOpen
+                              ? "opacity-100 translate-y-0"
+                              : "opacity-0 -translate-y-2 pointer-events-none"
+                          }`}
               style={{
                 paddingTop: buttonHeightPX,
                 borderRadius: bottomRadius,
               }}
             >
               <li
-                className="px-4 py-2 h-[30px] hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
+                className={`px-4 py-2 h-[30px] hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
+                            flex justify-center items-center transition-all duration-300 ease-out
+                            ${
+                              userMenuOpen
+                                ? "opacity-100 translate-y-0"
+                                : "opacity-0 -translate-y-2"
+                            }`}
                 style={{
                   color: "#304383",
                   borderTopLeftRadius: topRadius,
                   borderTopRightRadius: topRadius,
-                  opacity: userMenuOpen ? 1 : 0,
-                  transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
                   transitionDelay: delays[0],
                 }}
               >
@@ -87,11 +105,15 @@ export default function HomeNavbar({ className }) {
               </li>
               {user.nivel === "administrador" && (
                 <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
+                  className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
+                              flex justify-center items-center transition-all duration-300 ease-out
+                              ${
+                                userMenuOpen
+                                  ? "opacity-100 translate-y-0"
+                                  : "opacity-0 -translate-y-2"
+                              }`}
                   style={{
                     color: "#304383",
-                    opacity: userMenuOpen ? 1 : 0,
-                    transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
                     transitionDelay: delays[1],
                   }}
                 >
@@ -99,14 +121,19 @@ export default function HomeNavbar({ className }) {
                 </li>
               )}
               <li
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
+                className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
+                            flex justify-center items-center transition-all duration-300 ease-out
+                            ${
+                              userMenuOpen
+                                ? "opacity-100 translate-y-0"
+                                : "opacity-0 -translate-y-2"
+                            }`}
                 style={{
                   color: "#304383",
                   borderBottomLeftRadius: bottomRadius,
                   borderBottomRightRadius: bottomRadius,
-                  opacity: userMenuOpen ? 1 : 0,
-                  transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
-                  transitionDelay: user.nivel === "administrador" ? delays[2] : delays[1],
+                  transitionDelay:
+                    user.nivel === "administrador" ? delays[2] : delays[1],
                 }}
               >
                 Sair
@@ -127,44 +154,63 @@ export default function HomeNavbar({ className }) {
       </Flex>
 
       {/* Navbar Mobile */}
-      <Flex justify="space-between" align="center" className="flex md:hidden navbar-mobile">
+      <Flex
+        justify="space-between"
+        align="center"
+        className="flex md:hidden navbar-mobile"
+      >
         <Flex align="center" gap="large">
           <button className="text-2xl" onClick={() => setOpen(true)}>
             <FaBars color="#304383" />
           </button>
           <Link href="/">
-            <Image src="/images/LogoAzul.svg" alt="Logo Bortone" width={113} height={43} />
+            <Image
+              src="/images/LogoAzul.svg"
+              alt="Logo Bortone"
+              width={113}
+              height={43}
+            />
           </Link>
         </Flex>
+
         <div className="flex-shrink-0">
           {isLoggedIn ? (
             <div className="relative inline-block text-left">
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="bg-[#EEF0F9] px-4 py-2 rounded-full whitespace-nowrap flex items-center gap-1 cursor-pointer relative z-20"
+                className="bg-[#EEF0F9] px-4 py-2 rounded-full whitespace-nowrap flex items-center gap-1 cursor-pointer relative z-[10000]"
                 style={{ color: "#304383" }}
               >
                 <span className="truncate">{user.nome}</span>
                 <IoIosArrowDown />
               </button>
 
+              {/* Dropdown Mobile - botão sempre acima */}
               <ul
-                className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-10
-                  ${userMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}
-                  transition-all duration-300 ease-out`}
+                className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9999] 
+                            transition-all duration-300 ease-out 
+                            ${
+                              userMenuOpen
+                                ? "opacity-100 translate-y-0"
+                                : "opacity-0 -translate-y-2 pointer-events-none"
+                            }`}
                 style={{
                   paddingTop: buttonHeightPX,
                   borderRadius: bottomRadius,
                 }}
               >
                 <li
-                  className="px-4 py-2 h-[30px] hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
+                  className={`px-4 py-2 h-[30px] hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
+                              flex justify-center items-center transition-all duration-300 ease-out
+                              ${
+                                userMenuOpen
+                                  ? "opacity-100 translate-y-0"
+                                  : "opacity-0 -translate-y-2"
+                              }`}
                   style={{
                     color: "#304383",
                     borderTopLeftRadius: topRadius,
                     borderTopRightRadius: topRadius,
-                    opacity: userMenuOpen ? 1 : 0,
-                    transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
                     transitionDelay: delays[0],
                   }}
                 >
@@ -172,11 +218,15 @@ export default function HomeNavbar({ className }) {
                 </li>
                 {user.nivel === "administrador" && (
                   <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
+                    className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
+                                flex justify-center items-center transition-all duration-300 ease-out
+                                ${
+                                  userMenuOpen
+                                    ? "opacity-100 translate-y-0"
+                                    : "opacity-0 -translate-y-2"
+                                }`}
                     style={{
                       color: "#304383",
-                      opacity: userMenuOpen ? 1 : 0,
-                      transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
                       transitionDelay: delays[1],
                     }}
                   >
@@ -184,14 +234,19 @@ export default function HomeNavbar({ className }) {
                   </li>
                 )}
                 <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out"
+                  className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
+                              flex justify-center items-center transition-all duration-300 ease-out
+                              ${
+                                userMenuOpen
+                                  ? "opacity-100 translate-y-0"
+                                  : "opacity-0 -translate-y-2"
+                              }`}
                   style={{
                     color: "#304383",
                     borderBottomLeftRadius: bottomRadius,
                     borderBottomRightRadius: bottomRadius,
-                    opacity: userMenuOpen ? 1 : 0,
-                    transform: userMenuOpen ? "translateY(0)" : "translateY(-16px)",
-                    transitionDelay: user.nivel === "administrador" ? delays[2] : delays[1],
+                    transitionDelay:
+                      user.nivel === "administrador" ? delays[2] : delays[1],
                   }}
                 >
                   Sair
@@ -220,7 +275,12 @@ export default function HomeNavbar({ className }) {
         <div className="flex flex-col gap-8 p-4 border-b border-gray-300">
           <Flex justify="space-between" align="center" className="w-full">
             <Link href="/">
-              <Image src="/images/LogoAzul.svg" alt="Logo Bortone" width={113} height={43} />
+              <Image
+                src="/images/LogoAzul.svg"
+                alt="Logo Bortone"
+                width={113}
+                height={43}
+              />
             </Link>
           </Flex>
           <Flex vertical gap="middle">
@@ -229,12 +289,18 @@ export default function HomeNavbar({ className }) {
               visitas, propostas e contatos
             </p>
             {!isLoggedIn && (
-              <Button type="primary" shape="round" className="w-full entrar-btn-mobile" href="/bem-vindo">
+              <Button
+                type="primary"
+                shape="round"
+                className="w-full entrar-btn-mobile"
+                href="/bem-vindo"
+              >
                 Entrar
               </Button>
             )}
           </Flex>
         </div>
+
         <div className="flex flex-col p-6 gap-6">
           <Search
             placeholder="Pesquisa"
