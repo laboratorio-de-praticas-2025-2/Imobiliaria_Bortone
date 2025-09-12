@@ -68,12 +68,16 @@ export const buscarImoveis = async (data) => {
       include: [
         {
           model: Casa,
+          as: 'casa',
           attributes: ["quartos", "banheiros", "vagas"],
+          required: false,
           ...(Object.keys(whereCasa).length > 0 && { where: whereCasa }),
         },
         {
           model: Terreno,
-          attributes: ["tipo_terreno"],
+          as: 'terreno',
+          attributes: ["id"],
+          required: false,
         },
       ],
     });
@@ -136,12 +140,16 @@ export const buscarMapa = async (data) => {
       include: [
         {
           model: Casa,
+          as: 'casa',
           attributes: ["quartos", "banheiros", "vagas", "possui_piscina", "possui_jardim"],
+          required: false,
           ...(Object.keys(whereCasa).length > 0 && { where: whereCasa })
         },
         {
           model: Terreno,
-          attributes: ["tipo_terreno"]
+          as: 'terreno',
+          attributes: ["id"],
+          required: false
         }
       ]
     });
