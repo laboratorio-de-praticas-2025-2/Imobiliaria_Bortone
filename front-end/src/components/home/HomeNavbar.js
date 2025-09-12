@@ -20,12 +20,14 @@ export default function HomeNavbar({ className }) {
     >
       <Flex justify="space-between" align="center" className="navbar-desktop">
         {/* Logo */}
-        <Image
-          src="/images/LogoPreta.svg"
-          alt="Logo Bortone"
-          width={113}
-          height={43}
-        />
+        <Link href="/">
+          <Image
+            src="/images/LogoPreta.svg"
+            alt="Logo Bortone"
+            width={113}
+            height={43}
+          />
+        </Link>
 
         {/* Links desktop */}
         <div className="hidden md:flex items-center gap-10">
@@ -60,12 +62,14 @@ export default function HomeNavbar({ className }) {
         </button>
 
         {/* Logo */}
-        <Image
-          src="/images/LogoAzul.svg"
-          alt="Logo Bortone"
-          width={113}
-          height={43}
-        />
+        <Link href="/">
+          <Image
+            src="/images/LogoAzul.svg"
+            alt="Logo Bortone"
+            width={113}
+            height={43}
+          />
+        </Link>
       </Flex>
 
       <div
@@ -74,12 +78,14 @@ export default function HomeNavbar({ className }) {
       >
         <div className="flex flex-col gap-8 p-4 border-b border-gray-300">
           <Flex justify="space-between" align="center" className="w-full">
-            <Image
-              src="/images/LogoAzul.svg"
-              alt="Logo Bortone"
-              width={113}
-              height={43}
-            />
+            <Link href="/">
+              <Image
+                src="/images/LogoAzul.svg"
+                alt="Logo Bortone"
+                width={113}
+                height={43}
+              />
+            </Link>
           </Flex>
           <Flex vertical gap="middle">
             <p className="text-sm text-[var(--primary)]">

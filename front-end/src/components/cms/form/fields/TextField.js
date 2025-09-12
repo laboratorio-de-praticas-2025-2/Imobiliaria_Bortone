@@ -8,6 +8,8 @@ export default function TextField({
   className,
   classInput,
   readOnly = false,
+  value,
+  onChange,
 }) {
   return (
     <FormAntd.Item
@@ -23,8 +25,10 @@ export default function TextField({
     >
       <Input
         placeholder={placeholder}
-        className={`custom-input ${classInput}`} 
+        className={`custom-input ${classInput ?? ""}`}
         readOnly={readOnly}
+        value={value}
+        onChange={onChange}
       />
     </FormAntd.Item>
   );

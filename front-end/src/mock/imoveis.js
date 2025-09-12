@@ -18,11 +18,22 @@ export const mockImoveis = [
     possui_jardim: true,
     ativo: true,
     imagens: [
-      { url_imagem: "/images/casa.png", descricao: "Fachada da casa" },
-      { url_imagem: "/images/casa.png", descricao: "Fachada da casa" },
-      { url_imagem: "/images/casa.png", descricao: "Fachada da casa" },
+      {
+        url_imagem: "/images/casa-isolada-no-campo.jpg",
+        descricao: "Fachada da casa",
+      },
+      {
+        url_imagem: "/images/casa-isolada-no-campo.jpg",
+        descricao: "Fachada da casa",
+      },
+      {
+        url_imagem: "/images/casa-isolada-no-campo.jpg",
+        descricao: "Fachada da casa",
+      },
     ],
     bairro: "Vila Ponce",
+    latitude: -23.55052,
+    longitude: -46.633308,
   },
   {
     id: 2,
@@ -48,6 +59,8 @@ export const mockImoveis = [
       { url_imagem: "/images/imovel1.png", descricao: "Sala de estar" },
     ],
     bairro: "Centro",
+    latitude: -23.548943,
+    longitude: -46.638818,
   },
   {
     id: 3,
@@ -70,6 +83,8 @@ export const mockImoveis = [
       { url_imagem: "/images/slide1.png", descricao: "Quarto principal" },
     ],
     bairro: "Vila São Francisco",
+    latitude: -23.5707,
+    longitude: -46.7386,
   },
   {
     id: 4,
@@ -89,6 +104,8 @@ export const mockImoveis = [
     ativo: true,
     imagens: [{ url_imagem: "/images/slide1.png", descricao: "Quarto principal" }],
     bairro: "Vila Fátima",
+    latitude: -23.5123,
+    longitude: -46.6092,
   },
   {
     id: 5,
@@ -108,8 +125,12 @@ export const mockImoveis = [
     possui_piscina: false,
     possui_jardim: true,
     ativo: true,
-    imagens: [{ url_imagem: "/images/casa-isolada-no-campo.jpg", descricao: "Fachada da casa" }],
+    imagens: [
+      { url_imagem: "/images/casa-isolada-no-campo.jpg", descricao: "Fachada da casa" },
+    ],
     bairro: "Nosso Teto",
+    latitude: -23.6681,
+    longitude: -46.7596,
   },
   {
     id: 6,
@@ -131,6 +152,8 @@ export const mockImoveis = [
     ativo: true,
     imagens: [{ url_imagem: "/images/slide1.png", descricao: "Frente da casa" }],
     bairro: "Jardim das Palmeiras",
+    latitude: -23.6512,
+    longitude: -46.7135,
   },
   {
     id: 7,
@@ -152,6 +175,8 @@ export const mockImoveis = [
     ativo: true,
     imagens: [{ url_imagem: "/images/slide1.png", descricao: "Área externa" }],
     bairro: "Jardim Hatari",
+    latitude: -23.6333,
+    longitude: -46.7155,
   },
   {
     id: 8,
@@ -173,6 +198,8 @@ export const mockImoveis = [
     ativo: true,
     imagens: [{ url_imagem: "/images/slide1.png", descricao: "Entrada da casa" }],
     bairro: "Vila Ribeirópolis",
+    latitude: -23.6011,
+    longitude: -46.7212,
   },
   {
     id: 9,
@@ -194,6 +221,8 @@ export const mockImoveis = [
     ativo: true,
     imagens: [{ url_imagem: "/images/slide1.png", descricao: "Sala de estar" }],
     bairro: "Vila Tupy",
+    latitude: -23.6102,
+    longitude: -46.7001,
   },
   {
     id: 10,
@@ -213,8 +242,15 @@ export const mockImoveis = [
     possui_piscina: false,
     possui_jardim: true,
     ativo: true,
-    imagens: [{ url_imagem: "/images/casa.png", descricao: "Fachada da casa" }],
+    imagens: [
+      {
+        url_imagem: "/images/casa-isolada-no-campo.jpg",
+        descricao: "Fachada da casa",
+      },
+    ],
     bairro: "Vila Ponce",
+    latitude: -23.55052,
+    longitude: -46.633308,
   },
   {
     id: 11,
@@ -234,8 +270,15 @@ export const mockImoveis = [
     possui_piscina: false,
     possui_jardim: true,
     ativo: true,
-    imagens: [{ url_imagem: "/images/casa.png", descricao: "Fachada da casa" }],
+    imagens: [
+      {
+        url_imagem: "/images/casa-isolada-no-campo.jpg",
+        descricao: "Fachada da casa",
+      },
+    ],
     bairro: "Vila Ponce",
+    latitude: -23.55052,
+    longitude: -46.633308,
   },
   {
     id: 12,
@@ -257,6 +300,8 @@ export const mockImoveis = [
     ativo: true,
     imagens: [{ url_imagem: "/images/slide1.png", descricao: "Sala de estar" }],
     bairro: "Centro",
+    latitude: -23.548943,
+    longitude: -46.638818,
   },
   {
     id: 13,
@@ -281,6 +326,8 @@ export const mockImoveis = [
       { url_imagem: "/images/slide1.png", descricao: "Quarto principal" },
     ],
     bairro: "Vila São Francisco",
+    latitude: -23.5707,
+    longitude: -46.7386,
   },
   {
     id: 14,
@@ -302,5 +349,7 @@ export const mockImoveis = [
     ativo: true,
     imagens: [{ url_imagem: "/images/slide1.png", descricao: "Quarto principal" }],
     bairro: "Vila Fátima",
+    latitude: -23.5123,
+    longitude: -46.6092,
   },
 ];
