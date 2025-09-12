@@ -89,10 +89,12 @@ export const buscarImoveis = async (data) => {
 };
 
 export const buscarMapa = async (data) => {
+  console.log(data); // Verifique os dados recebidos
+
   try {
     console.log("Dados recebidos:", data);  // Verifique no console o que foi recebido
 
-    // 🔹 filtros principais de Imóvel
+    // 🔹 Filtros principais de Imóvel
     let tipoFilter = {};
     let includeModels = [];
 
@@ -103,7 +105,7 @@ export const buscarMapa = async (data) => {
         model: Terreno,  // Apenas Terreno
         as: 'terreno'
       });
-    } else if (data.tipo === "Casa" || data.tipo === "Apartamento") {
+    } else if (data.tipo === "Casa" || data.tipo === "Apartamento" ||  data.tipo !== "Terreno") {
       tipoFilter = {
         tipo: { [Op.or]: ["Casa", "Apartamento"] }  // Filtra por 'Casa' ou 'Apartamento'
       };
@@ -147,7 +149,7 @@ export const buscarMapa = async (data) => {
     }
 
     // 🔹 Filtros para o whereImovel
-    const whereImovel = {
+    let whereImovel = {
       ...tipoFilter,
       ...(data.endereco && data.endereco !== null && { endereco: { [Op.like]: `%${data.endereco}%` } }),
       ...(data.murado !== undefined && data.murado !== null && { murado: data.murado === true ? 1 : 0 }),  // Converte murado para 1/0
@@ -155,6 +157,11 @@ export const buscarMapa = async (data) => {
       area: data.area ? { [Op.between]: data.area } : { [Op.between]: [0, 1000] },  // faixa fixa ou a passada
       status: "disponivel"  // Status fixo para "disponivel"
     };
+
+    // Se apenas o endereço for fornecido (sem outros filtros), ajusta a query para pesquisar somente pelo endereço
+    if (Object.keys(data).length === 1 && data.endereco) {
+      whereImovel = { endereco: { [Op.like]: `%${data.endereco}%` } }; // Filtro apenas para o endereço
+    }
 
     // 🔹 Monta a query
     const PropriedadesMapa = await Imovel.findAll({
