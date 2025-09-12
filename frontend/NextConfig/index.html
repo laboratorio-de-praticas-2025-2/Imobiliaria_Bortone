@@ -1,0 +1,827 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../EstruturaDePastas/">
+      
+      
+        <link rel="next" href="../middlwareIndexacao/">
+      
+      
+      <link rel="icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>Configurações do Next - Imobiliaria Bortone - Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#documentacao-do-nextconfigmjs" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-header__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imobiliaria Bortone - Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Configurações do Next
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-nav__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    Imobiliaria Bortone - Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RegrasGerais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../EstruturaDePastas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estrutura de Pastas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visão geral
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ambiente
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cabecalhos-configurados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cabeçalhos configurados
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#content-security-policy-csp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Content Security Policy (CSP)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-adicionar-um-novo-dominio-externo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como adicionar um novo domínio externo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-control-por-rota" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache-Control por rota
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imagens-next-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Imagens (Next Image)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boas-praticas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boas práticas
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checklist-para-producao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checklist para Produção
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../middlwareIndexacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Middleware
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ManualdeTags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual de Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/AlgoritmoDeRecomendacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/BancoDeDados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visão geral
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ambiente
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cabecalhos-configurados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cabeçalhos configurados
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#content-security-policy-csp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Content Security Policy (CSP)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-adicionar-um-novo-dominio-externo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como adicionar um novo domínio externo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-control-por-rota" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache-Control por rota
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imagens-next-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Imagens (Next Image)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boas-praticas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boas práticas
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checklist-para-producao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checklist para Produção
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="documentacao-do-nextconfigmjs">Documentação do <code>next.config.mjs</code></h1>
+<p>Arquivo de configuração do <strong>Next.js</strong> para segurança, caching e cabeçalhos HTTP do frontend.</p>
+<p><strong>Caminho:</strong> <code>front-end/next.config.mjs</code></p>
+<hr />
+<h2 id="visao-geral">Visão geral</h2>
+<ul>
+<li>Define <strong>cabeçalhos de segurança</strong> para todas as rotas (<code>source: "/(.*)"</code>).</li>
+<li>Implementa <strong>Content Security Policy (CSP)</strong> compatível com OpenStreetMap e Vercel Analytics/Speed Insights.</li>
+<li>Ajusta políticas de script em <strong>ambiente de desenvolvimento</strong> para suportar ferramentas de build/debug.</li>
+<li>Configura <strong>caching agressivo</strong> para assets estáticos (<code>/_next/static</code>, <code>/images</code>, <code>/fonts</code>, <code>favicon</code>).</li>
+<li>Habilita <strong>formatos de imagem modernos</strong> (<code>AVIF</code>, <code>WebP</code>) no Next Image.</li>
+</ul>
+<hr />
+<h2 id="ambiente">Ambiente</h2>
+<ul>
+<li><code>isDev = process.env.NODE_ENV !== "production"</code></li>
+<li><strong>Dev:</strong> inclui <code>'unsafe-eval'</code> em <code>script-src</code> (necessário para bundlers/devtools).</li>
+<li><strong>Prod:</strong> <code>'unsafe-eval'</code> é removido automaticamente.</li>
+</ul>
+<hr />
+<h2 id="cabecalhos-configurados">Cabeçalhos configurados</h2>
+<ul>
+<li>
+<p><code>X-Frame-Options: DENY</code><br />
+  Bloqueia carregamento em iframes de terceiros (mitiga clickjacking).</p>
+</li>
+<li>
+<p><code>X-Content-Type-Options: nosniff</code><br />
+  Impede MIME sniffing.</p>
+</li>
+<li>
+<p><code>Referrer-Policy: strict-origin-when-cross-origin</code><br />
+  Evita vazamento de URLs completas em navegação cross-site.</p>
+</li>
+<li>
+<p><code>Permissions-Policy: geolocation=(self), camera=(), microphone=(self), fullscreen=(self), payment=(), usb=(), accelerometer=(), gyroscope=()</code><br />
+  Restringe acesso a APIs sensíveis do navegador.</p>
+</li>
+<li>
+<p><code>Strict-Transport-Security: max-age=63072000; includeSubDomains; preload</code><br />
+  Força HTTPS (habilitar apenas se o domínio já estiver 100% em HTTPS).</p>
+</li>
+<li>
+<p><code>Cross-Origin-Resource-Policy: same-origin</code><br />
+  Bloqueia uso indevido de recursos por outros domínios.</p>
+</li>
+<li>
+<p><code>Cross-Origin-Opener-Policy: same-origin</code><br />
+  Isola contexto de navegação contra ataques cross-origin.</p>
+</li>
+</ul>
+<hr />
+<h2 id="content-security-policy-csp">Content Security Policy (CSP)</h2>
+<p>Diretivas aplicadas (valores separados por <code>;</code>):</p>
+<ul>
+<li>
+<p><code>default-src 'self'</code><br />
+  Origem padrão restrita.</p>
+</li>
+<li>
+<p><code>script-src 'self' 'unsafe-inline'</code>  </p>
+</li>
+<li><strong>Dev:</strong> inclui <code>'unsafe-eval'</code>.  </li>
+<li><strong>Prod:</strong> <code>'unsafe-eval'</code> removido.  </li>
+<li>
+<p>⚠ <code>'unsafe-inline'</code> é necessário para JSON-LD inline e scripts gerados pelo Next (revisar no futuro para nonce/hash).</p>
+</li>
+<li>
+<p><code>style-src 'self' 'unsafe-inline'</code><br />
+  Necessário para Ant Design e estilos inline.</p>
+</li>
+<li>
+<p><code>img-src 'self' data: blob: https://*.tile.openstreetmap.org</code><br />
+  Permite imagens locais, data/blob e tiles do OpenStreetMap.</p>
+</li>
+<li>
+<p><code>font-src 'self' data:</code><br />
+  Fontes locais e embutidas via data URI.</p>
+</li>
+<li>
+<p><code>connect-src 'self' https://vitals.vercel-insights.com</code><br />
+  Libera chamadas XHR/fetch para API própria e métricas da Vercel.</p>
+</li>
+<li>
+<p><code>frame-ancestors 'none'</code><br />
+  Impede embelezamento por terceiros (complementa <code>X-Frame-Options</code>).</p>
+</li>
+</ul>
+<hr />
+<h2 id="como-adicionar-um-novo-dominio-externo">Como adicionar um novo domínio externo</h2>
+<ol>
+<li>Identifique a categoria:</li>
+<li>Scripts → <code>script-src</code></li>
+<li>Estilos → <code>style-src</code></li>
+<li>Imagens → <code>img-src</code></li>
+<li>Conexões (API/WebSocket) → <code>connect-src</code></li>
+<li>Fontes → <code>font-src</code></li>
+<li>Inclua o domínio na diretiva correta.<br />
+   Ex.: CDN de imagens → <code>img-src ... https://cdn.exemplo.com</code></li>
+<li>Evite curingas (<code>*</code>) e protocolos desnecessários.</li>
+</ol>
+<hr />
+<h2 id="cache-control-por-rota">Cache-Control por rota</h2>
+<ul>
+<li>
+<p><code>/_next/static/*</code>, <code>/images/*</code>, <code>/fonts/*</code>:<br />
+<code>public, max-age=31536000, immutable</code> (1 ano, seguro para assets versionados).</p>
+</li>
+<li>
+<p><code>/favicon.ico</code>:<br />
+<code>public, max-age=604800</code> (1 semana).</p>
+</li>
+</ul>
+<hr />
+<h2 id="imagens-next-image">Imagens (Next Image)</h2>
+<ul>
+<li><code>images.formats = ["image/avif", "image/webp"]</code><br />
+  Navegadores que não suportam caem em fallback automático para JPEG/PNG.</li>
+</ul>
+<hr />
+<h2 id="boas-praticas">Boas práticas</h2>
+<ul>
+<li><strong>Prod:</strong> sem <code>'unsafe-eval'</code>.  </li>
+<li>Evitar <code>'unsafe-inline'</code> em <code>script-src</code> (migrar para nonce/hash futuramente).  </li>
+<li>Revisar CSP sempre que integrar novos provedores.  </li>
+<li>Validar cache e cabeçalhos via DevTools ou <code>curl -I</code>.</li>
+</ul>
+<hr />
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><strong>Erro CSP no console:</strong> conferir diretiva rejeitada e adicionar domínio correto.  </li>
+<li><strong>Tiles OSM quebrados:</strong> validar <code>img-src</code> para <code>https://*.tile.openstreetmap.org</code>.  </li>
+<li><strong>Cabeçalhos faltando:</strong> validar resposta via <code>curl -I</code> ou DevTools &gt; Network.</li>
+</ul>
+<hr />
+<h2 id="checklist-para-producao">Checklist para Produção</h2>
+<ul>
+<li>[ ] HTTPS habilitado e <code>Strict-Transport-Security</code> ativo.  </li>
+<li>[ ] <code>unsafe-eval</code> ausente.  </li>
+<li>[ ] <code>unsafe-inline</code> revisado (migrar para nonce/hash quando possível).  </li>
+<li>[ ] Todos os domínios externos adicionados ao CSP.  </li>
+<li>[ ] Cache-Control validado (<code>curl -I</code>).  </li>
+<li>[ ] Testes feitos em múltiplos navegadores.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

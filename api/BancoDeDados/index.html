@@ -1,0 +1,1033 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../AlgoritmoDeRecomendacao/">
+      
+      
+      
+      <link rel="icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>Banco de Dados - Imobiliaria Bortone - Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#banco-de-dados-mysql" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-header__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imobiliaria Bortone - Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Banco de Dados
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-nav__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    Imobiliaria Bortone - Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RegrasGerais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../EstruturaDePastas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estrutura de Pastas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/NextConfig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/middlwareIndexacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Middleware
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/ManualdeTags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual de Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AlgoritmoDeRecomendacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recomendacoes-gerais" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Recomendações Gerais:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ultimas-mudancas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Últimas Mudanças
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagrama" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagrama:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ambientes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ambientes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ambientes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-producao" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Produção
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-desenvolvimento" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Desenvolvimento
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Local
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maneiras-de-se-conectar-e-visualizar-os-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maneiras de se conectar e visualizar os dados:
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maneiras de se conectar e visualizar os dados:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-utilizando-um-software-de-gerenciamento-de-banco-de-dados-heidisql-dbeaver-mysql-workbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Utilizando um Software de gerenciamento de Banco de dados (HeidiSQL, Dbeaver, MySQL Workbench....):
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Utilizando um Software de gerenciamento de Banco de dados (HeidiSQL, Dbeaver, MySQL Workbench....):">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#heidisql" class="md-nav__link">
+    <span class="md-ellipsis">
+      HeidiSQL:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dbeaver" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dbeaver:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-utilizando-o-phpmyadmin-pela-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Utilizando o phpMyAdmin pela web:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pelo-codigo-em-uma-aplicacao-backend-utilizando-as-credenciais-de-acesso-fornecidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Pelo código em uma aplicação backend utilizando as credenciais de acesso fornecidas
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recomendacoes-gerais" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Recomendações Gerais:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ultimas-mudancas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Últimas Mudanças
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagrama" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagrama:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ambientes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ambientes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ambientes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-producao" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Produção
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-desenvolvimento" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Desenvolvimento
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Local
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maneiras-de-se-conectar-e-visualizar-os-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maneiras de se conectar e visualizar os dados:
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maneiras de se conectar e visualizar os dados:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-utilizando-um-software-de-gerenciamento-de-banco-de-dados-heidisql-dbeaver-mysql-workbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Utilizando um Software de gerenciamento de Banco de dados (HeidiSQL, Dbeaver, MySQL Workbench....):
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Utilizando um Software de gerenciamento de Banco de dados (HeidiSQL, Dbeaver, MySQL Workbench....):">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#heidisql" class="md-nav__link">
+    <span class="md-ellipsis">
+      HeidiSQL:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dbeaver" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dbeaver:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-utilizando-o-phpmyadmin-pela-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Utilizando o phpMyAdmin pela web:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pelo-codigo-em-uma-aplicacao-backend-utilizando-as-credenciais-de-acesso-fornecidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Pelo código em uma aplicação backend utilizando as credenciais de acesso fornecidas
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="banco-de-dados-mysql">Banco de dados (MySQL)</h1>
+<h2 id="recomendacoes-gerais">📝 Recomendações Gerais:</h2>
+<ul>
+<li>As estruturas e relações de tabelas deste banco <strong>não devem ser alteradas</strong> sem a autorização do time de dados.</li>
+<li>No ambiente de <i><b>desenvolvimento</b></i>, todos os usuários possuem acesso liberado para inserções e remoções de dados. Caso necessário, esses acessos poderão ser limitados...</li>
+<li>Recomendamos que o desenvolvimento seja iniciado sempre pelo banco local, pois ele oferece maior liberdade para testes e inserções de dados, menor latência nas consultas e a possibilidade de trabalhar com dados inconsistentes ou incompletos sem impacto no ambiente principal ou de desenvolvimento.</li>
+</ul>
+<h2 id="ultimas-mudancas">Últimas Mudanças</h2>
+<ul>
+<li><em>Banco foi Populado com dados de exemplo!</em></li>
+<li>Adição do atributo <code>tipo_negociacao</code> na tabela IMOVEIS</li>
+<li>Adição do atributo <code>ativo</code> na tabela BANNER_INDEX</li>
+<li>Adição do atributo <code>ativo</code> na tabela PUBLICIDADE</li>
+<li>Atualização do atributo <code>status</code> na tabela IMOVEIS para aceitar os valores <ul>
+<li><code>disponivel</code> - <code>indisponivel</code> - <code>vendido</code> - <code>locado</code></li>
+</ul>
+</li>
+<li>Adição do atributo <code>data_update_status</code> na tabela IMOVEIS<ul>
+<li>Esse atributo é populado por um trigger sempre que o atributo <code>status</code> é modificado </li>
+</ul>
+</li>
+</ul>
+<h2 id="diagrama">Diagrama:</h2>
+<p><img alt="imagem do diagrama" src="assets/imoveis_diagrama.mmd.png" /></p>
+<h2 id="estrutura">Estrutura:</h2>
+<p><br> </p>
+<details>
+<summary><strong>USUARIO</strong></summary>
+
+| Nome da Coluna | Tipo de Dado                      | Descrição                          |
+| -------------- | --------------------------------- | ---------------------------------- |
+| id             | INT(11)                           | Identificador único do usuário     |
+| nome           | VARCHAR(100)                      | Nome completo do usuário           |
+| email          | VARCHAR(100)                      | E-mail do usuário (deve ser único) |
+| senha          | VARCHAR(255)                      | Senha criptografada                |
+| nivel          | TINYINT(1)                        | Nível de acesso do usuário, 0 = administrador, 1 = visitante         |
+| celular        | VARCHAR(20)                       | Número de celular do usuário       |
+
+</details>
+
+<p><em>Tabela para armazenar os dados de um usuário cadastrado.</em></p>
+<p><br> </p>
+<details>
+<summary><strong>IMOVEIS</strong></summary>
+
+| Nome da Coluna | Tipo de Dado       | Descrição                                |
+|---------------|--------------------|-------------------------------------------|
+| id            | INT(11)           | Identificador único do imóvel            |
+| tipo          | VARCHAR(50)       | Tipo do imóvel (ex.: Casa, Apartamento ou Terreno)  |
+| endereco      | VARCHAR(255)      | Endereço do imóvel (ex: Número, rua, bairro) |
+| cidade        | VARCHAR(100)      | Cidade onde o imóvel está localizado     |
+| estado        | VARCHAR(2)        | Sigla do estado                          |
+| preco         | DECIMAL(12,2)     | Preço do imóvel                          |
+| status        | ENUM('disponivel', 'indisponivel', 'vendido', 'locado')       | Status do imóvel, esse campo pode ser usado para lógica de mostrar ou não o imóvel no site/mapa |
+| area          | INT(11)           | Área do imóvel em m²                     |
+| descricao     | TEXT              | Descrição do imóvel                      |
+| data_cadastro | DATE              | Data de cadastro do imóvel               |
+| murado        | TINYINT(1)        | Indica se o imóvel é murado (0 = não, 1 = sim)    |
+| latitude      | DECIMAL(10,7)     | Latitude da localização                  |
+| longitude     | DECIMAL(10,7)     | Longitude da localização                 |
+| usuario_id    | INT(11)           | ID do usuário que cadastrou o imóvel (Apenas administradores cadastram imóveis)    |
+| tipo_negociacao     | ENUM('venda', 'aluguel') | Tipo de proposta do imóvel (Está disponível para venda ou aluguel) - Em caso de um imóvel ser oferecido como ambas opções deve-se cadastrar duas vezes e conectá-lo com a mesma tabela de casa ou de terreno |
+| data_update_status  | TIMESTAMP | Campo guarda a data da ocorrência de update no atributo status do imóvel. Exemplo: Ao atualizar para "vendido" vai ficar registrado que foi vendido no dia do update, o mesmo funciona se mudar para locado, disponivel ou indisponivel (A atualização do campo DATA_UPDATE_STATUS é feita de forma automática no banco por meio de um trigger que observa o campo STATUS)
+
+</details>
+
+<p><em>Tabela para armazenar os dados dos imóveis cadastrados</em></p>
+<p><br> </p>
+<details>
+<summary><strong>CASA</strong></summary>
+
+| Nome da Coluna   | Tipo de Dado   | Descrição                                |
+|-----------------|----------------|-------------------------------------------|
+| id              | INT(11)       | Identificador único da casa              |
+| imovel_id       | INT(11)       | ID do imóvel relacionado                 |
+| quartos         | INT(11)       | Número de quartos                        |
+| banheiros       | INT(11)       | Número de banheiros                      |
+| vagas           | INT(11)       | Número de vagas de garagem               |
+| possui_piscina  | TINYINT(1)    | Indica se a casa possui piscina (0 = não, 1 = sim)|
+| possui_jardim   | TINYINT(1)    | Indica se a casa possui jardim (0 = não, 1 = sim) |
+
+</details>
+
+<p><em>Tabela para armazenar os dados do imóvel quando for casa</em></p>
+<p><br> </p>
+<details>
+<summary><strong>TERRENO</strong></summary>
+
+| Nome da Coluna | Tipo de Dado | Descrição                           |
+|----------------|--------------|-------------------------------------|
+| id             | INT(11)      | Identificador único do terreno      |
+| imovel_id      | INT(11)      | ID do imóvel relacionado            |
+
+</details>
+
+<p><em>Tabela para armazenar os dados do imóvel quando for terreno</em></p>
+<p><br> </p>
+<details>
+<summary><strong>IMAGEM_IMOVEL</strong></summary>
+
+| Nome da Coluna | Tipo de Dado   | Descrição                           |
+|----------------|----------------|-------------------------------------|
+| id             | INT(11)        | Identificador único da imagem       |
+| imovel_id      | INT(11)        | ID do imóvel relacionado            |
+| url_imagem     | VARCHAR(255)   | Nome da Imagem + extensão (ex: 7ac66c0f1484d64.png) - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end |
+| descricao      | VARCHAR(255)   | Descrição da imagem                 |
+
+</details>
+
+<p><em>Tabela para armazenar cada imagem do imóvel</em></p>
+<p><br> </p>
+<details>
+<summary><strong>BANNER_INDEX</strong></summary>
+
+| Nome da Coluna | Tipo de Dado    | Descrição                          |
+|----------------|----------------|-------------------------------------|
+| id             | INT(11)        | Identificador único                 |
+| url_imagem     | VARCHAR(255)   | Nome da Imagem + extensão (ex: 7ac66c0f1484d64.png) - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end                       |
+| descricao      | VARCHAR(255)   | Descrição                           |
+| usuario_id     | INT(11)        | ID do usuário que cadastrou o banner (Apenas administradores podem cadastrar)|
+| ativo          | TINYINT(1)     | Indica se o banner deve aparecer ou não no carrossel da página (0 = não, 1 = sim) |
+
+</details>
+
+<p><em>Tabela para armazenar imagens do carrosel</em></p>
+<p><br> </p>
+<details>
+<summary><strong>IMOBILIARIA</strong></summary>
+
+| Nome da Coluna | Tipo de Dado    | Descrição                             |
+|----------------|----------------|---------------------------------------|
+| id             | INT(11)        | Identificador único                   |
+| nome           | VARCHAR(100)   | Nome da imobiliária                   |
+| cnpj           | VARCHAR(20)    | CNPJ da imobiliária                   |
+| telefone       | VARCHAR(20)    | Telefone de contato                   |
+| email          | VARCHAR(100)   | E-mail de contato                     |
+| endereco       | VARCHAR(255)   | Endereço                              |
+| cidade         | VARCHAR(100)   | Cidade                                |
+| estado         | VARCHAR(2)     | Estado (sigla)                        |
+| site           | VARCHAR(100)   | Url do Website da imobiliária         |
+| usuario_id     | INT(11)        | ID do usuário responsável (Apenas usuário do tipo administrador pode alterar)             |
+
+
+</details>
+
+<p><em>Tabela para armazenar os dados da imobiliária (Apenas um dado deve ser cadastrado nessa tabela)</em></p>
+<p><br> </p>
+<details>
+<summary><strong>FAQ</strong></summary>
+
+| Nome da Coluna | Tipo de Dado | Descrição                           |
+|----------------|--------------|-------------------------------------|
+| id             | INT(11)      | Identificador único da pergunta     |
+| pergunta       | TEXT         | Dúvida                         |
+| resposta       | TEXT         | Resposta      |
+| usuario_id     | INT(11)      | ID do usuário Responsável (Apenas Administradores podem cadastrar as perguntas e respostas)  |
+
+</details>
+
+<p><em>Tabela para armazenar os dados das perguntas e respostas</em></p>
+<p><br> </p>
+<details>
+<summary><strong>RECOMENDACAO_IMOVEL</strong></summary>
+
+| Nome da Coluna | Tipo de Dado | Descrição                           |
+|----------------|--------------|-------------------------------------|
+| id             | INT(11)      | Identificador único da recomendação |
+| usuario_id     | INT(11)      | ID do usuário que recebeu a recomendação |
+| imovel_id      | INT(11)      | ID do imóvel recomendado            |
+| data_visita    | DATE         | Data da visita na página do imóvel  |
+
+</details>
+
+<p><em>Tabela para armazenar os dados referentes aos acessos do usuário</em>
+- Ao acessar a página de determinado imóvel o dado será salvo nessa tabela, esse "histórico" de acesso é usado no algoritmo de recomendação.</p>
+<p><br> </p>
+<details>
+<summary><strong>PUBLICIDADE</strong></summary>
+
+| Nome da Coluna | Tipo de Dado  | Descrição                           |
+|----------------|---------------|-------------------------------------|
+| id             | INT(11)       | Identificador único da publicidade  |
+| titulo         | VARCHAR(100)  | Título da publicidade               |
+| conteudo       | TEXT          | Conteúdo da publicidade             |
+| url_imagem     | VARCHAR(255)  | Nome da Imagem + extensão (ex: 7ac66c0f1484d64.png) - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end |
+| usuario_id     | INT(11)       | ID do usuário que cadastrou a publicidade |
+| ativo          | TINYINT(1)     | Indica se a publicidade está ativa e deve aparecer no site (0 = não, 1 = sim) |
+
+
+</details>
+
+<p><em>Tabela para armazenar publicidades</em>
+- Exemplo de caso relacionado com essa tabela: Uma loja de móveis fez um acordo para publicidade com a imobiliária, então o administrador cadastra os dados relacionados a propaganda e então as publicidades cadastradas aparecem no front</p>
+<p><br> </p>
+<details>
+<summary><strong>BLOG</strong></summary>
+
+| Nome da Coluna    | Tipo de Dado   | Descrição                              |
+|------------------|----------------|-------------------------------------    |
+| id               | INT(11)       | Identificador único do post              |
+| titulo           | VARCHAR(100)  | Título do post                           |
+| conteudo         | TEXT          | Conteúdo do post                         |
+| data_publicacao  | DATE          | Data de publicação do post               |
+| url_imagem       | VARCHAR(255)  | Nome da Imagem associada ao post + extensão (ex: 7ac66c0f1484d64.png) - Apenas uma imagem para cada post no blog! - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end          |
+| usuario_id       | INT(11)       | ID do usuário que publicou a postagem    |
+
+</details>
+
+<p><em>Tabela para armazenar as postagens do blog</em></p>
+<h2 id="ambientes">Ambientes</h2>
+<h3 id="1-producao">1. Produção</h3>
+<p>Solução de hospedagem: <strong>AlwaysData</strong><br>
+Strings de conexão 🚨(Acesso Restrito):</p>
+<pre><code class="language-yaml">database: lpbortone_bd_prod
+host: mysql-lpbortone.alwaysdata.net
+port: 3306
+</code></pre>
+<h3 id="2-desenvolvimento">2. Desenvolvimento</h3>
+<p>Solução de hospedagem: <strong>AlwaysData</strong><br>
+Strings de conexão:</p>
+<pre><code class="language-yaml">database: lp-imobiliaria_dev
+host: mysql-lp-imobiliaria.alwaysdata.net
+port: 3306
+user: Utilizar o user disponibilizado pelo PM do seu produto
+password: Utilizar a senha disponibilizada pelo PM do seu produto
+</code></pre>
+<h3 id="3-local">3. Local</h3>
+<p><strong>Seu computador 😉</strong><br></p>
+<p>Para rodar localmente, basta criar um banco MySQL local e executar o script
+[db_imobiliaria_Vx_x.sql] presente no repositório <a href="https://github.com/laboratorio-de-praticas-2025-2/banco-de-dados">laboratorio-de-praticas-2025-2/banco-de-dados</a>
+(Iremos mantê-lo atualizado caso ocorram mudanças)</p>
+<h2 id="maneiras-de-se-conectar-e-visualizar-os-dados">Maneiras de se conectar e visualizar os dados:</h2>
+<h3 id="1-utilizando-um-software-de-gerenciamento-de-banco-de-dados-heidisql-dbeaver-mysql-workbench">1. Utilizando um Software de gerenciamento de Banco de dados (HeidiSQL, Dbeaver, MySQL Workbench....):</h3>
+<h4 id="heidisql">HeidiSQL:</h4>
+<p><img alt="Exemplo de Conexão no HeidiSQL" src="assets/exemplo-conexao-heidisql.png" /></p>
+<h4 id="dbeaver">Dbeaver:</h4>
+<p><img alt="Exemplo de Conexão no MySQLWorkbench" src="assets/exemplo-conexao-dbeaver.png" /></p>
+<h3 id="2-utilizando-o-phpmyadmin-pela-web">2. Utilizando o phpMyAdmin pela web:</h3>
+<p><strong>Link: <a href="https://phpmyadmin.alwaysdata.com/">phpmyadmin</a></strong> <br></p>
+<pre><code class="language-yaml">MySQL user: Utilizar o user disponibilizado pelo PM do seu produto
+Password: Utilizar a senha disponibilizada pelo PM do seu produto
+</code></pre>
+<p><img alt="Exemplo de Conexão no phpMyAdmin" src="assets/exemplo-conexao-phpmyadmin.png" /></p>
+<h3 id="3-pelo-codigo-em-uma-aplicacao-backend-utilizando-as-credenciais-de-acesso-fornecidas">3. Pelo código em uma aplicação backend utilizando as credenciais de acesso fornecidas</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

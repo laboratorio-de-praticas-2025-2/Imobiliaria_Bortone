@@ -1,0 +1,975 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../EstruturaDePastas/">
+      
+      
+      <link rel="icon" href="../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>Regras Gerais do Repositório - Imobiliaria Bortone - Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#regras-gerais-do-projeto" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Imobiliaria Bortone - Documentação" class="md-header__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imobiliaria Bortone - Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Regras Gerais do Repositório
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Imobiliaria Bortone - Documentação" class="md-nav__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    Imobiliaria Bortone - Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-de-desenvolvimento" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fluxo de Desenvolvimento
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fluxo de Desenvolvimento">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#branches" class="md-nav__link">
+    <span class="md-ellipsis">
+      Branches
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regras-de-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Regras de Commits
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Regras de Commits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tipos-aceitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tipos Aceitos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemplos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boas-praticas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boas Práticas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branch-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Branch Naming
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#padroes-de-documentacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Padrões de Documentação
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-documentacao-de-codigo-inline" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Documentação de Código (Inline)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-documentacao-de-api-em-markdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Documentação de API (em Markdown)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-documentacao-de-componentes-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Documentação de Componentes (Frontend)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-guias-e-tutoriais" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Guias e Tutoriais
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-estilo-e-organizacao-no-mkdocs" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Estilo e Organização no MkDocs
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EstruturaDePastas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estrutura de Pastas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/NextConfig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/middlwareIndexacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Middleware
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/ManualdeTags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual de Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/AlgoritmoDeRecomendacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/BancoDeDados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-de-desenvolvimento" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fluxo de Desenvolvimento
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fluxo de Desenvolvimento">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#branches" class="md-nav__link">
+    <span class="md-ellipsis">
+      Branches
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regras-de-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Regras de Commits
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Regras de Commits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tipos-aceitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tipos Aceitos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemplos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boas-praticas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boas Práticas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branch-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Branch Naming
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#padroes-de-documentacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Padrões de Documentação
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-documentacao-de-codigo-inline" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Documentação de Código (Inline)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-documentacao-de-api-em-markdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Documentação de API (em Markdown)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-documentacao-de-componentes-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Documentação de Componentes (Frontend)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-guias-e-tutoriais" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Guias e Tutoriais
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-estilo-e-organizacao-no-mkdocs" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Estilo e Organização no MkDocs
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="regras-gerais-do-projeto">Regras Gerais do projeto</h1>
+<p>Este documento estabelece as diretrizes e padrões a serem seguidos no projeto Laboratório de Práticas 2025/2 - Fatec Registro, visando consistência, organização e qualidade do código.</p>
+<hr />
+<h2 id="fluxo-de-desenvolvimento">Fluxo de Desenvolvimento</h2>
+<h3 id="branches">Branches</h3>
+<ul>
+<li>main → Produção (release estável)</li>
+<li>Sempre estável.</li>
+<li>Recebe merges apenas de develop (versões) ou hotfix/*.</li>
+<li>
+<p>Protegida contra commits diretos.</p>
+</li>
+<li>
+<p>develop → Desenvolvimento</p>
+</li>
+<li>Base para integração de novas funcionalidades.</li>
+<li>Todas as feature/* devem ser criadas a partir dela.</li>
+<li>
+<p>Testes obrigatórios antes de mergear em main.</p>
+</li>
+<li>
+<p>feature/* → Novas funcionalidades</p>
+</li>
+<li>Criadas a partir de develop.</li>
+<li>Ex.:<ul>
+<li>feature/auth-login</li>
+<li>feature/imoveis-listagem</li>
+</ul>
+</li>
+<li>
+<p>Finalização via Pull Request para develop.</p>
+</li>
+<li>
+<p>hotfix/* → Correções urgentes em produção</p>
+</li>
+<li>Criadas a partir de main.</li>
+<li>também deve ser mergeada em develop.</li>
+</ul>
+<hr />
+<h2 id="regras-de-commits">Regras de Commits</h2>
+<pre><code class="language-csharp">&lt;tipo&gt;(escopo opicional): descrição curta no imperativo
+[corpo opcional explicando o que mudou e por quê]
+[rodapé opcional: issues relacionadas, breaking changes]
+</code></pre>
+<h3 id="tipos-aceitos">Tipos Aceitos</h3>
+<ul>
+<li>
+<p><strong>feat</strong> → nova funcionalidade</p>
+</li>
+<li>
+<p><strong>fix</strong> → correção de bug</p>
+</li>
+<li>
+<p><strong>docs</strong> → documentação</p>
+</li>
+<li>
+<p><strong>style</strong> → formatação/código (sem alteração de lógica)</p>
+</li>
+<li>
+<p><strong>refactor</strong> → refatoração sem mudar comportamento</p>
+</li>
+<li>
+<p><strong>test</strong> → inclusão/ajuste de testes</p>
+</li>
+<li>
+<p><strong>chore</strong> → dependências, build, configs</p>
+</li>
+<li>
+<p><strong>perf</strong> → melhorias de performance</p>
+</li>
+<li>
+<p><strong>ci</strong> → mudanças em pipelines/CI</p>
+</li>
+</ul>
+<h3 id="exemplos">Exemplos</h3>
+<ul>
+<li>
+<p>feat(auth): adiciona fluxo de login com JWT</p>
+</li>
+<li>
+<p>fix(agendamento): corrige cálculo de datas disponíveis</p>
+</li>
+<li>
+<p>docs: adiciona guia de setup do backend</p>
+</li>
+<li>
+<p>refactor(frontend): reorganiza componentes de formulário</p>
+</li>
+<li>
+<p>test(backend): cria testes unitários para service de imóveis</p>
+</li>
+<li>
+<p>chore: atualiza dependências do Express</p>
+</li>
+<li>
+<p>perf(consulta): otimiza filtro de imóveis</p>
+</li>
+</ul>
+<h3 id="boas-praticas">Boas Práticas</h3>
+<ul>
+<li>
+<p>Sempre em português.</p>
+</li>
+<li>
+<p>Mensagens curtas (≤72 caracteres).</p>
+</li>
+<li>
+<p>Usar modo imperativo:</p>
+</li>
+<li>
+<p>✅ adiciona, corrige, remove</p>
+</li>
+<li>
+<p>❌ adicionando, corrigido</p>
+</li>
+<li>
+<p>Nunca versionar código quebrado.</p>
+</li>
+<li>
+<p>Commits pequenos e específicos (evitar "commitão").</p>
+</li>
+<li>
+<p>Se fechar uma issue:</p>
+</li>
+</ul>
+<pre><code class="language-makefile">feat(agenda): implementa cancelamento de visitas 
+Closes #32
+</code></pre>
+<h3 id="branch-naming">Branch Naming</h3>
+<ul>
+<li>
+<p>feature/frontend-cadastro-usuario</p>
+</li>
+<li>
+<p>fix/backend-agendamento-null</p>
+</li>
+<li>
+<p>Não usar "WIP" em commits (usar Pull Request em rascunho).</p>
+</li>
+</ul>
+<hr />
+<h2 id="padroes-de-documentacao">Padrões de Documentação</h2>
+<p>Para garantir que a documentação seja clara e útil, toda a documentação deve ser escrita em Markdown simples, de forma estruturada e profissional, mantida em <code>documentacao/docs</code> e publicada via MkDocs.</p>
+<h2 id="1-documentacao-de-codigo-inline">1. Documentação de Código (Inline)</h2>
+<ul>
+<li>Funções e classes devem ter JSDoc quando necessário.</li>
+</ul>
+<p>Exemplo:</p>
+<pre><code class="language-js">/**
+ * Converte valor monetário BRL para centavos.
+ * @param {string} valorBRL Ex.: &quot;R$ 1.234,56&quot;
+ * @returns {number} Valor em centavos
+ */
+</code></pre>
+<h2 id="2-documentacao-de-api-em-markdown">2. Documentação de API (em Markdown)</h2>
+<ul>
+<li>Criar páginas em <code>documentacao/docs/api/</code> por domínio (ex.: <code>imoveis.md</code>, <code>agendamentos.md</code>).</li>
+<li>Para cada endpoint, documentar em uma subseção com o seguinte modelo:</li>
+</ul>
+<pre><code class="language-md">### GET /api/imoveis
+
+Descrição: Lista imóveis com filtros opcionais.
+
+Método: GET
+
+URL: `/api/imoveis`
+
+Parâmetros:
+- query `pagina` (opcional): número da página
+- query `cidade` (opcional): nome da cidade
+
+Exemplo de Requisição:
+
+(```js
+GET /api/imoveis?pagina=1&amp;cidade=São Paulo
+```) &lt;- Remover os parenteses 
+
+Exemplo de Resposta (200):
+
+(```json
+{ &quot;total&quot;: 120, &quot;itens&quot;: [ { &quot;id&quot;: 1, &quot;titulo&quot;: &quot;Apartamento&quot; } ] }
+```) &lt;- Remover os parenteses
+
+Códigos de Status: 200, 400, 404, 500
+
+Autenticação: não requer
+</code></pre>
+<h2 id="3-documentacao-de-componentes-frontend">3. Documentação de Componentes (Frontend)</h2>
+<ul>
+<li>Para componentes reutilizáveis em <code>front-end/src/components/</code>, criar uma página por conjunto quando necessário em <code>documentacao/docs/frontend/components.md</code>.</li>
+<li>Em cada componente, incluir: Visão geral, Props (nome, tipo, obrigatório, descrição) e um exemplo mínimo de uso.</li>
+</ul>
+<h2 id="4-guias-e-tutoriais">4. Guias e Tutoriais</h2>
+<ul>
+<li>Local: <code>documentacao/docs/</code>.</li>
+<li>Estrutura padrão:</li>
+<li>Introdução (propósito)</li>
+<li>Pré-requisitos</li>
+<li>Passo a passo (com <code>##</code> e <code>###</code>)</li>
+<li>Exemplos e imagens (em <code>documentacao/docs/assets/</code>)</li>
+<li>Referenciar arquivos, diretórios e funções com crase: </li>
+<li><code>md 
+      `back-end/src/app.js`.</code></li>
+</ul>
+<h2 id="5-estilo-e-organizacao-no-mkdocs">5. Estilo e Organização no MkDocs</h2>
+<ul>
+<li>Títulos iniciam com <code>#</code> (um por página) </li>
+<li>Subseções com <code>##</code>/<code>###</code>.</li>
+<li>Usar listas para sequências, tabelas quando houver múltiplos campos por item.</li>
+<li>Navegação configurada em <code>documentacao/mkdocs.yml</code>; manter nomes curtos e descritivos.</li>
+</ul>
+<hr />
+<p>📌 <strong>Regra geral</strong>: a documentação deve ser atualizada imediatamente após qualquer alteração relevante no sistema.</p>
+<p><strong>Em caso de dúvida, siga o padrão existente e mantenha a documentação atualizada após cada mudança relevante.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

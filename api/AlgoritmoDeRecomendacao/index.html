@@ -1,0 +1,940 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../frontend/ManualdeTags/">
+      
+      
+        <link rel="next" href="../BancoDeDados/">
+      
+      
+      <link rel="icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>Algoritmo de Recomendação - Imobiliaria Bortone - Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#algoritmo-de-recomendacao-de-imoveis" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-header__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imobiliaria Bortone - Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Algoritmo de Recomendação
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-nav__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    Imobiliaria Bortone - Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RegrasGerais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../EstruturaDePastas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estrutura de Pastas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/NextConfig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/middlwareIndexacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Middleware
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/ManualdeTags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual de Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo-do-algoritmo" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Objetivo do Algoritmo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dados-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      📥 Dados de Entrada
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saida-esperada" class="md-nav__link">
+    <span class="md-ellipsis">
+      📤 Saída Esperada
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logica-geral-do-algoritmo" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚙️ Lógica Geral do Algoritmo
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚙️ Lógica Geral do Algoritmo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-identificacao-de-imoveis-visitados" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Identificação de Imóveis Visitados
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-inferencia-de-preferencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Inferência de Preferências
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-geracao-de-recomendacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Geração de Recomendações
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-fallback-para-usuarios-sem-historico" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Fallback para Usuários Sem Histórico
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#abordagem-utilizada" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧠 Abordagem Utilizada
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-testar-os-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como testar os endpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como testar os endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-exemplo-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST - exemplo de entrada
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-exemplo-de-saida" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST - exemplo de saída
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-exemplo-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET - exemplo de entrada
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-exemplo-de-saida" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET - exemplo de saída
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bibliotecas-e-ferramentas-sugeridas" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ Bibliotecas e Ferramentas Sugeridas
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desafios-e-limitacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚠️ Desafios e Limitações
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BancoDeDados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo-do-algoritmo" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Objetivo do Algoritmo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dados-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      📥 Dados de Entrada
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saida-esperada" class="md-nav__link">
+    <span class="md-ellipsis">
+      📤 Saída Esperada
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logica-geral-do-algoritmo" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚙️ Lógica Geral do Algoritmo
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚙️ Lógica Geral do Algoritmo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-identificacao-de-imoveis-visitados" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Identificação de Imóveis Visitados
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-inferencia-de-preferencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Inferência de Preferências
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-geracao-de-recomendacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Geração de Recomendações
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-fallback-para-usuarios-sem-historico" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Fallback para Usuários Sem Histórico
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#abordagem-utilizada" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧠 Abordagem Utilizada
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-testar-os-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como testar os endpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como testar os endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-exemplo-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST - exemplo de entrada
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-exemplo-de-saida" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST - exemplo de saída
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-exemplo-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET - exemplo de entrada
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-exemplo-de-saida" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET - exemplo de saída
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bibliotecas-e-ferramentas-sugeridas" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ Bibliotecas e Ferramentas Sugeridas
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desafios-e-limitacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚠️ Desafios e Limitações
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="algoritmo-de-recomendacao-de-imoveis">📦 Algoritmo de Recomendação de Imóveis</h1>
+<p>Este módulo é responsável por gerar recomendações personalizadas de imóveis para usuários com base em seu histórico de visitas. A lógica está implementada em Express.js e utiliza consultas SQL para inferir preferências e sugerir novos imóveis.</p>
+<hr />
+<h2 id="objetivo-do-algoritmo">🎯 Objetivo do Algoritmo</h2>
+<p>Recomendar imóveis relevantes para usuários com base em:</p>
+<ul>
+<li>Histórico de visitas anteriores</li>
+<li>Popularidade dos imóveis (caso não haja histórico)</li>
+</ul>
+<hr />
+<h2 id="dados-de-entrada">📥 Dados de Entrada</h2>
+<p>A recomendação é baseada na tabela <code>RECOMENDACAO_IMOVEL</code>, que registra visitas de usuários a imóveis:</p>
+<ul>
+<li><code>id</code>: Identificador único da visita</li>
+<li><code>usuario_id</code>: Identificador do usuário</li>
+<li><code>imovel_id</code>: Identificador do imóvel</li>
+<li><code>data_visita</code>: Data da visita</li>
+</ul>
+<p>📌 A entrada real do algoritmo é apenas o <code>usuario_id</code>, passado via rota. Os demais dados são consultados automaticamente pelo sistema.</p>
+<hr />
+<h2 id="saida-esperada">📤 Saída Esperada</h2>
+<p>Uma lista de até <strong>20 imóveis recomendados</strong>, com base em:</p>
+<ul>
+<li>Similaridade com imóveis visitados</li>
+<li>Popularidade (fallback para usuários sem histórico)</li>
+</ul>
+<hr />
+<h2 id="logica-geral-do-algoritmo">⚙️ Lógica Geral do Algoritmo</h2>
+<h3 id="1-identificacao-de-imoveis-visitados">1. Identificação de Imóveis Visitados</h3>
+<p>A partir do <code>usuario_id</code> recebido na requisição, o sistema consulta a tabela <code>RECOMENDACAO_IMOVEL</code> para identificar os imóveis que esse usuário já visitou. Os 5 imóveis mais frequentes são usados como base para entender suas preferências.</p>
+<h3 id="2-inferencia-de-preferencias">2. Inferência de Preferências</h3>
+<p>Com os dados dos imóveis visitados (tabela <code>IMOVEIS</code>), o algoritmo analisa os atributos mais comuns:
+- <code>tipo</code>
+- <code>cidade</code>
+- <code>estado</code>
+- <code>preço</code></p>
+<p>Esses atributos ajudam a construir o perfil de interesse do usuário.</p>
+<h3 id="3-geracao-de-recomendacoes">3. Geração de Recomendações</h3>
+<p>O sistema busca imóveis que compartilham os atributos identificados e que ainda não foram visitados pelo usuário. O resultado é uma lista de até 20 imóveis recomendados.</p>
+<h3 id="4-fallback-para-usuarios-sem-historico">4. Fallback para Usuários Sem Histórico</h3>
+<p>Se o usuário não tiver registros na tabela <code>RECOMENDACAO_IMOVEL</code>, o algoritmo retorna os imóveis mais populares no sistema — ou seja, os mais visitados por outros usuários.</p>
+<hr />
+<h2 id="abordagem-utilizada">🧠 Abordagem Utilizada</h2>
+<ul>
+<li><strong>Filtragem baseada em conteúdo</strong>: recomenda imóveis com atributos semelhantes aos já visitados.</li>
+<li><strong>Popularidade como fallback</strong>: garante recomendações mesmo sem histórico.</li>
+</ul>
+<hr />
+<h2 id="como-testar-os-endpoints">Como testar os endpoints</h2>
+<p>Você pode testar os endpoints no Insomnia.</p>
+<pre><code class="language-http">POST    /recomendacao_imovel       → Adiciona um novo registro em `recomendacao_imovel`
+GET     /recomendacoes             → Lista de 20 imóveis com base nas preferências do usuário
+</code></pre>
+<h3 id="post-exemplo-de-entrada">POST - exemplo de entrada</h3>
+<pre><code class="language-json">{
+    &quot;usuario_id&quot;: 1,
+    &quot;imovel_id&quot;: 2,
+    &quot;data_visita&quot;: &quot;2025-03-03&quot;
+}
+</code></pre>
+<h3 id="post-exemplo-de-saida">POST - exemplo de saída</h3>
+<pre><code class="language-json">{
+    &quot;message&quot;: &quot;Novo registro na tabela recomendacao_imovel.&quot;,
+    &quot;data&quot;: {
+        &quot;id&quot;: 9750,
+        &quot;usuario_id&quot;: 1,
+        &quot;imovel_id&quot;: 2,
+        &quot;data_visita&quot;: &quot;2025-03-03T00:00:00.000Z&quot;
+    }
+}
+</code></pre>
+<h3 id="get-exemplo-de-entrada">GET - exemplo de entrada</h3>
+<p>Para testar o endpoint <code>GET</code>, utilize a URL:
+<code>http://localhost:4000/recomendacoes</code></p>
+<p>No campo <code>Params</code>, digite <code>usuario_id</code> no campo <code>name</code> e, <code>2</code> no campo <code>value</code>.</p>
+<h3 id="get-exemplo-de-saida">GET - exemplo de saída</h3>
+<pre><code class="language-json">{
+    &quot;message&quot;: &quot;Recomendações geradas com sucesso.&quot;,
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 8,
+            &quot;tipo&quot;: &quot;Apartamento&quot;,
+            &quot;endereco&quot;: &quot;Av. Leste, 147&quot;,
+            &quot;cidade&quot;: &quot;Manaus&quot;,
+            &quot;estado&quot;: &quot;AM&quot;,
+            &quot;preco&quot;: &quot;600000.00&quot;,
+            &quot;area&quot;: 75,
+            &quot;descricao&quot;: &quot;Apartamento com vista&quot;,
+            &quot;data_cadastro&quot;: &quot;2024-10-28&quot;,
+            &quot;murado&quot;: 1,
+            &quot;latitude&quot;: &quot;-3.1190280&quot;,
+            &quot;longitude&quot;: &quot;-60.0217310&quot;,
+            &quot;usuario_id&quot;: 4,
+            &quot;tipo_negociacao&quot;: &quot;venda&quot;,
+            &quot;status&quot;: &quot;disponivel&quot;,
+            &quot;data_update_status&quot;: null
+        }]}
+</code></pre>
+<p>O exemplo acima é apenas 1 dos 20 imóveis que podem ser retornados.</p>
+<p>Agora, se o usuário não possuir registros na tabela <code>recomendacao_imovel</code> (sem histórico de visitas), o sistema buscará os imóveis mais populares (mais visitados) e os recomendará ao usuário. Para saber se o usuário não possui histórico, procure no log: <code>Usuário sem histórico. Retornando imóveis populares.</code></p>
+<p>Se o usuário tem um histórico de visitas menor, por exemplo, apenas uma visita, o sistema tenta outras opções.</p>
+<p>O algoritmo funciona em etapas:</p>
+<ul>
+<li>
+<p>Primeira tentativa: busca a combinação mais específica de preferências do usuário.</p>
+</li>
+<li>
+<p>Segunda tentativa: se a primeira busca não tiver resultados, o sistema suaviza os filtros, buscando apenas por imóveis que correspondam ao tipo preferido. Log: <code>Nenhuma recomendação encontrada com filtros estritos. Expandindo a busca...</code></p>
+</li>
+<li>
+<p>Terceira tentativa: se a segunda tentativa ainda assim não encontrar resultados, o sistema ignora as preferências e retorna os imóveis mais populares do site. Log: <code>Nenhuma recomendação encontrada com filtros expandidos. Retornando populares.</code></p>
+</li>
+</ul>
+<hr />
+<h2 id="bibliotecas-e-ferramentas-sugeridas">🛠️ Bibliotecas e Ferramentas Sugeridas</h2>
+<ul>
+<li><a href="https://lodash.com/"><code>lodash</code></a>: manipulação de arrays e objetos</li>
+</ul>
+<hr />
+<h2 id="desafios-e-limitacoes">⚠️ Desafios e Limitações</h2>
+<ul>
+<li><strong>Usuários sem histórico</strong>: recomendações genéricas podem ser menos relevantes.</li>
+<li><strong>Escalabilidade</strong>: crescimento da tabela de visitas pode impactar performance.</li>
+</ul>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
