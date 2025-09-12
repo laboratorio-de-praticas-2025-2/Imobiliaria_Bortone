@@ -1,6 +1,6 @@
-'use client';
+"use client";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
-import PesquisaAvancadaModal from "./PesquisaAvancadaModal";
+import PesquisaAvancadaModal from "@/components/cms/form/PesquisaAvancadaModal"
 import { useState } from "react";
 import useHandleClickOutside from "@/hooks/useHandleClickOutside";
 import { useRef } from "react";
@@ -18,7 +18,9 @@ export default function PesquisaAvancada() {
         onClick={() => setIsOpen(!isOpen)}
       >
         <TbAdjustmentsHorizontal className="ml-2 h-4 w-4 text-[var(--primary)]" />
-        Pesquisa avançada
+        <p className="mr-2 hidden md:flex whitespace-nowrap">
+          Pesquisa avançada
+        </p>
       </button>
       {isOpen && <PesquisaAvancadaModal />}
     </div>

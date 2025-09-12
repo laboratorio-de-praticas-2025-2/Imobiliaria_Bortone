@@ -1,10 +1,10 @@
 "use client";
 import { Input } from "antd";
 import { IoSearchSharp } from "react-icons/io5";
-import DropdownFilter from "../../vitrine/DropdownFilter";
+import DropdownFilter from "@/components/vitrine/DropdownFilter";
 import Link from "next/link";
 import PesquisaAvancadaUser from "./pesquisaavancada/PesquisaAvancada";
-import PesquisaAvancada from "@/components/vitrine/PesquisaAvancada/PesquisaAvancada";
+import PesquisaAvancada from "@/components/cms/form/PesquisaAvancada";
 const { Search } = Input;
 
 const optionsOrder = ["Ordem alfabetica", "Data de inclusão"];
