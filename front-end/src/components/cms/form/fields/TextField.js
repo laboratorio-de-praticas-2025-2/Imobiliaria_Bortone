@@ -6,6 +6,8 @@ export default function TextField({
   label,
   placeholder,
   className,
+  value,
+  onChange
 }) {
   return (
     <FormAntd.Item
@@ -15,7 +17,7 @@ export default function TextField({
       className={`custom-form-item ${className}`}
       labelCol={{ span: 24 }}
     >
-      <Input placeholder={placeholder} className="custom-input" />
+      <Input placeholder={placeholder} className="custom-input" value={value} onChange={onChange} />
     </FormAntd.Item>
   );
 }

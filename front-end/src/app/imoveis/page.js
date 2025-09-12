@@ -1,37 +1,40 @@
 "use client";
 import { FilterDataProvider } from "@/context/FilterDataContext";
-import { mockImoveis } from "@/mock/imoveis";
+import { useFilterData } from "@/context/FilterDataContext";
 import { useEffect, useState } from "react";
 import InnerImoveisPage from "./InnerImoveisPage";
 
 export default function ImoveisPage() {
+  return (
+    <FilterDataProvider>
+      <ImoveisPageContent />
+    </FilterDataProvider>
+  );
+}
+
+function ImoveisPageContent() {
   const [imoveis, setImoveis] = useState([]);
+  const { filterData } = useFilterData();
 
   const handleGetImoveis = async () => {
-    // Chamada à API para buscar os imóveis
-    setImoveis(mockImoveis); // Substitua mockImoveis pela resposta da API
+    try {
+      const response = await fetch("http://localhost:4000/imoveis/busca", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(filterData),
+      });
+      const data = await response.json();
+      setImoveis(Array.isArray(data.propriedades) ? data.propriedades : []);
+    } catch (error) {
+      console.error("Erro ao carregar imóveis:", error);
+    }
   };
-
-  // EXEMPLO PARA A REQUISIÇÃO DE IMÓVEIS ENVIANDO PAGINA E ITENS POR PÁGINA
-  // const fetchImoveis = async (page, itemsPerPage) => {
-  //   try {
-  //     const data = await getImoveis(page, itemsPerPage);
-  //     setImoveis(data);
-  //   } catch (error) {
-  //     console.error("Erro ao carregar imóveis:", error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchImoveis(currentPage, itemsPerPage);
-  // }, [currentPage, itemsPerPage]);
 
   useEffect(() => {
     handleGetImoveis();
-  }, []);
+  }, [filterData]);
 
-  return (
-    <FilterDataProvider>
-      <InnerImoveisPage imoveis={imoveis} />
-    </FilterDataProvider>
-  );
+  return <InnerImoveisPage imoveis={imoveis} />;
 }

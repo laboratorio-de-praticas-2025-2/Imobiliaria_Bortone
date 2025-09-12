@@ -17,12 +17,11 @@ export default function ImageCarroussel({ imovel }) {
           pagination={{ clickable: true }}
           className="w-full h-full image-carroussel-imoveis"
         >
-          {imovel.imagens.map((img, index) => (
-            <SwiperSlide key={index} className="!w-full !h-full flex">
+          {(imovel.imagem_imovel ?? []).map((img, index) => (
+            <SwiperSlide key={index}>
               <img
                 src={img.url_imagem}
-                alt={img.descricao}
-                className="w-full h-full object-cover"
+                alt={img.descricao || "Imagem do imóvel"}
               />
             </SwiperSlide>
           ))}
