@@ -28,7 +28,6 @@ app.use('/agendamentos', agendamentoRouter );
 app.use('/health', healthRouter);
 app.use("/faq", faqRoutes);
 app.use(express.static(path.join(__dirname, "../public")));
-app.use("/", routes);
 app.use(errorHandler);
 
 const server = http.createServer(app);
