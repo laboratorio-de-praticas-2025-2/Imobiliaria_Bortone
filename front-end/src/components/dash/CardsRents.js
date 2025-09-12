@@ -1,7 +1,7 @@
 import { Row, Col } from "antd";
 import ApartmentRentCard from "./rent/ApartmentRentCard";
 import PropertyNumber from "./PropertyNumber";
-import RentCard from "./RentCard";
+import RentCard from "./Card";
 import PropertyRentCard from "./rent/PropertyRentCard";
 export default function Locacoes() {
   return (

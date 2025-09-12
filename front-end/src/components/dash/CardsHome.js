@@ -1,18 +1,21 @@
 import { Row, Col } from "antd";
-import SellCard from "./sold/AllSales";
-import PropertyNumber from "./PropertyNumber";
-import RentCard from "./RentCard";
+import Card from "@/components/dash/Card";
+import { MdOutlineBedroomParent } from "react-icons/md";
+
 export default function Infos() {
   return (
     <Row gutter={{ xs: 8, sm: 16 }}>
       <Col className="gutter-row" md={8} xs={24}>
-        <SellCard />
       </Col>
       <Col className="gutter-row" md={8} xs={24}>
-        <RentCard />
+        <Card 
+          name={"vendas"}
+          label={"Número total de locações"}
+          value={50}
+          icon={<MdOutlineBedroomParent className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />}
+        />
       </Col>
       <Col className="gutter-row" md={8} xs={24}>
-        <PropertyNumber />
       </Col>
     </Row>
   );
