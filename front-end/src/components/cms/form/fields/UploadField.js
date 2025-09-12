@@ -27,7 +27,7 @@ export default function UploadField({
         multiple={multiple}
         className="!w-fit"
       >
-        <Button className="!text-[var(--primary)] !text-lg !font-bold !border-[var(--primary)] hover:!bg-[var(--primary)] hover:!text-white hover:!border-[var(--primary)] !rounded-full !p-4 !w-fit !h-[36px]">
+        <Button className="!text-[var(--primary)] !text-md !font-bold !border-[var(--primary)] hover:!bg-[var(--primary)] hover:!text-white hover:!border-[var(--primary)] !rounded-full !p-4 !w-fit !h-[36px]">
           Selecionar arquivo <UploadOutlined />
         </Button>
       </Upload>

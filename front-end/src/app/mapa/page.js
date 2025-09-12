@@ -10,6 +10,9 @@ import { getImoveis } from "@/services/imoveisService";
 import { Input } from "antd";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { useSEO } from "@/hooks/useSEO";
+import { getSEOConfig } from "@/config/seo";
+import HomeNavbar from "@/components/home/HomeNavbar";
 
 const { Search } = Input;
 
@@ -20,6 +23,8 @@ const MapView = dynamic(() => import("@/components/mapa/MapView"), {
 });
 
 export default function Mapa() {
+  // SEO para página de mapa
+  useSEO(getSEOConfig('/mapa'));
   const [imoveis, setImoveis] = useState([]);
   const [hoverImovel, setHoverImovel] = useState(null);
   const [showSplash, setShowSplash] = useState(true);
@@ -46,7 +51,7 @@ export default function Mapa() {
 
   return (
     <FiltersProvider>
-      <MapaNavbar />
+      <HomeNavbar />
       <div className="absolute z-1002 ml-90 mt-4.5 lg:flex hidden w-[52%]">
         <Search
           placeholder="Pesquisar"

@@ -3,6 +3,6 @@ import express from "express";
 
 const dashboardRouter = express.Router();
 
-router.get("/dashboard", dashboardController.findInfosDashboard);
+dashboardRouter.get("/", dashboardController.findInfosDashboard);
 
 export default dashboardRouter;

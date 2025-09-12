@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import React from "react";
+import Link from "next/link";
 import { useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -71,25 +73,25 @@ export default function MapView({ imoveis }) {
       </MapContainer>
 
       {hoverImovel && (
-        <div
-          className="hover-card"
-          style={{
-            left: `${cardPosition.x + 3.5}px`,
-            top: `${cardPosition.y - 45}px`,
-          }}
-        >
-          <img
-            src={hoverImovel.imagem}
-            alt="Imagem do imóvel"
-            className="w-full h-32 object-cover mb-2 rounded"
-          />
-          <a className="card-preco">
-            <p>R$ {hoverImovel.preco.toLocaleString()}</p>
-          </a>
-          <a className="card-text">
-            {hoverImovel.tipo} - {hoverImovel.endereco}
-          </a>
-        </div>
+          <div
+            className="hover-card"
+            style={{
+              left: `${cardPosition.x + 3.5}px`,
+              top: `${cardPosition.y - 45}px`,
+            }}
+          >
+            <img
+              src={hoverImovel.imagem}
+              alt="Imagem do imóvel"
+              className="w-full h-32 object-cover mb-2 rounded"
+            />
+            <a className="card-preco">
+              <p>R$ {hoverImovel.preco.toLocaleString()}</p>
+            </a>
+            <a className="card-text">
+              {hoverImovel.tipo} - {hoverImovel.endereco}
+            </a>
+          </div>
       )}
     </div>
   );
