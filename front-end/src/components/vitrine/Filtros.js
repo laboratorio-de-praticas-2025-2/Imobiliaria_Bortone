@@ -36,6 +36,7 @@ export default function Filtros() {
                 options={optionsBuy}
                 selected={filterData.tipo_negociacao}
                 handleSelect={handleSelectBuy}
+                classname={"w-32"}
               />
               <DropdownFilter
                 options={optionsRooms}
@@ -43,6 +44,7 @@ export default function Filtros() {
                 selected={filterData.quartos || "Quartos"}
                 handleSelect={handleSelectRooms}
                 setSelected={(value) => updateFilterData({ quartos: value === "Quartos" ? null : value })}
+                classname={"w-32"}
               />
               <DropdownFilter
                 options={optionsBathrooms}
@@ -50,6 +52,7 @@ export default function Filtros() {
                 selected={filterData.banheiros || "Banheiros"}
                 handleSelect={handleSelectBathrooms}
                 setSelected={(value) => updateFilterData({ banheiros: value === "Banheiros" ? null : value })}
+                classname={"w-32"}
               />
             </Space>
             <PesquisaAvancada />

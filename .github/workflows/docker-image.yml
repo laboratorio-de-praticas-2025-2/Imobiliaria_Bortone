@@ -34,5 +34,12 @@ jobs:
           DB_DIALECT: ${{secrets.DB_DIALECT}}
           DB_DATABASE: ${{secrets.DB_DATABASE}}
           NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{secrets.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}}
-          
+          SMTP_HOST: ${secrets.SMTP_HOST}
+          SMTP_SECURE: ${secrets.SMTP_SECURE}
+          SMTP_USER: ${secrets.SMTP_USER}
+          SMTP_PASS: ${secrets.SMTP_PASS}
+          SMTP_HELO: ${secrets.SMTP_HELO}
+          MAIL_FROM_EMPRESA: ${secrets.MAIL_FROM_EMPRESA}
+          MAIL_TO_EMPRESA: ${secrets.MAIL_TO_EMPRESA}
+
 

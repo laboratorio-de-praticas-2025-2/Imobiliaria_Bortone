@@ -3,10 +3,10 @@ import { createContext, useContext, useState, useEffect } from "react";
 const FilterDataContext = createContext();
 
 const INITIAL_FILTERS = {
-    regiao: 'Registro, São Paulo',
-    tipo_negociacao: 'Comprar',
-    quartos: null,
-    banheiros: null,
+  regiao: "Registro, São Paulo",
+  tipo_negociacao: "Comprar",
+  quartos: null,
+  banheiros: null,
 };
 
 export function FilterDataProvider({ children }) {

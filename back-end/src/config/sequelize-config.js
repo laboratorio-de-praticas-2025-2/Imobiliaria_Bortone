@@ -11,5 +11,4 @@ const connection = new Sequelize(
   }
 );
 
-
 export default connection;

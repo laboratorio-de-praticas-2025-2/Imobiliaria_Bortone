@@ -7,10 +7,10 @@ import GridImoveis from "@/components/vitrine/GridImoveis";
 import HomeFooter from "@/components/home/HomeFooter";
 import { useEffect, useState } from "react";
 
-export default function InnerImoveisPage({imoveis}) {
+export default function InnerImoveisPage({ imoveis }) {
   const [qtdImoveis, setQtdImoveis] = useState(0);
 
-  useEffect(() =>{
+  useEffect(() => {
     setQtdImoveis(imoveis.length);
   }, [imoveis]);
 

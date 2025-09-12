@@ -6,11 +6,14 @@ import PropriedadesPerto from "@/components/home/PropriedadesPerto";
 import HomeFooter from "@/components/home/HomeFooter";
 import SplashScreen from "@/components/SplashScreen";
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useSEO } from "@/hooks/useSEO";
+import { getSEOConfig } from "@/config/seo";
 
 const isLoggedIn = false;
 
 export default function Home() {
+  // SEO para página inicial
+  useSEO(getSEOConfig('/'));
   const [showSplash, setShowSplash] = useState(true);
   const [animateOut, setAnimateOut] = useState(false);
 
