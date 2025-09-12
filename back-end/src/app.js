@@ -6,7 +6,7 @@ import agendamentoRouter from './routes/agendamentoRoute.js';
 import recomendacaoRouter from './routes/recomendacaoImovelRoutes.js';
 import healthRouter from "./routes/healthRouter.js";
 import faqRoutes from "./routes/faqRoutes.js";
-
+import relatorioRouter from './routes/reportsRoute.js';
 const app = express();
 
 
@@ -21,6 +21,7 @@ app.use('/', recomendacaoRouter);
 app.use('/agendamentos', agendamentoRouter );
 app.use('/health', healthRouter);
 app.use("/faq", faqRoutes);
+app.use("/",relatorioRouter)
 
 // Banco de dados
 connection
