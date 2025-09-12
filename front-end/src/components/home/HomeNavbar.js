@@ -29,7 +29,7 @@ export default function HomeNavbar({ className }) {
 
   return (
     <div
-      className={`navbar top-0 left-0 w-full z-10 bg-white md:bg-[#050D2D73] py-3.5 px-6 md:px-16 ${className}`}
+      className={`navbar top-0 left-0 w-full !z-[1004] bg-white md:bg-[#050D2D73] py-3.5 px-6 md:px-16 ${className}`}
     >
       {/* Navbar Desktop */}
       <Flex
@@ -38,6 +38,12 @@ export default function HomeNavbar({ className }) {
         className="hidden md:flex navbar-desktop"
       >
         <Link href="/">
+          <Image
+            src="/images/LogoPreta.svg"
+            alt="Logo Bortone"
+            width={113}
+            height={43}
+          />
           <Image
             src="/images/LogoPreta.svg"
             alt="Logo Bortone"
@@ -62,7 +68,7 @@ export default function HomeNavbar({ className }) {
         </div>
 
         {isLoggedIn ? (
-          <div className="relative inline-block text-left">
+          <div className="relative inline-block text-left z-1002">
             <button
               onClick={() => setUserMenuOpen(!userMenuOpen)}
               className="bg-[#EEF0F9] px-4 py-2 rounded-full cursor-pointer whitespace-nowrap flex items-center gap-1 relative z-[10000]"
@@ -170,6 +176,12 @@ export default function HomeNavbar({ className }) {
               width={113}
               height={43}
             />
+            <Image
+              src="/images/LogoAzul.svg"
+              alt="Logo Bortone"
+              width={113}
+              height={43}
+            />
           </Link>
         </Flex>
 
@@ -269,12 +281,18 @@ export default function HomeNavbar({ className }) {
 
       {/* Sidebar Mobile */}
       <div
-        className={`fixed top-0 left-0 h-full w-[80%] bg-white shadow-lg transform transition-transform duration-300 z-50
+        className={`fixed top-0 left-0 h-full w-[80%] bg-white shadow-lg transform transition-transform duration-300 z-[1100]
           ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex flex-col gap-8 p-4 border-b border-gray-300">
           <Flex justify="space-between" align="center" className="w-full">
             <Link href="/">
+              <Image
+                src="/images/LogoAzul.svg"
+                alt="Logo Bortone"
+                width={113}
+                height={43}
+              />
               <Image
                 src="/images/LogoAzul.svg"
                 alt="Logo Bortone"
@@ -289,6 +307,12 @@ export default function HomeNavbar({ className }) {
               visitas, propostas e contatos
             </p>
             {!isLoggedIn && (
+              <Button
+                type="primary"
+                shape="round"
+                className="w-full entrar-btn-mobile"
+                href="/bem-vindo"
+              >
               <Button
                 type="primary"
                 shape="round"
