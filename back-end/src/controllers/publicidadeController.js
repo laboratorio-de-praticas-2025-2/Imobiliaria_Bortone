@@ -96,7 +96,7 @@ export const updatePublicidade = async (req, res) => {
   try {
     const { id } = req.params;
     // Receber o atributo "ativo"
-    const { titulo, conteudo, url_imagem, usuario_id } = req.body;
+    const { titulo, conteudo, url_imagem, usuario_id, ativo } = req.body;
 
     if (!/^\d+$/.test(id)) {
       return res.status(400).json({ error: "ID inválido. O ID deve ser numérico." });
