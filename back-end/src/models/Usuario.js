@@ -31,6 +31,7 @@ const User = connection.define('usuario', {
     }
 }, {
     tableName: 'usuario',
+    timestamps: false,
 });
 
 User.sync({ force: false });
