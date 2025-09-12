@@ -1,4 +1,8 @@
-import { buscarHome, buscarImoveis, buscarMapa } from "../services/imovelSearchService.js";
+import {
+  buscarHome,
+  buscarImoveis,
+  buscarMapa,
+} from "../services/imovelSearchService.js";
 
 // Busca simples somente por endereço informado
 export const getHome = async (req, res) => {

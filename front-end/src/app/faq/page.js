@@ -7,8 +7,12 @@ import HomeNavbar from "@/components/home/HomeNavbar";
 import { MOCKFAQ } from "@/mock/faq";
 import { Divider } from "antd";
 import { useEffect, useState } from "react";
+import { useSEO } from "@/hooks/useSEO";
+import { getSEOConfig } from "@/config/seo";
 
 export default function FaqPage() {
+  // SEO para página de FAQ
+  useSEO(getSEOConfig('/faq'));
   const [faqData, setFaqData] = useState([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
 

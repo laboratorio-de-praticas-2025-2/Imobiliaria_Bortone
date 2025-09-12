@@ -50,28 +50,26 @@ export default function Card({ item, href_cms = "banner", header = false }) {
           }`}
         />
         <div className="w-full flex justify-end gap-4 p-3">
-          {item.ativo !== undefined && (
-            <div className="flex items-center gap-3">
-              <p className="text-gray-500">
-                {checked ? "Ativado" : "Desativado"}
-              </p>
-              <ConfigProvider
-                theme={{
-                  token: {
-                    colorPrimary: "#7F92D4",
-                    colorPrimaryBorder: "#7F92D4",
-                    colorPrimaryHover: "#5C6BC0",
-                  },
-                }}
-              >
-                <Switch
-                  checked={checked}
-                  onChange={onChange}
-                  className="switch-cms"
-                />
-              </ConfigProvider>
-            </div>
-          )}
+          <div className="flex items-center gap-3">
+            <p className="text-gray-500">
+              {checked ? "Ativado" : "Desativado"}
+            </p>
+            <ConfigProvider
+              theme={{
+                token: {
+                  colorPrimary: "#7F92D4",
+                  colorPrimaryBorder: "#7F92D4",
+                  colorPrimaryHover: "#5C6BC0",
+                },
+              }}
+            >
+              <Switch
+                checked={checked}
+                onChange={onChange}
+                className="switch-cms"
+              />
+            </ConfigProvider>
+          </div>
           <Link href={`/admin/cms-${href_cms}/editar/${item.id}`}>
             <BiPencil
               size={22}

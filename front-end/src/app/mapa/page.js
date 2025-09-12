@@ -10,6 +10,8 @@ import { getImoveis } from "@/services/imoveisService";
 import { Input } from "antd";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { useSEO } from "@/hooks/useSEO";
+import { getSEOConfig } from "@/config/seo";
 
 const { Search } = Input;
 
