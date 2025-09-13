@@ -16,14 +16,24 @@ export default function FaqPage() {
   const [faqData, setFaqData] = useState([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  const fetchFaq = async () => {
-    // Simulando uma chamada de API com dados mockados
-    setFaqData(MOCKFAQ);
+const fetchFaq = async () => {
+   try{
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/faq`);
+    if(!response.ok){
+      throw new Error(`Erro na requisição: ${response.status}`);
+    }
+    const data = await response.json();
+    setFaqData(data);
+   }catch(error){
+    console.log("Erro ao buscar FAQ:", error);
+    setFaqData([])
+   }
   };
 
   useEffect(() => {
-    setFaqData(MOCKFAQ);
+    fetchFaq();
   }, []);
+
 
   return (
     <>
