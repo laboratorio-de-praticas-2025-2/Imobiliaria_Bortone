@@ -8,11 +8,65 @@ const CRLF = "\r\n";
 // Rate limiting para agendamentos
 const rateLimitBuckets = new Map();
 
+// IPs em whitelist (sem limite de rate)
+const WHITELIST_IPS = [
+  '127.0.0.1',
+  '::1',
+  '::ffff:127.0.0.1'
+];
+
+// IPs em blacklist (bloqueados)
+const BLACKLIST_IPS = [];
+
+// Log de tentativas suspeitas
+const suspiciousAttempts = new Map();
+
 function getRateLimitKey(ip, route) {
   return `${ip}::${route}`;
 }
 
+function isWhitelistedIP(ip) {
+  return WHITELIST_IPS.includes(ip);
+}
+
+function isBlacklistedIP(ip) {
+  return BLACKLIST_IPS.includes(ip);
+}
+
+function logSuspiciousActivity(ip, reason) {
+  const now = Date.now();
+  const key = `${ip}::${reason}`;
+  
+  if (!suspiciousAttempts.has(key)) {
+    suspiciousAttempts.set(key, { count: 0, firstSeen: now, lastSeen: now });
+  }
+  
+  const attempt = suspiciousAttempts.get(key);
+  attempt.count += 1;
+  attempt.lastSeen = now;
+  
+  // Log para auditoria
+  console.warn(`[SECURITY] Suspicious activity from ${ip}: ${reason} (count: ${attempt.count})`);
+  
+  // Se muitas tentativas suspeitas, adicionar à blacklist temporariamente
+  if (attempt.count > 10 && (now - attempt.firstSeen) < 300000) { // 5 minutos
+    BLACKLIST_IPS.push(ip);
+    console.error(`[SECURITY] IP ${ip} temporarily blacklisted due to suspicious activity`);
+  }
+}
+
 function checkRateLimit(ip, route, windowMs = 60_000, max = 5) {
+  // Verificar blacklist
+  if (isBlacklistedIP(ip)) {
+    logSuspiciousActivity(ip, 'blacklisted_ip_attempt');
+    return false;
+  }
+  
+  // Whitelist bypass
+  if (isWhitelistedIP(ip)) {
+    return true;
+  }
+  
   const now = Date.now();
   const key = getRateLimitKey(ip, route);
 
@@ -28,6 +82,12 @@ function checkRateLimit(ip, route, windowMs = 60_000, max = 5) {
   }
 
   bucket.count += 1;
+  
+  // Log tentativas excessivas
+  if (bucket.count > max) {
+    logSuspiciousActivity(ip, 'rate_limit_exceeded');
+  }
+  
   return bucket.count <= max;
 }
 
@@ -39,8 +99,69 @@ const LIMITS = {
   htmlBody: 20000,
   name: 120,
   address: 200,
-  notes: 2000
+  notes: 2000,
+  attachmentSize: 10485760, // 10MB
+  attachmentName: 255
 };
+
+// Tipos MIME permitidos para anexos
+const ALLOWED_MIME_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'image/webp',
+  'application/pdf',
+  'text/plain',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+];
+
+// Validação de anexos
+function validateAttachment(attachment) {
+  if (!attachment || typeof attachment !== 'object') {
+    throw new Error('Anexo inválido');
+  }
+  
+  const { filename, contentBase64, contentType = "application/octet-stream" } = attachment;
+  
+  if (!filename || typeof filename !== 'string') {
+    throw new Error('Nome do arquivo é obrigatório');
+  }
+  
+  if (!contentBase64 || typeof contentBase64 !== 'string') {
+    throw new Error('Conteúdo do arquivo é obrigatório');
+  }
+  
+  // Validação do nome do arquivo
+  if (filename.length > LIMITS.attachmentName) {
+    throw new Error(`Nome do arquivo muito longo (máximo ${LIMITS.attachmentName} caracteres)`);
+  }
+  
+  // Validação de caracteres perigosos no nome
+  if (/[<>:"/\\|?*]/.test(filename)) {
+    throw new Error('Nome do arquivo contém caracteres inválidos');
+  }
+  
+  // Validação do tipo MIME
+  if (!ALLOWED_MIME_TYPES.includes(contentType)) {
+    throw new Error(`Tipo de arquivo não permitido: ${contentType}`);
+  }
+  
+  // Validação do tamanho do conteúdo base64
+  if (contentBase64.length > LIMITS.attachmentSize) {
+    throw new Error(`Arquivo muito grande (máximo ${LIMITS.attachmentSize} bytes)`);
+  }
+  
+  // Validação se é base64 válido
+  const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
+  if (!base64Regex.test(contentBase64)) {
+    throw new Error('Conteúdo do arquivo não é base64 válido');
+  }
+  
+  return { filename, contentBase64, contentType };
+}
 
 function truncate(str, max) {
   if (typeof str !== "string") return str;
@@ -58,12 +179,47 @@ function normalizeEmail(email) {
   return String(email).trim().toLowerCase();
 }
 
+// Lista de domínios de email suspeitos/bloqueados
+const BLOCKED_DOMAINS = [
+  'tempmail.org',
+  '10minutemail.com',
+  'guerrillamail.com',
+  'mailinator.com',
+  'throwaway.email'
+];
+
+// Validação de domínio de email
+function isValidEmailDomain(email) {
+  if (!email) return false;
+  
+  const domain = email.split('@')[1];
+  if (!domain) return false;
+  
+  // Verificar se o domínio não está na lista de bloqueados
+  if (BLOCKED_DOMAINS.includes(domain.toLowerCase())) {
+    return false;
+  }
+  
+  // Verificar se o domínio tem pelo menos um ponto
+  if (!domain.includes('.')) {
+    return false;
+  }
+  
+  return true;
+}
+
 function isValidEmail(email) {
   if (!email) return false;
   const s = String(email);
   if (/[\r\n]/.test(s)) return false;
-  // Regex simples e segura
-  return /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(s);
+  
+  // Regex mais robusta para validação de email
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  
+  if (!emailRegex.test(s)) return false;
+  
+  // Validação adicional do domínio
+  return isValidEmailDomain(s);
 }
 
 /**
@@ -231,12 +387,17 @@ function buildMime({ from, to, cc, bcc, subject, text, html, replyTo, attachment
   }
 
   for (const att of attachments) {
-    const { filename, contentBase64, contentType = "application/octet-stream" } = att;
+    const validatedAttachment = validateAttachment(att);
+    const { filename, contentBase64, contentType } = validatedAttachment;
+    
+    // Sanitização adicional do nome do arquivo para headers
+    const sanitizedFilename = filename.replace(/[^\x20-\x7E]/g, '');
+    
     mixedBody +=
       `--${mixedBoundary}${CRLF}` +
-      `Content-Type: ${contentType}; name="${filename}"${CRLF}` +
+      `Content-Type: ${contentType}; name="${sanitizedFilename}"${CRLF}` +
       `Content-Transfer-Encoding: base64${CRLF}` +
-      `Content-Disposition: attachment; filename="${filename}"${CRLF}${CRLF}` +
+      `Content-Disposition: attachment; filename="${sanitizedFilename}"${CRLF}${CRLF}` +
       `${contentBase64}${CRLF}`;
   }
 
