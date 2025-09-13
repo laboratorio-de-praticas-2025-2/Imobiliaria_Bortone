@@ -43,7 +43,7 @@ export default function LoginPage() {
     } catch (error) {
       console.error(error);
       if (error.response && error.response.data && error.response.data.message) {
-        message.error(error.response.data.message);F
+        message.error(error.response.data.message);
       } else {
         message.error("Erro ao conectar com o servidor.");
       }
