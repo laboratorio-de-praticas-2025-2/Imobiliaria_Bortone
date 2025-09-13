@@ -5,20 +5,16 @@ import { FaWhatsapp } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import dynamic from "next/dynamic";
 
-// Import dinâmico do mapa, SSR desativado
 const ContatoMapa = dynamic(() => import("./ContatoMapa"), { ssr: false });
 
 export default function Contato() {
   return (
     <main className="min-h-screen p-4 md:p-6">
-      {/* - Layout mobile-first: padrão de 1 coluna, mudando para 4 colunas em telas médias (md) ou maiores.
-        - Espaçamento (gap) responsivo.
-        - Margem (m) responsiva.
-      */}
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-[#4C62AE] m-2 md:m-5">
         {/* Cabeçalho */}
         <div className="md:col-span-4 flex flex-col justify-start p-4">
-          {/* Fontes responsivas para evitar quebra de texto em telas menores */}
+
           <p className="text-4xl md:text-5xl lg:text-7xl font-bold">CONTATO</p>
           <p className="text-2xl md:text-3xl lg:text-4xl font-bold">
             ENCONTRE INFORMAÇÕES SOBRE NOSSOS CANAIS DE ATENDIMENTO
@@ -26,7 +22,7 @@ export default function Contato() {
         </div>
 
         <div className="md:col-span-4 border-y border-gray-300/70 py-8 my-4">
-          {/* Grid interno que se adapta: 1 coluna no mobile, 2 no tablet/desktop */}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Whatsapp */}
             <div className="flex flex-col justify-start p-4">
@@ -57,7 +53,6 @@ export default function Contato() {
         </div>
 
         {/* Endereço */}
-        {/* - Ocupa a largura total (4 colunas) em telas médias ou maiores. */}
         <div className="md:col-span-4 flex flex-col items-start justify-start p-4">
           <p className="text-xl md:text-2xl font-bold">
             Ou venha direto ate a Imobiliária Bortone!
@@ -69,9 +64,6 @@ export default function Contato() {
         </div>
 
         {/* Mapa */}
-        {/* - Altura responsiva para melhor visualização em mobile.
-          - Ocupa a largura total em telas médias ou maiores.
-        */}
         <div className="md:col-span-4 flex items-center justify-center p-4 h-64 md:h-96 w-full">
           <ContatoMapa />
         </div>
