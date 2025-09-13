@@ -23,14 +23,26 @@ const blogService = {
     }
   },
 
-  async getAllArtigos() {
+  async getAllArtigos(params) {
     // Adicionar os parametros para ordenar por data ou ordem alfabetica, e pesquisar
     try {
       // Adicionar lógica de pesquisa por titulo
+      const optionsArtigos = {};
 
+      if (params && params.ordenarPor) {
+        const ordemArtigos = params.direcao === "DESC" ? "DESC" : "ASC";
+
+        if (params.ordenarPor === "data") {
+          optionsArtigos.order = [["id", ordemArtigos]];
       // Adicionar lógica de ordenação por data de publicaçao e por ordem alfabetica
+        } else if (params.ordenarPor === "alfabetica") {
+          optionsArtigos.order = [["titulo", ordemArtigos]];
+        }
+      }
+      const AllArtigos = await Blog.findAll(optionsArtigos);
+      return AllArtigos;
 
-      return await Blog.findAll(); // Passar os parametros
+
     } catch (error) {
       console.error("Erro ao buscar todos os artigos:", error.message);
       throw error;
