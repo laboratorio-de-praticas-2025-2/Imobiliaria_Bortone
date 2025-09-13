@@ -1,53 +1,44 @@
 import blogService from "../services/blogService.js";
 
-// Tudo oq for BLOG, alterar para ARTIGO
+// Colocar o controller em uma classe
 
-// Colocar o controller em uma classe 
-
-// Alterar para createArtigo
-export const createBlog = async (req, res) => {
+export const createArtigo = async (req, res) => {
   try {
-    const novoBlog = await blogService.createBlog(req.body);
+    const novoArtigo = await blogService.createArtigo(req.body);
     res.status(201).json({
-      // Alterar para "novo artigo criado ...""
-      messsage: "Novo post de blog criado com sucesso.",
-      data: novoBlog,
+      messsage: "Novo artigo criado com sucesso.",
+      data: novoArtigo,
     });
   } catch (err) {
-    // Melhorar a forma como o erro é mostrado no console
-    console.log(err);
-    // Alterar para "... criar artigo de ..."
-    res.status(500).json({ error: "Erro ao criar o post de blog." });
+    console.error("Erro ao criar artigo:", err.message);
+    res.status(500).json({ error: "Erro ao criar o artigo." });
   }
 };
 
-// Alterar para getArtigoById
-export const getBlogById = async (req, res) => {
+export const getArtigoById = async (req, res) => {
   const { id } = req.params;
   try {
-    const blog = await blogService.getBlogById(id);
-    if (!blog) {
-      // Alterar para "Artigo não encontrada."
-      return res.status(404).json({ error: "Post blog não encontrado." });
+    const artigo = await blogService.getArtigoById(id);
+    if (!artigo) {
+      return res
+        .status(404)
+        .json({ error: `Artigo com o ID ${id} não encontrado.` });
     }
     res.status(200).json({
-      // Alterar para "Artigo obtido ..."
-      message: "Post blog obtido com sucesso.",
-      data: blog,
+      message: "Artigo obtido com sucesso.",
+      data: artigo,
     });
   } catch (err) {
-    // Melhorar a forma como o erro é mostrado no console
-    console.error(err);
-    //   Alterar para "... buscar o artigo de ID: ..."
-    res.status(500).json({ error: "Erro ao buscar o post blog." });
+    console.error(`Erro ao buscar o artigo de ID ${id}:`, err.message);
+    res.status(500).json({ error: `Erro ao buscar o artigo de ID ${id}.` });
   }
 };
 
 // essa rota precisa passar os parametros de pesquisa ou ordenação para o service
 export const getAllArtigos = async (req, res) => {
   try {
-    const blogs = await blogService.getAll();
-    res.status(200).json({ blog: blogs });
+    const artigos = await blogService.getAllArtigos();
+    res.status(200).json({ artigo: artigos });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Erro interno do servidor." });
@@ -55,44 +46,45 @@ export const getAllArtigos = async (req, res) => {
 };
 
 const updateArtigo = async (req, res) => {
-    try {
-        if (objectId.isValid(req.params.id)) {
-            const id = req.params.id;
-            const { usuario_id, titulo, conteudo, data_publicacao, url_imagem} = req.body;
-            await blogService.update(usuario_id, titulo, conteudo, data_publicacao, url_imagem)
-            res.sendStatus(200);
-        } else {
-            res.sendStatus(400);
-        }
-    } catch (error) {
-        console.log(error) 
-        res.status(500).json({error: "Erro interno do servidor."});
-    }
-};
-
-// Alterar para deleteArtigo
-export const deleteBlog = async (req, res) => {
-  const { id } = req.params;
   try {
-    const blogDeletado = await blogService.deleteBlog(id);
-    if (!blogDeletado) {
-      // Alterar "Artigo de ID: ... não encontrado ..."
-      return res
-        .status(404)
-        .json({ error: "Post de blog não encontrado para exclusão." });
+    if (objectId.isValid(req.params.id)) {
+      const id = req.params.id;
+      const { usuario_id, titulo, conteudo, data_publicacao, url_imagem } =
+        req.body;
+      await blogService.updateArtigo(
+        usuario_id,
+        titulo,
+        conteudo,
+        data_publicacao,
+        url_imagem
+      );
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(400);
     }
-    res.status(200).json({
-      // Alterar para "Artigo deletado ..."
-      message: "Post de blog deletado com sucesso.",
-      data: blogDeletado,
-    });
-  } catch (err) {
-    // Melhorar a forma como o erro é mostrado no console
-    console.error(err);
-    // Alterar para "... deletar artigo."
-    res.status(500).json({ error: "Erro ao deletar o post de blog." });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Erro interno do servidor." });
   }
 };
 
+export const deleteArtigo = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const artigoDeletado = await blogService.deleteArtigo(id);
+    if (!artigoDeletado) {
+      return res
+        .status(404)
+        .json({ error: `Artigo com o ID ${id} não encontrado para exclusão.` });
+    }
+    res.status(200).json({
+      message: "Artigo deletado com sucesso.",
+      data: artigoDeletado,
+    });
+  } catch (err) {
+    console.error(`Erro ao deletar o artigo de ID ${id}:`, err.message);
+    res.status(500).json({ error: `Erro ao deletar o artigo de ID ${id}.` });
+  }
+};
 
 // Exporta o classe
