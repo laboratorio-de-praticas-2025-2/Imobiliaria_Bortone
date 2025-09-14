@@ -11,9 +11,10 @@ export const organizarImoveisMapView = (imoveis) => {
         preco: imovel.preco,
         latitude: imovel.latitude,
         longitude: imovel.longitude,
-        imagem: (imovel.imagem_imovel && imovel.imagem_imovel.length > 0) 
-                ? imovel.imagem_imovel[0].url_imagem 
-                : null,  // Primeira imagem ou null
+        imagem:
+          imovel.imagem_imovel && imovel.imagem_imovel.length > 0
+            ? imovel.imagem_imovel[0].url_imagem
+            : null, // Primeira imagem ou null
       };
     }
 
@@ -32,9 +33,10 @@ export const organizarImoveisMapView = (imoveis) => {
       vagas: imovel.casa.vagas,
       possui_piscina: imovel.casa.possui_piscina,
       possui_jardim: imovel.casa.possui_jardim,
-      imagem: (imovel.imagem_imovel && imovel.imagem_imovel.length > 0)
-                ? imovel.imagem_imovel[0].url_imagem 
-                : null,  // Primeira imagem ou null
+      imagem:
+        imovel.imagem_imovel && imovel.imagem_imovel.length > 0
+          ? imovel.imagem_imovel[0].url_imagem
+          : null, // Primeira imagem ou null
     };
   });
 };
@@ -53,12 +55,13 @@ export const organizarImoveisCarrossel = (imoveis) => {
         status: imovel.status,
         area: imovel.area,
         descricao: imovel.descricao,
-        imagens: (imovel.imagem_imovel && imovel.imagem_imovel.length > 0) 
-                  ? imovel.imagem_imovel.map((img) => ({
-                      url_imagem: img.url_imagem,
-                      descricao: img.descricao,
-                    })) 
-                  : [],  // Usando o campo correto para imagens ou array vazio
+        imagens:
+          imovel.imagem_imovel && imovel.imagem_imovel.length > 0
+            ? imovel.imagem_imovel.map((img) => ({
+                url_imagem: img.url_imagem,
+                descricao: img.descricao,
+              }))
+            : [], // Usando o campo correto para imagens ou array vazio
         bairro: imovel.bairro,
       };
     }
@@ -80,17 +83,18 @@ export const organizarImoveisCarrossel = (imoveis) => {
       vagas: imovel.casa.vagas,
       possui_piscina: imovel.casa.possui_piscina,
       possui_jardim: imovel.casa.possui_jardim,
-      imagens: (imovel.imagem_imovel && imovel.imagem_imovel.length > 0)
-                ? imovel.imagem_imovel.map((img) => ({
-                    url_imagem: img.url_imagem,
-                    descricao: img.descricao,
-                  }))
-                : (imovel.imagens && imovel.imagens.length > 0) // Verifique o campo `imagens` como fallback
-                  ? imovel.imagens.map((img) => ({
-                      url_imagem: img.url_imagem,
-                      descricao: img.descricao,
-                    }))
-                  : [],  // Usando o campo correto para imagens ou array vazio
+      imagens:
+        imovel.imagem_imovel && imovel.imagem_imovel.length > 0
+          ? imovel.imagem_imovel.map((img) => ({
+              url_imagem: img.url_imagem,
+              descricao: img.descricao,
+            }))
+          : imovel.imagens && imovel.imagens.length > 0 // Verifique o campo `imagens` como fallback
+          ? imovel.imagens.map((img) => ({
+              url_imagem: img.url_imagem,
+              descricao: img.descricao,
+            }))
+          : [], // Usando o campo correto para imagens ou array vazio
       bairro: imovel.bairro,
     };
   });

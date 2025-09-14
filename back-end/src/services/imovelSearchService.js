@@ -1,7 +1,7 @@
-import Imovel from "../models/ImovelModel.js";
-import Casa from "../models/CasaModel.js";
-import Terreno from "../models/TerrenoModel.js";
-import ImagemImovel from "../models/ImagemImovelModel.js";
+import Imovel from "../models/Imovel.js";
+import Casa from "../models/Casa.js";
+import Terreno from "../models/Terreno.js";
+import ImagemImovel from "../models/ImagemImovel.js";
 import {
   organizarImoveisCarrossel,
   organizarImoveisMapView,
@@ -119,7 +119,11 @@ export const buscarMapa = async (data) => {
         model: Terreno, // Apenas Terreno
         as: "terreno",
       });
-    } else if (data.tipo === "Casa" || data.tipo === "Apartamento" ||  data.tipo !== "Terreno") {
+    } else if (
+      data.tipo === "Casa" ||
+      data.tipo === "Apartamento" ||
+      data.tipo !== "Terreno"
+    ) {
       tipoFilter = {
         tipo: { [Op.or]: ["Casa", "Apartamento"] }, // Filtra por 'Casa' ou 'Apartamento'
       };

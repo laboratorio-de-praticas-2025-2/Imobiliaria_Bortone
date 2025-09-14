@@ -1,8 +1,8 @@
-import Imovel from './ImovelModel.js';
-import Casa from './CasaModel.js';
-import Terreno from './TerrenoModel.js';
-import Usuario from './UsuarioModel.js';
-import ImagemImovel from './ImagemImovelModel.js';
+import Imovel from './Imovel.js';
+import Casa from './Casa.js';
+import Terreno from './Terreno.js';
+import Usuario from './Usuario.js';
+import ImagemImovel from './ImagemImovel.js';
 
 // 🔹 Imovel ↔ Casa (1:1)
 Imovel.hasOne(Casa, { 
