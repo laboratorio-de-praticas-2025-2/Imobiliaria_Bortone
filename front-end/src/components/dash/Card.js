@@ -2,8 +2,8 @@ import { MdOutlineBedroomParent } from "react-icons/md";
 export default function Card({name, label, value, className, icon, classNameNumber}) {
   return (
     <div
-      className="group h-full md:!h-full !w-full flex  items-center    
-            rounded-xl px-10 md:px-3 xl:px-10 !border-0 !bg-[#EEF0F9] !shadow-md
+      className="group h-[full] md:!h-full !w-full flex  items-center    
+            rounded-xl px-10 md:px-3 xl:px-7 !border-0 !bg-[#EEF0F9] !shadow-md
             hover:!bg-[var(--primary)] focus:!bg-[var(--primary)] active:!bg-[var(--primary)]
             hover:!border-0 focus:!border-0 focus:!outline-none focus:!ring-0 focus:!shadow-md
             transition-colors cursor-pointer"

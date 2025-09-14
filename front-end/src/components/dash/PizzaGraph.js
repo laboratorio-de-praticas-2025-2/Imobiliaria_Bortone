@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend,  } from "chart.js";
 import { Row, Col } from "antd";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function RentalByRegion({ data, label, options }) {
+export default function RentalByRegion({ data, label, options,className }) {
   const [chartData, setChartData] = useState(null);
 
   // // Puxando dados de uma API real, mas a API tá fora do ar no momento ↓
@@ -38,7 +38,7 @@ export default function RentalByRegion({ data, label, options }) {
 
 
   return (
-    <div className="group h-full !w-full flex items-center rounded-xl px-4 !bg-[#EEF0F9] !shadow-md">
+    <div className={`group h-full !w-full flex items-center rounded-xl px-4 !bg-[#EEF0F9] !shadow-md ${className}`}>
       <div className="grid grid-col content-evenly w-full h-full">
         <span className="text-lg md:text-2xl font-bold lg:text-center text-[var(--primary)] ">
           {label}

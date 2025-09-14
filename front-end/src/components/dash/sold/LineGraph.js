@@ -40,10 +40,19 @@ export default function LineGraph() {
     ],
     datasets: [
       {
-        label: "Imóveis comprados",
+        label: "Casas",
         data: [5, 10, 3, 10, 5, 15, 5, 7, , , ,],
         borderColor: "#F39200",
-        borderWidth: 2,
+        borderWidth: 4,
+        fill: false,
+        tension: 0,
+        pointRadius: 0,
+      },
+            {
+        label: "Apartamentos",
+        data: [2, 5, 4, 8, 10, 7, 2, 12, , , ,],
+        borderColor: "#324587",
+        borderWidth: 4,
         fill: false,
         tension: 0,
         pointRadius: 0,
@@ -93,7 +102,7 @@ export default function LineGraph() {
         </span>
 
         <div className="items-center justify-items-center w-full h-full">
-          <div className="w-[100%] h-[300px]">
+          <div className="w-full h-[300px]">
             <Line data={data} options={options} />
           </div>
         </div>
