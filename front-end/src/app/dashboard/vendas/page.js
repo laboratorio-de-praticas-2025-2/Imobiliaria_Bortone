@@ -2,9 +2,9 @@ import Section from "@/components/dash/Section";
 import { Row, Col, Input, Button } from "antd";
 import { IoOptions } from "react-icons/io5";
 import CardsSale from "@/components/dash/CardsSale";
-import PropertyByRegion from "@/components/dash/PropertyByRegion";
+import PropertyByRegion from "@/components/dash/PizzaGraph";
 import PropertySold from "@/components/dash/PropertySold";
-import SalesLineGraph from "@/components/dash/sold/SalesLineGraph";
+import SalesLineGraph from "@/components/dash/sold/LineGraph";
 export default function Dashboard() {
   const style = { background: "#0092ff", padding: "8px 0" };
 

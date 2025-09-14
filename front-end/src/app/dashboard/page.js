@@ -2,37 +2,170 @@
 
 import Section from "@/components/dash/Section";
 import Card from "@/components/dash/Card";
-import { MdOutlineBedroomParent } from "react-icons/md";
 import Sidebar from "@/components/cms/Sidebar";
+import PizzaGraph from "@/components/dash/PizzaGraph";
 import CMS from "@/components/cms/table";
-import { bannersMock } from "@/mock/banner";
-import { useEffect, useState } from "react";
-import { Row, Col, Input, Button } from "antd";
-import { IoOptions } from "react-icons/io5";
-import CardsHome from "@/components/dash/CardsHome";
-import RentalByRegion from "@/components/dash/rent/RentalByRegion";
-import PropertySold from "@/components/dash/PropertySold";
-import UsersPerMonth from "@/components/dash/UsersPerMonth";
+import { PiCoinsFill } from "react-icons/pi";
+import { BsFillBuildingFill } from "react-icons/bs";
+import { MdTerrain, MdOutlineBedroomParent } from "react-icons/md";
+import { FaUserPlus, FaUserPen, FaUser, FaHouseChimney } from "react-icons/fa6";
+import { FaCheckSquare } from "react-icons/fa";
+import LineGraph from "@/components/dash/sold/LineGraph";
 export default function Dashboard() {
   const style = { background: "#0092ff", padding: "8px 0" };
+  const data = {
+    labels: ["Apartamentos", "Casas", "Terrenos"],
+    datasets: [
+      {
+        data: [45, 25, 15],
+        backgroundColor: [
+          "#243B7B",
+          "#F39C12",
+          "#E74C3C",
+          "#B8AEBF",
+          "#A6A6A6",
+        ], // cores
+        borderWidth: 0,
+        cutout: "0%", // transforma em donut (se fosse 0%, seria uma pizza cheia)
+      },
+    ],
+  };
+  const options = {
+    plugins: {
+      legend: {
+        position: "right",
+        labels: {
+          usePointStyle: false,
+          boxHeight: 18,
+
+          color: "black",
+          boxWidth: 18,
+        },
+      },
+    },
+    maintainAspectRatio: false,
+  };
 
   return (
     <>
       <Sidebar />
       <div className="md:ml-20">
         <CMS.Body title={"Dashboard"}>
-          <div className="w-[90vw]">
-            <div className=" flex flex-col sm:flex-row w-full gap-6">
-              {/* Coluna do Formulário */}
-              <div className="sm:w-[35%] flex flex-col gap-6 items-start ">
+          <div className="grid grid-cols-7 p-7 w-full gap-6">
+            <div className="grid grid-rows-5 col-span-2 gap-6">
+              <div className="row-span-2">
+                <PizzaGraph
+                  label={"Venda nos últimos 30 dias"}
+                  data={data}
+                  options={options}
+                />
+              </div>
+
+              <div className="grid grid-rows-3 row-span-3 content-between gap-6 h-full">
                 <Card
-                  name={"vendas"}
-                  label={"Número total de locações"}
-                  value={50}
+                  name={"usuarios_cadastrados"}
+                  label={"Total de usuários cadastrados"}
+                  value={200}
+                  labelCol={{ span: 24 }}
                   icon={
-                    <MdOutlineBedroomParent className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                    <FaUserPlus className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                   }
                 />
+
+                <Card
+                  name={"usuarios_administradores"}
+                  label={"Usuários administradores"}
+                  value={5}
+                  labelCol={{ span: 24 }}
+                  icon={
+                    <FaUserPen className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                  }
+                />
+
+                <Card
+                  name={"casas_disponiveis"}
+                  label={"Usuários visitantes"}
+                  value={195}
+                  labelCol={{ span: 24 }}
+                  icon={
+                    <FaUser className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                  }
+                />
+              </div>
+            </div>
+            <div className="grid grid-rows-5 col-span-5 gap-6">
+              <div className="grid grid-rows-7 row-span-2 gap-6">
+                <div className="grid grid-cols-2 row-span-4  gap-6">
+                  <Card
+                    name={"vendas"}
+                    label={"Número total de vendas"}
+                    className={"!text-3xl"}
+                    value={55}
+                    labelCol={{ span: 24 }}
+                    icon={
+                      <PiCoinsFill className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                    }
+                  />
+                  <Card
+                    name={"locacoes"}
+                    label={"Número total de locações"}
+                    className={"!text-3xl"}
+                    value={50}
+                    labelCol={{ span: 24 }}
+                    icon={
+                      <MdOutlineBedroomParent className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                    }
+                  />
+                </div>
+                <div className="grid grid-cols-7 row-span-3 gap-6">
+                  <div className="col-span-1">
+                    <Card
+                      name={"imoveis_disponiveis"}
+                      label={"Total de imóveis disponíveis"}
+                      value={60}
+                      labelCol={{ span: 24 }}
+                      icon={
+                        <FaCheckSquare className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                      }
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <Card
+                      name={"apartamentos_disponiveis"}
+                      label={"Apartamentos disponíveis"}
+                      value={7}
+                      labelCol={{ span: 24 }}
+                      icon={
+                        <BsFillBuildingFill className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                      }
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <Card
+                      name={"casas_disponiveis"}
+                      label={"Casas disponíveis"}
+                      value={12}
+                      labelCol={{ span: 24 }}
+                      icon={
+                        <FaHouseChimney className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                      }
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <Card
+                      name={"terrenos_disponiveis"}
+                      label={"Terrenos disponíveis"}
+                      value={12}
+                      labelCol={{ span: 24 }}
+                      icon={
+                        <MdTerrain className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="row-span-3">
+                <LineGraph />
               </div>
             </div>
           </div>

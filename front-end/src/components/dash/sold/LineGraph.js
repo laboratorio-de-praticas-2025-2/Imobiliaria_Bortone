@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-export default function RentalByRegion() {
+export default function LineGraph() {
   const data = {
     labels: [
       "Janeiro",
@@ -86,22 +86,18 @@ export default function RentalByRegion() {
   };
 
   return (
-    <Row className="py-4">
-      <Col className="gutter-row" span={24}>
-        <div className="group h-[450px] !w-full flex items-center rounded-xl  px-10 md:px-3 2xl:px-10 !bg-[#EEF0F9] !shadow-md">
-          <div className="grid grid-col content-evenly w-full h-full">
-            <span className="text-lg md:text-2xl font-bold lg:text-center px-10 text-[var(--primary)]">
-              Evolução de vendas por mês
-            </span>
+    <div className="group h-[450px] !w-full flex items-center rounded-xl  px-10 md:px-3 2xl:px-10 !bg-[#EEF0F9] !shadow-md">
+      <div className="grid grid-col content-evenly w-full h-full">
+        <span className="text-lg md:text-2xl font-bold   text-[var(--primary)]">
+          Evolução de vendas por mês
+        </span>
 
-            <div className="items-center justify-items-center w-full h-full">
-              <div className="w-[350px] md:w-[650px] lg:w-[450px] xl:w-[700px] 2xl:w-[750px] h-[300px]">
-                <Line data={data} options={options} />
-              </div>
-            </div>
+        <div className="items-center justify-items-center w-full h-full">
+          <div className="w-[100%] h-[300px]">
+            <Line data={data} options={options} />
           </div>
         </div>
-      </Col>
-    </Row>
+      </div>
+    </div>
   );
 }
