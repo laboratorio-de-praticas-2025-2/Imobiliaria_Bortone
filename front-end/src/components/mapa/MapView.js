@@ -2,13 +2,13 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import ImovelMarker from "./ImovelMarker";
 import LocationButton from "./LocationButton";
 import L from "leaflet";
+import MarkerClusterGroup from "react-leaflet-markercluster";
 
 const casaIcon = new L.Icon({
   iconUrl: "images/icons/casa.png",
@@ -34,8 +34,15 @@ export default function MapView({ imoveis }) {
 
   const handleHover = (imovel, map) => {
     setHoverImovel(imovel);
-    const point = map.latLngToContainerPoint([imovel.latitude, imovel.longitude]);
+    const point = map.latLngToContainerPoint([
+      imovel.latitude,
+      imovel.longitude,
+    ]);
     setCardPosition({ x: point.x, y: point.y });
+  };
+
+  const handleLeave = () => {
+    setTimeout(() => setHoverImovel(null), 100); // delay para evitar flicker
   };
 
   return (
@@ -52,46 +59,53 @@ export default function MapView({ imoveis }) {
           attribution="&copy; OpenStreetMap contributors"
         />
 
-        {imoveis.map((imovel) => (
-          <ImovelMarker
-            key={imovel.id}
-            imovel={imovel}
-            icon={casaIcon}
-            onHover={handleHover}
-            onLeave={() => setHoverImovel(null)}
-          />
-        ))}
+        <MarkerClusterGroup
+          chunkedLoading
+          showCoverageOnHover={false}
+          spiderfyOnMaxZoom={true}
+          maxClusterRadius={40}
+        >
+          {imoveis.map((imovel) => (
+            <ImovelMarker
+              key={imovel.id}
+              imovel={imovel}
+              icon={casaIcon}
+              onHover={handleHover}
+              onLeave={handleLeave}
+            />
+          ))}
+        </MarkerClusterGroup>
 
         <div className="map-controls">
-            <div className="location-button-wrapper">
-                <LocationButton />
-            </div>
-            <div className="zoom-button-wrapper">
-                <ZoomButtons />
-            </div>
+          <div className="location-button-wrapper">
+            <LocationButton />
+          </div>
+          <div className="zoom-button-wrapper">
+            <ZoomButtons />
+          </div>
         </div>
       </MapContainer>
 
       {hoverImovel && (
-          <div
-            className="hover-card"
-            style={{
-              left: `${cardPosition.x + 3.5}px`,
-              top: `${cardPosition.y - 45}px`,
-            }}
-          >
-            <img
-              src={hoverImovel.imagem}
-              alt="Imagem do imóvel"
-              className="w-full h-32 object-cover mb-2 rounded"
-            />
-            <a className="card-preco">
-              <p>R$ {hoverImovel.preco.toLocaleString()}</p>
-            </a>
-            <a className="card-text">
-              {hoverImovel.tipo} - {hoverImovel.endereco}
-            </a>
-          </div>
+        <div
+          className="hover-card"
+          style={{
+            left: `${cardPosition.x + 3.5}px`,
+            top: `${cardPosition.y - 45}px`,
+          }}
+        >
+          <img
+            src={hoverImovel.imagem}
+            alt="Imagem do imóvel"
+            className="w-full h-32 object-cover mb-2 rounded"
+          />
+          <a className="card-preco">
+            <p>R$ {hoverImovel.preco.toLocaleString()}</p>
+          </a>
+          <a className="card-text">
+            {hoverImovel.tipo} - {hoverImovel.endereco}
+          </a>
+        </div>
       )}
     </div>
   );
