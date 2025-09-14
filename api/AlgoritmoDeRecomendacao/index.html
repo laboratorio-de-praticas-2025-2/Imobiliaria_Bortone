@@ -26,6 +26,9 @@
     
       <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
       
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
       
 
 
@@ -43,6 +46,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/custom.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -53,7 +58,14 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -103,6 +115,18 @@
         </div>
       </div>
     </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
     
     
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
@@ -1345,15 +1369,15 @@
 <p>A seguir, o fluxo de inserção de um novo registro de visita na tabela <code>recomendacao_imovel</code>, que é o primeiro passo para o sistema de recomendação.</p>
 <h4 id="recomendacaoimovelservicejs"><code>recomendacaoImovelService.js</code></h4>
 <p>A função <code>createRecomendacao</code> é a camada de serviço responsável por interagir diretamente com o banco de dados.</p>
-<pre><code class="language-js">export const createRecomendacao = async (data) =&gt; {
-    try {
-        const novaRecomendacao = await RecomendacaoImovel.create(data);
-        return novaRecomendacao;
-    } catch (error) {
-        throw new Error('Não foi possível criar a recomendação: ' + error.message);
-    }
-};
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">createRecomendacao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">novaRecomendacao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">RecomendacaoImovel</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">novaRecomendacao</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">&#39;Não foi possível criar a recomendação: &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
 <ul>
 <li>
 <p><strong>Descrição:</strong> Esta é uma função assíncrona que recebe um objeto data contendo as informações da visita. Ela utiliza o método create do modelo RecomendacaoImovel para inserir um novo registro na tabela correspondente.</p>
@@ -1365,20 +1389,20 @@
 <hr />
 <h4 id="validacao-dos-dados-de-entrada-middleware">Validação dos Dados de Entrada (Middleware)</h4>
 <p>O middleware <code>validacaoRecomendacaoImovel</code> garante que os dados enviados na requisição sejam válidos antes de serem processados.</p>
-<pre><code class="language-js">export const validacaoRecomendacaoImovel = (req, res, next) =&gt; {
-  const { usuario_id, imovel_id, data_visita } = req.body;
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">validacaoRecomendacaoImovel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">usuario_id</span><span class="p">,</span><span class="w"> </span><span class="nx">imovel_id</span><span class="p">,</span><span class="w"> </span><span class="nx">data_visita</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">;</span>
 
-    if (!usuario_id || !imovel_id || !data_visita) {
-        return res.status(400).json({ error: 'Campos obrigatórios faltando.' });
-    }
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">usuario_id</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="nx">imovel_id</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="nx">data_visita</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mf">400</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span><span class="w"> </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Campos obrigatórios faltando.&#39;</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="p">}</span>
 
-    if (typeof usuario_id !== 'number' || typeof imovel_id !== 'number') {
-        return res.status(400).json({ error: 'IDs devem ser números.' });
-    }
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">usuario_id</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">&#39;number&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="ow">typeof</span><span class="w"> </span><span class="nx">imovel_id</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">&#39;number&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mf">400</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span><span class="w"> </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;IDs devem ser números.&#39;</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="p">}</span>
 
-  next();
-};
-</code></pre>
+<span class="w">  </span><span class="nx">next</span><span class="p">();</span>
+<span class="p">};</span>
+</code></pre></div>
 <ul>
 <li>
 <p><strong>Descrição:</strong> Essa função atua como um filtro pré-requisição. Ela verifica a presença e o tipo de dados dos campos <code>usuario_id</code>, <code>imovel_id</code> e <code>data_visita</code> no corpo da requisição.</p>
@@ -1390,26 +1414,25 @@
 <hr />
 <h4 id="controlador-do-metodo-post">Controlador do método POST</h4>
 <p>O controlador <code>createRecomendacaoImovel</code> orquestra a requisição. Ele extrai os dados, chama o serviço de inserção e lida com a resposta.</p>
-<pre><code class="language-js">export const createRecomendacaoImovel = async (req, res) =&gt; {
-  const { usuario_id, imovel_id, data_visita } = req.body;
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">createRecomendacaoImovel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">usuario_id</span><span class="p">,</span><span class="w"> </span><span class="nx">imovel_id</span><span class="p">,</span><span class="w"> </span><span class="nx">data_visita</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">;</span>
 
-  try {
-    const novaRecomendacao = await recomendacaoImovelService.createRecomendacao({
-      usuario_id,
-      imovel_id,
-      data_visita
-    });
-    res.status(201).json({
-      message: 'Novo registro na tabela recomendacao_imovel.',
-      data: novaRecomendacao,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Erro interno do servidor.' });
-  }
-};
-
-</code></pre>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">novaRecomendacao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">recomendacaoImovelService</span><span class="p">.</span><span class="nx">createRecomendacao</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">usuario_id</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">imovel_id</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">data_visita</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">    </span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mf">201</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">message</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Novo registro na tabela recomendacao_imovel.&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="nx">novaRecomendacao</span><span class="p">,</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mf">500</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span><span class="w"> </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Erro interno do servidor.&#39;</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
 <ul>
 <li>
 <p><strong>Descrição:</strong> Este controlador é a ponte entre a rota e a lógica de negócio. Ele recebe a requisição, extrai as informações do corpo e as passa para a função de serviço <code>createRecomendacao</code>.</p>
@@ -1421,16 +1444,16 @@
 <hr />
 <h4 id="rota-de-post">Rota de POST</h4>
 <p>A rota <code>POST /recomendacao_imovel</code> define o endpoint para a criação de um registro de visita.</p>
-<pre><code class="language-js">import express from 'express';
-import { createRecomendacaoImovel } from '../controllers/recomendacaoImovelController.js';
-import { validacaoRecomendacaoImovel } from '../middlewares/validacaoRecomendacaoImovel.js';
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">express</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;express&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">createRecomendacaoImovel</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../controllers/recomendacaoImovelController.js&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">validacaoRecomendacaoImovel</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../middlewares/validacaoRecomendacaoImovel.js&#39;</span><span class="p">;</span>
 
-const recomendacoesRoutes = express.Router();
+<span class="kd">const</span><span class="w"> </span><span class="nx">recomendacoesRoutes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">express</span><span class="p">.</span><span class="nx">Router</span><span class="p">();</span>
 
-recomendacoesRoutes.post('/recomendacao_imovel', validacaoRecomendacaoImovel, createRecomendacaoImovel);
+<span class="nx">recomendacoesRoutes</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/recomendacao_imovel&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">validacaoRecomendacaoImovel</span><span class="p">,</span><span class="w"> </span><span class="nx">createRecomendacaoImovel</span><span class="p">);</span>
 
-export default recomendacoesRoutes;
-</code></pre>
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nx">recomendacoesRoutes</span><span class="p">;</span>
+</code></pre></div>
 <ul>
 <li><strong>Fluxo de Execução:</strong> A requisição POST para <code>/recomendacao_imovel</code> primeiro passa pelo middleware <code>validacaoRecomendacaoImovel</code>. Se a validação for aprovada, a requisição é então passada para o controlador <code>createRecomendacaoImovel</code> para ser processada. Essa ordem garante que a lógica de negócio só seja executada com dados válidos.</li>
 </ul>
@@ -1440,22 +1463,22 @@ export default recomendacoesRoutes;
 A lógica principal está contida no arquivo <code>recomendacaoImovelService.js</code>, que coordena as etapas de coleta de dados, inferência de preferências e busca por recomendações.</p>
 <hr />
 <h4 id="passo-1-coleta-de-historico-do-usuario-recomendacaoimovelservicejs">Passo 1: coleta de histórico do usuário - <code>recomendacaoImovelService.js</code></h4>
-<pre><code class="language-js">const getTopImoveisVisitados = async (usuario_id) =&gt; {
-    return await RecomendacaoImovel.findAll({
-        attributes: [
-            'imovel_id',
-            // Usa COUNT para contar a frequência de cada `imovel_id`.
-            [Sequelize.fn('COUNT', Sequelize.col('imovel_id')), 'visitas']
-        ],
-        where: { usuario_id },
-        group: ['imovel_id'],
-        // Ordena do mais visitado para o menos visitado.
-        order: [[Sequelize.fn('COUNT', Sequelize.col('imovel_id')), 'DESC']],
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">getTopImoveisVisitados</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">usuario_id</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">RecomendacaoImovel</span><span class="p">.</span><span class="nx">findAll</span><span class="p">({</span>
+<span class="w">        </span><span class="nx">attributes</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s1">&#39;imovel_id&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="c1">// Usa COUNT para contar a frequência de cada `imovel_id`.</span>
+<span class="w">            </span><span class="p">[</span><span class="nx">Sequelize</span><span class="p">.</span><span class="nx">fn</span><span class="p">(</span><span class="s1">&#39;COUNT&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">Sequelize</span><span class="p">.</span><span class="nx">col</span><span class="p">(</span><span class="s1">&#39;imovel_id&#39;</span><span class="p">)),</span><span class="w"> </span><span class="s1">&#39;visitas&#39;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nx">where</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">usuario_id</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">group</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;imovel_id&#39;</span><span class="p">],</span>
+<span class="w">        </span><span class="c1">// Ordena do mais visitado para o menos visitado.</span>
+<span class="w">        </span><span class="nx">order</span><span class="o">:</span><span class="w"> </span><span class="p">[[</span><span class="nx">Sequelize</span><span class="p">.</span><span class="nx">fn</span><span class="p">(</span><span class="s1">&#39;COUNT&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">Sequelize</span><span class="p">.</span><span class="nx">col</span><span class="p">(</span><span class="s1">&#39;imovel_id&#39;</span><span class="p">)),</span><span class="w"> </span><span class="s1">&#39;DESC&#39;</span><span class="p">]],</span>
 
-        raw: true
-    });
-};
-</code></pre>
+<span class="w">        </span><span class="nx">raw</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="p">};</span>
+</code></pre></div>
 <ul>
 <li>
 <p><strong>Descrição:</strong> Esta função executa uma consulta agregada no banco de dados. Ela conta quantas vezes cada <code>imovel_id</code> aparece para um determinado <code>usuario_id</code>, agrupando os resultados. O uso de Sequelize.fn permite a execução de funções nativas do SQL, como COUNT().</p>
@@ -1466,47 +1489,47 @@ A lógica principal está contida no arquivo <code>recomendacaoImovelService.js<
 </ul>
 <hr />
 <h4 id="passo-2-inferencia-de-preferencias-do-usuario">Passo 2: Inferência de Preferências do Usuário</h4>
-<p>Com o histórico de visitas em mãos, o próximo passo é inferir o perfil de preferências do usuário. A função <code>inferirPreferencias</code> analisa os dados dos imóveis mais visitados para determinar o tipo, cidade, estado e faixa de preço de preferência.</p>
-<pre><code class="language-js">const inferirPreferencias = async (idsImoveis) =&gt; {
-    if (_.isEmpty(idsImoveis)) {
-        return null;
-    }
+<p>Com o histórico de visitas em mãos, o próximo passo é inferir o perfil de preferências do usuário. A função <code>inferirPreferencias</code> analisa os dados dos imóveis mais visitados para determinar o tipo, cidade, estado e faixa de preço de preferência.
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">inferirPreferencias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">idsImoveis</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="nx">idsImoveis</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
-    // Busca no banco de dados os dados completos (tipo, cidade, estado, preco) dos imóveis visitados.
-    const imoveisReferencia = await Imovel.findAll({
-      // É um operador do Sequelize. Ele representa o operador SQL IN
-        where: { id: { [Sequelize.Op.in]: idsImoveis } },
-        attributes: ['tipo', 'cidade', 'estado', 'preco'],
-        raw: true
-    });
+<span class="w">    </span><span class="c1">// Busca no banco de dados os dados completos (tipo, cidade, estado, preco) dos imóveis visitados.</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">imoveisReferencia</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">Imovel</span><span class="p">.</span><span class="nx">findAll</span><span class="p">({</span>
+<span class="w">      </span><span class="c1">// É um operador do Sequelize. Ele representa o operador SQL IN</span>
+<span class="w">        </span><span class="nx">where</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">[</span><span class="nx">Sequelize</span><span class="p">.</span><span class="nx">Op</span><span class="p">.</span><span class="ow">in</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="nx">idsImoveis</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">attributes</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;tipo&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;cidade&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;estado&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;preco&#39;</span><span class="p">],</span>
+<span class="w">        </span><span class="nx">raw</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">});</span>
 
-    if (_.isEmpty(imoveisReferencia)) {
-        return null;
-    }
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="nx">imoveisReferencia</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
-    // Com o lodash, encontra o 'tipo', 'cidade' e 'estado' mais frequentes.
-    // 1. `_.countBy`: Conta a frequência de cada atributo (ex: {&quot;Casa&quot;: 3, &quot;Terreno&quot;: 2}).
-    // 2. `_.toPairs`: Converte o objeto de contagem em um array de pares (ex: [[&quot;Casa&quot;, 3], [&quot;Terreno&quot;, 2]]).
-    // 3. `_.maxBy`: Encontra o par com o maior valor (a maior contagem).
-    // 4. `_.head`: Pega o primeiro elemento do par, que é o nome do atributo (ex: &quot;Casa&quot;).
-    const preferencias = {
-        tipo: _.head(_.maxBy(_.toPairs(_.countBy(imoveisReferencia, 'tipo')), _.last)),
-        cidade: _.head(_.maxBy(_.toPairs(_.countBy(imoveisReferencia, 'cidade')), _.last)),
-        estado: _.head(_.maxBy(_.toPairs(_.countBy(imoveisReferencia, 'estado')), _.last)),
-    };
+<span class="w">    </span><span class="c1">// Com o lodash, encontra o &#39;tipo&#39;, &#39;cidade&#39; e &#39;estado&#39; mais frequentes.</span>
+<span class="w">    </span><span class="c1">// 1. `_.countBy`: Conta a frequência de cada atributo (ex: {&quot;Casa&quot;: 3, &quot;Terreno&quot;: 2}).</span>
+<span class="w">    </span><span class="c1">// 2. `_.toPairs`: Converte o objeto de contagem em um array de pares (ex: [[&quot;Casa&quot;, 3], [&quot;Terreno&quot;, 2]]).</span>
+<span class="w">    </span><span class="c1">// 3. `_.maxBy`: Encontra o par com o maior valor (a maior contagem).</span>
+<span class="w">    </span><span class="c1">// 4. `_.head`: Pega o primeiro elemento do par, que é o nome do atributo (ex: &quot;Casa&quot;).</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">preferencias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">tipo</span><span class="o">:</span><span class="w"> </span><span class="nx">_</span><span class="p">.</span><span class="nx">head</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">maxBy</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">toPairs</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">countBy</span><span class="p">(</span><span class="nx">imoveisReferencia</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;tipo&#39;</span><span class="p">)),</span><span class="w"> </span><span class="nx">_</span><span class="p">.</span><span class="nx">last</span><span class="p">)),</span>
+<span class="w">        </span><span class="nx">cidade</span><span class="o">:</span><span class="w"> </span><span class="nx">_</span><span class="p">.</span><span class="nx">head</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">maxBy</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">toPairs</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">countBy</span><span class="p">(</span><span class="nx">imoveisReferencia</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;cidade&#39;</span><span class="p">)),</span><span class="w"> </span><span class="nx">_</span><span class="p">.</span><span class="nx">last</span><span class="p">)),</span>
+<span class="w">        </span><span class="nx">estado</span><span class="o">:</span><span class="w"> </span><span class="nx">_</span><span class="p">.</span><span class="nx">head</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">maxBy</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">toPairs</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">countBy</span><span class="p">(</span><span class="nx">imoveisReferencia</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;estado&#39;</span><span class="p">)),</span><span class="w"> </span><span class="nx">_</span><span class="p">.</span><span class="nx">last</span><span class="p">)),</span>
+<span class="w">    </span><span class="p">};</span>
 
-    // Pega todos os preços dos imóveis de referência.
-    const precos = _.map(imoveisReferencia, 'preco');
-    // Calcula o preço médio.
-    const precoMedio = _.mean(precos);
+<span class="w">    </span><span class="c1">// Pega todos os preços dos imóveis de referência.</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">precos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">imoveisReferencia</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;preco&#39;</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// Calcula o preço médio.</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">precoMedio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">_</span><span class="p">.</span><span class="nx">mean</span><span class="p">(</span><span class="nx">precos</span><span class="p">);</span>
 
-    // Define uma faixa de preço (entre 80% e 120% do preço médio) para a recomendação.
-    preferencias.precoMin = precoMedio * 0.8;
-    preferencias.precoMax = precoMedio * 1.2;
+<span class="w">    </span><span class="c1">// Define uma faixa de preço (entre 80% e 120% do preço médio) para a recomendação.</span>
+<span class="w">    </span><span class="nx">preferencias</span><span class="p">.</span><span class="nx">precoMin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">precoMedio</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.8</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">preferencias</span><span class="p">.</span><span class="nx">precoMax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">precoMedio</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1.2</span><span class="p">;</span>
 
-    return preferencias;
-};
-</code></pre>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">preferencias</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></p>
 <ul>
 <li>
 <p><strong>Descrição:</strong> Esta função é a inteligência do sistema. Ela realiza as seguintes operações:</p>
@@ -1541,39 +1564,39 @@ A lógica principal está contida no arquivo <code>recomendacaoImovelService.js<
 <hr />
 <h4 id="passo-3-buscar-imoveis-populares-como-fallback">Passo 3: Buscar Imóveis Populares como Fallback</h4>
 <p>A função <code>getImoveisPopulares</code> serve como um plano B, ou fallback, para garantir que o sistema sempre retorne uma lista de recomendações, mesmo se o usuário não tiver histórico de visitas ou se a busca personalizada não gerar resultados. Ela encontra os imóveis mais visitados em todo o sistema, independentemente do usuário.</p>
-<pre><code class="language-js">// Retorna até 20 imóveis mais populares do sistema (geral), usados como fallback.
-const getImoveisPopulares = async () =&gt; {
-    // `attributes` define as colunas que vão vir como resposta.
-    const imoveisPopulares = await RecomendacaoImovel.findAll({
-        attributes: [
-            'imovel_id', 
-            // `Sequelize.fn` permite usar funções SQL, como COUNT.
-            [Sequelize.fn('COUNT', Sequelize.col('imovel_id')), 'visitas']
-        ],
-        group: ['imovel_id'],
-        // A consulta ordena pelo número de visitas (a contagem) de forma descendente (`DESC`), ou seja, do mais visitado para o menos visitado.
-        order: [[Sequelize.fn('COUNT', Sequelize.col('imovel_id')), 'DESC']],
-        // Retornará os 20 imóveis mais visitados.
-        limit: 20,
-        // `raw: true` garante que o Sequelize retorne um array de objetos JSON
-        raw: true
-    });
+<div class="highlight"><pre><span></span><code><span class="c1">// Retorna até 20 imóveis mais populares do sistema (geral), usados como fallback.</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">getImoveisPopulares</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// `attributes` define as colunas que vão vir como resposta.</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">imoveisPopulares</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">RecomendacaoImovel</span><span class="p">.</span><span class="nx">findAll</span><span class="p">({</span>
+<span class="w">        </span><span class="nx">attributes</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s1">&#39;imovel_id&#39;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">            </span><span class="c1">// `Sequelize.fn` permite usar funções SQL, como COUNT.</span>
+<span class="w">            </span><span class="p">[</span><span class="nx">Sequelize</span><span class="p">.</span><span class="nx">fn</span><span class="p">(</span><span class="s1">&#39;COUNT&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">Sequelize</span><span class="p">.</span><span class="nx">col</span><span class="p">(</span><span class="s1">&#39;imovel_id&#39;</span><span class="p">)),</span><span class="w"> </span><span class="s1">&#39;visitas&#39;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nx">group</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;imovel_id&#39;</span><span class="p">],</span>
+<span class="w">        </span><span class="c1">// A consulta ordena pelo número de visitas (a contagem) de forma descendente (`DESC`), ou seja, do mais visitado para o menos visitado.</span>
+<span class="w">        </span><span class="nx">order</span><span class="o">:</span><span class="w"> </span><span class="p">[[</span><span class="nx">Sequelize</span><span class="p">.</span><span class="nx">fn</span><span class="p">(</span><span class="s1">&#39;COUNT&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">Sequelize</span><span class="p">.</span><span class="nx">col</span><span class="p">(</span><span class="s1">&#39;imovel_id&#39;</span><span class="p">)),</span><span class="w"> </span><span class="s1">&#39;DESC&#39;</span><span class="p">]],</span>
+<span class="w">        </span><span class="c1">// Retornará os 20 imóveis mais visitados.</span>
+<span class="w">        </span><span class="nx">limit</span><span class="o">:</span><span class="w"> </span><span class="mf">20</span><span class="p">,</span>
+<span class="w">        </span><span class="c1">// `raw: true` garante que o Sequelize retorne um array de objetos JSON</span>
+<span class="w">        </span><span class="nx">raw</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">});</span>
 
-    // Extrai apenas os IDs dos imóveis mais populares.
-    const idsPopulares = _.map(imoveisPopulares, 'imovel_id');
+<span class="w">    </span><span class="c1">// Extrai apenas os IDs dos imóveis mais populares.</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">idsPopulares</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">imoveisPopulares</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;imovel_id&#39;</span><span class="p">);</span>
 
-    // Retorna os dados completos desses imóveis, filtrando por status 'disponivel'.
-    return await Imovel.findAll({
-        where: {
-            id: {
-                [Sequelize.Op.in]: idsPopulares
-            },
-            status: 'disponivel' 
-        },
-        limit: 20
-    });
-};
-</code></pre>
+<span class="w">    </span><span class="c1">// Retorna os dados completos desses imóveis, filtrando por status &#39;disponivel&#39;.</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">Imovel</span><span class="p">.</span><span class="nx">findAll</span><span class="p">({</span>
+<span class="w">        </span><span class="nx">where</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="p">[</span><span class="nx">Sequelize</span><span class="p">.</span><span class="nx">Op</span><span class="p">.</span><span class="ow">in</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="nx">idsPopulares</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;disponivel&#39;</span><span class="w"> </span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">limit</span><span class="o">:</span><span class="w"> </span><span class="mf">20</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="p">};</span>
+</code></pre></div>
 <ul>
 <li>
 <p><strong>Descrição:</strong> Essa função executa um processo em duas etapas:</p>
@@ -1590,76 +1613,74 @@ const getImoveisPopulares = async () =&gt; {
 </ul>
 <hr />
 <h4 id="passo-4-funcao-principal-do-algoritmo">Passo 4: Função principal do algoritmo</h4>
-<p>A função <code>getRecomendacoesByUserId</code> é o coração do sistema. Ela orquestra toda a lógica de recomendação, combinando as funções auxiliares para gerar a lista de imóveis. O fluxo é desenhado com uma estratégia de fallback progressivo para garantir que uma resposta seja sempre retornada.</p>
-<pre><code class="language-js">export const getRecomendacoesByUserId = async (usuario_id) =&gt; {
-    try {
-        // Pega o histórico de imóveis visitados pelo usuário.
-        const imoveisVisitados = await getTopImoveisVisitados(usuario_id);
+<p>A função <code>getRecomendacoesByUserId</code> é o coração do sistema. Ela orquestra toda a lógica de recomendação, combinando as funções auxiliares para gerar a lista de imóveis. O fluxo é desenhado com uma estratégia de fallback progressivo para garantir que uma resposta seja sempre retornada.
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">getRecomendacoesByUserId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">usuario_id</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Pega o histórico de imóveis visitados pelo usuário.</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">imoveisVisitados</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">getTopImoveisVisitados</span><span class="p">(</span><span class="nx">usuario_id</span><span class="p">);</span>
 
-        // Se o usuário não tiver NENHUM histórico, retorna os imóveis populares.
-        if (_.isEmpty(imoveisVisitados)) {
-            console.log('Usuário sem histórico. Retornando imóveis populares.');
-            return await getImoveisPopulares();
-        }
+<span class="w">        </span><span class="c1">// Se o usuário não tiver NENHUM histórico, retorna os imóveis populares.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="nx">imoveisVisitados</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Usuário sem histórico. Retornando imóveis populares.&#39;</span><span class="p">);</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">getImoveisPopulares</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
 
-        // Extrai os IDs dos imóveis visitados para evitar recomendá-los novamente.
-        const idsImoveisVisitados = _.map(imoveisVisitados, 'imovel_id');
-        // Infere as preferências do usuário com base no histórico.
-        const preferencias = await inferirPreferencias(idsImoveisVisitados);
+<span class="w">        </span><span class="c1">// Extrai os IDs dos imóveis visitados para evitar recomendá-los novamente.</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">idsImoveisVisitados</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">imoveisVisitados</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;imovel_id&#39;</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">// Infere as preferências do usuário com base no histórico.</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">preferencias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">inferirPreferencias</span><span class="p">(</span><span class="nx">idsImoveisVisitados</span><span class="p">);</span>
 
-        // Constrói os filtros base (sempre aplicados)
-        const filtrosBase = {
-            id: {
-                [Sequelize.Op.notIn]: idsImoveisVisitados
-            },
-            status: 'disponivel'
-        };
+<span class="w">        </span><span class="c1">// Constrói os filtros base (sempre aplicados)</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">filtrosBase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="p">[</span><span class="nx">Sequelize</span><span class="p">.</span><span class="nx">Op</span><span class="p">.</span><span class="nx">notIn</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="nx">idsImoveisVisitados</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;disponivel&#39;</span>
+<span class="w">        </span><span class="p">};</span>
 
-        // Primeira tentativa (fallback): busca com todos os filtros de preferência
-        let filtros = {
-            ...filtrosBase,
-            tipo: preferencias.tipo,
-            cidade: preferencias.cidade,
-            estado: preferencias.estado
-        };
-        if (!_.isNaN(preferencias.precoMin) &amp;&amp; !_.isNaN(preferencias.precoMax)) {
-            filtros.preco = {
-                [Sequelize.Op.between]: [preferencias.precoMin, preferencias.precoMax]
-            };
-        }
-        let imoveisRecomendados = await Imovel.findAll({ where: filtros, limit: 20 });
+<span class="w">        </span><span class="c1">// Primeira tentativa (fallback): busca com todos os filtros de preferência</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nx">filtros</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="p">...</span><span class="nx">filtrosBase</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">tipo</span><span class="o">:</span><span class="w"> </span><span class="nx">preferencias</span><span class="p">.</span><span class="nx">tipo</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">cidade</span><span class="o">:</span><span class="w"> </span><span class="nx">preferencias</span><span class="p">.</span><span class="nx">cidade</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">estado</span><span class="o">:</span><span class="w"> </span><span class="nx">preferencias</span><span class="p">.</span><span class="nx">estado</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">preferencias</span><span class="p">.</span><span class="nx">precoMin</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">preferencias</span><span class="p">.</span><span class="nx">precoMax</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">filtros</span><span class="p">.</span><span class="nx">preco</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="p">[</span><span class="nx">Sequelize</span><span class="p">.</span><span class="nx">Op</span><span class="p">.</span><span class="nx">between</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">preferencias</span><span class="p">.</span><span class="nx">precoMin</span><span class="p">,</span><span class="w"> </span><span class="nx">preferencias</span><span class="p">.</span><span class="nx">precoMax</span><span class="p">]</span>
+<span class="w">            </span><span class="p">};</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nx">imoveisRecomendados</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">Imovel</span><span class="p">.</span><span class="nx">findAll</span><span class="p">({</span><span class="w"> </span><span class="nx">where</span><span class="o">:</span><span class="w"> </span><span class="nx">filtros</span><span class="p">,</span><span class="w"> </span><span class="nx">limit</span><span class="o">:</span><span class="w"> </span><span class="mf">20</span><span class="w"> </span><span class="p">});</span>
 
-        // Segunda tentativa (fallback): se a primeira falhar, suaviza a busca
-        if (_.isEmpty(imoveisRecomendados)) {
-            console.log('Nenhuma recomendação encontrada com filtros estritos. Expandindo a busca...');
+<span class="w">        </span><span class="c1">// Segunda tentativa (fallback): se a primeira falhar, suaviza a busca</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="nx">imoveisRecomendados</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Nenhuma recomendação encontrada com filtros estritos. Expandindo a busca...&#39;</span><span class="p">);</span>
 
-            // Remove os filtros de preço, cidade e estado, mantendo apenas o tipo
-            let filtrosExpandidos = {
-                ...filtrosBase,
-                tipo: preferencias.tipo
-            };
-            imoveisRecomendados = await Imovel.findAll({ where: filtrosExpandidos, limit: 20 });
-        }
+<span class="w">            </span><span class="c1">// Remove os filtros de preço, cidade e estado, mantendo apenas o tipo</span>
+<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="nx">filtrosExpandidos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="p">...</span><span class="nx">filtrosBase</span><span class="p">,</span>
+<span class="w">                </span><span class="nx">tipo</span><span class="o">:</span><span class="w"> </span><span class="nx">preferencias</span><span class="p">.</span><span class="nx">tipo</span>
+<span class="w">            </span><span class="p">};</span>
+<span class="w">            </span><span class="nx">imoveisRecomendados</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">Imovel</span><span class="p">.</span><span class="nx">findAll</span><span class="p">({</span><span class="w"> </span><span class="nx">where</span><span class="o">:</span><span class="w"> </span><span class="nx">filtrosExpandidos</span><span class="p">,</span><span class="w"> </span><span class="nx">limit</span><span class="o">:</span><span class="w"> </span><span class="mf">20</span><span class="w"> </span><span class="p">});</span>
+<span class="w">        </span><span class="p">}</span>
 
-        // Terceira tentativa (fallback final): se a busca expandida também falhar
-        if (_.isEmpty(imoveisRecomendados)) {
-             console.log('Nenhuma recomendação encontrada com filtros expandidos. Retornando populares.');
-             return await getImoveisPopulares();
-        }
+<span class="w">        </span><span class="c1">// Terceira tentativa (fallback final): se a busca expandida também falhar</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="nx">imoveisRecomendados</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Nenhuma recomendação encontrada com filtros expandidos. Retornando populares.&#39;</span><span class="p">);</span>
+<span class="w">             </span><span class="k">return</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">getImoveisPopulares</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
 
-        // Retorna a lista de imóveis recomendados.
-        return imoveisRecomendados;
+<span class="w">        </span><span class="c1">// Retorna a lista de imóveis recomendados.</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">imoveisRecomendados</span><span class="p">;</span>
 
-    } catch (error) {
-        console.error(error);
-        throw new Error('Não foi possível buscar as recomendações: ' + error.message);
-    }
-};
-</code></pre>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">&#39;Não foi possível buscar as recomendações: &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+- <strong>Descrição:</strong> Esta função implementa o fluxo completo da lógica de recomendação. Ela começa buscando o histórico do usuário e, se não encontrar, aciona o primeiro fallback, retornando os imóveis mais populares do sistema. Se houver histórico, a função infere as preferências do usuário para construir um conjunto de filtros de busca.</p>
 <ul>
-<li>
-<p><strong>Descrição:</strong> Esta função implementa o fluxo completo da lógica de recomendação. Ela começa buscando o histórico do usuário e, se não encontrar, aciona o primeiro fallback, retornando os imóveis mais populares do sistema. Se houver histórico, a função infere as preferências do usuário para construir um conjunto de filtros de busca.</p>
-</li>
 <li>
 <p><strong>Fluxo de Busca e Fallbacks:</strong></p>
 </li>
@@ -1678,26 +1699,26 @@ const getImoveisPopulares = async () =&gt; {
 </ul>
 <hr />
 <h4 id="controlador-do-metodo-get">Controlador do método GET</h4>
-<p>O controlador <code>getRecomendacoes</code> é o ponto de entrada para a requisição de recomendações. Ele gerencia o fluxo da requisição HTTP, validando a entrada e chamando a lógica de negócio para obter os dados.</p>
-<pre><code class="language-js">export const getRecomendacoes = async (req, res) =&gt; {
-  const { usuario_id } = req.query; 
+<p>O controlador <code>getRecomendacoes</code> é o ponto de entrada para a requisição de recomendações. Ele gerencia o fluxo da requisição HTTP, validando a entrada e chamando a lógica de negócio para obter os dados.
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">getRecomendacoes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">usuario_id</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">;</span><span class="w"> </span>
 
-  if (!usuario_id) {
-    return res.status(400).json({ error: 'O ID do usuário é obrigatório.' });
-  }
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">usuario_id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mf">400</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span><span class="w"> </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;O ID do usuário é obrigatório.&#39;</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="p">}</span>
 
-  try {
-    const recomendacoes = await recomendacaoImovelService.getRecomendacoesByUserId(usuario_id);
-    res.status(200).json({
-      message: 'Recomendações geradas com sucesso.',
-      data: recomendacoes,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Erro ao gerar recomendações: ' + err.message });
-  }
-};
-</code></pre>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">recomendacoes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">recomendacaoImovelService</span><span class="p">.</span><span class="nx">getRecomendacoesByUserId</span><span class="p">(</span><span class="nx">usuario_id</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mf">200</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">message</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Recomendações geradas com sucesso.&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="nx">recomendacoes</span><span class="p">,</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mf">500</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span><span class="w"> </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Erro ao gerar recomendações: &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></p>
 <ul>
 <li>
 <p><strong>Descrição:</strong> Este controlador é responsável por orquestrar a busca por recomendações. Ele primeiro verifica se o <code>usuario_id</code> foi fornecido na requisição. Se estiver ausente, a requisição é rejeitada com um erro <code>400 Bad Request</code>. Se a validação passar, o controlador chama a função de serviço <code>getRecomendacoesByUserId</code>, que contém toda a lógica do algoritmo.</p>
@@ -1716,73 +1737,73 @@ const getImoveisPopulares = async () =&gt; {
 </ul>
 <hr />
 <h4 id="rota-de-get">Rota de GET</h4>
-<p>Esta rota define o endpoint da API que os clientes utilizarão para solicitar recomendações.</p>
-<pre><code class="language-js">import express from 'express';
-import { getRecomendacoes } from '../controllers/recomendacaoImovelController.js';
+<p>Esta rota define o endpoint da API que os clientes utilizarão para solicitar recomendações.
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">express</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;express&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">getRecomendacoes</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../controllers/recomendacaoImovelController.js&#39;</span><span class="p">;</span>
 
-const recomendacoesRoutes = express.Router();
+<span class="kd">const</span><span class="w"> </span><span class="nx">recomendacoesRoutes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">express</span><span class="p">.</span><span class="nx">Router</span><span class="p">();</span>
 
-recomendacoesRoutes.get('/recomendacoes', getRecomendacoes);
+<span class="nx">recomendacoesRoutes</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/recomendacoes&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">getRecomendacoes</span><span class="p">);</span>
 
-export default recomendacoesRoutes;
-</code></pre>
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nx">recomendacoesRoutes</span><span class="p">;</span>
+</code></pre></div></p>
 <ul>
 <li><strong>Descrição:</strong> A rota GET <code>/recomendacoes</code> é configurada para acionar o controlador <code>getRecomendacoes</code> sempre que uma requisição GET for feita para este caminho.</li>
 </ul>
 <hr />
 <h2 id="como-testar-os-endpoints">Como testar os endpoints</h2>
 <p>Você pode testar os endpoints no Insomnia.</p>
-<pre><code class="language-http">POST    /recomendacao_imovel       → Adiciona um novo registro em `recomendacao_imovel'
-GET     /recomendacoes             → Lista de 20 imovéis com base nas preferências do usuário
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="err">POST    /recomendacao_imovel       → Adiciona um novo registro em `recomendacao_imovel&#39;</span>
+<span class="err">GET     /recomendacoes             → Lista de 20 imovéis com base nas preferências do usuário</span>
+</code></pre></div>
 <hr />
 <h4 id="post-exemplo-de-entrada">POST - exemplo de entrada</h4>
-<pre><code class="language-json">{
-    &quot;usuario_id&quot;: 1,
-    &quot;imovel_id&quot;: 2,
-    &quot;data_visita&quot;: &quot;2025-03-03&quot;
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;usuario_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;imovel_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;data_visita&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-03-03&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
 <h4 id="post-exemplo-de-saida">POST - exemplo de saída</h4>
-<pre><code class="language-json">{
-    &quot;message&quot;: &quot;Novo registro na tabela recomendacao_imovel.&quot;,
-    &quot;data&quot;: {
-        &quot;id&quot;: 9750,
-        &quot;usuario_id&quot;: 1,
-        &quot;imovel_id&quot;: 2,
-        &quot;data_visita&quot;: &quot;2025-03-03T00:00:00.000Z&quot;
-    }
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Novo registro na tabela recomendacao_imovel.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9750</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;usuario_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;imovel_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;data_visita&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-03-03T00:00:00.000Z&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 <hr />
 <h4 id="get-exemplo-de-entrada">GET - exemplo de entrada</h4>
-<p>Para testar o endpoint <code>GET</code>, é necessário que a rota esteja assim: </p>
-<pre><code class="language-json">http://localhost:4000/recomendacoes
-</code></pre>
+<p>Para testar o endpoint <code>GET</code>, é necessário que a rota esteja assim: 
+<div class="highlight"><pre><span></span><code><span class="err">h</span><span class="kc">tt</span><span class="err">p</span><span class="p">:</span><span class="c1">//localhost:4000/recomendacoes</span>
+</code></pre></div></p>
 <p>No campo <code>Params</code>, digite <code>usuario_id</code> no campo <code>name</code> e, <code>2</code> no campo <code>value</code>.</p>
 <h4 id="get-exemplo-de-saida">GET - exemplo de saída</h4>
-<pre><code class="language-json">{
-    &quot;message&quot;: &quot;Recomendações geradas com sucesso.&quot;,
-    &quot;data&quot;: [
-        {
-            &quot;id&quot;: 8,
-            &quot;tipo&quot;: &quot;Apartamento&quot;,
-            &quot;endereco&quot;: &quot;Av. Leste, 147&quot;,
-            &quot;cidade&quot;: &quot;Manaus&quot;,
-            &quot;estado&quot;: &quot;AM&quot;,
-            &quot;preco&quot;: &quot;600000.00&quot;,
-            &quot;area&quot;: 75,
-            &quot;descricao&quot;: &quot;Apartamento com vista&quot;,
-            &quot;data_cadastro&quot;: &quot;2024-10-28&quot;,
-            &quot;murado&quot;: 1,
-            &quot;latitude&quot;: &quot;-3.1190280&quot;,
-            &quot;longitude&quot;: &quot;-60.0217310&quot;,
-            &quot;usuario_id&quot;: 4,
-            &quot;tipo_negociacao&quot;: &quot;vaenda&quot;,
-            &quot;status&quot;: &quot;disponivel&quot;,
-            &quot;data_update_status&quot;: null
-        }]}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Recomendações geradas com sucesso.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Apartamento&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;endereco&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Av. Leste, 147&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;cidade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Manaus&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;estado&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AM&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;preco&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;600000.00&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;area&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">75</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;descricao&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Apartamento com vista&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;data_cadastro&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2024-10-28&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;murado&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;latitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-3.1190280&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;longitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-60.0217310&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;usuario_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;tipo_negociacao&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vaenda&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;disponivel&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;data_update_status&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">        </span><span class="p">}]}</span>
+</code></pre></div>
 <p>O exemplo acima é apenas 1 dos 20 imóveis que podem retornados.</p>
 <hr />
 

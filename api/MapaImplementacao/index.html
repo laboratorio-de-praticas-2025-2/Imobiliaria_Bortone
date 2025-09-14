@@ -26,6 +26,9 @@
     
       <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
       
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
       
 
 
@@ -43,6 +46,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/custom.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -53,7 +58,14 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -103,6 +115,18 @@
         </div>
       </div>
     </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
     
     
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
@@ -1408,8 +1432,8 @@
 <h1 id="implementacao-da-api-de-mapa-documentacao-tecnica">Implementação da API de Mapa - Documentação Técnica</h1>
 <h2 id="arquitetura">Arquitetura</h2>
 <p>A API de Mapa segue o padrão MVC (Model-View-Controller) com separação clara de responsabilidades:</p>
-<pre><code>Controller → Service → Model → Database
-</code></pre>
+<div class="highlight"><pre><span></span><code>Controller → Service → Model → Database
+</code></pre></div>
 <h2 id="estrutura-de-arquivos-detalhada">Estrutura de Arquivos Detalhada</h2>
 <h3 id="1-modelos-srcmodelsmapamodelsjs">1. Modelos (<code>src/models/mapaModels.js</code>)</h3>
 <p><strong>Responsabilidade</strong>: Definição dos modelos Sequelize e relacionamentos</p>
@@ -1418,12 +1442,12 @@
 - Define 4 modelos principais: Usuario, Imovel, Casa, ImagemImovel
 - Configura relacionamentos entre tabelas
 - Suporte a coordenadas geográficas (latitude/longitude)</p>
-<p><strong>Relacionamentos</strong>:</p>
-<pre><code class="language-javascript">Usuario.hasMany(Imovel, { foreignKey: 'usuario_id' });
-Imovel.belongsTo(Usuario, { foreignKey: 'usuario_id' });
-Imovel.hasMany(ImagemImovel, { foreignKey: 'imovel_id' });
-Imovel.hasOne(Casa, { foreignKey: 'imovel_id' });
-</code></pre>
+<p><strong>Relacionamentos</strong>:
+<div class="highlight"><pre><span></span><code><span class="nx">Usuario</span><span class="p">.</span><span class="nx">hasMany</span><span class="p">(</span><span class="nx">Imovel</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">foreignKey</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;usuario_id&#39;</span><span class="w"> </span><span class="p">});</span>
+<span class="nx">Imovel</span><span class="p">.</span><span class="nx">belongsTo</span><span class="p">(</span><span class="nx">Usuario</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">foreignKey</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;usuario_id&#39;</span><span class="w"> </span><span class="p">});</span>
+<span class="nx">Imovel</span><span class="p">.</span><span class="nx">hasMany</span><span class="p">(</span><span class="nx">ImagemImovel</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">foreignKey</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;imovel_id&#39;</span><span class="w"> </span><span class="p">});</span>
+<span class="nx">Imovel</span><span class="p">.</span><span class="nx">hasOne</span><span class="p">(</span><span class="nx">Casa</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">foreignKey</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;imovel_id&#39;</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div></p>
 <h3 id="2-servicos-srcservicesmapaservicejs">2. Serviços (<code>src/services/mapaService.js</code>)</h3>
 <p><strong>Responsabilidade</strong>: Lógica de negócio e operações de dados</p>
 <p><strong>Métodos Principais</strong>:
@@ -1454,14 +1478,14 @@ Imovel.hasOne(Casa, { foreignKey: 'imovel_id' });
 - Tratamento de erros HTTP</p>
 <h3 id="4-rotas-srcroutesmaparoutesjs">4. Rotas (<code>src/routes/mapaRoutes.js</code>)</h3>
 <p><strong>Responsabilidade</strong>: Definição das rotas e middleware</p>
-<p><strong>Estrutura</strong>:</p>
-<pre><code class="language-javascript">router.get('/', mapaController.listarImoveis);
-router.get('/busca', mapaController.buscarImoveisParaMapa);
-router.get('/coordenadas', mapaController.buscarImoveisPorCoordenadas);
-router.get('/tipos', mapaController.listarTiposImoveis);
-router.get('/cidades', mapaController.listarCidades);
-router.get('/:id', mapaController.buscarImovelPorId);
-</code></pre>
+<p><strong>Estrutura</strong>:
+<div class="highlight"><pre><span></span><code><span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">mapaController</span><span class="p">.</span><span class="nx">listarImoveis</span><span class="p">);</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/busca&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">mapaController</span><span class="p">.</span><span class="nx">buscarImoveisParaMapa</span><span class="p">);</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/coordenadas&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">mapaController</span><span class="p">.</span><span class="nx">buscarImoveisPorCoordenadas</span><span class="p">);</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/tipos&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">mapaController</span><span class="p">.</span><span class="nx">listarTiposImoveis</span><span class="p">);</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/cidades&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">mapaController</span><span class="p">.</span><span class="nx">listarCidades</span><span class="p">);</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/:id&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">mapaController</span><span class="p">.</span><span class="nx">buscarImovelPorId</span><span class="p">);</span>
+</code></pre></div></p>
 <h3 id="5-middleware-srcmiddlewaresvalidacaomapajs">5. Middleware (<code>src/middlewares/validacaoMapa.js</code>)</h3>
 <p><strong>Responsabilidade</strong>: Tratamento centralizado de erros</p>
 <p><strong>Tipos de Erro Tratados</strong>:
@@ -1477,66 +1501,66 @@ router.get('/:id', mapaController.buscarImovelPorId);
 - Booleano: murado, possuiPiscina, possuiJardim
 - Geográfico: latitude, longitude, raio
 - Enum: tipoNegociacao (venda/aluguel)</p>
-<p><strong>Implementação</strong>:</p>
-<pre><code class="language-javascript">// Filtro dinâmico baseado em parâmetros
-if (filtros.tipo) {
-  whereClause.tipo = filtros.tipo;
-}
+<p><strong>Implementação</strong>:
+<div class="highlight"><pre><span></span><code><span class="c1">// Filtro dinâmico baseado em parâmetros</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">filtros</span><span class="p">.</span><span class="nx">tipo</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">whereClause</span><span class="p">.</span><span class="nx">tipo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">filtros</span><span class="p">.</span><span class="nx">tipo</span><span class="p">;</span>
+<span class="p">}</span>
 
-if (filtros.precoMin || filtros.precoMax) {
-  whereClause.preco = {};
-  if (filtros.precoMin) whereClause.preco[Op.gte] = filtros.precoMin;
-  if (filtros.precoMax) whereClause.preco[Op.lte] = filtros.precoMax;
-}
-</code></pre>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">filtros</span><span class="p">.</span><span class="nx">precoMin</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">filtros</span><span class="p">.</span><span class="nx">precoMax</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">whereClause</span><span class="p">.</span><span class="nx">preco</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">filtros</span><span class="p">.</span><span class="nx">precoMin</span><span class="p">)</span><span class="w"> </span><span class="nx">whereClause</span><span class="p">.</span><span class="nx">preco</span><span class="p">[</span><span class="nx">Op</span><span class="p">.</span><span class="nx">gte</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">filtros</span><span class="p">.</span><span class="nx">precoMin</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">filtros</span><span class="p">.</span><span class="nx">precoMax</span><span class="p">)</span><span class="w"> </span><span class="nx">whereClause</span><span class="p">.</span><span class="nx">preco</span><span class="p">[</span><span class="nx">Op</span><span class="p">.</span><span class="nx">lte</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">filtros</span><span class="p">.</span><span class="nx">precoMax</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></p>
 <h3 id="2-busca-geografica">2. Busca Geográfica</h3>
 <p><strong>Funcionalidade</strong>: Busca imóveis em um raio específico de coordenadas</p>
-<p><strong>Implementação</strong>:</p>
-<pre><code class="language-javascript">whereClause.latitude = {
-  [Op.between]: [lat - raio, lat + raio]
-};
-whereClause.longitude = {
-  [Op.between]: [lng - raio, lng + raio]
-};
-</code></pre>
+<p><strong>Implementação</strong>:
+<div class="highlight"><pre><span></span><code><span class="nx">whereClause</span><span class="p">.</span><span class="nx">latitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">[</span><span class="nx">Op</span><span class="p">.</span><span class="nx">between</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">lat</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">raio</span><span class="p">,</span><span class="w"> </span><span class="nx">lat</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">raio</span><span class="p">]</span>
+<span class="p">};</span>
+<span class="nx">whereClause</span><span class="p">.</span><span class="nx">longitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">[</span><span class="nx">Op</span><span class="p">.</span><span class="nx">between</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">lng</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">raio</span><span class="p">,</span><span class="w"> </span><span class="nx">lng</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">raio</span><span class="p">]</span>
+<span class="p">};</span>
+</code></pre></div></p>
 <h3 id="3-filtros-especificos-para-casas">3. Filtros Específicos para Casas</h3>
 <p><strong>Funcionalidade</strong>: Filtros que se aplicam apenas ao modelo Casa</p>
-<p><strong>Implementação</strong>:</p>
-<pre><code class="language-javascript">if (filtros.quartos) {
-  includeClause[1].where = { quartos: filtros.quartos };
-}
-</code></pre>
+<p><strong>Implementação</strong>:
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">filtros</span><span class="p">.</span><span class="nx">quartos</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">includeClause</span><span class="p">[</span><span class="mf">1</span><span class="p">].</span><span class="nx">where</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">quartos</span><span class="o">:</span><span class="w"> </span><span class="nx">filtros</span><span class="p">.</span><span class="nx">quartos</span><span class="w"> </span><span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></p>
 <h3 id="4-includes-otimizados">4. Includes Otimizados</h3>
 <p><strong>Funcionalidade</strong>: Carregamento eficiente de relacionamentos</p>
-<p><strong>Estrutura</strong>:</p>
-<pre><code class="language-javascript">const includeClause = [
-  {
-    model: ImagemImovel,
-    as: 'imagem_imovels',
-    attributes: ['url_imagem', 'descricao']
-  },
-  {
-    model: Casa,
-    as: 'casa',
-    attributes: ['quartos', 'banheiros', 'vagas', 'possui_piscina', 'possui_jardim']
-  }
-];
-</code></pre>
+<p><strong>Estrutura</strong>:
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">includeClause</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">model</span><span class="o">:</span><span class="w"> </span><span class="nx">ImagemImovel</span><span class="p">,</span>
+<span class="w">    </span><span class="kr">as</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;imagem_imovels&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">attributes</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;url_imagem&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;descricao&#39;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">model</span><span class="o">:</span><span class="w"> </span><span class="nx">Casa</span><span class="p">,</span>
+<span class="w">    </span><span class="kr">as</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;casa&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">attributes</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;quartos&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;banheiros&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;vagas&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;possui_piscina&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;possui_jardim&#39;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">];</span>
+</code></pre></div></p>
 <h2 id="padroes-de-resposta">Padrões de Resposta</h2>
 <h3 id="resposta-de-sucesso">Resposta de Sucesso</h3>
-<pre><code class="language-json">{
-  &quot;success&quot;: true,
-  &quot;data&quot;: [...],
-  &quot;total&quot;: 10
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="resposta-de-erro">Resposta de Erro</h3>
-<pre><code class="language-json">{
-  &quot;success&quot;: false,
-  &quot;message&quot;: &quot;Descrição do erro&quot;,
-  &quot;error&quot;: &quot;Detalhes técnicos&quot;
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Descrição do erro&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Detalhes técnicos&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="tratamento-de-erros">Tratamento de Erros</h2>
 <h3 id="1-validacao-de-entrada">1. Validação de Entrada</h3>
 <ul>
@@ -1594,15 +1618,15 @@ whereClause.longitude = {
 </ul>
 <h2 id="configuracao-no-app-principal">Configuração no App Principal</h2>
 <h3 id="1-importacao-das-rotas">1. Importação das Rotas</h3>
-<pre><code class="language-javascript">import mapaRoutes from &quot;./routes/mapaRoutes.js&quot;;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">mapaRoutes</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;./routes/mapaRoutes.js&quot;</span><span class="p">;</span>
+</code></pre></div>
 <h3 id="2-registro-das-rotas">2. Registro das Rotas</h3>
-<pre><code class="language-javascript">app.use(&quot;/mapa&quot;, mapaRoutes);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s2">&quot;/mapa&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">mapaRoutes</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="3-middleware-de-erro">3. Middleware de Erro</h3>
-<pre><code class="language-javascript">// Pode ser adicionado globalmente se necessário
-app.use(validacaoMapa);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1">// Pode ser adicionado globalmente se necessário</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">validacaoMapa</span><span class="p">);</span>
+</code></pre></div>
 <h2 id="consideracoes-de-seguranca">Considerações de Segurança</h2>
 <h3 id="1-validacao-de-entrada_1">1. Validação de Entrada</h3>
 <ul>

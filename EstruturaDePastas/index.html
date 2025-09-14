@@ -26,6 +26,9 @@
     
       <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
       
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
       
 
 
@@ -43,6 +46,8 @@
       
     
     
+      <link rel="stylesheet" href="../stylesheets/custom.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -53,7 +58,14 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -103,6 +115,18 @@
         </div>
       </div>
     </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
     
     
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
@@ -472,54 +496,53 @@
 
 
 <h1 id="estrutura-de-diretorios">Estrutura de diretórios</h1>
-<pre><code class="language-bash">/imobiliaria_bortone
+<div class="highlight"><pre><span></span><code>/imobiliaria_bortone
 │
-├── backend/                 # API em Express.js (regras de negócio e dados)
-│   ├── src/
-│   │   ├── config/          # Configurações globais (conexão MySQL, variáveis de ambiente)
-│   │   ├── models/          # Modelos de dados (ex.: usuario.js, imovel.js)
-│   │   ├── services/        # Lógica de negócio (ex.: usuarioService.js, imovelService.js)
-│   │   ├── controllers/     # Controladores (recebem requisições → services)
-│   │   ├── routes/          # Rotas da API (REST: /users, /imoveis, /agendamentos)
-│   │   ├── middlewares/     # Autenticação, autorização, tratamento de erros, logs
-│   │   ├── utils/           # Funções auxiliares (JWT, formatação de datas, etc.)
-│   │   ├── tests/           # Testes unitários e de integração
-│   │   └── app.js           # Configuração principal do Express
-│   │
-│   ├── .env                 # Variáveis de ambiente (não versionar)
-│   └── package.json         # Dependências e scripts do backend
+├──<span class="w"> </span>backend/<span class="w">                 </span><span class="c1"># API em Express.js (regras de negócio e dados)</span>
+│<span class="w">   </span>├──<span class="w"> </span>src/
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>config/<span class="w">          </span><span class="c1"># Configurações globais (conexão MySQL, variáveis de ambiente)</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>models/<span class="w">          </span><span class="c1"># Modelos de dados (ex.: usuario.js, imovel.js)</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>services/<span class="w">        </span><span class="c1"># Lógica de negócio (ex.: usuarioService.js, imovelService.js)</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>controllers/<span class="w">     </span><span class="c1"># Controladores (recebem requisições → services)</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>routes/<span class="w">          </span><span class="c1"># Rotas da API (REST: /users, /imoveis, /agendamentos)</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>middlewares/<span class="w">     </span><span class="c1"># Autenticação, autorização, tratamento de erros, logs</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>utils/<span class="w">           </span><span class="c1"># Funções auxiliares (JWT, formatação de datas, etc.)</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>tests/<span class="w">           </span><span class="c1"># Testes unitários e de integração</span>
+│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>app.js<span class="w">           </span><span class="c1"># Configuração principal do Express</span>
+│<span class="w">   </span>│
+│<span class="w">   </span>├──<span class="w"> </span>.env<span class="w">                 </span><span class="c1"># Variáveis de ambiente (não versionar)</span>
+│<span class="w">   </span>└──<span class="w"> </span>package.json<span class="w">         </span><span class="c1"># Dependências e scripts do backend</span>
 │
-├── frontend/                # Aplicação em Next.js (UI e lógica do cliente)
-│   ├── public/              # Arquivos estáticos (imagens, favicon, fontes)
-│   ├── src/
-│   │   ├── pages/           # Rotas do Next.js
-│   │   │   ├── index.js         # Página inicial (carrossel, header, vitrine)
-│   │   │   ├── imoveis/         # Listagem e detalhes de imóveis
-│   │   │   ├── auth/            # Login e cadastro
-│   │   │   ├── agendamentos/    # Agendamentos (visualizar/criar)
-│   │   │   └── admin/           # CMS (usuários, imóveis, anúncios, blog)
-│   │   │
-│   │   ├── components/      # Componentes reutilizáveis (botões, cards, header, footer)
-│   │   ├── layouts/         # Estruturas de layout (padrão, admin)
-│   │   ├── hooks/           # Hooks customizados (useAuth, useFetch, etc.)
-│   │   ├── context/         # Context API (autenticação, carrinho, etc.)
-│   │   ├── services/        # Comunicação com backend (axios/fetch)
-│   │   ├── utils/           # Funções auxiliares (validação, formatação, helpers)
-│   │   ├── styles/          # Estilos globais (CSS/Tailwind)
-│   │   ├── constants/       # Constantes globais (rotas, configs)
-│   │   └── tests/           # Testes de UI e integração
-│   │
-│   └── package.json         # Dependências e scripts do frontend
+├──<span class="w"> </span>frontend/<span class="w">                </span><span class="c1"># Aplicação em Next.js (UI e lógica do cliente)</span>
+│<span class="w">   </span>├──<span class="w"> </span>public/<span class="w">              </span><span class="c1"># Arquivos estáticos (imagens, favicon, fontes)</span>
+│<span class="w">   </span>├──<span class="w"> </span>src/
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>pages/<span class="w">           </span><span class="c1"># Rotas do Next.js</span>
+│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>index.js<span class="w">         </span><span class="c1"># Página inicial (carrossel, header, vitrine)</span>
+│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>imoveis/<span class="w">         </span><span class="c1"># Listagem e detalhes de imóveis</span>
+│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>auth/<span class="w">            </span><span class="c1"># Login e cadastro</span>
+│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>agendamentos/<span class="w">    </span><span class="c1"># Agendamentos (visualizar/criar)</span>
+│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>admin/<span class="w">           </span><span class="c1"># CMS (usuários, imóveis, anúncios, blog)</span>
+│<span class="w">   </span>│<span class="w">   </span>│
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>components/<span class="w">      </span><span class="c1"># Componentes reutilizáveis (botões, cards, header, footer)</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>layouts/<span class="w">         </span><span class="c1"># Estruturas de layout (padrão, admin)</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>hooks/<span class="w">           </span><span class="c1"># Hooks customizados (useAuth, useFetch, etc.)</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>context/<span class="w">         </span><span class="c1"># Context API (autenticação, carrinho, etc.)</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>services/<span class="w">        </span><span class="c1"># Comunicação com backend (axios/fetch)</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>utils/<span class="w">           </span><span class="c1"># Funções auxiliares (validação, formatação, helpers)</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>styles/<span class="w">          </span><span class="c1"># Estilos globais (CSS/Tailwind)</span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>constants/<span class="w">       </span><span class="c1"># Constantes globais (rotas, configs)</span>
+│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>tests/<span class="w">           </span><span class="c1"># Testes de UI e integração</span>
+│<span class="w">   </span>│
+│<span class="w">   </span>└──<span class="w"> </span>package.json<span class="w">         </span><span class="c1"># Dependências e scripts do frontend</span>
 │
-├── documentacao/            # Documentação do projeto
-│   ├── docs/                # Páginas em Markdown (regras, guias, APIs, etc.)
-│   ├── utils/               # Imagens, ícones e assets de documentação
-│   └── mkdocs.yml           # Configuração do MkDocs
+├──<span class="w"> </span>documentacao/<span class="w">            </span><span class="c1"># Documentação do projeto</span>
+│<span class="w">   </span>├──<span class="w"> </span>docs/<span class="w">                </span><span class="c1"># Páginas em Markdown (regras, guias, APIs, etc.)</span>
+│<span class="w">   </span>├──<span class="w"> </span>utils/<span class="w">               </span><span class="c1"># Imagens, ícones e assets de documentação</span>
+│<span class="w">   </span>└──<span class="w"> </span>mkdocs.yml<span class="w">           </span><span class="c1"># Configuração do MkDocs</span>
 │
-├── docker-compose.yml       # Orquestração com Docker (backend, frontend, banco de dados)
-└── README.md                # Documentação principal (raiz do projeto)
-
-</code></pre>
+├──<span class="w"> </span>docker-compose.yml<span class="w">       </span><span class="c1"># Orquestração com Docker (backend, frontend, banco de dados)</span>
+└──<span class="w"> </span>README.md<span class="w">                </span><span class="c1"># Documentação principal (raiz do projeto)</span>
+</code></pre></div>
 <hr />
 
 

@@ -26,6 +26,9 @@
     
       <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
       
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
       
 
 
@@ -43,6 +46,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/custom.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -53,7 +58,14 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -103,6 +115,18 @@
         </div>
       </div>
     </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
     
     
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
@@ -1301,7 +1325,7 @@
 <h2 id="visao-geral">Visão Geral</h2>
 <p>A API de Mapa fornece funcionalidades para busca e gerenciamento de imóveis com foco em localização geográfica, permitindo filtros avançados e busca por coordenadas para integração com mapas interativos.</p>
 <h2 id="estrutura-de-arquivos">Estrutura de Arquivos</h2>
-<pre><code>back-end/src/
+<div class="highlight"><pre><span></span><code>back-end/src/
 ├── models/
 │   └── mapaModels.js          # Modelos Sequelize para imóveis e relacionamentos
 ├── controllers/
@@ -1313,60 +1337,60 @@
 ├── middlewares/
 │   └── validacaoMapa.js       # Middleware de tratamento de erros
 └── app.js                     # Configuração principal (atualizado)
-</code></pre>
+</code></pre></div>
 <h2 id="modelos-de-dados">Modelos de Dados</h2>
 <h3 id="usuario">Usuario</h3>
-<pre><code class="language-javascript">{
-  id: INTEGER (PK, AutoIncrement),
-  nome: STRING(100),
-  email: STRING(100, Unique),
-  senha: STRING(255),
-  nivel: ENUM('visitante', 'administrador'),
-  celular: STRING(20)
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="nx">INTEGER</span><span class="w"> </span><span class="p">(</span><span class="nx">PK</span><span class="p">,</span><span class="w"> </span><span class="nx">AutoIncrement</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">nome</span><span class="o">:</span><span class="w"> </span><span class="nx">STRING</span><span class="p">(</span><span class="mf">100</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="nx">STRING</span><span class="p">(</span><span class="mf">100</span><span class="p">,</span><span class="w"> </span><span class="nx">Unique</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">senha</span><span class="o">:</span><span class="w"> </span><span class="nx">STRING</span><span class="p">(</span><span class="mf">255</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">nivel</span><span class="o">:</span><span class="w"> </span><span class="nx">ENUM</span><span class="p">(</span><span class="s1">&#39;visitante&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;administrador&#39;</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">celular</span><span class="o">:</span><span class="w"> </span><span class="nx">STRING</span><span class="p">(</span><span class="mf">20</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="imovel">Imovel</h3>
-<pre><code class="language-javascript">{
-  id: INTEGER (PK, AutoIncrement),
-  tipo: STRING(50),
-  endereco: STRING(255),
-  cidade: STRING(100),
-  estado: STRING(2),
-  preco: DECIMAL(12,2),
-  status: STRING(20),
-  area: INTEGER,
-  descricao: TEXT,
-  data_cadastro: DATEONLY,
-  murado: BOOLEAN,
-  latitude: DECIMAL(10,7),
-  longitude: DECIMAL(10,7),
-  usuario_id: INTEGER (FK),
-  tipo_negociacao: ENUM('venda', 'aluguel')
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="nx">INTEGER</span><span class="w"> </span><span class="p">(</span><span class="nx">PK</span><span class="p">,</span><span class="w"> </span><span class="nx">AutoIncrement</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">tipo</span><span class="o">:</span><span class="w"> </span><span class="nx">STRING</span><span class="p">(</span><span class="mf">50</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">endereco</span><span class="o">:</span><span class="w"> </span><span class="nx">STRING</span><span class="p">(</span><span class="mf">255</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">cidade</span><span class="o">:</span><span class="w"> </span><span class="nx">STRING</span><span class="p">(</span><span class="mf">100</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">estado</span><span class="o">:</span><span class="w"> </span><span class="nx">STRING</span><span class="p">(</span><span class="mf">2</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">preco</span><span class="o">:</span><span class="w"> </span><span class="nx">DECIMAL</span><span class="p">(</span><span class="mf">12</span><span class="p">,</span><span class="mf">2</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="nx">STRING</span><span class="p">(</span><span class="mf">20</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">area</span><span class="o">:</span><span class="w"> </span><span class="nx">INTEGER</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">descricao</span><span class="o">:</span><span class="w"> </span><span class="nx">TEXT</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">data_cadastro</span><span class="o">:</span><span class="w"> </span><span class="nx">DATEONLY</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">murado</span><span class="o">:</span><span class="w"> </span><span class="nx">BOOLEAN</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">latitude</span><span class="o">:</span><span class="w"> </span><span class="nx">DECIMAL</span><span class="p">(</span><span class="mf">10</span><span class="p">,</span><span class="mf">7</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">longitude</span><span class="o">:</span><span class="w"> </span><span class="nx">DECIMAL</span><span class="p">(</span><span class="mf">10</span><span class="p">,</span><span class="mf">7</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">usuario_id</span><span class="o">:</span><span class="w"> </span><span class="nx">INTEGER</span><span class="w"> </span><span class="p">(</span><span class="nx">FK</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">tipo_negociacao</span><span class="o">:</span><span class="w"> </span><span class="nx">ENUM</span><span class="p">(</span><span class="s1">&#39;venda&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;aluguel&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="casa">Casa</h3>
-<pre><code class="language-javascript">{
-  id: INTEGER (PK, AutoIncrement),
-  imovel_id: INTEGER (FK),
-  quartos: INTEGER,
-  banheiros: INTEGER,
-  vagas: INTEGER,
-  possui_piscina: BOOLEAN,
-  possui_jardim: BOOLEAN
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="nx">INTEGER</span><span class="w"> </span><span class="p">(</span><span class="nx">PK</span><span class="p">,</span><span class="w"> </span><span class="nx">AutoIncrement</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">imovel_id</span><span class="o">:</span><span class="w"> </span><span class="nx">INTEGER</span><span class="w"> </span><span class="p">(</span><span class="nx">FK</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">quartos</span><span class="o">:</span><span class="w"> </span><span class="nx">INTEGER</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">banheiros</span><span class="o">:</span><span class="w"> </span><span class="nx">INTEGER</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">vagas</span><span class="o">:</span><span class="w"> </span><span class="nx">INTEGER</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">possui_piscina</span><span class="o">:</span><span class="w"> </span><span class="nx">BOOLEAN</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">possui_jardim</span><span class="o">:</span><span class="w"> </span><span class="nx">BOOLEAN</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="imagemimovel">ImagemImovel</h3>
-<pre><code class="language-javascript">{
-  id: INTEGER (PK, AutoIncrement),
-  imovel_id: INTEGER (FK),
-  url_imagem: STRING(255),
-  descricao: STRING(255)
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="nx">INTEGER</span><span class="w"> </span><span class="p">(</span><span class="nx">PK</span><span class="p">,</span><span class="w"> </span><span class="nx">AutoIncrement</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">imovel_id</span><span class="o">:</span><span class="w"> </span><span class="nx">INTEGER</span><span class="w"> </span><span class="p">(</span><span class="nx">FK</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">url_imagem</span><span class="o">:</span><span class="w"> </span><span class="nx">STRING</span><span class="p">(</span><span class="mf">255</span><span class="p">),</span>
+<span class="w">  </span><span class="nx">descricao</span><span class="o">:</span><span class="w"> </span><span class="nx">STRING</span><span class="p">(</span><span class="mf">255</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="endpoints-da-api">Endpoints da API</h2>
 <h3 id="base-url">Base URL</h3>
-<pre><code>http://localhost:4000/mapa
-</code></pre>
+<div class="highlight"><pre><span></span><code>http://localhost:4000/mapa
+</code></pre></div>
 <h3 id="1-listar-imoveis">1. Listar Imóveis</h3>
 <p><strong>GET</strong> <code>/mapa</code></p>
 <p>Lista todos os imóveis com filtros opcionais.</p>
@@ -1443,40 +1467,40 @@
 </tbody>
 </table>
 <h4 id="exemplo-de-requisicao">Exemplo de Requisição</h4>
-<pre><code class="language-http">GET /mapa?tipo=casa&amp;precoMin=100000&amp;precoMax=500000&amp;cidade=São Paulo
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="err">GET /mapa?tipo=casa&amp;precoMin=100000&amp;precoMax=500000&amp;cidade=São Paulo</span>
+</code></pre></div>
 <h4 id="exemplo-de-resposta">Exemplo de Resposta</h4>
-<pre><code class="language-json">{
-  &quot;success&quot;: true,
-  &quot;data&quot;: [
-    {
-      &quot;id&quot;: 1,
-      &quot;tipo&quot;: &quot;casa&quot;,
-      &quot;endereco&quot;: &quot;Rua das Flores, 123&quot;,
-      &quot;cidade&quot;: &quot;São Paulo&quot;,
-      &quot;estado&quot;: &quot;SP&quot;,
-      &quot;preco&quot;: &quot;350000.00&quot;,
-      &quot;area&quot;: 120,
-      &quot;latitude&quot;: &quot;-23.5505&quot;,
-      &quot;longitude&quot;: &quot;-46.6333&quot;,
-      &quot;casa&quot;: {
-        &quot;quartos&quot;: 3,
-        &quot;banheiros&quot;: 2,
-        &quot;vagas&quot;: 2,
-        &quot;possui_piscina&quot;: true,
-        &quot;possui_jardim&quot;: true
-      },
-      &quot;imagem_imovels&quot;: [
-        {
-          &quot;url_imagem&quot;: &quot;https://example.com/imagem1.jpg&quot;,
-          &quot;descricao&quot;: &quot;Fachada da casa&quot;
-        }
-      ]
-    }
-  ],
-  &quot;total&quot;: 1
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;casa&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;endereco&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rua das Flores, 123&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;cidade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;São Paulo&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;estado&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SP&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;preco&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;350000.00&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;area&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;latitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-23.5505&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;longitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-46.6333&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;casa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;quartos&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;banheiros&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;vagas&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;possui_piscina&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;possui_jardim&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;imagem_imovels&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;url_imagem&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/imagem1.jpg&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;descricao&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fachada da casa&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="2-buscar-imoveis-para-mapa">2. Buscar Imóveis para Mapa</h3>
 <p><strong>GET</strong> <code>/mapa/busca</code></p>
 <p>Busca imóveis com filtros específicos para exibição em mapa.</p>
@@ -1543,8 +1567,8 @@
 </tbody>
 </table>
 <h4 id="exemplo-de-requisicao_1">Exemplo de Requisição</h4>
-<pre><code class="language-http">GET /mapa/busca?quartos=3&amp;possuiPiscina=true&amp;precoMax=400000
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="err">GET /mapa/busca?quartos=3&amp;possuiPiscina=true&amp;precoMax=400000</span>
+</code></pre></div>
 <h3 id="3-buscar-por-coordenadas">3. Buscar por Coordenadas</h3>
 <p><strong>GET</strong> <code>/mapa/coordenadas</code></p>
 <p>Busca imóveis próximos a uma coordenada geográfica.</p>
@@ -1580,20 +1604,20 @@
 </tbody>
 </table>
 <h4 id="exemplo-de-requisicao_2">Exemplo de Requisição</h4>
-<pre><code class="language-http">GET /mapa/coordenadas?lat=-23.5505&amp;lng=-46.6333&amp;raio=0.01
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="err">GET /mapa/coordenadas?lat=-23.5505&amp;lng=-46.6333&amp;raio=0.01</span>
+</code></pre></div>
 <h4 id="exemplo-de-resposta_1">Exemplo de Resposta</h4>
-<pre><code class="language-json">{
-  &quot;success&quot;: true,
-  &quot;data&quot;: [...],
-  &quot;total&quot;: 5,
-  &quot;coordenadas&quot;: {
-    &quot;latitude&quot;: -23.5505,
-    &quot;longitude&quot;: -46.6333,
-    &quot;raio&quot;: 0.01
-  }
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;coordenadas&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;latitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-23.5505</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;longitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-46.6333</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;raio&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="4-buscar-imovel-por-id">4. Buscar Imóvel por ID</h3>
 <p><strong>GET</strong> <code>/mapa/:id</code></p>
 <p>Busca um imóvel específico por seu ID.</p>
@@ -1615,55 +1639,55 @@
 </tbody>
 </table>
 <h4 id="exemplo-de-requisicao_3">Exemplo de Requisição</h4>
-<pre><code class="language-http">GET /mapa/123
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="err">GET /mapa/123</span>
+</code></pre></div>
 <h4 id="exemplo-de-resposta_2">Exemplo de Resposta</h4>
-<pre><code class="language-json">{
-  &quot;success&quot;: true,
-  &quot;data&quot;: {
-    &quot;id&quot;: 123,
-    &quot;tipo&quot;: &quot;casa&quot;,
-    &quot;endereco&quot;: &quot;Rua das Flores, 123&quot;,
-    &quot;cidade&quot;: &quot;São Paulo&quot;,
-    &quot;estado&quot;: &quot;SP&quot;,
-    &quot;preco&quot;: &quot;350000.00&quot;,
-    &quot;area&quot;: 120,
-    &quot;descricao&quot;: &quot;Casa térrea com 3 quartos...&quot;,
-    &quot;latitude&quot;: &quot;-23.5505&quot;,
-    &quot;longitude&quot;: &quot;-46.6333&quot;,
-    &quot;casa&quot;: {
-      &quot;quartos&quot;: 3,
-      &quot;banheiros&quot;: 2,
-      &quot;vagas&quot;: 2,
-      &quot;possui_piscina&quot;: true,
-      &quot;possui_jardim&quot;: true
-    },
-    &quot;imagem_imovels&quot;: [...],
-    &quot;usuario&quot;: {
-      &quot;nome&quot;: &quot;João Silva&quot;,
-      &quot;celular&quot;: &quot;(11) 99999-9999&quot;
-    }
-  }
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;casa&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;endereco&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rua das Flores, 123&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;cidade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;São Paulo&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;estado&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SP&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;preco&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;350000.00&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;area&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;descricao&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Casa térrea com 3 quartos...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;latitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-23.5505&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;longitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-46.6333&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;casa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;quartos&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;banheiros&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;vagas&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;possui_piscina&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;possui_jardim&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;imagem_imovels&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;usuario&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;nome&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;João Silva&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;celular&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;(11) 99999-9999&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="5-listar-tipos-de-imoveis">5. Listar Tipos de Imóveis</h3>
 <p><strong>GET</strong> <code>/mapa/tipos</code></p>
 <p>Lista todos os tipos de imóveis disponíveis.</p>
 <h4 id="exemplo-de-resposta_3">Exemplo de Resposta</h4>
-<pre><code class="language-json">{
-  &quot;success&quot;: true,
-  &quot;data&quot;: [&quot;casa&quot;, &quot;apartamento&quot;, &quot;terreno&quot;, &quot;comercial&quot;]
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;casa&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;apartamento&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;terreno&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;comercial&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="6-listar-cidades">6. Listar Cidades</h3>
 <p><strong>GET</strong> <code>/mapa/cidades</code></p>
 <p>Lista todas as cidades disponíveis.</p>
 <h4 id="exemplo-de-resposta_4">Exemplo de Resposta</h4>
-<pre><code class="language-json">{
-  &quot;success&quot;: true,
-  &quot;data&quot;: [&quot;São Paulo&quot;, &quot;Rio de Janeiro&quot;, &quot;Belo Horizonte&quot;, &quot;Salvador&quot;]
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;São Paulo&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Rio de Janeiro&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Belo Horizonte&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Salvador&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
 <h2 id="codigos-de-status-http">Códigos de Status HTTP</h2>
 <table>
 <thead>
@@ -1701,62 +1725,64 @@
 </table>
 <h2 id="tratamento-de-erros">Tratamento de Erros</h2>
 <p>A API retorna erros no seguinte formato:</p>
-<pre><code class="language-json">{
-  &quot;success&quot;: false,
-  &quot;message&quot;: &quot;Descrição do erro&quot;,
-  &quot;error&quot;: &quot;Detalhes técnicos do erro&quot;
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Descrição do erro&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Detalhes técnicos do erro&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="tipos-de-erro">Tipos de Erro</h3>
 <ol>
-<li><strong>Erro de Validação (400)</strong></li>
+<li>
+<p><strong>Erro de Validação (400)</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Erro de validação&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;errors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;precoMin&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Preço mínimo deve ser um número&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Imóvel Não Encontrado (404)</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Imóvel não encontrado&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Erro de Conexão (503)</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Erro de conexão com o banco de dados&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+</li>
 </ol>
-<pre><code class="language-json">{
-  &quot;success&quot;: false,
-  &quot;message&quot;: &quot;Erro de validação&quot;,
-  &quot;errors&quot;: [
-    {
-      &quot;field&quot;: &quot;precoMin&quot;,
-      &quot;message&quot;: &quot;Preço mínimo deve ser um número&quot;
-    }
-  ]
-}
-</code></pre>
-<ol>
-<li><strong>Imóvel Não Encontrado (404)</strong></li>
-</ol>
-<pre><code class="language-json">{
-  &quot;success&quot;: false,
-  &quot;message&quot;: &quot;Imóvel não encontrado&quot;
-}
-</code></pre>
-<ol>
-<li><strong>Erro de Conexão (503)</strong></li>
-</ol>
-<pre><code class="language-json">{
-  &quot;success&quot;: false,
-  &quot;message&quot;: &quot;Erro de conexão com o banco de dados&quot;
-}
-</code></pre>
 <h2 id="exemplos-de-uso">Exemplos de Uso</h2>
 <h3 id="busca-basica">Busca Básica</h3>
-<pre><code class="language-javascript">// Buscar casas em São Paulo com preço entre 200k e 500k
-fetch('/mapa?tipo=casa&amp;cidade=São Paulo&amp;precoMin=200000&amp;precoMax=500000')
-  .then(response =&gt; response.json())
-  .then(data =&gt; console.log(data));
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1">// Buscar casas em São Paulo com preço entre 200k e 500k</span>
+<span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;/mapa?tipo=casa&amp;cidade=São Paulo&amp;precoMin=200000&amp;precoMax=500000&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+</code></pre></div>
 <h3 id="busca-por-coordenadas">Busca por Coordenadas</h3>
-<pre><code class="language-javascript">// Buscar imóveis próximos ao centro de São Paulo
-fetch('/mapa/coordenadas?lat=-23.5505&amp;lng=-46.6333&amp;raio=0.02')
-  .then(response =&gt; response.json())
-  .then(data =&gt; console.log(data));
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1">// Buscar imóveis próximos ao centro de São Paulo</span>
+<span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;/mapa/coordenadas?lat=-23.5505&amp;lng=-46.6333&amp;raio=0.02&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+</code></pre></div>
 <h3 id="busca-para-mapa">Busca para Mapa</h3>
-<pre><code class="language-javascript">// Buscar casas com 3+ quartos e piscina para exibir no mapa
-fetch('/mapa/busca?quartos=3&amp;possuiPiscina=true')
-  .then(response =&gt; response.json())
-  .then(data =&gt; console.log(data));
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1">// Buscar casas com 3+ quartos e piscina para exibir no mapa</span>
+<span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;/mapa/busca?quartos=3&amp;possuiPiscina=true&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+</code></pre></div>
 <h2 id="relacionamentos">Relacionamentos</h2>
 <ul>
 <li><strong>Usuario</strong> → <strong>Imovel</strong> (1:N)</li>

@@ -26,6 +26,9 @@
     
       <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
       
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
       
 
 
@@ -43,6 +46,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/custom.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -53,7 +58,14 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -103,6 +115,18 @@
         </div>
       </div>
     </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
     
     
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
@@ -949,53 +973,53 @@
 <hr />
 <h2 id="dados-estruturados-json-ld">Dados estruturados (JSON-LD)</h2>
 <p>Incluído em <code>layout.js</code> como <code>Organization</code>:</p>
-<pre><code class="language-js">&lt;script type=&quot;application/ld+json&quot;&gt;
-{
-  &quot;@context&quot;: &quot;https://schema.org&quot;,
-  &quot;@type&quot;: &quot;Organization&quot;,
-  &quot;name&quot;: &quot;Imobiliária Bortone&quot;,
-  &quot;url&quot;: &quot;/&quot;,
-  &quot;logo&quot;: &quot;/favicon.ico&quot;
-}
-&lt;/script&gt;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">script</span><span class="w"> </span><span class="nx">type</span><span class="o">=</span><span class="s2">&quot;application/ld+json&quot;</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;@context&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;https://schema.org&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;@type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Organization&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Imobiliária Bortone&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;url&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;logo&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/favicon.ico&quot;</span>
+<span class="p">}</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span>
+</code></pre></div>
 <hr />
 <h2 id="integracoes-vercel">Integrações Vercel</h2>
 <ul>
 <li>Analytics (global)</li>
 </ul>
-<pre><code class="language-js">import { Analytics } from &quot;@vercel/analytics/react&quot;;
-&lt;Analytics /&gt;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Analytics</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@vercel/analytics/react&quot;</span><span class="p">;</span>
+<span class="o">&lt;</span><span class="nx">Analytics</span><span class="w"> </span><span class="o">/&gt;</span>
+</code></pre></div>
 <ul>
 <li>Speed Insights (global)</li>
 </ul>
-<pre><code class="language-js">import { SpeedInsights } from &quot;@vercel/speed-insights/next&quot;;
-&lt;SpeedInsights /&gt;
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">SpeedInsights</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@vercel/speed-insights/next&quot;</span><span class="p">;</span>
+<span class="o">&lt;</span><span class="nx">SpeedInsights</span><span class="w"> </span><span class="o">/&gt;</span>
+</code></pre></div>
 <blockquote>
 <p>Ambos devem ser chamados apenas em layout.js.</p>
 </blockquote>
 <hr />
 <h2 id="metadados-dinamicos-com-seo-srccomponentsseo">Metadados dinâmicos com SEO (src/components/SEO)</h2>
 <p>Use o componente SEO quando precisar sobrescrever/gerar metatags em tempo de execução:</p>
-<pre><code class="language-js">import SEO from &quot;@/components/SEO&quot;;
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">SEO</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/components/SEO&quot;</span><span class="p">;</span>
 
-export default function ImovelPage({ params }) {
-  const imovel = getImovel(params.id);
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">ImovelPage</span><span class="p">({</span><span class="w"> </span><span class="nx">params</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">imovel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">getImovel</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
 
-  return (
-    &lt;&gt;
-      &lt;SEO
-        title={`${imovel.titulo} | Imobiliária Bortone`}
-        description={imovel.descricao}
-        image={imovel.capa || &quot;/images/og-default.png&quot;}
-      /&gt;
-      &lt;ConteudoImovel data={imovel} /&gt;
-    &lt;/&gt;
-  );
-}
-</code></pre>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="o">&lt;&gt;</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="nx">SEO</span>
+<span class="w">        </span><span class="nx">title</span><span class="o">=</span><span class="p">{</span><span class="sb">`</span><span class="si">${</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">titulo</span><span class="si">}</span><span class="sb"> | Imobiliária Bortone`</span><span class="p">}</span>
+<span class="w">        </span><span class="nx">description</span><span class="o">=</span><span class="p">{</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">descricao</span><span class="p">}</span>
+<span class="w">        </span><span class="nx">image</span><span class="o">=</span><span class="p">{</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">capa</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s2">&quot;/images/og-default.png&quot;</span><span class="p">}</span>
+<span class="w">      </span><span class="o">/&gt;</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="nx">ConteudoImovel</span><span class="w"> </span><span class="nx">data</span><span class="o">=</span><span class="p">{</span><span class="nx">imovel</span><span class="p">}</span><span class="w"> </span><span class="o">/&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="err">/&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="o-componente-deve-renderizar">O componente deve renderizar:</h3>
 <ul>
 <li>
@@ -1011,21 +1035,21 @@ export default function ImovelPage({ params }) {
 <hr />
 <h2 id="metadados-estaticos-por-pagina">Metadados estáticos por página</h2>
 <p>Quando a página não precisar de dados dinâmicos, use export const metadata:</p>
-<pre><code class="language-js">export const metadata = {
-  title: &quot;Sobre nós | Imobiliária Bortone&quot;,
-  description: &quot;Conheça a história da Imobiliária Bortone&quot;,
-  openGraph: {
-    title: &quot;Sobre nós | Imobiliária Bortone&quot;,
-    description: &quot;Conheça a história da Imobiliária Bortone&quot;,
-    type: &quot;article&quot;,
-    images: [{ url: &quot;/images/og-sobre.png&quot;, width: 1200, height: 630 }],
-  },
-  twitter: {
-    card: &quot;summary_large_image&quot;,
-    images: [&quot;/images/og-sobre.png&quot;],
-  },
-};
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Sobre nós | Imobiliária Bortone&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Conheça a história da Imobiliária Bortone&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">openGraph</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Sobre nós | Imobiliária Bortone&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Conheça a história da Imobiliária Bortone&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;article&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">images</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nx">url</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/images/og-sobre.png&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">width</span><span class="o">:</span><span class="w"> </span><span class="mf">1200</span><span class="p">,</span><span class="w"> </span><span class="nx">height</span><span class="o">:</span><span class="w"> </span><span class="mf">630</span><span class="w"> </span><span class="p">}],</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">twitter</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">card</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;summary_large_image&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">images</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;/images/og-sobre.png&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">};</span>
+</code></pre></div>
 <hr />
 <h2 id="boas-praticas">Boas práticas</h2>
 <ul>

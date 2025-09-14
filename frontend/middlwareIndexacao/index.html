@@ -26,6 +26,9 @@
     
       <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
       
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
       
 
 
@@ -43,6 +46,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/custom.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -53,7 +58,14 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -103,6 +115,18 @@
         </div>
       </div>
     </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
     
     
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
@@ -745,7 +769,7 @@
 </ul>
 <hr />
 <h2 id="fluxo-do-middleware">Fluxo do Middleware</h2>
-<pre><code class="language-text">┌─────────────┐
+<div class="highlight"><pre><span></span><code>┌─────────────┐
 │ Requisição  │
 │ HTTP /admin │
 └─────┬───────┘
@@ -765,19 +789,18 @@
 │ Response    │
 │ HTTP        │
 └─────────────┘
-</code></pre>
+</code></pre></div>
 <hr />
 <h2 id="testes">Testes</h2>
 <h3 id="teste-no-powershell-windows">Teste no PowerShell (Windows)</h3>
-<pre><code class="language-powershell">Invoke-WebRequest -Uri &quot;http://localhost:3000/admin/cms-banner&quot; -Method Head | Select-Object -ExpandProperty Headers
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nb">Invoke-WebRequest</span> <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:3000/admin/cms-banner&quot;</span> <span class="n">-Method</span> <span class="n">Head</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-ExpandProperty</span> <span class="n">Headers</span>
+</code></pre></div>
 <h4 id="resposta-esperada">Resposta esperada</h4>
-<pre><code class="language-yaml">x-robots-tag: noindex, nofollow
-X-Frame-Options: DENY
-...
-Cache-Control: no-store, must-revalidate
-
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nt">x-robots-tag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">noindex, nofollow</span>
+<span class="nt">X-Frame-Options</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DENY</span>
+<span class="nn">...</span>
+<span class="nt">Cache-Control</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-store, must-revalidate</span>
+</code></pre></div>
 <ul>
 <li>
 <p><code>x-robots-tag</code> garante que a página não será indexada.</p>
@@ -787,14 +810,14 @@ Cache-Control: no-store, must-revalidate
 </li>
 </ul>
 <h3 id="teste-com-curl-linuxgit-bashwsl">Teste com curl (Linux/Git Bash/WSL)</h3>
-<pre><code class="language-bash">curl -I http://localhost:3000/admin/cms-usuarios
-</code></pre>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-I<span class="w"> </span>http://localhost:3000/admin/cms-usuarios
+</code></pre></div>
 <h4 id="exemplo-de-saida">Exemplo de saída:</h4>
-<pre><code class="language-yaml">HTTP/1.1 200 OK
-x-robots-tag: noindex, nofollow
-X-Frame-Options: DENY
-Content-Security-Policy: ...
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">HTTP/1.1 200 OK</span>
+<span class="l l-Scalar l-Scalar-Plain">x-robots-tag</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">noindex, nofollow</span>
+<span class="nt">X-Frame-Options</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DENY</span>
+<span class="nt">Content-Security-Policy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</code></pre></div>
 <h3 id="teste-no-navegador">Teste no navegador</h3>
 <ol>
 <li>

@@ -26,6 +26,9 @@
     
       <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
       
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
       
 
 
@@ -43,6 +46,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/custom.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -53,7 +58,14 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -103,6 +115,18 @@
         </div>
       </div>
     </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
     
     
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
@@ -822,209 +846,544 @@
 </li>
 </ul>
 <h2 id="diagrama">Diagrama:</h2>
-<p><img alt="imagem do diagrama" src="assets/imoveis_diagrama.mmd.png" /></p>
+<p><img alt="imagem do diagrama" src="../../assets/imoveis_diagrama.mmd.png" /></p>
 <h2 id="estrutura">Estrutura:</h2>
-<p><br> </p>
-<details>
-<summary><strong>USUARIO</strong></summary>
-
-| Nome da Coluna | Tipo de Dado                      | Descrição                          |
-| -------------- | --------------------------------- | ---------------------------------- |
-| id             | INT(11)                           | Identificador único do usuário     |
-| nome           | VARCHAR(100)                      | Nome completo do usuário           |
-| email          | VARCHAR(100)                      | E-mail do usuário (deve ser único) |
-| senha          | VARCHAR(255)                      | Senha criptografada                |
-| nivel          | TINYINT(1)                        | Nível de acesso do usuário, 0 = administrador, 1 = visitante         |
-| celular        | VARCHAR(20)                       | Número de celular do usuário       |
-
+<details class="note">
+<summary>USUARIO</summary>
+<table>
+<thead>
+<tr>
+<th>Nome da Coluna</th>
+<th>Tipo de Dado</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>INT(11)</td>
+<td>Identificador único do usuário</td>
+</tr>
+<tr>
+<td>nome</td>
+<td>VARCHAR(100)</td>
+<td>Nome completo do usuário</td>
+</tr>
+<tr>
+<td>email</td>
+<td>VARCHAR(100)</td>
+<td>E-mail do usuário (deve ser único)</td>
+</tr>
+<tr>
+<td>senha</td>
+<td>VARCHAR(255)</td>
+<td>Senha criptografada</td>
+</tr>
+<tr>
+<td>nivel</td>
+<td>TINYINT(1)</td>
+<td>Nível de acesso do usuário, 0 = administrador, 1 = visitante</td>
+</tr>
+<tr>
+<td>celular</td>
+<td>VARCHAR(20)</td>
+<td>Número de celular do usuário</td>
+</tr>
+</tbody>
+</table>
 </details>
-
 <p><em>Tabela para armazenar os dados de um usuário cadastrado.</em></p>
-<p><br> </p>
-<details>
-<summary><strong>IMOVEIS</strong></summary>
-
-| Nome da Coluna | Tipo de Dado       | Descrição                                |
-|---------------|--------------------|-------------------------------------------|
-| id            | INT(11)           | Identificador único do imóvel            |
-| tipo          | VARCHAR(50)       | Tipo do imóvel (ex.: Casa, Apartamento ou Terreno)  |
-| endereco      | VARCHAR(255)      | Endereço do imóvel (ex: Número, rua, bairro) |
-| cidade        | VARCHAR(100)      | Cidade onde o imóvel está localizado     |
-| estado        | VARCHAR(2)        | Sigla do estado                          |
-| preco         | DECIMAL(12,2)     | Preço do imóvel                          |
-| status        | ENUM('disponivel', 'indisponivel', 'vendido', 'locado')       | Status do imóvel, esse campo pode ser usado para lógica de mostrar ou não o imóvel no site/mapa |
-| area          | INT(11)           | Área do imóvel em m²                     |
-| descricao     | TEXT              | Descrição do imóvel                      |
-| data_cadastro | DATE              | Data de cadastro do imóvel               |
-| murado        | TINYINT(1)        | Indica se o imóvel é murado (0 = não, 1 = sim)    |
-| latitude      | DECIMAL(10,7)     | Latitude da localização                  |
-| longitude     | DECIMAL(10,7)     | Longitude da localização                 |
-| usuario_id    | INT(11)           | ID do usuário que cadastrou o imóvel (Apenas administradores cadastram imóveis)    |
-| tipo_negociacao     | ENUM('venda', 'aluguel') | Tipo de proposta do imóvel (Está disponível para venda ou aluguel) - Em caso de um imóvel ser oferecido como ambas opções deve-se cadastrar duas vezes e conectá-lo com a mesma tabela de casa ou de terreno |
-| data_update_status  | TIMESTAMP | Campo guarda a data da ocorrência de update no atributo status do imóvel. Exemplo: Ao atualizar para "vendido" vai ficar registrado que foi vendido no dia do update, o mesmo funciona se mudar para locado, disponivel ou indisponivel (A atualização do campo DATA_UPDATE_STATUS é feita de forma automática no banco por meio de um trigger que observa o campo STATUS)
-
+<details class="note">
+<summary>IMOVEIS</summary>
+<table>
+<thead>
+<tr>
+<th>Nome da Coluna</th>
+<th>Tipo de Dado</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>INT(11)</td>
+<td>Identificador único do imóvel</td>
+</tr>
+<tr>
+<td>tipo</td>
+<td>VARCHAR(50)</td>
+<td>Tipo do imóvel (ex.: Casa, Apartamento ou Terreno)</td>
+</tr>
+<tr>
+<td>endereco</td>
+<td>VARCHAR(255)</td>
+<td>Endereço do imóvel (ex: Número, rua, bairro)</td>
+</tr>
+<tr>
+<td>cidade</td>
+<td>VARCHAR(100)</td>
+<td>Cidade onde o imóvel está localizado</td>
+</tr>
+<tr>
+<td>estado</td>
+<td>VARCHAR(2)</td>
+<td>Sigla do estado</td>
+</tr>
+<tr>
+<td>preco</td>
+<td>DECIMAL(12,2)</td>
+<td>Preço do imóvel</td>
+</tr>
+<tr>
+<td>status</td>
+<td>ENUM('disponivel', 'indisponivel', 'vendido', 'locado')</td>
+<td>Status do imóvel, esse campo pode ser usado para lógica de mostrar ou não o imóvel no site/mapa</td>
+</tr>
+<tr>
+<td>area</td>
+<td>INT(11)</td>
+<td>Área do imóvel em m²</td>
+</tr>
+<tr>
+<td>descricao</td>
+<td>TEXT</td>
+<td>Descrição do imóvel</td>
+</tr>
+<tr>
+<td>data_cadastro</td>
+<td>DATE</td>
+<td>Data de cadastro do imóvel</td>
+</tr>
+<tr>
+<td>murado</td>
+<td>TINYINT(1)</td>
+<td>Indica se o imóvel é murado (0 = não, 1 = sim)</td>
+</tr>
+<tr>
+<td>latitude</td>
+<td>DECIMAL(10,7)</td>
+<td>Latitude da localização</td>
+</tr>
+<tr>
+<td>longitude</td>
+<td>DECIMAL(10,7)</td>
+<td>Longitude da localização</td>
+</tr>
+<tr>
+<td>usuario_id</td>
+<td>INT(11)</td>
+<td>ID do usuário que cadastrou o imóvel (Apenas administradores cadastram imóveis)</td>
+</tr>
+<tr>
+<td>tipo_negociacao</td>
+<td>ENUM('venda', 'aluguel')</td>
+<td>Tipo de proposta do imóvel (Está disponível para venda ou aluguel) - Em caso de um imóvel ser oferecido como ambas opções deve-se cadastrar duas vezes e conectá-lo com a mesma tabela de casa ou de terreno</td>
+</tr>
+<tr>
+<td>data_update_status</td>
+<td>TIMESTAMP</td>
+<td>Campo guarda a data da ocorrência de update no atributo status do imóvel. Exemplo: Ao atualizar para "vendido" vai ficar registrado que foi vendido no dia do update, o mesmo funciona se mudar para locado, disponivel ou indisponivel (A atualização do campo DATA_UPDATE_STATUS é feita de forma automática no banco por meio de um trigger que observa o campo STATUS)</td>
+</tr>
+</tbody>
+</table>
 </details>
-
 <p><em>Tabela para armazenar os dados dos imóveis cadastrados</em></p>
-<p><br> </p>
-<details>
-<summary><strong>CASA</strong></summary>
-
-| Nome da Coluna   | Tipo de Dado   | Descrição                                |
-|-----------------|----------------|-------------------------------------------|
-| id              | INT(11)       | Identificador único da casa              |
-| imovel_id       | INT(11)       | ID do imóvel relacionado                 |
-| quartos         | INT(11)       | Número de quartos                        |
-| banheiros       | INT(11)       | Número de banheiros                      |
-| vagas           | INT(11)       | Número de vagas de garagem               |
-| possui_piscina  | TINYINT(1)    | Indica se a casa possui piscina (0 = não, 1 = sim)|
-| possui_jardim   | TINYINT(1)    | Indica se a casa possui jardim (0 = não, 1 = sim) |
-
+<details class="note">
+<summary>CASA</summary>
+<table>
+<thead>
+<tr>
+<th>Nome da Coluna</th>
+<th>Tipo de Dado</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>INT(11)</td>
+<td>Identificador único da casa</td>
+</tr>
+<tr>
+<td>imovel_id</td>
+<td>INT(11)</td>
+<td>ID do imóvel relacionado</td>
+</tr>
+<tr>
+<td>quartos</td>
+<td>INT(11)</td>
+<td>Número de quartos</td>
+</tr>
+<tr>
+<td>banheiros</td>
+<td>INT(11)</td>
+<td>Número de banheiros</td>
+</tr>
+<tr>
+<td>vagas</td>
+<td>INT(11)</td>
+<td>Número de vagas de garagem</td>
+</tr>
+<tr>
+<td>possui_piscina</td>
+<td>TINYINT(1)</td>
+<td>Indica se a casa possui piscina (0 = não, 1 = sim)</td>
+</tr>
+<tr>
+<td>possui_jardim</td>
+<td>TINYINT(1)</td>
+<td>Indica se a casa possui jardim (0 = não, 1 = sim)</td>
+</tr>
+</tbody>
+</table>
 </details>
-
 <p><em>Tabela para armazenar os dados do imóvel quando for casa</em></p>
-<p><br> </p>
-<details>
-<summary><strong>TERRENO</strong></summary>
-
-| Nome da Coluna | Tipo de Dado | Descrição                           |
-|----------------|--------------|-------------------------------------|
-| id             | INT(11)      | Identificador único do terreno      |
-| imovel_id      | INT(11)      | ID do imóvel relacionado            |
-
+<details class="note">
+<summary>TERRENO</summary>
+<table>
+<thead>
+<tr>
+<th>Nome da Coluna</th>
+<th>Tipo de Dado</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>INT(11)</td>
+<td>Identificador único do terreno</td>
+</tr>
+<tr>
+<td>imovel_id</td>
+<td>INT(11)</td>
+<td>ID do imóvel relacionado</td>
+</tr>
+</tbody>
+</table>
 </details>
-
 <p><em>Tabela para armazenar os dados do imóvel quando for terreno</em></p>
-<p><br> </p>
-<details>
-<summary><strong>IMAGEM_IMOVEL</strong></summary>
-
-| Nome da Coluna | Tipo de Dado   | Descrição                           |
-|----------------|----------------|-------------------------------------|
-| id             | INT(11)        | Identificador único da imagem       |
-| imovel_id      | INT(11)        | ID do imóvel relacionado            |
-| url_imagem     | VARCHAR(255)   | Nome da Imagem + extensão (ex: 7ac66c0f1484d64.png) - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end |
-| descricao      | VARCHAR(255)   | Descrição da imagem                 |
-
+<details class="note">
+<summary>IMAGEM_IMOVEL</summary>
+<table>
+<thead>
+<tr>
+<th>Nome da Coluna</th>
+<th>Tipo de Dado</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>INT(11)</td>
+<td>Identificador único da imagem</td>
+</tr>
+<tr>
+<td>imovel_id</td>
+<td>INT(11)</td>
+<td>ID do imóvel relacionado</td>
+</tr>
+<tr>
+<td>url_imagem</td>
+<td>VARCHAR(255)</td>
+<td>Nome da Imagem + extensão (ex: 7ac66c0f1484d64.png) - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end</td>
+</tr>
+<tr>
+<td>descricao</td>
+<td>VARCHAR(255)</td>
+<td>Descrição da imagem</td>
+</tr>
+</tbody>
+</table>
 </details>
-
 <p><em>Tabela para armazenar cada imagem do imóvel</em></p>
-<p><br> </p>
-<details>
-<summary><strong>BANNER_INDEX</strong></summary>
-
-| Nome da Coluna | Tipo de Dado    | Descrição                          |
-|----------------|----------------|-------------------------------------|
-| id             | INT(11)        | Identificador único                 |
-| url_imagem     | VARCHAR(255)   | Nome da Imagem + extensão (ex: 7ac66c0f1484d64.png) - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end                       |
-| descricao      | VARCHAR(255)   | Descrição                           |
-| usuario_id     | INT(11)        | ID do usuário que cadastrou o banner (Apenas administradores podem cadastrar)|
-| ativo          | TINYINT(1)     | Indica se o banner deve aparecer ou não no carrossel da página (0 = não, 1 = sim) |
-
+<details class="note">
+<summary>BANNER_INDEX</summary>
+<table>
+<thead>
+<tr>
+<th>Nome da Coluna</th>
+<th>Tipo de Dado</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>INT(11)</td>
+<td>Identificador único</td>
+</tr>
+<tr>
+<td>url_imagem</td>
+<td>VARCHAR(255)</td>
+<td>Nome da Imagem + extensão (ex: 7ac66c0f1484d64.png) - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end</td>
+</tr>
+<tr>
+<td>descricao</td>
+<td>VARCHAR(255)</td>
+<td>Descrição</td>
+</tr>
+<tr>
+<td>usuario_id</td>
+<td>INT(11)</td>
+<td>ID do usuário que cadastrou o banner (Apenas administradores podem cadastrar)</td>
+</tr>
+<tr>
+<td>ativo</td>
+<td>TINYINT(1)</td>
+<td>Indica se o banner deve aparecer ou não no carrossel da página (0 = não, 1 = sim)</td>
+</tr>
+</tbody>
+</table>
 </details>
-
 <p><em>Tabela para armazenar imagens do carrosel</em></p>
-<p><br> </p>
-<details>
-<summary><strong>IMOBILIARIA</strong></summary>
-
-| Nome da Coluna | Tipo de Dado    | Descrição                             |
-|----------------|----------------|---------------------------------------|
-| id             | INT(11)        | Identificador único                   |
-| nome           | VARCHAR(100)   | Nome da imobiliária                   |
-| cnpj           | VARCHAR(20)    | CNPJ da imobiliária                   |
-| telefone       | VARCHAR(20)    | Telefone de contato                   |
-| email          | VARCHAR(100)   | E-mail de contato                     |
-| endereco       | VARCHAR(255)   | Endereço                              |
-| cidade         | VARCHAR(100)   | Cidade                                |
-| estado         | VARCHAR(2)     | Estado (sigla)                        |
-| site           | VARCHAR(100)   | Url do Website da imobiliária         |
-| usuario_id     | INT(11)        | ID do usuário responsável (Apenas usuário do tipo administrador pode alterar)             |
-
-
+<details class="note">
+<summary>IMOBILIARIA</summary>
+<table>
+<thead>
+<tr>
+<th>Nome da Coluna</th>
+<th>Tipo de Dado</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>INT(11)</td>
+<td>Identificador único</td>
+</tr>
+<tr>
+<td>nome</td>
+<td>VARCHAR(100)</td>
+<td>Nome da imobiliária</td>
+</tr>
+<tr>
+<td>cnpj</td>
+<td>VARCHAR(20)</td>
+<td>CNPJ da imobiliária</td>
+</tr>
+<tr>
+<td>telefone</td>
+<td>VARCHAR(20)</td>
+<td>Telefone de contato</td>
+</tr>
+<tr>
+<td>email</td>
+<td>VARCHAR(100)</td>
+<td>E-mail de contato</td>
+</tr>
+<tr>
+<td>endereco</td>
+<td>VARCHAR(255)</td>
+<td>Endereço</td>
+</tr>
+<tr>
+<td>cidade</td>
+<td>VARCHAR(100)</td>
+<td>Cidade</td>
+</tr>
+<tr>
+<td>estado</td>
+<td>VARCHAR(2)</td>
+<td>Estado (sigla)</td>
+</tr>
+<tr>
+<td>site</td>
+<td>VARCHAR(100)</td>
+<td>Url do Website da imobiliária</td>
+</tr>
+<tr>
+<td>usuario_id</td>
+<td>INT(11)</td>
+<td>ID do usuário responsável (Apenas usuário do tipo administrador pode alterar)</td>
+</tr>
+</tbody>
+</table>
 </details>
-
 <p><em>Tabela para armazenar os dados da imobiliária (Apenas um dado deve ser cadastrado nessa tabela)</em></p>
-<p><br> </p>
-<details>
-<summary><strong>FAQ</strong></summary>
-
-| Nome da Coluna | Tipo de Dado | Descrição                           |
-|----------------|--------------|-------------------------------------|
-| id             | INT(11)      | Identificador único da pergunta     |
-| pergunta       | TEXT         | Dúvida                         |
-| resposta       | TEXT         | Resposta      |
-| usuario_id     | INT(11)      | ID do usuário Responsável (Apenas Administradores podem cadastrar as perguntas e respostas)  |
-
+<details class="note">
+<summary>FAQ</summary>
+<table>
+<thead>
+<tr>
+<th>Nome da Coluna</th>
+<th>Tipo de Dado</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>INT(11)</td>
+<td>Identificador único da pergunta</td>
+</tr>
+<tr>
+<td>pergunta</td>
+<td>TEXT</td>
+<td>Dúvida</td>
+</tr>
+<tr>
+<td>resposta</td>
+<td>TEXT</td>
+<td>Resposta</td>
+</tr>
+<tr>
+<td>usuario_id</td>
+<td>INT(11)</td>
+<td>ID do usuário Responsável (Apenas Administradores podem cadastrar as perguntas e respostas)</td>
+</tr>
+</tbody>
+</table>
 </details>
-
 <p><em>Tabela para armazenar os dados das perguntas e respostas</em></p>
-<p><br> </p>
-<details>
-<summary><strong>RECOMENDACAO_IMOVEL</strong></summary>
-
-| Nome da Coluna | Tipo de Dado | Descrição                           |
-|----------------|--------------|-------------------------------------|
-| id             | INT(11)      | Identificador único da recomendação |
-| usuario_id     | INT(11)      | ID do usuário que recebeu a recomendação |
-| imovel_id      | INT(11)      | ID do imóvel recomendado            |
-| data_visita    | DATE         | Data da visita na página do imóvel  |
-
+<details class="note">
+<summary>RECOMENDACAO_IMOVEL</summary>
+<table>
+<thead>
+<tr>
+<th>Nome da Coluna</th>
+<th>Tipo de Dado</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>INT(11)</td>
+<td>Identificador único da recomendação</td>
+</tr>
+<tr>
+<td>usuario_id</td>
+<td>INT(11)</td>
+<td>ID do usuário que recebeu a recomendação</td>
+</tr>
+<tr>
+<td>imovel_id</td>
+<td>INT(11)</td>
+<td>ID do imóvel recomendado</td>
+</tr>
+<tr>
+<td>data_visita</td>
+<td>DATE</td>
+<td>Data da visita na página do imóvel</td>
+</tr>
+</tbody>
+</table>
 </details>
-
 <p><em>Tabela para armazenar os dados referentes aos acessos do usuário</em>
 - Ao acessar a página de determinado imóvel o dado será salvo nessa tabela, esse "histórico" de acesso é usado no algoritmo de recomendação.</p>
-<p><br> </p>
-<details>
-<summary><strong>PUBLICIDADE</strong></summary>
-
-| Nome da Coluna | Tipo de Dado  | Descrição                           |
-|----------------|---------------|-------------------------------------|
-| id             | INT(11)       | Identificador único da publicidade  |
-| titulo         | VARCHAR(100)  | Título da publicidade               |
-| conteudo       | TEXT          | Conteúdo da publicidade             |
-| url_imagem     | VARCHAR(255)  | Nome da Imagem + extensão (ex: 7ac66c0f1484d64.png) - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end |
-| usuario_id     | INT(11)       | ID do usuário que cadastrou a publicidade |
-| ativo          | TINYINT(1)     | Indica se a publicidade está ativa e deve aparecer no site (0 = não, 1 = sim) |
-
-
+<details class="note">
+<summary>PUBLICIDADE</summary>
+<table>
+<thead>
+<tr>
+<th>Nome da Coluna</th>
+<th>Tipo de Dado</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>INT(11)</td>
+<td>Identificador único da publicidade</td>
+</tr>
+<tr>
+<td>titulo</td>
+<td>VARCHAR(100)</td>
+<td>Título da publicidade</td>
+</tr>
+<tr>
+<td>conteudo</td>
+<td>TEXT</td>
+<td>Conteúdo da publicidade</td>
+</tr>
+<tr>
+<td>url_imagem</td>
+<td>VARCHAR(255)</td>
+<td>Nome da Imagem + extensão (ex: 7ac66c0f1484d64.png) - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end</td>
+</tr>
+<tr>
+<td>usuario_id</td>
+<td>INT(11)</td>
+<td>ID do usuário que cadastrou a publicidade</td>
+</tr>
+<tr>
+<td>ativo</td>
+<td>TINYINT(1)</td>
+<td>Indica se a publicidade está ativa e deve aparecer no site (0 = não, 1 = sim)</td>
+</tr>
+</tbody>
+</table>
 </details>
-
-<p><em>Tabela para armazenar publicidades</em>
-- Exemplo de caso relacionado com essa tabela: Uma loja de móveis fez um acordo para publicidade com a imobiliária, então o administrador cadastra os dados relacionados a propaganda e então as publicidades cadastradas aparecem no front</p>
-<p><br> </p>
-<details>
-<summary><strong>BLOG</strong></summary>
-
-| Nome da Coluna    | Tipo de Dado   | Descrição                              |
-|------------------|----------------|-------------------------------------    |
-| id               | INT(11)       | Identificador único do post              |
-| titulo           | VARCHAR(100)  | Título do post                           |
-| conteudo         | TEXT          | Conteúdo do post                         |
-| data_publicacao  | DATE          | Data de publicação do post               |
-| url_imagem       | VARCHAR(255)  | Nome da Imagem associada ao post + extensão (ex: 7ac66c0f1484d64.png) - Apenas uma imagem para cada post no blog! - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end          |
-| usuario_id       | INT(11)       | ID do usuário que publicou a postagem    |
-
+<p><em>Tabela para armazenar publicidades</em></p>
+<ul>
+<li>Exemplo de caso relacionado com essa tabela: Uma loja de móveis fez um acordo para publicidade com a imobiliária, então o administrador cadastra os dados relacionados a propaganda e então as publicidades cadastradas aparecem no front</li>
+</ul>
+<details class="note">
+<summary>BLOG</summary>
+<table>
+<thead>
+<tr>
+<th>Nome da Coluna</th>
+<th>Tipo de Dado</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>INT(11)</td>
+<td>Identificador único do post</td>
+</tr>
+<tr>
+<td>titulo</td>
+<td>VARCHAR(100)</td>
+<td>Título do post</td>
+</tr>
+<tr>
+<td>conteudo</td>
+<td>TEXT</td>
+<td>Conteúdo do post</td>
+</tr>
+<tr>
+<td>data_publicacao</td>
+<td>DATE</td>
+<td>Data de publicação do post</td>
+</tr>
+<tr>
+<td>url_imagem</td>
+<td>VARCHAR(255)</td>
+<td>Nome da Imagem associada ao post + extensão (ex: 7ac66c0f1484d64.png) - Apenas uma imagem para cada post no blog! - Deve-se usar um algoritmo de hash (ex: MD5) para garantir que os nomes de imagens não sejam iguais no momento de salvar - As imagens serão guardadas em um mesmo diretório, o banco só guarda o nome único hasheado e o caminho padrão ficará definido no back-end</td>
+</tr>
+<tr>
+<td>usuario_id</td>
+<td>INT(11)</td>
+<td>ID do usuário que publicou a postagem</td>
+</tr>
+</tbody>
+</table>
 </details>
-
 <p><em>Tabela para armazenar as postagens do blog</em></p>
 <h2 id="ambientes">Ambientes</h2>
 <h3 id="1-producao">1. Produção</h3>
 <p>Solução de hospedagem: <strong>AlwaysData</strong><br>
-Strings de conexão 🚨(Acesso Restrito):</p>
-<pre><code class="language-yaml">database: lpbortone_bd_prod
-host: mysql-lpbortone.alwaysdata.net
-port: 3306
-</code></pre>
+Strings de conexão 🚨(Acesso Restrito):
+<div class="highlight"><pre><span></span><code><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lpbortone_bd_prod</span>
+<span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql-lpbortone.alwaysdata.net</span>
+<span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3306</span>
+</code></pre></div></p>
 <h3 id="2-desenvolvimento">2. Desenvolvimento</h3>
 <p>Solução de hospedagem: <strong>AlwaysData</strong><br>
-Strings de conexão:</p>
-<pre><code class="language-yaml">database: lp-imobiliaria_dev
-host: mysql-lp-imobiliaria.alwaysdata.net
-port: 3306
-user: Utilizar o user disponibilizado pelo PM do seu produto
-password: Utilizar a senha disponibilizada pelo PM do seu produto
-</code></pre>
+Strings de conexão:
+<div class="highlight"><pre><span></span><code><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lp-imobiliaria_dev</span>
+<span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql-lp-imobiliaria.alwaysdata.net</span>
+<span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3306</span>
+<span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Utilizar o user disponibilizado pelo PM do seu produto</span>
+<span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Utilizar a senha disponibilizada pelo PM do seu produto</span>
+</code></pre></div></p>
 <h3 id="3-local">3. Local</h3>
 <p><strong>Seu computador 😉</strong><br></p>
 <p>Para rodar localmente, basta criar um banco MySQL local e executar o script
@@ -1033,15 +1392,15 @@ password: Utilizar a senha disponibilizada pelo PM do seu produto
 <h2 id="maneiras-de-se-conectar-e-visualizar-os-dados">Maneiras de se conectar e visualizar os dados:</h2>
 <h3 id="1-utilizando-um-software-de-gerenciamento-de-banco-de-dados-heidisql-dbeaver-mysql-workbench">1. Utilizando um Software de gerenciamento de Banco de dados (HeidiSQL, Dbeaver, MySQL Workbench....):</h3>
 <h4 id="heidisql">HeidiSQL:</h4>
-<p><img alt="Exemplo de Conexão no HeidiSQL" src="assets/exemplo-conexao-heidisql.png" /></p>
+<p><img alt="Exemplo de Conexão no HeidiSQL" src="../../assets/exemplo-conexao-heidisql.png" /></p>
 <h4 id="dbeaver">Dbeaver:</h4>
-<p><img alt="Exemplo de Conexão no MySQLWorkbench" src="assets/exemplo-conexao-dbeaver.png" /></p>
+<p><img alt="Exemplo de Conexão no MySQLWorkbench" src="../../assets/exemplo-conexao-dbeaver.png" /></p>
 <h3 id="2-utilizando-o-phpmyadmin-pela-web">2. Utilizando o phpMyAdmin pela web:</h3>
-<p><strong>Link: <a href="https://phpmyadmin.alwaysdata.com/">phpmyadmin</a></strong> <br></p>
-<pre><code class="language-yaml">MySQL user: Utilizar o user disponibilizado pelo PM do seu produto
-Password: Utilizar a senha disponibilizada pelo PM do seu produto
-</code></pre>
-<p><img alt="Exemplo de Conexão no phpMyAdmin" src="assets/exemplo-conexao-phpmyadmin.png" /></p>
+<p><strong>Link: <a href="https://phpmyadmin.alwaysdata.com/">phpmyadmin</a></strong> <br>
+<div class="highlight"><pre><span></span><code><span class="nt">MySQL user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Utilizar o user disponibilizado pelo PM do seu produto</span>
+<span class="nt">Password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Utilizar a senha disponibilizada pelo PM do seu produto</span>
+</code></pre></div></p>
+<p><img alt="Exemplo de Conexão no phpMyAdmin" src="../../assets/exemplo-conexao-phpmyadmin.png" /></p>
 <h3 id="3-pelo-codigo-em-uma-aplicacao-backend-utilizando-as-credenciais-de-acesso-fornecidas">3. Pelo código em uma aplicação backend utilizando as credenciais de acesso fornecidas</h3>
 
 

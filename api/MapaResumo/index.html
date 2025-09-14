@@ -24,6 +24,9 @@
     
       <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
       
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
       
 
 
@@ -41,6 +44,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/custom.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -51,7 +56,14 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -101,6 +113,18 @@
         </div>
       </div>
     </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
     
     
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
@@ -1053,8 +1077,8 @@
 <li><strong>Negociação</strong>: venda, aluguel</li>
 </ul>
 <h2 id="arquitetura">🏗️ Arquitetura</h2>
-<pre><code>Frontend → API Routes → Controller → Service → Model → Database
-</code></pre>
+<div class="highlight"><pre><span></span><code>Frontend → API Routes → Controller → Service → Model → Database
+</code></pre></div>
 <h3 id="padrao-mvc-implementado">Padrão MVC Implementado</h3>
 <ul>
 <li><strong>Model</strong>: Definição de dados e relacionamentos</li>
@@ -1078,9 +1102,9 @@
 </ul>
 <h2 id="configuracao">🔧 Configuração</h2>
 <h3 id="appjs-atualizado">App.js Atualizado</h3>
-<pre><code class="language-javascript">import mapaRoutes from &quot;./routes/mapaRoutes.js&quot;;
-app.use(&quot;/mapa&quot;, mapaRoutes);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">mapaRoutes</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;./routes/mapaRoutes.js&quot;</span><span class="p">;</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s2">&quot;/mapa&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">mapaRoutes</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="dependencias">Dependências</h3>
 <ul>
 <li>Todas as dependências já existentes no projeto</li>
@@ -1125,17 +1149,17 @@ app.use(&quot;/mapa&quot;, mapaRoutes);
 </ol>
 <h2 id="como-usar">⚡ Como Usar</h2>
 <h3 id="exemplo-basico">Exemplo Básico</h3>
-<pre><code class="language-javascript">// Buscar casas em São Paulo
-fetch('/mapa?tipo=casa&amp;cidade=São Paulo')
-  .then(response =&gt; response.json())
-  .then(data =&gt; console.log(data));
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1">// Buscar casas em São Paulo</span>
+<span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;/mapa?tipo=casa&amp;cidade=São Paulo&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+</code></pre></div>
 <h3 id="exemplo-com-coordenadas">Exemplo com Coordenadas</h3>
-<pre><code class="language-javascript">// Buscar imóveis próximos
-fetch('/mapa/coordenadas?lat=-23.5505&amp;lng=-46.6333&amp;raio=0.01')
-  .then(response =&gt; response.json())
-  .then(data =&gt; console.log(data));
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1">// Buscar imóveis próximos</span>
+<span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;/mapa/coordenadas?lat=-23.5505&amp;lng=-46.6333&amp;raio=0.01&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+</code></pre></div>
 <h2 id="status-da-integracao">✅ Status da Integração</h2>
 <ul>
 <li>[x] Modelos integrados</li>

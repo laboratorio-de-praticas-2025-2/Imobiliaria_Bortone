@@ -26,6 +26,9 @@
     
       <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
       
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
       
 
 
@@ -43,6 +46,8 @@
       
     
     
+      <link rel="stylesheet" href="../stylesheets/custom.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -53,7 +58,14 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -103,6 +115,18 @@
         </div>
       </div>
     </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
     
     
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
@@ -809,10 +833,10 @@
 </ul>
 <hr />
 <h2 id="regras-de-commits">Regras de Commits</h2>
-<pre><code class="language-csharp">&lt;tipo&gt;(escopo opicional): descrição curta no imperativo
-[corpo opcional explicando o que mudou e por quê]
-[rodapé opcional: issues relacionadas, breaking changes]
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="n">tipo</span><span class="o">&gt;</span><span class="p">(</span><span class="n">escopo</span><span class="w"> </span><span class="n">opicional</span><span class="p">):</span><span class="w"> </span><span class="n">descrição</span><span class="w"> </span><span class="n">curta</span><span class="w"> </span><span class="n">no</span><span class="w"> </span><span class="n">imperativo</span>
+<span class="na">[corpo opcional explicando o que mudou e por quê]</span>
+<span class="na">[rodapé opcional: issues relacionadas, breaking changes]</span>
+</code></pre></div>
 <h3 id="tipos-aceitos">Tipos Aceitos</h3>
 <ul>
 <li>
@@ -894,9 +918,9 @@
 <p>Se fechar uma issue:</p>
 </li>
 </ul>
-<pre><code class="language-makefile">feat(agenda): implementa cancelamento de visitas 
-Closes #32
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nf">feat(agenda)</span><span class="o">:</span><span class="w"> </span><span class="n">implementa</span> <span class="n">cancelamento</span> <span class="n">de</span> <span class="n">visitas</span> 
+<span class="err">Closes</span><span class="w"> </span><span class="c">#32</span>
+</code></pre></div>
 <h3 id="branch-naming">Branch Naming</h3>
 <ul>
 <li>
@@ -917,28 +941,28 @@ Closes #32
 <li>Funções e classes devem ter JSDoc quando necessário.</li>
 </ul>
 <p>Exemplo:</p>
-<pre><code class="language-js">/**
- * Converte valor monetário BRL para centavos.
- * @param {string} valorBRL Ex.: &quot;R$ 1.234,56&quot;
- * @returns {number} Valor em centavos
- */
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * Converte valor monetário BRL para centavos.</span>
+<span class="cm"> * @param {string} valorBRL Ex.: &quot;R$ 1.234,56&quot;</span>
+<span class="cm"> * @returns {number} Valor em centavos</span>
+<span class="cm"> */</span>
+</code></pre></div>
 <h2 id="2-documentacao-de-api-em-markdown">2. Documentação de API (em Markdown)</h2>
 <ul>
 <li>Criar páginas em <code>documentacao/docs/api/</code> por domínio (ex.: <code>imoveis.md</code>, <code>agendamentos.md</code>).</li>
 <li>Para cada endpoint, documentar em uma subseção com o seguinte modelo:</li>
 </ul>
-<pre><code class="language-md">### GET /api/imoveis
+<div class="highlight"><pre><span></span><code><span class="gu">### GET /api/imoveis</span>
 
 Descrição: Lista imóveis com filtros opcionais.
 
 Método: GET
 
-URL: `/api/imoveis`
+URL: <span class="sb">`/api/imoveis`</span>
 
 Parâmetros:
-- query `pagina` (opcional): número da página
-- query `cidade` (opcional): nome da cidade
+<span class="k">-</span><span class="w"> </span>query <span class="sb">`pagina`</span> (opcional): número da página
+<span class="k">-</span><span class="w"> </span>query <span class="sb">`cidade`</span> (opcional): nome da cidade
 
 Exemplo de Requisição:
 
@@ -955,7 +979,7 @@ Exemplo de Resposta (200):
 Códigos de Status: 200, 400, 404, 500
 
 Autenticação: não requer
-</code></pre>
+</code></pre></div>
 <h2 id="3-documentacao-de-componentes-frontend">3. Documentação de Componentes (Frontend)</h2>
 <ul>
 <li>Para componentes reutilizáveis em <code>front-end/src/components/</code>, criar uma página por conjunto quando necessário em <code>documentacao/docs/frontend/components.md</code>.</li>
