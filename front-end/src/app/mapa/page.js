@@ -29,20 +29,18 @@ export default function Mapa() {
   const onSearch = async (value) => {
     console.log("Buscando imóveis para:", value);
     const endereco = {
-      endereco: value
-    }
+      endereco: value,
+    };
     try {
-      const response = await fetch(`http://localhost:4000/imoveis/mapa`, {
+      const response = await fetch(`${process.env.API_URL}/imoveis/mapa`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(endereco),
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data)
+        console.log(data);
         if (data) {
           // Atualize os estados com os dados retornados da API
           setImoveisCarrossel(data.propriedades.carrossel || []);
@@ -56,7 +54,6 @@ export default function Mapa() {
     }
   };
 
-  
   // useEffect(() => {
   //   setImoveis(getImoveis());
   // }, []);
@@ -90,7 +87,10 @@ export default function Mapa() {
         <OrderButton onToggle={() => console.log("Ordenar")} />
       </div>
       <div className="absolute z-1002">
-        <SidebarMenu  setImoveisMapa={setImoveisMapa} setImoveisCarrossel={setImoveisCarrossel}/>
+        <SidebarMenu
+          setImoveisMapa={setImoveisMapa}
+          setImoveisCarrossel={setImoveisCarrossel}
+        />
       </div>
       <div className="absolute z-900 sm:bottom-0 sm:right-0 flex justify-center w-full md:justify-end h-fit">
         <CarrosselMapa imoveis={imoveisCarrossel} />

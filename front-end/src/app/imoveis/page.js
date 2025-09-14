@@ -15,14 +15,12 @@ export default function ImoveisPage() {
 function ImoveisPageContent() {
   const [imoveis, setImoveis] = useState([]);
   const { filterData } = useFilterData();
-
+  
   const handleGetImoveis = async () => {
     try {
-      const response = await fetch("http://localhost:4000/imoveis/busca", {
+      const response = await fetch(`${process.env.API_URL}/imoveis/busca`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(filterData),
       });
       const data = await response.json();

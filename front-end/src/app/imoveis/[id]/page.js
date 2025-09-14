@@ -21,9 +21,26 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useSEO } from "@/hooks/useSEO";
 import { FaArrowRight } from "react-icons/fa6";
+import "dotenv/config";
 
 const { Search } = Input;
-const onSearch = (value) => console.log(value);
+const onSearch = async (value) => {
+  if (!value) return;
+  try {
+    const res = await fetch(
+      `${process.env.API_URL}/imoveis/home?endereco=${encodeURIComponent(
+        value
+      )}`,
+      { method: "GET" }
+    );
+    if (!res.ok) throw new Error("Erro ao buscar imóveis");
+    const data = await res.json();
+    // Atualiza a lista de imóveis exibida
+    setImoveis(data);
+  } catch (err) {
+    console.error("Erro na pesquisa:", err);
+  }
+};
 
 // Componente de mapa carregado dinamicamente
 const LeafletMap = dynamic(
@@ -95,14 +112,25 @@ export default function Mapa() {
   // Encontrar o imóvel atual
   const post = imoveis.find((p) => p.id === Number(id));
   const imovelAtual = post;
-  
+
   // SEO dinâmico para imóvel específico - sempre chamado
   useSEO({
-    title: imovelAtual ? `${imovelAtual.tipo} em ${imovelAtual.endereco}` : "Imóvel",
-    description: imovelAtual ? `${imovelAtual.tipo} com ${imovelAtual.quartos} quartos, ${imovelAtual.banheiros} banheiros em ${imovelAtual.endereco}. ${imovelAtual.descricao?.substring(0, 120) || 'Imóvel de qualidade em excelente localização.'}` : "Imóvel de qualidade em excelente localização.",
-    keywords: imovelAtual ? `${imovelAtual.tipo}, ${imovelAtual.endereco}, imóvel, ${imovelAtual.quartos} quartos, ${imovelAtual.banheiros} banheiros, ${imovelAtual.operacao}` : "imóvel, casa, apartamento",
+    title: imovelAtual
+      ? `${imovelAtual.tipo} em ${imovelAtual.endereco}`
+      : "Imóvel",
+    description: imovelAtual
+      ? `${imovelAtual.tipo} com ${imovelAtual.quartos} quartos, ${
+          imovelAtual.banheiros
+        } banheiros em ${imovelAtual.endereco}. ${
+          imovelAtual.descricao?.substring(0, 120) ||
+          "Imóvel de qualidade em excelente localização."
+        }`
+      : "Imóvel de qualidade em excelente localização.",
+    keywords: imovelAtual
+      ? `${imovelAtual.tipo}, ${imovelAtual.endereco}, imóvel, ${imovelAtual.quartos} quartos, ${imovelAtual.banheiros} banheiros, ${imovelAtual.operacao}`
+      : "imóvel, casa, apartamento",
     url: `https://imobiliaria-bortone.vercel.app/imoveis/${id}`,
-    image: imovelAtual?.imagens?.[0]?.url_imagem
+    image: imovelAtual?.imagens?.[0]?.url_imagem,
   });
 
   if (loading) return <div>Carregando...</div>;
@@ -268,7 +296,9 @@ export default function Mapa() {
           <div className="map_loc">
             <Link className="ir_loc" href="/mapa">
               <div>
-                <p className="text-[var(--primary)] text-xl">{imovelAtual.endereco}</p>
+                <p className="text-[var(--primary)] text-xl">
+                  {imovelAtual.endereco}
+                </p>
                 <p className="text-[var(--primary)]">{imovelAtual.cidade}</p>
               </div>
               <FaArrowRight color="#304383" />
