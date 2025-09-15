@@ -17,7 +17,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Rotas
-app.use("/", searchRouter, recomendacaoRouter);
+app.use("/", recomendacaoRouter);
+app.use("/search", searchRouter);
 app.use("/agendamentos", agendamentoRouter);
 app.use("/health", healthRouter);
 app.use("/faq", faqRoutes);
