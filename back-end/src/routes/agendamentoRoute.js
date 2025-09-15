@@ -6,20 +6,20 @@ import {
   sendPropertyNotification 
 } from '../controllers/agendamentoController.js';
 
-const router = express.Router();
+const agendamentoRoutes = express.Router();
 
 // Rota para envio de email simples (utilitário dentro do módulo de agendamento)
 if (process.env.NODE_ENV !== 'production') {
-  router.post('/send', sendEmail);
+  agendamentoRoutes.post('/send', sendEmail);
 }
 
 // Rota para confirmação de agendamento
-router.post('/schedule', sendScheduleConfirmation);
+agendamentoRoutes.post('/schedule', sendScheduleConfirmation);
 
 // Rota alternativa para agendamento (compatibilidade)
-router.post('/agendar', sendScheduleConfirmation);
+agendamentoRoutes.post('/agendar', sendScheduleConfirmation);
 
 // Rota para notificação de novos imóveis relacionada a agendamento
-router.post('/property-notification', sendPropertyNotification);
+agendamentoRoutes.post('/property-notification', sendPropertyNotification);
 
-export default router;
+export default agendamentoRoutes;

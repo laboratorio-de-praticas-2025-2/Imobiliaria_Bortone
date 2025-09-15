@@ -37,7 +37,7 @@ export default function Card({ item, href_cms = "banner", header = false }) {
       <div className="rounded-2xl flex flex-col w-fit bg-white mb-5">
         {header && (
           <p className="p-3 text-lg font-bold">
-            {item.descricao || item.titulo}
+            [{item.id}] - {item.descricao || item.titulo}
           </p>
         )}
         <Image

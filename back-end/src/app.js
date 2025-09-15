@@ -6,6 +6,11 @@ import agendamentoRouter from './routes/agendamentoRoute.js';
 import recomendacaoRouter from './routes/recomendacaoImovelRoutes.js';
 import healthRouter from "./routes/healthRouter.js";
 import faqRoutes from "./routes/faqRoutes.js";
+import mapaRoutes from "./routes/mapaRoutes.js";
+import dashboardRouter from "./routes/dashboardRoutes.js";
+
+const app = express();
+
 import initWebSocket from "./config/websocket.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import path from "path";
@@ -14,8 +19,6 @@ import http from "http";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-const app = express();
 
 // Middlewares
 app.use(cors()); // Habilita o CORS para todas as origens
@@ -27,6 +30,9 @@ app.use('/', recomendacaoRouter);
 app.use('/agendamentos', agendamentoRouter );
 app.use('/health', healthRouter);
 app.use("/faq", faqRoutes);
+app.use("/mapa", mapaRoutes);
+app.use('/dashboard', dashboardRouter);
+
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(errorHandler);
 
