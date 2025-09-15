@@ -323,7 +323,7 @@ export default function Dashboard() {
                   value={55}
                   labelCol={{ span: 24 }}
                   icon={
-                    <PiCoinsFill className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                    <PiCoinsFill className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                   }
                 />
 
@@ -334,7 +334,7 @@ export default function Dashboard() {
                 value={50}
                 labelCol={{ span: 24 }}
                 icon={
-                  <MdOutlineBedroomParent className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                  <MdOutlineBedroomParent className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                 }
               />
               <Card
@@ -344,7 +344,7 @@ export default function Dashboard() {
                 labelCol={{ span: 24 }}
                 className={"!text-lg"}
                 icon={
-                  <FaCheckSquare className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
+                  <FaCheckSquare className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
                 }
               />
               <Card
@@ -354,7 +354,7 @@ export default function Dashboard() {
                 labelCol={{ span: 24 }}
                 className={"!text-xl"}
                 icon={
-                  <BsFillBuildingFill className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
+                  <BsFillBuildingFill className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
                 }
               />{" "}
               <Card
@@ -364,7 +364,7 @@ export default function Dashboard() {
                 labelCol={{ span: 24 }}
                 className={"!text-xl"}
                 icon={
-                  <FaHouseChimney className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
+                  <FaHouseChimney className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
                 }
               />{" "}
               <Card
@@ -374,7 +374,7 @@ export default function Dashboard() {
                 labelCol={{ span: 24 }}
                 className={"!text-xl"}
                 icon={
-                  <MdTerrain className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                  <MdTerrain className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                 }
               />{" "}
               <LineGraph />
@@ -385,7 +385,7 @@ export default function Dashboard() {
                 labelCol={{ span: 24 }}
                 className={"!text-xl"}
                 icon={
-                  <FaUserPlus className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                  <FaUserPlus className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                 }
               />
               <Card
@@ -395,7 +395,7 @@ export default function Dashboard() {
                 labelCol={{ span: 24 }}
                 className={"!text-xl"}
                 icon={
-                  <FaUserPen className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                  <FaUserPen className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                 }
               />{" "}
               <Card
@@ -405,7 +405,7 @@ export default function Dashboard() {
                 labelCol={{ span: 24 }}
                 className={"!text-xl"}
                 icon={
-                  <FaUser className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                  <FaUser className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                 }
               />
             </div>

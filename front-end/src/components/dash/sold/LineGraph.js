@@ -102,7 +102,7 @@ export default function LineGraph() {
         </span>
 
         <div className="items-center justify-items-center w-full h-full">
-          <div className="w-full h-[300px]">
+          <div className="w-full h-[250px] md:h-[300px]">
             <Line data={data} options={options} />
           </div>
         </div>
