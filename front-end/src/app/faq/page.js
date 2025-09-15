@@ -8,6 +8,7 @@ import { Divider } from "antd";
 import { useEffect, useState } from "react";
 import { useSEO } from "@/hooks/useSEO";
 import { getSEOConfig } from "@/config/seo";
+import "dotenv/config"
 
 export default function FaqPage() {
   // SEO para página de FAQ
