@@ -38,7 +38,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https://*.tile.openstreetmap.org",
               "font-src 'self' data:",
-              "connect-src 'self' https://vitals.vercel-insights.com",
+              "connect-src 'self' https://vitals.vercel-insights.com https://imobiliaria-bortone.onrender.com/faq ws://localhost:*/ ws://127.0.0.1:*/",
               "frame-ancestors 'none'",
             ].join("; "),
           },
