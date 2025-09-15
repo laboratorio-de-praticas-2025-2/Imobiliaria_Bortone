@@ -8,6 +8,7 @@ import healthRouter from "./routes/healthRouter.js";
 import faqRoutes from "./routes/faqRoutes.js";
 import mapaRoutes from "./routes/mapaRoutes.js";
 import dashboardRouter from "./routes/dashboardRoutes.js";
+import router from "./routes/route.js"
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/health', healthRouter);
 app.use("/faq", faqRoutes);
 app.use("/mapa", mapaRoutes);
 app.use('/dashboard', dashboardRouter);
+app.use('/', router);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(errorHandler);
