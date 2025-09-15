@@ -86,24 +86,26 @@ export default function HomeNavbar({ className }) {
                 borderRadius: bottomRadius,
               }}
             >
-              <li
-                className={`px-4 py-2 h-[30px] hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
-                            flex justify-center items-center transition-all duration-300 ease-out
-                            ${
-                              userMenuOpen
-                                ? "opacity-100 translate-y-0"
-                                : "opacity-0 -translate-y-2"
-                            }`}
-                style={{
-                  color: "#304383",
-                  borderTopLeftRadius: topRadius,
-                  borderTopRightRadius: topRadius,
-                  transitionDelay: delays[0],
-                }}
-              >
-                Perfil
-              </li>
               {user.nivel === "administrador" && (
+                <Link href={"/admin/dashboard"}>
+                  <li
+                    className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
+                                flex justify-center items-center transition-all duration-300 ease-out
+                                ${
+                                  userMenuOpen
+                                    ? "opacity-100 translate-y-0"
+                                    : "opacity-0 -translate-y-2"
+                                }`}
+                    style={{
+                      color: "#304383",
+                      transitionDelay: delays[1],
+                    }}
+                  >
+                    CMS
+                  </li>
+                </Link>
+              )}
+              <Link href={"/bem-vindo"}>
                 <li
                   className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
                               flex justify-center items-center transition-all duration-300 ease-out
@@ -114,30 +116,15 @@ export default function HomeNavbar({ className }) {
                               }`}
                   style={{
                     color: "#304383",
-                    transitionDelay: delays[1],
+                    borderBottomLeftRadius: bottomRadius,
+                    borderBottomRightRadius: bottomRadius,
+                    transitionDelay:
+                      user.nivel === "administrador" ? delays[2] : delays[1],
                   }}
                 >
-                  CMS
+                  Sair
                 </li>
-              )}
-              <li
-                className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
-                            flex justify-center items-center transition-all duration-300 ease-out
-                            ${
-                              userMenuOpen
-                                ? "opacity-100 translate-y-0"
-                                : "opacity-0 -translate-y-2"
-                            }`}
-                style={{
-                  color: "#304383",
-                  borderBottomLeftRadius: bottomRadius,
-                  borderBottomRightRadius: bottomRadius,
-                  transitionDelay:
-                    user.nivel === "administrador" ? delays[2] : delays[1],
-                }}
-              >
-                Sair
-              </li>
+              </Link>
             </ul>
           </div>
         ) : (
@@ -199,24 +186,26 @@ export default function HomeNavbar({ className }) {
                   borderRadius: bottomRadius,
                 }}
               >
-                <li
-                  className={`px-4 py-2 h-[30px] hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
-                              flex justify-center items-center transition-all duration-300 ease-out
-                              ${
-                                userMenuOpen
-                                  ? "opacity-100 translate-y-0"
-                                  : "opacity-0 -translate-y-2"
-                              }`}
-                  style={{
-                    color: "#304383",
-                    borderTopLeftRadius: topRadius,
-                    borderTopRightRadius: topRadius,
-                    transitionDelay: delays[0],
-                  }}
-                >
-                  Perfil
-                </li>
                 {user.nivel === "administrador" && (
+                  <Link href={"/admin/dashboard"}>
+                    <li
+                      className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
+                                  flex justify-center items-center transition-all duration-300 ease-out
+                                  ${
+                                    userMenuOpen
+                                      ? "opacity-100 translate-y-0"
+                                      : "opacity-0 -translate-y-2"
+                                  }`}
+                      style={{
+                        color: "#304383",
+                        transitionDelay: delays[1],
+                      }}
+                    >
+                      CMS
+                    </li>
+                  </Link>
+                )}
+                <Link href={"/bem-vindo"}>
                   <li
                     className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
                                 flex justify-center items-center transition-all duration-300 ease-out
@@ -227,30 +216,15 @@ export default function HomeNavbar({ className }) {
                                 }`}
                     style={{
                       color: "#304383",
-                      transitionDelay: delays[1],
+                      borderBottomLeftRadius: bottomRadius,
+                      borderBottomRightRadius: bottomRadius,
+                      transitionDelay:
+                        user.nivel === "administrador" ? delays[2] : delays[1],
                     }}
                   >
-                    CMS
+                    Sair
                   </li>
-                )}
-                <li
-                  className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
-                              flex justify-center items-center transition-all duration-300 ease-out
-                              ${
-                                userMenuOpen
-                                  ? "opacity-100 translate-y-0"
-                                  : "opacity-0 -translate-y-2"
-                              }`}
-                  style={{
-                    color: "#304383",
-                    borderBottomLeftRadius: bottomRadius,
-                    borderBottomRightRadius: bottomRadius,
-                    transitionDelay:
-                      user.nivel === "administrador" ? delays[2] : delays[1],
-                  }}
-                >
-                  Sair
-                </li>
+                </Link>
               </ul>
             </div>
           ) : (
