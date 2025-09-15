@@ -4,7 +4,6 @@ import ChatModal from "@/components/chat/chatModal";
 import FaqContent from "@/components/faq/FaqContent";
 import HomeFooter from "@/components/home/HomeFooter";
 import HomeNavbar from "@/components/home/HomeNavbar";
-import { MOCKFAQ } from "@/mock/faq";
 import { Divider } from "antd";
 import { useEffect, useState } from "react";
 import { useSEO } from "@/hooks/useSEO";
@@ -18,7 +17,7 @@ export default function FaqPage() {
 
 const fetchFaq = async () => {
    try{
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/faq`);
+    const response = await fetch(`${process.env.API_URL}/faq`);
     if(!response.ok){
       throw new Error(`Erro na requisição: ${response.status}`);
     }
