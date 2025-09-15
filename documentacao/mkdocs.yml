@@ -33,6 +33,7 @@ nav:
   - Manual de Tags: frontend/ManualdeTags.md
   - Algoritmo de Recomendação: api/AlgoritmoDeRecomendacao.md
   - Banco de Dados: api/BancoDeDados.md
+  - Dashboard: api/Dashboard.md
   - API de Mapa: api/MapaAPI.md
   - Implementação da API de Mapa: api/MapaImplementacao.md
   - Resumo da Integração: api/MapaResumo.md
