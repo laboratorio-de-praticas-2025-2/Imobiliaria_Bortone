@@ -99,7 +99,7 @@ export default function Dashboard() {
                   <div className="grid grid-cols-2 row-span-4  gap-6">
                     <Card
                       name={"vendas"}
-                      label={"Número total de vendas"}
+                      label={"Total de imóveis disponíveis para venda"}
                       className={"!text-3xl"}
                       value={55}
                       labelCol={{ span: 24 }}
@@ -109,7 +109,7 @@ export default function Dashboard() {
                     />
                     <Card
                       name={"locacoes"}
-                      label={"Número total de locações"}
+                      label={"Total de imóveis disponíveis para locações"}
                       className={"!text-3xl"}
                       value={50}
                       labelCol={{ span: 24 }}
