@@ -175,7 +175,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          <div class="block xl:hidden pb-10">
+          <div className="block xl:hidden pb-10">
             <div className="grid grid-flow-row h-fit gap-6">
               <div className="grid grid-cols-2 h-fit gap-6">
                 <div className="">
