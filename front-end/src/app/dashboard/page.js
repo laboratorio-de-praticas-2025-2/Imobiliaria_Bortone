@@ -51,6 +51,7 @@ export default function Dashboard() {
       <Sidebar />
       <div className="md:ml-20">
         <CMS.Body title={"Dashboard"}>
+          {/* Aparente em telas grandes: */}
           <div className="hidden xl:block">
             <div className="grid grid-cols-7 p-7 w-full gap-6">
               <div className="grid grid-rows-5 col-span-2 gap-6">
@@ -175,7 +176,9 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          <div className="block xl:hidden pb-10">
+          {/* Aparente em telas médias: */}
+          <div className="hidden md:block xl:hidden pb-10">
+
             <div className="grid grid-flow-row h-fit gap-6">
               <div className="grid grid-cols-2 h-fit gap-6">
                 <div className="">
@@ -303,6 +306,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+          <div className="block md:hidden  pb-10">oiii</div>
         </CMS.Body>
       </div>
     </>
