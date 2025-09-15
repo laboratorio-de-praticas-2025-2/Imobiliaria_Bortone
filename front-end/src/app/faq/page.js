@@ -17,7 +17,7 @@ export default function FaqPage() {
 
 const fetchFaq = async () => {
    try{
-    const response = await fetch(`${process.env.API_URL}/faq`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/faq`);
     if(!response.ok){
       throw new Error(`Erro na requisição: ${response.status}`);
     }
