@@ -1,6 +1,5 @@
 "use client";
 
-import Section from "@/components/dash/Section";
 import Card from "@/components/dash/Card";
 import Sidebar from "@/components/cms/Sidebar";
 import PizzaGraph from "@/components/dash/PizzaGraph";
@@ -10,7 +9,7 @@ import { BsFillBuildingFill } from "react-icons/bs";
 import { MdTerrain, MdOutlineBedroomParent } from "react-icons/md";
 import { FaUserPlus, FaUserPen, FaUser, FaHouseChimney } from "react-icons/fa6";
 import { FaCheckSquare } from "react-icons/fa";
-import LineGraph from "@/components/dash/sold/LineGraph";
+import LineGraph from "@/components/dash/LineGraph";
 export default function Dashboard() {
   const style = { background: "#0092ff", padding: "8px 0" };
   const data = {

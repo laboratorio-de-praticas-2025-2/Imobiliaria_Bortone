@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-export default function RentalByRegion() {
+export default function LineGraph() {
   const data = {
     labels: [
       "Janeiro",
@@ -40,10 +40,19 @@ export default function RentalByRegion() {
     ],
     datasets: [
       {
-        label: "Imóveis alugados",
-        data: [0, 80, 60, 120, 100, 120, 140, 200, , , ,],
+        label: "Casas",
+        data: [5, 10, 3, 10, 5, 15, 5, 7, , , ,],
         borderColor: "#F39200",
-        borderWidth: 2,
+        borderWidth: 4,
+        fill: false,
+        tension: 0,
+        pointRadius: 0,
+      },
+            {
+        label: "Apartamentos",
+        data: [2, 5, 4, 8, 10, 7, 2, 12, , , ,],
+        borderColor: "#324587",
+        borderWidth: 4,
         fill: false,
         tension: 0,
         pointRadius: 0,
@@ -57,8 +66,8 @@ export default function RentalByRegion() {
     scales: {
       y: {
         beginAtZero: true,
-        max: 200,
-        ticks: { stepSize: 20 },
+        max: 50,
+        ticks: { stepSize: 5 },
         grid: { color: "#000000" },
       },
       x: { grid: { display: false } },
@@ -86,22 +95,18 @@ export default function RentalByRegion() {
   };
 
   return (
-    <Row className="py-4">
-      <Col className="gutter-row" span={24}>
-        <div className="group h-[450px] !w-full flex items-center rounded-xl md:px-10 !bg-[#EEF0F9] !shadow-md">
-          <div className="grid grid-col content-evenly w-full h-full">
-            <span className="text-lg md:text-2xl font-bold lg:text-center px-10 text-[var(--primary)]">
-              Evolução de usuários por mês
-            </span>
+    <div className="group h-[450px] !w-full flex items-center rounded-xl  px-10 md:px-3 2xl:px-10 !bg-[#EEF0F9] !shadow-md">
+      <div className="grid grid-col content-evenly w-full h-full">
+        <span className="text-lg md:text-2xl font-bold   text-[var(--primary)]">
+          Evolução de vendas por mês
+        </span>
 
-            <div className="items-center justify-items-center w-full h-full">
-              <div className="w-[350px] md:w-[650px] lg:w-[450px] xl:w-[700px] 2xl:w-[750px] h-[300px]">
-                <Line data={data} options={options} />
-              </div>
-            </div>
+        <div className="items-center justify-items-center w-full h-full">
+          <div className="w-full h-[250px] md:h-[300px]">
+            <Line data={data} options={options} />
           </div>
         </div>
-      </Col>
-    </Row>
+      </div>
+    </div>
   );
 }
