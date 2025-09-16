@@ -1,6 +1,6 @@
 'use client'
  
-import Contato from "@/components/contato/Contato";
+import Contato from "@/components/Contato/Contato";
 import HomeNavbar from "@/components/home/HomeNavbar";
 import HomeFooter from "@/components/home/HomeFooter";
 import { useSEO } from "@/hooks/useSEO";
