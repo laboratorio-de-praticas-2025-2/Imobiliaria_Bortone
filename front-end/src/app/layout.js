@@ -13,7 +13,7 @@ import "@/styles/cms.css";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-
+import "leaflet/dist/leaflet.css";
 
 
 
