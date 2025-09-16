@@ -19,7 +19,7 @@ export default function UploadImovel({
     <div className="!w-full">
       <FormAntd.Item
         label={"Imagens"}
-        className={`custom-form-item !w-full ${className}`}
+        className={`custom-form-item required !w-full ${className}`}
         labelCol={{ span: 24 }}
       >
         <div className="bg-[#CED2E1] w-full h-[15vh] rounded-lg p-2 flex items-center">
@@ -54,7 +54,7 @@ export default function UploadImovel({
                 showUploadList={false}
               >
                 <Button
-                 shape="circle"
+                  shape="circle"
                   icon={<PlusOutlined />}
                   className="!text-[var(--primary)] !border-[var(--primary)] !w-10 !h-10"
                 />

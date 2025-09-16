@@ -1,17 +1,17 @@
 "use client";
-import Form from "@/components/cms/form";
-import { useState } from "react";
-import RadioFieldImovel from "@/components/cms/form/fields/RadioFieldImovel";
-import TextField from "@/components/cms/form/fields/TextField";
-import NumberField from "@/components/cms/form/fields/NumberField";
-import FormButton from "@/components/cms/form/fields/Button";
-import { LuHousePlus } from "react-icons/lu";
 import Sidebar from "@/components/cms/Sidebar";
-import TextAreaField from "@/components/cms/form/fields/TextAreaField";
+import Form from "@/components/cms/form";
+import FormButton from "@/components/cms/form/fields/Button";
 import DropdownField from "@/components/cms/form/fields/Dropdown";
-import { Form as FormAntd } from "antd";
+import NumberField from "@/components/cms/form/fields/NumberField";
+import RadioFieldImovel from "@/components/cms/form/fields/RadioFieldImovel";
+import TextAreaField from "@/components/cms/form/fields/TextAreaField";
+import TextField from "@/components/cms/form/fields/TextField";
 import UploadImovel from "@/components/cms/form/fields/UploadImovel";
+import { Form as FormAntd } from "antd";
 import dynamic from "next/dynamic";
+import { useState } from "react";
+import { LuHousePlus } from "react-icons/lu";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
@@ -134,7 +134,7 @@ export default function CriarImovelPage() {
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item !w-full`}
+                    className={`custom-form-item  required !w-full`}
                     labelCol={{ span: 24 }}
                   >
                     {/* substitua o DropdownField de "Tipo" pelo handler novo */}
@@ -155,7 +155,7 @@ export default function CriarImovelPage() {
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item !w-full`}
+                    className={`custom-form-item  required !w-full`}
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
@@ -185,7 +185,7 @@ export default function CriarImovelPage() {
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item !w-full`}
+                    className={`custom-form-item  required !w-full`}
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
@@ -204,7 +204,7 @@ export default function CriarImovelPage() {
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item !w-full`}
+                    className={`custom-form-item  required !w-full`}
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
@@ -227,7 +227,7 @@ export default function CriarImovelPage() {
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}
-                    className={`custom-form-item !w-full`}
+                    className={`custom-form-item  required !w-full`}
                     labelCol={{ span: 24 }}
                   >
                     <RadioFieldImovel
@@ -249,7 +249,7 @@ export default function CriarImovelPage() {
                             message: "Este campo é obrigatório!",
                           },
                         ]}
-                        className={`custom-form-item !w-full`}
+                        className={`custom-form-item  required !w-full`}
                         labelCol={{ span: 24 }}
                       >
                         <RadioFieldImovel
@@ -274,7 +274,7 @@ export default function CriarImovelPage() {
                               message: "Este campo é obrigatório!",
                             },
                           ]}
-                          className={`custom-form-item !w-full`}
+                          className={`custom-form-item  required !w-full`}
                           labelCol={{ span: 24 }}
                         >
                           <RadioFieldImovel
@@ -293,7 +293,7 @@ export default function CriarImovelPage() {
                               message: "Este campo é obrigatório!",
                             },
                           ]}
-                          className={`custom-form-item !w-full`}
+                          className={`custom-form-item  required !w-full`}
                           labelCol={{ span: 24 }}
                         >
                           <DropdownField
@@ -320,7 +320,7 @@ export default function CriarImovelPage() {
                               message: "Este campo é obrigatório!",
                             },
                           ]}
-                          className={`custom-form-item !w-full `}
+                          className={`custom-form-item  required !w-full `}
                           labelCol={{ span: 24 }}
                         >
                           <DropdownField
@@ -344,7 +344,7 @@ export default function CriarImovelPage() {
                               message: "Este campo é obrigatório!",
                             },
                           ]}
-                          className={`custom-form-item !w-full `}
+                          className={`custom-form-item  required !w-full `}
                           labelCol={{ span: 24 }}
                         >
                           <DropdownField
@@ -434,7 +434,13 @@ export default function CriarImovelPage() {
                       />
                     </div>
                   )}
-                <div className={`map-cms ${tipoSelecionado?.toLowerCase() === "terreno" ? "h-[38vh]" : "h-[30vh]"}`}>
+                <div
+                  className={`map-cms ${
+                    tipoSelecionado?.toLowerCase() === "terreno"
+                      ? "h-[38vh]"
+                      : "h-[30vh]"
+                  }`}
+                >
                   {/* passa a instância do form para o MapPick */}
                   <MapPick form={form} />
                 </div>
