@@ -8,13 +8,13 @@ Este módulo é responsável por registrar solicitações de visitas a imóveis,
 
 - Permitir que clientes agendem visitas a imóveis.  
 - Enviar confirmação de agendamento ao cliente via e-mail.  
-- Notificar a imobiliária sobre novos agendamentos ou imóveis disponíveis.  
+- Notificar a imobiliária sobre novos agendamentos.  
 
 ---
 
 ## 📥 Dados de Entrada
 
-### 1. Agendamento de Visita (`/agendamento_visita`)
+### 1. Agendamento de Visita (`/agendamento`)
 
 O endpoint recebe um objeto JSON com os seguintes campos obrigatórios:
 
@@ -41,7 +41,7 @@ Exemplo de entrada:
   "time": "15:00",
   "propertyAddress": "Rua Central, 123",
   "propertyId": 45,
-  "notes": "Gostaria de confirmar estacionamento disponível"
+  "notes": "Gostaria de confirmar vaga disponível"
 }
 ````
 
@@ -55,7 +55,7 @@ Sucesso (200):
 
 ```json
 {
-  "message": "Agendamento registrado com sucesso.",
+  "message": "Agendamento confirmado e e-mails enviados com sucesso",
   "data": {
     "id": 101,
     "name": "Tiago Rodrigues",
@@ -84,7 +84,7 @@ Erros possíveis:
 
 * Valida campos obrigatórios (`name`, `email`, `date`, `time`).
 * Aplica **rate limiting** (máx. 5 agendamentos por minuto por IP/rota).
-* Sanitiza e normaliza campos (`name`, `propertyAddress`, `notes`).
+* Limpa e normaliza campos (`name`, `propertyAddress`, `notes`).
 * Persiste os dados no banco de dados.
 
 ### 2. Confirmação ao Cliente
