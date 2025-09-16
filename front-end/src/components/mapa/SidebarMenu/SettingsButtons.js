@@ -3,15 +3,20 @@ import { useFilters } from "@/context/FiltersContext";
 import { Flex } from "antd";
 import "dotenv/config";
 
-export default function SettingsButtons({ type, setImoveisMapa, setImoveisCarrossel }) {
+export default function SettingsButtons({
+  type,
+  setImoveisMapa,
+  setImoveisCarrossel,
+}) {
   const { getFiltersForApi, removeFilters } = useFilters();
 
   const handleApply = async () => {
     // adicionar a requisição para a API aqui
-    const filters = getFiltersForApi(type); 
+    const filters = getFiltersForApi(type);
     console.log("Filtros aplicados:", filters);
     try {
-      const response = await fetch(`${process.env.API_URL}/imoveis/mapa`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const response = await fetch(`${apiUrl}/imoveis/mapa`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -20,11 +25,11 @@ export default function SettingsButtons({ type, setImoveisMapa, setImoveisCarros
       });
 
       const data = await response.json();
-      console.log(data)
+      console.log(data);
       if (data) {
         // Atualiza a lista de imóveis com os dados retornados do backend
-        setImoveisMapa(data.propriedades.mapa) 
-        setImoveisCarrossel(data.propriedades.carrossel)
+        setImoveisMapa(data.propriedades.mapa);
+        setImoveisCarrossel(data.propriedades.carrossel);
         // Exemplo: setImoveis(data.propriedades);
       }
     } catch (error) {

@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useSEO } from "@/hooks/useSEO";
 import { getSEOConfig } from "@/config/seo";
+import "dotenv/config";
 
 const { Search } = Input;
 

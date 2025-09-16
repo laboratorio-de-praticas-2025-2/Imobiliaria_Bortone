@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import InnerImoveisPage from "./InnerImoveisPage";
 import { useSEO } from "@/hooks/useSEO";
 import { getSEOConfig } from "@/config/seo";
+import "dotenv/config";
 
 export default function ImoveisPage() {
-  
   // SEO para página de imóveis
   useSEO(getSEOConfig("/imoveis"));
   const [imoveis, setImoveis] = useState([]);
