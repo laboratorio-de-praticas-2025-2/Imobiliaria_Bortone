@@ -7,7 +7,7 @@ import {
   getMapa,
 } from "../controllers/imovelSearchController.js";
 
-searchRouter.get("/imoveis/home", getHome); // simples
-searchRouter.post("/imoveis/busca", getImoveis); // avançada
-searchRouter.post("/imoveis/mapa", getMapa); // Busca-Mapa
+searchRouter.get("/simples", getHome); // simples
+searchRouter.post("/avancada", getImoveis); // avançada
+searchRouter.post("/mapa", getMapa); // Busca-Mapa
 export default searchRouter;

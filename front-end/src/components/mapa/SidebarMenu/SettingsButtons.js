@@ -1,6 +1,7 @@
 "use client";
 import { useFilters } from "@/context/FiltersContext";
 import { Flex } from "antd";
+import "dotenv/config";
 
 export default function SettingsButtons({ type, setImoveisMapa, setImoveisCarrossel }) {
   const { getFiltersForApi, removeFilters } = useFilters();
@@ -10,7 +11,7 @@ export default function SettingsButtons({ type, setImoveisMapa, setImoveisCarros
     const filters = getFiltersForApi(type); 
     console.log("Filtros aplicados:", filters);
     try {
-      const response = await fetch("http://localhost:4000/imoveis/mapa", {
+      const response = await fetch(`${process.env.API_URL}/imoveis/mapa`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
