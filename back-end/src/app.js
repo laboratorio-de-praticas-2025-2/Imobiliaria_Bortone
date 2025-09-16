@@ -8,8 +8,21 @@ import agendamentoRouter from "./routes/agendamentoRoute.js";
 import recomendacaoRouter from "./routes/recomendacaoImovelRoutes.js";
 import healthRouter from "./routes/healthRouter.js";
 import faqRoutes from "./routes/faqRoutes.js";
+import mapaRoutes from "./routes/mapaRoutes.js";
+import dashboardRouter from "./routes/dashboardRoutes.js";
+import router from "./routes/route.js"
+
 
 const app = express();
+
+import initWebSocket from "./config/websocket.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import path from "path";
+import { fileURLToPath } from "url";
+import http from "http";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Middlewares
 app.use(cors()); // Habilita o CORS para todas as origens
@@ -22,6 +35,15 @@ app.use("/search", searchRouter);
 app.use("/agendamentos", agendamentoRouter);
 app.use("/health", healthRouter);
 app.use("/faq", faqRoutes);
+app.use("/mapa", mapaRoutes);
+app.use('/dashboard', dashboardRouter);
+app.use('/', router);
+
+app.use(express.static(path.join(__dirname, "../public")));
+app.use(errorHandler);
+
+const server = http.createServer(app);
+initWebSocket(server);
 
 // Banco de dados
 connection
@@ -42,3 +64,4 @@ app.listen(PORT, function (erro) {
     console.log(`Servidor iniciado com sucesso na porta ${PORT}! 🚀`);
   }
 });
+export default app;

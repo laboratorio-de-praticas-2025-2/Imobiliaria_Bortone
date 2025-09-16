@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useSEO } from "@/hooks/useSEO";
 import { getSEOConfig } from "@/config/seo";
 import "dotenv/config";
+import HomeNavbar from "@/components/home/HomeNavbar";
 
 const { Search } = Input;
 
@@ -79,7 +80,7 @@ export default function Mapa() {
 
   return (
     <FiltersProvider>
-      <MapaNavbar />
+      <HomeNavbar />
       <div className="absolute z-1002 ml-90 mt-4.5 lg:flex hidden w-[52%]">
         <Search
           placeholder="Pesquisar"
