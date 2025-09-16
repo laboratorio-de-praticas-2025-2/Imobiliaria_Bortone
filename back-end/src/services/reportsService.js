@@ -23,7 +23,15 @@ class ReportService {
     handlebars.registerHelper("json", function (context) {
       return JSON.stringify(context);
     });
-    //Informações extra para geração do PDF    
+    //Informações extra para geração do PDF
+    const logoBase64 = imagemParaBase64("./src/static/imgs/LogoPreta.png");
+    const icon_house = imagemParaBase64("./src/static/imgs/icon_house.png");
+    const icon_build = imagemParaBase64("./src/static/imgs/icon_build.png");
+    const icon_calendar = imagemParaBase64(
+      "./src/static/imgs/icon_calendar.png"
+    );
+    const icon_metroq = imagemParaBase64("./src/static/imgs/icon_metroq.png");
+    const icon_bed = imagemParaBase64("./src/static/imgs/icon_bed.png");
     const formattedDate = new Date().toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "2-digit",
@@ -42,7 +50,15 @@ class ReportService {
 
     // Preenche template com dados
     const html = template({
-      dados: dados,   
+      dados: resultado,
+      images: {
+        logo: logoBase64,
+        icon_house: icon_house,
+        icon_build: icon_build,
+        icon_calendar: icon_calendar,
+        icon_metroq: icon_metroq,
+        icon_bed: icon_bed,
+      },
       data_emissao: formattedDate,
     });
 
