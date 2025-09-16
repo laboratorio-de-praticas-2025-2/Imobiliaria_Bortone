@@ -9,16 +9,55 @@ import TextField from "@/components/cms/form/fields/TextField";
 import PhoneField from "@/components/cms/form/fields/PhoneField";
 import FormButton from "@/components/cms/form/fields/Button";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
+import { mockImoveis } from "@/mock/imoveis";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+
+// Simulação de chamada de API para buscar imóvel
+const fetchImovel = async (id) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const found = mockImoveis.find((b) => String(b.id) === String(id));
+      resolve(found);
+    }, 1000); // 1 segundo de delay
+  });
+};
+
+// Simulação de chamada de API para enviar dados do formulário
+const enviarAgendamento = async (dados) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log("Dados enviados para API:", dados);
+      resolve({ sucesso: true });
+    }, 1000);
+  });
+};
 
 export default function Agendamento() {
-    const onFinish = (values) => {
-        console.log("Success:", values);
-    };
+  const params = useParams();
+  const id = params?.id;
+  const [imovel, setImovel] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    const onFinishFailed = (errorInfo) => {
-        console.log("Failed:", errorInfo);
-    };
+  useEffect(() => {
+    setLoading(true);
+    fetchImovel(id).then((found) => {
+      setImovel(found);
+      setLoading(false);
+    });
+  }, [id]);
 
+  const onFinish = async (values) => {
+    await enviarAgendamento(values);
+    alert("Agendamento enviado com sucesso!");
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  if (loading) return <div>Carregando...</div>;
+  if (!imovel) return <div>Imóvel não encontrado.</div>;
 
   return (
     <>
@@ -28,48 +67,47 @@ export default function Agendamento() {
           {/* Lado esquerdo */}
           <div className="w-full md:w-[30%] bg-gradient-to-b md:from-[#2E3F7C] md:to-[#0C1121] text-white px-11 pt-28 flex flex-col gap-5">
             <Image
-              src={"/images/casa-isolada-no-campo.jpg"}
-              alt={`Imóvel `}
+              src={imovel.imagens[0].url_imagem}
+              alt={`Imóvel`}
               width={407}
               height={195}
               className="object-cover w-full rounded-lg aspect-[6/3]"
             />
 
             <div className="flex flex-col gap-2">
-              <h1 className="!text-3xl !font-bold">Casa Jardim das Flores</h1>
-              <p className="mt-2 text-sm opacity-90">
-                Encante-se com este lindo residência de 3 quartos, 2 banheiros e
-                ampla sala de estar, perfeita para famílias que buscam conforto
-                e praticidade. A cozinha planejada e a varanda com jardim
-                proporcionam momentos únicos de lazer e convivência.
-              </p>
+              <h1 className="!text-3xl !font-bold">
+                {imovel.tipo} {imovel.bairro}
+              </h1>
+              <p className="mt-2 text-sm opacity-90">{imovel.descricao}</p>
               <div className="flex flex-col gap-1">
                 <p className="mt-3 text-sm text-[var(--secondary)]">
-                  Localização: Rua dos Acácias, 245
+                  Localização: {imovel.endereco}
                 </p>
                 <p className="text-sm text-[var(--secondary)]">
-                  Bairro: Jardim
+                  Bairro: {imovel.bairro}
                 </p>
                 <p className="text-sm text-[var(--secondary)]">
-                  Cidade: Vale Encantado
+                  Cidade: {imovel.cidade}
                 </p>
                 <p className="text-sm text-[var(--secondary)]">
-                  Estado: São Florentino
+                  Estado: {imovel.estado}
                 </p>
               </div>
               <div className="flex gap-6 text-sm">
                 <div className="flex items-center gap-2 text-lg font-bold">
-                  <BsDoorOpenFill /> 3 Quartos
+                  <BsDoorOpenFill /> {imovel.quartos} Quartos
                 </div>
                 <div className="flex items-center gap-2 text-lg font-bold">
-                  <MdBathtub /> 2 Banheiros
+                  <MdBathtub /> {imovel.banheiros} Banheiros
                 </div>
               </div>
             </div>
 
             <div className="bg-white text-[#000] rounded-lg flex justify-between py-4 px-10 mt-4">
               <p className="font-bold text-lg">Preço</p>
-              <p className="text-lg font-bold">R$ 600.000,00</p>
+              <p className="text-lg font-bold">
+                R$ {imovel.preco.toLocaleString()}
+              </p>
             </div>
           </div>
 
@@ -120,11 +158,11 @@ export default function Agendamento() {
                     rows={4}
                     className="!w-full !h-full"
                     required={false}
-                    />
+                  />
                   <div className="flex justify-end">
                     <FormButton
-                        text="Agendar Visita"
-                        className="!flex !sm:hidden"
+                      text="Agendar Visita"
+                      className="!flex !sm:hidden"
                     />
                   </div>
                 </div>

@@ -22,8 +22,7 @@ export default function TextAreaField({
           ? []
           : [{ required: true, message: "Este campo é obrigatório!" }]
       }
-      className={`
-      ${required ? "required" : ""} ${className}`}
+      className={`custom-form-item ${required ? "required" : ""} ${className}`}
       labelCol={{ span: 24 }}
     >
       <TextArea
