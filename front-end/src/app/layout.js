@@ -1,4 +1,3 @@
-// app/layout.js
 import "@/styles/globals.css";
 import "@/styles/login.css";
 import "@/styles/map.css";
@@ -7,15 +6,14 @@ import "@/styles/simulacao.css";
 import "@/styles/imoveis.css";
 import "@/styles/blog.css";
 import "@/styles/faq.css";
+import "@/styles/dashboard.css"
 import "antd/dist/reset.css";
-import ChatLauncherClient from "@/components/chat/chatLauncherClient";
 import "@/styles/cms.css";
+import "leaflet/dist/leaflet.css";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import "leaflet/dist/leaflet.css";
-
-
+import ChatWrapper from "@/components/chat/chatWrapper";
 
 export default function RootLayout({ children }) {
   return (
@@ -101,11 +99,10 @@ export default function RootLayout({ children }) {
       </head>
       <body className="antialiased">
         {children}
-        {/* Client wrapper que controla abrir/fechar */}
-        <ChatLauncherClient />
         {/* Analytics Vercel */}
         <Analytics />
         <SpeedInsights />
+        <ChatWrapper />
       </body>
     </html>
   );

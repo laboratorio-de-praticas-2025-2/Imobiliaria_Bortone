@@ -65,14 +65,14 @@
   border-radius: 6px !important;
   border: 1px solid #304383 !important;
   padding: 6px 12px !important;
-  font-size: 14px !important;
+  font-size: 20px !important;
 }
 
 /* Placeholder cinza */
 .custom-input::placeholder {
   color: #a1a1aa !important;
   font-weight: 500 !important;
-  font-size: 14px !important;
+  font-size: 20px !important;
 }
 
 .custom-form-item .ant-form-item-required::before {
@@ -93,7 +93,7 @@
 }
 
 .custom-form-item .ant-form-item-label > label {
-  font-size: 16px !important;
+  font-size: 20px !important;
 }
 
 .switch-cms .ant-switch-inner {
@@ -131,4 +131,18 @@
 /* linhas pares */
 .ant-table-tbody > tr:nth-child(even) > td {
   background-color: #ffffff; /* branco */
+}
+
+.ant-radio-label{
+  font-size: 20px !important;
+}
+
+.ant-radio .ant-wave-target{
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.ant-radio-wrapper .ant-radio-wrapper-checked .ant-radio-wrapper-in-form-item .css-dev-only-do-not-override-kbg4zp{
+  display: flex !important;
+  align-items: center !important;
 }

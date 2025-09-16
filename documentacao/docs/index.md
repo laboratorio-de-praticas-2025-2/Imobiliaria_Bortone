@@ -10,6 +10,7 @@ Bem-vindo à documentação do projeto. Utilize o menu para navegar pelos guias 
 - Manual de tags e convenções de código.
 - Regras gerais do repositório (branches, commits, PRs, revisão).
 - Detalhes do algoritmo de recomendação.
+- **API de Mapa** - Documentação completa das rotas e funcionalidades de mapa.
 
 ## Como rodar a documentação localmente
 

@@ -23,7 +23,7 @@ export default function CriarUserPage() {
         <Form.Body title="Usuários | Cadastro">
           <Form.FormHeader href="/admin/cms-usuarios" />
           <Form.FormBody onFinish={onFinish} onFinishFailed={onFinishFailed}>
-            <div className="flex flex-col sm:flex-row w-full">
+            <div className="flex flex-col sm:flex-row w-full justify-center">
               {/* Coluna do Formulário */}
               <div className="sm:w-[50%] flex flex-col gap-6 items-end">
                 <TextField

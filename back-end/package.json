@@ -14,11 +14,14 @@
     "dev": "nodemon src/app.js"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.2",
+    "bcrypt": "^6.0.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "ws": "^8.18.3",
+    "sequelize": "^6.37.7",
     "mysql2": "^3.14.4",
-    "sequelize": "^6.37.7"
+    "dotenv": "^17.2.2",
+    "cors": "^2.8.5"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

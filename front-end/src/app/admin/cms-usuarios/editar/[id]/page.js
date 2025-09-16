@@ -59,7 +59,7 @@ export default function EditarUserPage({ params }) {
               celular: user.celular,
             }}
           >
-            <div className="flex flex-col sm:flex-row w-full">
+            <div className="flex flex-col sm:flex-row w-full justify-center">
               {/* Coluna do Formulário */}
               <div className="sm:w-[50%] flex flex-col gap-6 items-end">
                 <TextField

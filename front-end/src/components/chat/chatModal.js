@@ -111,7 +111,7 @@ export default function ChatModal({ onClose }) {
         {/* Botão enviar - só mobile/tablet */}
         <button
           onClick={handleSend}
-          className="flex md:hidden w-10 h-10 rounded-full items-center justify-center 
+          className="flex w-10 h-10 rounded-full items-center justify-center 
                       hover:scale-110 transition"
         >
           <IoSend color="white" className="w-6 h-6 text-white" />
