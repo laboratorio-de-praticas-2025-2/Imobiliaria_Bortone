@@ -125,19 +125,7 @@ npm test
 
 ## 📚 Documentação
 
-- Documentação local (MkDocs):
-
-```bash
-cd documentacao
-mkdocs serve
-# abra http://127.0.0.1:8000
-```
-
-Guias principais:
-
-- [Algoritmo de Recomendação](documentacao/docs/AlgoritmoDeRecomendacao.md)
-- [Manual de Tags](documentacao/docs/ManualdeTags.md)
-- [Regras Gerais](documentacao/docs/RegrasGerais.md)
+- MkDocks: <a href="https://laboratorio-de-praticas-2025-2.github.io/Imobiliaria_Bortone/" target="_blank" rel="noreferrer">Documentação Atualizada<a/>
 
 ---
 
