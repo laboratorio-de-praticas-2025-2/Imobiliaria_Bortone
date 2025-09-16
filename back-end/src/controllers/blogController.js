@@ -1,8 +1,6 @@
 import blogService from "../services/blogService.js";
-import { isValidObjectId } from "mongoose";
 
 class BlogController {
-  
   async createArtigo(req, res) {
     try {
       const novoArtigo = await blogService.createArtigo(req.body);
@@ -19,16 +17,17 @@ class BlogController {
   async getArtigoById(req, res) {
     const { id } = req.params;
     try {
-      if (!isValidObjectId(id)) {
+      if (isNaN(id)) {
         return res.status(400).json({ error: "ID de artigo inválido." });
       }
 
-      const artigo = await blogService.getArtigoById(id);
+      const artigo = await blogService.getArtigoById(Number(id));
       if (!artigo) {
         return res
           .status(404)
           .json({ error: `Artigo com o ID ${id} não encontrado.` });
       }
+
       res.status(200).json({
         message: "Artigo obtido com sucesso.",
         data: artigo,
@@ -42,10 +41,10 @@ class BlogController {
   async getAllArtigos(req, res) {
     try {
       const query = req.query;
-      const artigos = await blogService.getAllArtigos(query); // Passa os parâmetros para o service
-      res.status(200).json({ artigos: artigos });
+      const artigos = await blogService.getAllArtigos(query);
+      res.status(200).json({ artigos });
     } catch (error) {
-      console.log(error);
+      console.error("Erro ao buscar artigos:", error.message);
       res.status(500).json({ error: "Erro interno do servidor." });
     }
   }
@@ -53,11 +52,11 @@ class BlogController {
   async updateArtigo(req, res) {
     const { id } = req.params;
     try {
-      if (!isValidObjectId(id)) {
+      if (isNaN(id)) {
         return res.status(400).json({ error: "ID de artigo inválido." });
       }
 
-      const artigoAtualizado = await blogService.updateArtigo(id, req.body);
+      const artigoAtualizado = await blogService.updateArtigo(Number(id), req.body);
       if (!artigoAtualizado) {
         return res
           .status(404)
@@ -69,7 +68,7 @@ class BlogController {
         data: artigoAtualizado,
       });
     } catch (error) {
-      console.log(error);
+      console.error(`Erro ao atualizar artigo de ID ${id}:`, error.message);
       res.status(500).json({ error: "Erro interno do servidor." });
     }
   }
@@ -77,15 +76,17 @@ class BlogController {
   async deleteArtigo(req, res) {
     const { id } = req.params;
     try {
-      if (!isValidObjectId(id)) {
+      if (isNaN(id)) {
         return res.status(400).json({ error: "ID de artigo inválido." });
       }
-      const artigoDeletado = await blogService.deleteArtigo(id);
+
+      const artigoDeletado = await blogService.deleteArtigo(Number(id));
       if (!artigoDeletado) {
         return res
           .status(404)
           .json({ error: `Artigo com o ID ${id} não encontrado para exclusão.` });
       }
+
       res.status(200).json({
         message: "Artigo deletado com sucesso.",
         data: artigoDeletado,
