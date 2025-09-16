@@ -18,7 +18,7 @@ const { Search } = Input;
 
 const onSearch = (value) => console.log(value);
 
-const MapView = dynamic(() => import("@/components/mapa/MapView"), {
+const MapView = dynamic(() => import("@/components/mapa/MapView.client"), {
   ssr: false,
 });
 
