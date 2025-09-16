@@ -11,7 +11,6 @@ import { FaUserPlus, FaUserPen, FaUser, FaHouseChimney } from "react-icons/fa6";
 import { FaCheckSquare } from "react-icons/fa";
 import LineGraph from "@/components/dash/LineGraph";
 export default function Dashboard() {
-  const style = { background: "#0092ff", padding: "8px 0" };
   const data = {
     labels: ["Apartamentos", "Casas", "Terrenos"],
     datasets: [
