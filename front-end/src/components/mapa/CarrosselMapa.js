@@ -122,7 +122,7 @@ export default function CarrosselMapa({ imoveis }) {
         // ---------- DESKTOP: Carrossel Horizontal ----------
         <div
           ref={carouselRef}
-          className={`w-full overflow-auto select-none scrollbar scrollbar-thumb-transparent scrollbar-track-transparent cards-carrossel
+          className={`w-full overflow-x-auto overflow-y-hidden select-none scrollbar scrollbar-thumb-transparent scrollbar-track-transparent cards-carrossel
             ${isDragging ? "cursor-grabbing" : "cursor-grab"}
           `}
           onMouseDown={handleMouseDown}

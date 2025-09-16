@@ -16,7 +16,7 @@ export default function CardMapa({ imovel }) {
       {/* Imagem do imóvel */}
       <div className="w-full h-28 sm:h-36 border-0 rounded-lg overflow-hidden relative">
         <img
-          src={imovel.imagem}
+          src={imovel.imagens[0].url_imagem}
           alt={`Imagem do imóvel ${imovel.id}`}
           className="w-full h-full object-cover rounded-md transform transition-transform duration-500 group-hover:scale-105"
         />
@@ -38,28 +38,34 @@ export default function CardMapa({ imovel }) {
       </div>
 
       {/* Localização */}
-      <div className="w-full h-7 sm:h-9 mt-2 flex items-center justify-left font-bold pl-2 whitespace-nowrap">
+      <div className="w-full h-7 sm:h-9 flex items-center justify-left font-bold pl-2 whitespace-nowrap">
         {imovel.endereco}
       </div>
 
       {/* Quartos e Banheiros */}
       <div className="inline-flex flex-row gap-2 mt-2">
-        <div className="flex flex-col w-auto whitespace-nowrap">
-          <div className="h-auto flex items-center justify-center px-2">
-            <BsDoorOpenFill />
-          </div>
-          <div className="h-auto flex items-center justify-start px-2 font-bold text-xs sm:text-sm md:text-base whitespace-nowrap">
-            {imovel.quartos} Quartos
-          </div>
-        </div>
-        <div className="flex flex-col w-auto whitespace-nowrap">
-          <div className="h-auto flex items-center justify-center px-2">
-            <PiBathtub />
-          </div>
-          <div className="h-auto flex items-center justify-start px-2 font-bold text-xs sm:text-sm md:text-base whitespace-nowrap">
-            {imovel.banheiros} Banheiros
-          </div>
-        </div>
+        {imovel.tipo === "Casa" ? (
+          <>
+            <div className="flex flex-col w-auto whitespace-nowrap">
+              <div className="h-auto flex items-center justify-center px-2">
+                <BsDoorOpenFill />
+              </div>
+              <div className="h-auto flex items-center justify-start px-2 font-bold text-xs sm:text-sm md:text-base whitespace-nowrap">
+                {imovel.quartos} Quartos
+              </div>
+            </div>
+            <div className="flex flex-col w-auto whitespace-nowrap">
+              <div className="h-auto flex items-center justify-center px-2">
+                <PiBathtub />
+              </div>
+              <div className="h-auto flex items-center justify-start px-2 font-bold text-xs sm:text-sm md:text-base whitespace-nowrap">
+                {imovel.banheiros} Banheiros
+              </div>
+            </div>
+          </>
+        ):(
+          <p className="font-bold">Informações de Terreno</p>
+        )}
       </div>
     </div>
   );

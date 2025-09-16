@@ -1,15 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import React from "react";
 import { useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import ImovelMarker from "./ImovelMarker";
 import LocationButton from "./LocationButton";
 import L from "leaflet";
+import MarkerClusterGroup from "react-leaflet-markercluster";
 
 const casaIcon = new L.Icon({
-  iconUrl: "icons/casa.png",
+  iconUrl: "images/icons/casa.png",
   iconSize: [38, 40],
   iconAnchor: [15, 30],
 });
@@ -32,8 +34,15 @@ export default function MapView({ imoveis }) {
 
   const handleHover = (imovel, map) => {
     setHoverImovel(imovel);
-    const point = map.latLngToContainerPoint([imovel.latitude, imovel.longitude]);
+    const point = map.latLngToContainerPoint([
+      imovel.latitude,
+      imovel.longitude,
+    ]);
     setCardPosition({ x: point.x, y: point.y });
+  };
+
+  const handleLeave = () => {
+    setTimeout(() => setHoverImovel(null), 100); // delay para evitar flicker
   };
 
   return (
@@ -50,23 +59,30 @@ export default function MapView({ imoveis }) {
           attribution="&copy; OpenStreetMap contributors"
         />
 
-        {imoveis.map((imovel) => (
-          <ImovelMarker
-            key={imovel.id}
-            imovel={imovel}
-            icon={casaIcon}
-            onHover={handleHover}
-            onLeave={() => setHoverImovel(null)}
-          />
-        ))}
+        <MarkerClusterGroup
+          chunkedLoading
+          showCoverageOnHover={false}
+          spiderfyOnMaxZoom={true}
+          maxClusterRadius={40}
+        >
+          {imoveis.map((imovel) => (
+            <ImovelMarker
+              key={imovel.id}
+              imovel={imovel}
+              icon={casaIcon}
+              onHover={handleHover}
+              onLeave={handleLeave}
+            />
+          ))}
+        </MarkerClusterGroup>
 
         <div className="map-controls">
-            <div className="location-button-wrapper">
-                <LocationButton />
-            </div>
-            <div className="zoom-button-wrapper">
-                <ZoomButtons />
-            </div>
+          <div className="location-button-wrapper">
+            <LocationButton />
+          </div>
+          <div className="zoom-button-wrapper">
+            <ZoomButtons />
+          </div>
         </div>
       </MapContainer>
 

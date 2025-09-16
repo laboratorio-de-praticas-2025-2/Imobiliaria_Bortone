@@ -4,6 +4,8 @@ services:
     image: ${DOCKER_HUB_USERNAME}/imobiliario-frontend:latest
     ports:
       - "3000:3000"
+    environment:
+      NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
     
     depends_on:
       - back-end
@@ -17,3 +19,12 @@ services:
       DB_HOST: ${DB_HOST}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_DIALECT: ${DB_DIALECT}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_SECURE: ${SMTP_SECURE}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      SMTP_HELO: ${SMTP_HELO}
+      MAIL_FROM_EMPRESA: ${MAIL_FROM_EMPRESA}
+      MAIL_TO_EMPRESA: ${MAIL_TO_EMPRESA}

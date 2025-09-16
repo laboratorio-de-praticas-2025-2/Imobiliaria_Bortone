@@ -1,10 +1,19 @@
 "use client";
 
-import { Slider, ConfigProvider } from "antd";
+import { useFilters } from "@/context/FiltersContext";
+import { ConfigProvider, Slider } from "antd";
 import { useState } from "react";
 
-export default function PriceRange({ children }) {
+export default function PriceRange({ children, type }) {
+  const { updateFilters } = useFilters();
   const [values, setValues] = useState([25000, 200000]);
+
+  const handlePriceChange = (newValues) => {
+    setValues(newValues);
+
+    // Atualiza os filtros no contexto
+    updateFilters(type, { preco: newValues });
+  };
 
   return (
     <div className="pt-7">
@@ -16,33 +25,31 @@ export default function PriceRange({ children }) {
         -{" "}
         {values[1].toLocaleString("pt-BR", {
           minimumFractionDigits: 2,
-        })} 
+        })}
       </p>
 
       <ConfigProvider
         theme={{
           components: {
             Slider: {
-              railBg: "white",                  // trilha vazia
-              trackBg: "var(--secondary)",      // preenchida
+              railBg: "white", // trilha vazia
+              trackBg: "var(--secondary)", // preenchida
               trackHoverBg: "var(--secondary)",
               handleColor: "var(--secondary)",
               handleActiveColor: "var(--secondary)",
               dotSize: 100,
-              
             },
           },
         }}
       >
-        
         <Slider
           range={{ draggableTrack: true }}
           min={25000}
           max={1000000}
           step={10000}
           value={values}
-          onChange={setValues}
-          pushable={0}   
+          onChange={handlePriceChange}
+          pushable={0}
         />
       </ConfigProvider>
     </div>

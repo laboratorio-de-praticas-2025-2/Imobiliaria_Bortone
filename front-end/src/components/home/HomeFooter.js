@@ -1,13 +1,16 @@
 import { Flex } from "antd";
 import Image from "next/image";
-import PublicidadeSlider from "./PublicidadesSlider";
 
 export default function HomeFooter() {
   return (
-    <footer className="home-footer relative md:pt-35 ">
-      <div className="absolute top-0 left-0 w-full">
-        <PublicidadeSlider />
-      </div>
+    <footer className="home-footer relative md:pt-20 ">
+      <Image
+        src="/images/dudaShop.svg"
+        alt="dudaShop"
+        width={1200}
+        height={100}
+        className="w-full h-auto md:px-16 md:py-7 px-4"
+      />
       <div className="home-footer-content flex md:flex-row flex-col md:justify-between justify-end gap-14 px-16 py-7 text-white items-end md:pb-28">
         <Flex vertical gap="large">
           <p className="text-xl font-bold">Contate-nos</p>
@@ -30,6 +33,7 @@ export default function HomeFooter() {
           alt="Logo Bortone"
           width={260}
           height={100}
+          className="md:flex hidden"
         />
       </div>
     </footer>

@@ -21,7 +21,7 @@ export default function SidebarMenu() {
             onSearch={onSearch}
             style={{ width: "50%" }}
             allowClear
-            className="nav-search-map-mobile"
+            className={`nav-search-map-mobile ${open ? '!hidden' : ''}`}
           />
           <OrderButton onToggle={() => console.log("Ordenar")} />
         </div>

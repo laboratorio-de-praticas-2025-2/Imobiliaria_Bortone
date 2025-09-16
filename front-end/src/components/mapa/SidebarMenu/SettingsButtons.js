@@ -1,12 +1,21 @@
 "use client";
-import { Flex } from 'antd';
+import { useFilters } from "@/context/FiltersContext";
+import { Flex } from "antd";
 
-export default function SettingsButtons({ onUndo, onApply }) {
+export default function SettingsButtons({ type }) {
+  const { getFiltersForApi, removeFilters } = useFilters();
+
+  const handleApply = () => {
+    // adicionar a requisição para a API aqui
+    const filters = getFiltersForApi(type); 
+    console.log("Filtros aplicados:", filters);
+  };
+
   return (
     <div className="flex gap-3 pt-7 pb-6">
       {/* Botão Desfazer */}
       <button
-        onClick={onUndo}
+        onClick={removeFilters}
         className=" w-full rounded-lg border-3 border-[#374A8C54] font-semibold bg-transparent hover:bg-[#1b2235] transition"
         style={{ color: "#767A8B " }}
       >
@@ -15,7 +24,7 @@ export default function SettingsButtons({ onUndo, onApply }) {
 
       {/* Botão Aplicar */}
       <button
-        onClick={onApply}
+        onClick={handleApply}
         className="w-full py-2 rounded-lg bg-[var(--secondary)] font-bold  hover:bg-[#d88500] transition"
         style={{ color: "white" }}
       >

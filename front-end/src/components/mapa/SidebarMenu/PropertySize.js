@@ -2,9 +2,18 @@
 
 import { Slider, ConfigProvider } from "antd";
 import { useState } from "react";
+import { useFilters } from "@/context/FiltersContext";
 
-export default function PropertySize({ children }) {
+export default function PropertySize({ children, type }) {
   const [values, setValues] = useState([0, 200]); // Estado inicial
+  const { updateFilters } = useFilters();
+  
+  const handleSizeChange = (newValues) => {
+    setValues(newValues);
+
+    // Atualiza os filtros no contexto
+    updateFilters(type, { area: newValues });
+  };
 
   return (
     <div className="pt-7">
@@ -19,8 +28,8 @@ export default function PropertySize({ children }) {
         theme={{
           components: {
             Slider: {
-              railBg: "white",                  // trilha vazia
-              trackBg: "var(--secondary)",      // preenchida
+              railBg: "white", // trilha vazia
+              trackBg: "var(--secondary)", // preenchida
               trackHoverBg: "var(--secondary)",
               handleColor: "var(--secondary)",
               handleActiveColor: "var(--secondary)",
@@ -35,7 +44,7 @@ export default function PropertySize({ children }) {
           max={1000}
           step={10}
           value={values}
-          onChange={setValues}   // atualiza o estado ao arrastar
+          onChange={handleSizeChange} // atualiza o estado ao arrastar
           pushable={0}
         />
       </ConfigProvider>

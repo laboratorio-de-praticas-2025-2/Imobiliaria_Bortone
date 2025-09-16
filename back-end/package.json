@@ -13,6 +13,20 @@
     "start": "node src/app.js",
     "dev": "nodemon src/app.js"
   },
+  "name": "api-imobiliaria",
+  "version": "1.0.0",
+  "description": "API para gerenciamento da imobiliaria Bortone",
+  "main": "src/app.js",
+  "type": "module",
+  "keywords": [
+    "API",
+    "imobiliária",
+    "Bortone"
+  ],
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
