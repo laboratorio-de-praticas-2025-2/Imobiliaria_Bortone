@@ -1,6 +1,5 @@
 "use client";
 
-import { Flex, Input, Button } from "antd";
 import { FaWhatsapp } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import dynamic from "next/dynamic";
