@@ -26,7 +26,7 @@ function ImoveisPageContent() {
   const handleGetImoveis = async () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const response = await fetch(`${apiUrl}/imoveis/busca`, {
+      const response = await fetch(`${apiUrl}/search/avancada`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(filterData),

@@ -27,7 +27,7 @@ const onSearch = async (value) => {
   if (!value) return;
   try {
     const res = await fetch(
-      `${process.env.API_URL}/imoveis/home?endereco=${encodeURIComponent(
+      `${process.env.API_URL}/search/simples?endereco=${encodeURIComponent(
         value
       )}`,
       { method: "GET" }

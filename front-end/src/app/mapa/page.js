@@ -37,7 +37,7 @@ export default function Mapa() {
     };
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const response = await fetch(`${apiUrl}/imoveis/mapa`, {
+      const response = await fetch(`${apiUrl}/search/mapa`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(endereco),
