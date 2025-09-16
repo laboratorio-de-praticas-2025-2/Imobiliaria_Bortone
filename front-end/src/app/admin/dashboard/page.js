@@ -191,7 +191,7 @@ export default function Dashboard() {
                 <div className="grid grid-rows-2 h-[220px] gap-6">
                   <Card
                     name={"vendas"}
-                    label={"Número total de vendas"}
+                    label={"Total de imóveis disponíveis para venda"}
                     className={"!text-xl"}
                     value={55}
                     labelCol={{ span: 24 }}
@@ -201,7 +201,7 @@ export default function Dashboard() {
                   />
                   <Card
                     name={"locacoes"}
-                    label={"Número total de locações"}
+                    label={"Total de imóveis disponíveis para locações"}
                     className={"!text-xl"}
                     value={50}
                     labelCol={{ span: 24 }}
@@ -313,19 +313,17 @@ export default function Dashboard() {
                   data={data}
                   options={options}
                 />
-              </div>
-                {" "}
-                <Card
-                  name={"vendas"}
-                  label={"Número total de vendas"}
-                  className={"!text-xl"}
-                  value={55}
-                  labelCol={{ span: 24 }}
-                  icon={
-                    <PiCoinsFill className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
-                  }
-                />
-
+              </div>{" "}
+              <Card
+                name={"vendas"}
+                label={"Número total de vendas"}
+                className={"!text-xl"}
+                value={55}
+                labelCol={{ span: 24 }}
+                icon={
+                  <PiCoinsFill className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                }
+              />
               <Card
                 name={"locacoes"}
                 label={"Número total de locações"}
