@@ -3,8 +3,15 @@ import { FilterDataProvider } from "@/context/FilterDataContext";
 import { useFilterData } from "@/context/FilterDataContext";
 import { useEffect, useState } from "react";
 import InnerImoveisPage from "./InnerImoveisPage";
+import { useSEO } from "@/hooks/useSEO";
+import { getSEOConfig } from "@/config/seo";
 
 export default function ImoveisPage() {
+  
+  // SEO para página de imóveis
+  useSEO(getSEOConfig("/imoveis"));
+  const [imoveis, setImoveis] = useState([]);
+
   return (
     <FilterDataProvider>
       <ImoveisPageContent />
@@ -15,7 +22,7 @@ export default function ImoveisPage() {
 function ImoveisPageContent() {
   const [imoveis, setImoveis] = useState([]);
   const { filterData } = useFilterData();
-  
+
   const handleGetImoveis = async () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;

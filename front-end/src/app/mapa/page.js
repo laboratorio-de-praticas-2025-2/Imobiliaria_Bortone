@@ -20,6 +20,8 @@ const MapView = dynamic(() => import("@/components/mapa/MapView"), {
 });
 
 export default function Mapa() {
+  useSEO(getSEOConfig("/mapa"));
+  const [imoveis, setImoveis] = useState([]);
   const [imoveisCarrossel, setImoveisCarrossel] = useState([]);
   const [imoveisMapa, setImoveisMapa] = useState([]);
   const [hoverImovel, setHoverImovel] = useState(null);
