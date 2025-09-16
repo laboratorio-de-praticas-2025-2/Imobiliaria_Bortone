@@ -105,6 +105,20 @@ export function handleConnection(ws) {
 
       // Mensagens
       if (data.type === "message") {
+
+        //Garantir que a mensagem é uma string e não vazia
+        if (typeof data.text !== 'string' || data.text.trim() === '') {
+          chatService.send(ws, { type: "error", msg: "Mensagem Inválida." });
+          return;
+        }
+
+        //Limitar o tamanho da mensagem no servidor
+        const max_length = 500;
+        if (data.text.length > max_length) {
+          chatService.send(ws, { type: "error", msg: "A mensagem é muito longa." });
+          return;
+        }
+
         let newMsg;
 
         if (role === "user") {
