@@ -1,5 +1,5 @@
 import Imovel from "../models/Imovel.js";
-import puppeteer from "puppeteer"; //IMPORTA PUPPETEER PARA CRIACAO DO PDF
+import puppeteer from "puppeteer";
 import sequelize from "../config/sequelize-config.js";
 import imagemParaBase64 from "../utils/converterImagemParaBase64.js";
 import fs from "fs";
@@ -13,7 +13,7 @@ class ReportService {
       type: sequelize.QueryTypes.SELECT,
       replacements: filtros,
       logging: false,
-    });    
+    });
 
     return resultados;
   }
@@ -32,6 +32,10 @@ class ReportService {
     );
     const icon_metroq = imagemParaBase64("./src/static/imgs/icon_metroq.png");
     const icon_bed = imagemParaBase64("./src/static/imgs/icon_bed.png");
+    const icon_coin = imagemParaBase64("./src/static/imgs/icon_coin.png");
+    const icon_admin = imagemParaBase64("./src/static/imgs/icon_admin.png");
+    const icon_add_person = imagemParaBase64("./src/static/imgs/icon_add_person.png");
+    const icon_person = imagemParaBase64("./src/static/imgs/icon_person.png");
     const formattedDate = new Date().toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "2-digit",
@@ -40,7 +44,6 @@ class ReportService {
 
     const dados = await this.buscarDados(filtros);
     const resultado = JSON.parse(dados[0].resultado);
-
     const templateHtml = fs.readFileSync(
       "./src/templates/report-template-pdf.html",
       "utf8"
@@ -58,6 +61,10 @@ class ReportService {
         icon_calendar: icon_calendar,
         icon_metroq: icon_metroq,
         icon_bed: icon_bed,
+        icon_coin: icon_coin,
+        icon_admin: icon_admin,
+        icon_add_person: icon_add_person,
+        icon_person: icon_person,
       },
       data_emissao: formattedDate,
     });

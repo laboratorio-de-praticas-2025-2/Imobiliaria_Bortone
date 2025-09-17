@@ -300,10 +300,114 @@
           </div>
         </div>
       </div>
-      
-      <canvas id="grafico-colunas-locacoes-por-mes" style="margin-top: 80px;"></canvas>
-      
-      <footer>2</footer>
+      <canvas
+        id="grafico-colunas-locacoes-por-mes"
+        style="margin-top: 80px"
+      ></canvas>
+    </div>
+
+    <!-- Página 3 -->
+    <div class="page">
+      <header>
+        <img src="{{images.logo}}" alt="Logo da empresa" class="logo" />
+        <div class="header-meta">Emitido em: {{data_emissao}}</div>
+      </header>
+
+      <h2 class="title">Relatório de Vendas</h2>
+
+      <div class="card" style="width: 100%" tabindex="0">
+        <div class="card-content">
+          <span class="card-label" style="text-wrap: wrap">
+            Total de imóveis disponíveis para venda
+          </span>
+
+          <div class="card-value-container">
+            <span class="card-value"> {{dados.imoveis.totalVenda}} </span>
+
+            <div class="card-icon">
+              <img
+                src="{{images.icon_coin}}"
+                alt="Ícone de Moeda"
+                class="card-icon-image"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>3</footer>
+    </div>
+
+    <!-- Página 4 -->
+    <div class="page">
+      <header>
+        <img src="{{images.logo}}" alt="Logo da empresa" class="logo" />
+        <div class="header-meta">Emitido em: {{data_emissao}}</div>
+      </header>
+
+      <h2 class="title">Relatório de Usuários</h2>
+
+      <div class="card" style="width: 100%; margin-top: 20px" tabindex="0">
+        <div class="card-content">
+          <span class="card-label" style="text-wrap: wrap">
+            Total de usuários cadastrados
+          </span>
+
+          <div class="card-value-container">
+            <span class="card-value"> {{dados.usuarios.totalUsuarios}} </span>
+
+            <div class="card-icon">
+              <img
+                src="{{images.icon_add_person}}"
+                alt="Ícone de Adicionar Pessoa"
+                class="card-icon-image"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="width: 100%; margin-top: 20px" tabindex="0">
+        <div class="card-content">
+          <span class="card-label" style="text-wrap: wrap">
+            Usuários administradores
+          </span>
+
+          <div class="card-value-container">
+            <span class="card-value">
+              {{dados.usuarios.totalAdministradores}}
+            </span>
+
+            <div class="card-icon">
+              <img
+                src="{{images.icon_admin}}"
+                alt="Ícone de Administrador"
+                class="card-icon-image"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="width: 100%; margin-top: 20px" tabindex="0">
+        <div class="card-content">
+          <span class="card-label" style="text-wrap: wrap">
+            Usuários visitantes
+          </span>
+
+          <div class="card-value-container">
+            <span class="card-value"> {{dados.usuarios.totalVisitantes}} </span>
+
+            <div class="card-icon">
+              <img
+                src="{{images.icon_person}}"
+                alt="Ícone de Pessoa"
+                class="card-icon-image"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>4</footer>
     </div>
 
     <script>
@@ -413,62 +517,6 @@
               }
           }
         });
-
-        //   new Chart(document.getElementById("grafico2"), {
-        //     type: "line",
-        //     data: {
-        //       labels: ["Jan", "Fev", "Mar", "Abr", "Mai"],
-        //       datasets: [
-        //         {
-        //           label: "Vendas",
-        //           data: [12, 19, 3, 5, 2],
-        //           borderColor: "#9c80ff",
-        //           backgroundColor: "rgba(156,128,255,0.3)",
-        //           fill: true,
-        //         },
-        //       ],
-        //     },
-        //     options: { plugins: { legend: { display: false } } },
-        //   });
-
-          // Página 3
-          new Chart(document.getElementById("grafico3"), {
-            type: "doughnut",
-            data: {
-              labels: ["Crescimento", "Colaterais", "Outros"],
-              datasets: [
-                {
-                  data: [45, 25, 30],
-                  backgroundColor: ["#9c80ff", "#6fb3ff", "#ccc"],
-                },
-              ],
-            },
-            options: { plugins: { legend: { position: "bottom" } } },
-          });
-
-          // Página 4
-
-          new Chart(document.getElementById("grafico4b"), {
-            type: "line",
-            data: {
-              labels: ["Jan", "Fev", "Mar"],
-              datasets: [{ data: [5, 15, 10], borderColor: "#6fb3ff" }],
-            },
-            options: { plugins: { legend: { display: false } } },
-          });
-
-          new Chart(document.getElementById("grafico4c"), {
-            type: "pie",
-            data: {
-              labels: ["A", "B", "C"],
-              datasets: [
-                {
-                  data: [30, 50, 20],
-                  backgroundColor: ["#9c80ff", "#6fb3ff", "#ccc"],
-                },
-              ],
-            },
-          });
     </script>
   </body>
 </html>
