@@ -6,12 +6,13 @@ import fs from "fs";
 import handlebars from "handlebars";
 
 class ReportService {
-  static async buscarDados(filtros = {}) {
+  static async buscarDados(tipo) {
+    //TODO: IMPLEMENTAR CONDICIONAL PARA VARIA TIPO DE DADO BUSCADO NO TIPO COM BASE NO PARAMETRO "tipo"
+
     const query = fs.readFileSync("./src/queries/dados-pdf-geral.sql", "utf-8");
 
     const resultados = await sequelize.query(query, {
       type: sequelize.QueryTypes.SELECT,
-      replacements: filtros,
       logging: false,
     });
 
@@ -19,7 +20,7 @@ class ReportService {
   }
 
   // GERA PDF
-  static async gerarPDF(filtros = {}) {
+  static async gerarPDF(tipo) {
     handlebars.registerHelper("json", function (context) {
       return JSON.stringify(context);
     });
@@ -27,9 +28,7 @@ class ReportService {
     const logoBase64 = imagemParaBase64("./src/static/imgs/LogoPreta.png");
     const icon_house = imagemParaBase64("./src/static/imgs/icon_house.png");
     const icon_build = imagemParaBase64("./src/static/imgs/icon_build.png");
-    const icon_calendar = imagemParaBase64(
-      "./src/static/imgs/icon_calendar.png"
-    );
+    const icon_calendar = imagemParaBase64("./src/static/imgs/icon_calendar.png");
     const icon_metroq = imagemParaBase64("./src/static/imgs/icon_metroq.png");
     const icon_bed = imagemParaBase64("./src/static/imgs/icon_bed.png");
     const icon_coin = imagemParaBase64("./src/static/imgs/icon_coin.png");
@@ -42,12 +41,9 @@ class ReportService {
       year: "numeric",
     });
 
-    const dados = await this.buscarDados(filtros);
+    const dados = await this.buscarDados(tipo);
     const resultado = JSON.parse(dados[0].resultado);
-    const templateHtml = fs.readFileSync(
-      "./src/templates/report-template-pdf.html",
-      "utf8"
-    );
+    const templateHtml = fs.readFileSync("./src/templates/report-template-pdf.html", "utf8");
 
     const template = handlebars.compile(templateHtml);
 
