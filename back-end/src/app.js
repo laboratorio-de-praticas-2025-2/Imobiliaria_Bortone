@@ -1,10 +1,12 @@
-import 'dotenv/config';
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import connection from "./config/sequelize-config.js";
 import userRoutes from './routes/userRoutes.js'
-import agendamentoRoutes from './routes/agendamentoRoute.js';
-import recomendacaoRouter from './routes/recomendacaoImovelRoutes.js';
+import "./models/Associations.js";
+import searchRouter from "./routes/imovelSearchRoutes.js";
+import agendamentoRouter from "./routes/agendamentoRoute.js";
+import recomendacaoRouter from "./routes/recomendacaoImovelRoutes.js";
 import healthRouter from "./routes/healthRouter.js";
 import faqRoutes from "./routes/faqRoutes.js";
 import mapaRoutes from "./routes/mapaRoutes.js";
@@ -30,8 +32,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/', recomendacaoRouter);
 app.use('/user', userRoutes );
-app.use('/agendamentos', agendamentoRoutes );
-app.use('/health', healthRouter);
+app.use("/search", searchRouter);
+app.use("/agendamentos", agendamentoRouter);
+app.use("/health", healthRouter);
 app.use("/faq", faqRoutes);
 app.use("/mapa", mapaRoutes);
 app.use('/dashboard', dashboardRouter);
