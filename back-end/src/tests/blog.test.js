@@ -1,173 +1,144 @@
 import { jest } from "@jest/globals";
+import request from "supertest";
+import express from "express";
 
-jest.unstable_mockModule("../models/Blog.js", () => ({
-  default: {
-    create: jest.fn(),
-    findAll: jest.fn(),
-    findByPk: jest.fn(),
-    destroy: jest.fn(),
-    getAll: jest.fn()
-  },
-}));
+describe("Testando as rotas do blog", () => {
+  let app;
+  let blogServiceMock;
 
-const blogServiceModule = await import("../services/blogService.js");
-const blogService = blogServiceModule.default;
+  beforeAll(async () => {
+    jest.resetModules();
 
-const BlogModule = await import("../models/Blog.js");
-const Blog = BlogModule.default;
+    jest.unstable_mockModule("../services/blogService.js", () => ({
+      default: {
+        createArtigo: jest.fn(),
+        getAllArtigos: jest.fn(),
+        getArtigoById: jest.fn(),
+        updateArtigo: jest.fn(),
+        deleteArtigo: jest.fn(),
+      },
+    }));
 
-describe("Testes de CRUD para Artigos", () => {
-  const mockArtigo = {
-    id: 1,
-    titulo: "Primeiro Artigo",
-    conteudo: "Conteúdo de teste",
-    data_publicacao: new Date(),
-    url_imagem: "https://exemplo.com/imagem.png",
-    usuario_id: 1,
-  };
+    const svc = await import("../services/blogService.js");
+    blogServiceMock = svc.default;
 
-  beforeEach(() => {
-    jest.clearAllMocks();
+    const { default: blogRoutes } = await import("../routes/blogRoutes.js");
+
+    app = express();
+    app.use(express.json());
+    app.use(blogRoutes);
   });
 
-  it("Deve criar um novo artigo com sucesso", async () => {
-    const artigoParaCriar = { ...mockArtigo };
-    delete artigoParaCriar.id;
-
-    Blog.create.mockResolvedValue(mockArtigo);
-
-    const result = await blogService.createArtigo(artigoParaCriar);
-
-    expect(Blog.create).toHaveBeenCalledWith(artigoParaCriar);
-    expect(result).toEqual(mockArtigo);
-  });
-
-  it("Deve buscar todos os artigos com sucesso", async () => {
-    Blog.findAll.mockResolvedValue([mockArtigo]);
-
-    const result = await blogService.getAllArtigos({});
-
-    expect(Blog.findAll).toHaveBeenCalled();
-    expect(result).toEqual([mockArtigo]);
-  });
-
-  it("Deve buscar um artigo por ID existente", async () => {
-    Blog.findByPk.mockResolvedValue(mockArtigo);
-
-    const result = await blogService.getArtigoById(1);
-
-    expect(Blog.findByPk).toHaveBeenCalledWith(1);
-    expect(result).toEqual(mockArtigo);
-  });
-
-  it("Deve lançar erro ao buscar artigo inexistente", async () => {
-    Blog.findByPk.mockResolvedValue(null);
-
-    await expect(blogService.getArtigoById(99)).rejects.toThrow(
-      "Artigo com o ID: 99 não encontrado."
-    );
-  });
-
-  it("Deve deletar um artigo com base em um ID", async () => {
-    const mockDestroy = jest.fn();
-    const artigoFalso = { destroy: mockDestroy };
-    Blog.findByPk.mockResolvedValue(artigoFalso);
-    const result = await blogService.deleteArtigo(99);
-    expect(Blog.findByPk).toHaveBeenCalledWith(99);
-    expect(mockDestroy).toHaveBeenCalled();
-    expect(result).toBe(true);
-  });
-
-  it("Deve lançar erro ao tentar deletar um artigo inexistente", async () => {
-    Blog.findByPk.mockResolvedValue(null);
-    await expect(blogService.deleteArtigo(99)).rejects.toThrow(
-      "Artigo com o ID: 99 não encontrado."
-    );
-    expect(Blog.findByPk).toHaveBeenCalledWith(99);
-  });
-
-  it("Deve atualizar um artigo existente com sucesso", async () => {
-    const mockUpdate = jest.fn();
-    const artigoFalso = {
-      id: 99,
-      titulo: "Original",
-      update: mockUpdate.mockResolvedValue(),
-    };
-    Blog.findByPk.mockResolvedValue(artigoFalso);
-    const dadosAtualizar = { titulo: "Atualizado" };
-    const result = await blogService.updateArtigo(99, dadosAtualizar);
-    expect(Blog.findByPk).toHaveBeenCalledWith(99);
-    expect(mockUpdate).toHaveBeenCalledWith(dadosAtualizar);
-    expect(result).toBe(artigoFalso);
-  });
-
-  it("Deve lançar erro ao tentar atualizar um artigo inexistente", async () => {
-    Blog.findByPk.mockResolvedValue(null);
-    const dadosAtualizar = { titulo: "Atualizado" };
-    await expect(blogService.updateArtigo(99, dadosAtualizar)).rejects.toThrow(
-      "Artigo com o ID: 99 não encontrado."
-    );
-    expect(Blog.findByPk).toHaveBeenCalledWith(99);
-  });
-
-  describe("Testes de ordenação para a busca", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it("deve buscar todos os artigos com parâmetros", async () => {
-    const artigosMock = [{ id: 1, titulo: "Artigo 1" }, { id: 2, titulo: "Artigo 2" }];
-    Blog.findAll = jest.fn().mockResolvedValue(artigosMock);
+  it("GET /blogs deve retornar lista de artigos", async () => {
+    const mockArtigo = { id: 1, titulo: "Teste Artigo" };
+    blogServiceMock.getAllArtigos.mockResolvedValue([mockArtigo]);
 
-    const result = await blogService.getAllArtigos();
+    const res = await request(app).get("/blogs");
 
-    expect(Blog.findAll).toHaveBeenCalledWith({});
-    expect(result).toEqual(artigosMock);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("artigos");
+    expect(res.body.artigos).toEqual([mockArtigo]);
+    expect(blogServiceMock.getAllArtigos).toHaveBeenCalledWith({});
   });
 
-  it("deve ordenar os artigos por id em ordem ASC (padrão) quando ordenarPor = 'data'", async () => {
+  it("GET /blogs/:id deve retornar um artigo pelo ID", async () => {
+    const mockArtigo = { id: 1, titulo: "Teste Artigo" };
+    blogServiceMock.getArtigoById.mockResolvedValue(mockArtigo);
+
+    const res = await request(app).get(`/blogs/${mockArtigo.id}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.data).toEqual(mockArtigo);
+    expect(blogServiceMock.getArtigoById).toHaveBeenCalledWith(1);
+  });
+
+  it("POST /blogs deve criar um novo artigo", async () => {
+    const mockArtigo = { id: 1, titulo: "Novo Artigo" };
+    blogServiceMock.createArtigo.mockResolvedValue(mockArtigo);
+
+    const res = await request(app).post("/blogs").send({
+      titulo: "Novo Artigo",
+      conteudo: "conteúdo teste",
+      usuario_id: "123",
+    });
+
+    expect(res.status).toBe(201);
+    expect(res.body.data).toEqual(mockArtigo);
+    expect(blogServiceMock.createArtigo).toHaveBeenCalled();
+  });
+
+  it("PUT /blogs/:id deve atualizar um artigo", async () => {
+    const mockArtigo = { id: 1, titulo: "Atualizado" };
+    blogServiceMock.updateArtigo.mockResolvedValue(mockArtigo);
+
+    const res = await request(app).put("/blogs/1").send({ titulo: "Atualizado" });
+
+    expect(res.status).toBe(200);
+    expect(res.body.data).toEqual(mockArtigo);
+    expect(blogServiceMock.updateArtigo).toHaveBeenCalledWith(1, { titulo: "Atualizado" });
+  });
+
+  it("DELETE /blogs/:id deve deletar um artigo", async () => {
+    blogServiceMock.deleteArtigo.mockResolvedValue(true);
+
+    const res = await request(app).delete("/blogs/1");
+
+    expect(res.status).toBe(200);
+    expect(res.body.data).toBe(true);
+    expect(blogServiceMock.deleteArtigo).toHaveBeenCalledWith(1);
+  });
+
+  it("GET /blogs deve ordenar os artigos por id ASC quando ordenarPor = 'data'", async () => {
     const artigosMock = [{ id: 1 }, { id: 2 }];
-    Blog.findAll = jest.fn().mockResolvedValue(artigosMock);
+    blogServiceMock.getAllArtigos.mockResolvedValue(artigosMock);
 
-    const params = { ordenarPor: "data" };
-    const result = await blogService.getAllArtigos(params);
+    const res = await request(app).get("/blogs?ordenarPor=data");
 
-    expect(Blog.findAll).toHaveBeenCalledWith({ order: [["id", "ASC"]] });
-    expect(result).toEqual(artigosMock);
+    expect(res.status).toBe(200);
+    expect(res.body.artigos).toEqual(artigosMock);
+    expect(blogServiceMock.getAllArtigos).toHaveBeenCalledWith({ ordenarPor: "data" });
   });
 
-  it("deve ordenar os artigos por id em ordem DESC quando ordenarPor = 'data' e direcao = 'DESC'", async () => {
+  it("GET /blogs deve ordenar os artigos por id DESC quando ordenarPor = 'data' e direcao = 'DESC'", async () => {
     const artigosMock = [{ id: 2 }, { id: 1 }];
-    Blog.findAll = jest.fn().mockResolvedValue(artigosMock);
+    blogServiceMock.getAllArtigos.mockResolvedValue(artigosMock);
 
-    const params = { ordenarPor: "data", direcao: "DESC" };
-    const result = await blogService.getAllArtigos(params);
+    const res = await request(app).get("/blogs?ordenarPor=data&direcao=DESC");
 
-    expect(Blog.findAll).toHaveBeenCalledWith({ order: [["id", "DESC"]] });
-    expect(result).toEqual(artigosMock);
+    expect(res.status).toBe(200);
+    expect(res.body.artigos).toEqual(artigosMock);
+    expect(blogServiceMock.getAllArtigos).toHaveBeenCalledWith({
+      ordenarPor: "data",
+      direcao: "DESC",
+    });
   });
 
-  it("deve ordenar os artigos por titulo em ordem ASC (padrão) quando ordenarPor = 'alfabetica'", async () => {
+  it("GET /blogs deve ordenar os artigos por titulo ASC quando ordenarPor = 'alfabetica'", async () => {
     const artigosMock = [{ titulo: "A" }, { titulo: "B" }];
-    Blog.findAll = jest.fn().mockResolvedValue(artigosMock);
+    blogServiceMock.getAllArtigos.mockResolvedValue(artigosMock);
 
-    const params = { ordenarPor: "alfabetica" };
-    const result = await blogService.getAllArtigos(params);
+    const res = await request(app).get("/blogs?ordenarPor=alfabetica");
 
-    expect(Blog.findAll).toHaveBeenCalledWith({ order: [["titulo", "ASC"]] });
-    expect(result).toEqual(artigosMock);
+    expect(res.status).toBe(200);
+    expect(res.body.artigos).toEqual(artigosMock);
+    expect(blogServiceMock.getAllArtigos).toHaveBeenCalledWith({ ordenarPor: "alfabetica" });
   });
 
-  it("deve ordenar os artigos por titulo em ordem DESC quando ordenarPor = 'alfabetica' e direcao = 'DESC'", async () => {
+  it("GET /blogs deve ordenar os artigos por titulo DESC quando ordenarPor = 'alfabetica' e direcao = 'DESC'", async () => {
     const artigosMock = [{ titulo: "B" }, { titulo: "A" }];
-    Blog.findAll = jest.fn().mockResolvedValue(artigosMock);
+    blogServiceMock.getAllArtigos.mockResolvedValue(artigosMock);
 
-    const params = { ordenarPor: "alfabetica", direcao: "DESC" };
-    const result = await blogService.getAllArtigos(params);
+    const res = await request(app).get("/blogs?ordenarPor=alfabetica&direcao=DESC");
 
-    expect(Blog.findAll).toHaveBeenCalledWith({ order: [["titulo", "DESC"]] });
-    expect(result).toEqual(artigosMock);
+    expect(res.status).toBe(200);
+    expect(res.body.artigos).toEqual(artigosMock);
+    expect(blogServiceMock.getAllArtigos).toHaveBeenCalledWith({
+      ordenarPor: "alfabetica",
+      direcao: "DESC",
+    });
   });
-});
-
 });
