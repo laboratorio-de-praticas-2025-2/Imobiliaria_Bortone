@@ -112,7 +112,7 @@ export default function Agendamento() {
           </div>
 
           {/* Lado direito */}
-          <div className="flex-1 bg-white px-24 flex flex-col justify-center items-center">
+          <div className="flex-1 bg-white px-24 flex flex-col justify-center pt-15 items-center">
             <div className="w-full">
               <h2 className="text-3xl !font-bold text-[#4C62AE] mb-6">
                 Insira seus dados
