@@ -4,10 +4,10 @@ import blogController from "../controllers/blogController.js";
 const blogRoutes = express.Router();
 
 
-blogRoutes.get("/blogs", blogController.getAllBlogs);
-blogRoutes.get("/blogs/:id", blogController.getBlogById);
-blogRoutes.post("/blogs", blogController.createBlog);
-blogRoutes.put("/blogs/:id", blogController.updateBlog);
-blogRoutes.delete("/blogs/:id", blogController.deleteBlog);
+blogRoutes.get("/blogs", blogController.getAllArtigos);
+blogRoutes.get("/blogs/:id", blogController.getArtigoById);
+blogRoutes.post("/blogs", blogController.createArtigo);
+blogRoutes.put("/blogs/:id", blogController.updateArtigo);
+blogRoutes.delete("/blogs/:id", blogController.deleteArtigo);
 
 export default blogRoutes;
