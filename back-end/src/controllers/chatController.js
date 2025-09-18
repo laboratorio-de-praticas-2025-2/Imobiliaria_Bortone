@@ -127,7 +127,6 @@ export function handleConnection(ws) {
 
       // Mensagens
       if (data.type === "message") {
-        
         //Garantir que a mensagem é uma string e não vazia
         if (typeof data.text !== "string" || data.text.trim() === "") {
           chatService.send(ws, { type: "error", msg: "Mensagem Inválida." });
@@ -141,8 +140,6 @@ export function handleConnection(ws) {
             type: "error",
             msg: "A mensagem é muito longa.",
           });
-<<<<<<< HEAD
-=======
           return;
         }
 
@@ -153,7 +150,6 @@ export function handleConnection(ws) {
             type: "error",
             msg: "A mensagem contém caracteres inválidos.",
           });
->>>>>>> 8f8407dc0b0c0a44c3d97bd9bae1e2a1db24097a
           return;
         }
 
