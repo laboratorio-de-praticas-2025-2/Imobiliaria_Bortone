@@ -16,6 +16,7 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import http from "http";
+import contatoRoutes from "./routes/contato.js";
 
 
 const app = express();
@@ -38,6 +39,7 @@ app.use("/health", healthRouter);
 app.use("/faq", faqRoutes);
 app.use("/mapa", mapaRoutes);
 app.use('/dashboard', dashboardRouter);
+app.use("/contato", contatoRoutes);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(errorHandler);
