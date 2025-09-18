@@ -2,14 +2,27 @@
 
 import chatService from "../services/chatService.js";
 import { dentroHorario } from "../utils/timeUtils.js";
+import { logError, logInfo } from "../utils/logger.js";
 
 export function handleConnection(ws) {
   let role = null;
   let currentId = null;
 
   ws.on("message", (msg) => {
+    let data;
     try {
-      const data = JSON.parse(msg);
+      try {
+        data = JSON.parse(msg);
+      } catch (parseErr) {
+        logError({
+          message: "Mensagem JSON malformada recebida.",
+          userId: currentId,
+          chatId: null,
+          stack: parseErr.stack,
+        });
+        chatService.send(ws, { error: "Mensagem inválida" });
+        return;
+      }
 
       // Conexão inicial
       if (data.type === "connect") {
@@ -41,13 +54,13 @@ export function handleConnection(ws) {
             return;
           }
 
-          chatService.users[currentId] = { 
-            ws, 
-            nome: nomeUsuario, 
-            lastActivity: Date.now() 
+          chatService.users[currentId] = {
+            ws,
+            nome: nomeUsuario,
+            lastActivity: Date.now(),
           };
           chatService.history[currentId] = [];
-          
+
           // Configurar timeout de inatividade
           chatService.updateUserActivity(currentId);
 
@@ -72,6 +85,15 @@ export function handleConnection(ws) {
             userId: currentId,
             nome: nomeUsuario,
             messages: chatService.history[currentId],
+          });
+          // Notificar todos usuários sobre entrada
+          Object.entries(chatService.users).forEach(([otherId, otherData]) => {
+            if (otherId !== currentId) {
+              chatService.send(otherData.ws, {
+                type: "status",
+                msg: `${nomeUsuario} entrou no chat.`,
+              });
+            }
           });
           chatService.broadcastAgents({
             type: "status",
@@ -105,9 +127,8 @@ export function handleConnection(ws) {
 
       // Mensagens
       if (data.type === "message") {
-
         //Garantir que a mensagem é uma string e não vazia
-        if (typeof data.text !== 'string' || data.text.trim() === '') {
+        if (typeof data.text !== "string" || data.text.trim() === "") {
           chatService.send(ws, { type: "error", msg: "Mensagem Inválida." });
           return;
         }
@@ -115,7 +136,10 @@ export function handleConnection(ws) {
         //Limitar o tamanho da mensagem no servidor
         const max_length = 500;
         if (data.text.length > max_length) {
-          chatService.send(ws, { type: "error", msg: "A mensagem é muito longa." });
+          chatService.send(ws, {
+            type: "error",
+            msg: "A mensagem é muito longa.",
+          });
           return;
         }
 
@@ -124,7 +148,7 @@ export function handleConnection(ws) {
         if (role === "user") {
           const nomeUsuario = chatService.users[currentId].nome;
           newMsg = { userId: currentId, nome: nomeUsuario, text: data.text };
-          
+
           // Adicionar mensagem ao histórico com limite de 100
           chatService.addMessageToHistory(currentId, newMsg);
 
@@ -150,7 +174,7 @@ export function handleConnection(ws) {
           }
 
           newMsg = { userId: currentId, nome: "Atendente", text: data.text };
-          
+
           // Adicionar mensagem ao histórico com limite de 100
           chatService.addMessageToHistory(targetUser, newMsg);
 
@@ -160,7 +184,12 @@ export function handleConnection(ws) {
           });
           // Broadcast para demais atendentes, mas não ecoar para o remetente
           chatService.broadcastAgents(
-            { type: "message", userId: targetUser, nome: chatService.users[targetUser].nome, msg: newMsg },
+            {
+              type: "message",
+              userId: targetUser,
+              nome: chatService.users[targetUser].nome,
+              msg: newMsg,
+            },
             { excludeAgentId: currentId }
           );
         }
@@ -185,7 +214,24 @@ export function handleConnection(ws) {
         }
       }
     } catch (err) {
-      console.error("Erro:", err);
+      logError({
+        message: "Erro no processamento da mensagem.",
+        userId: currentId,
+        chatId: null,
+        stack: err.stack,
+      });
+      try {
+        chatService.send(ws, {
+          error: "Ocorreu um erro ao processar sua mensagem.",
+        });
+      } catch (sendErr) {
+        logError({
+          message: "Falha ao enviar mensagem de erro ao cliente.",
+          userId: currentId,
+          chatId: null,
+          stack: sendErr.stack,
+        });
+      }
     }
   });
 
