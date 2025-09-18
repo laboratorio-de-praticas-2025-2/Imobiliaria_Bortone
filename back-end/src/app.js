@@ -16,7 +16,7 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import http from "http";
-import contatoRoutes from "./routes/contato.js";
+import contatoRoutes from "./routes/contatoRoutes.js";
 
 
 const app = express();
