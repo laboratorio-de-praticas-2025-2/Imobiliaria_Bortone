@@ -19,6 +19,7 @@
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
     "mysql2": "^3.14.4",
     "sequelize": "^6.37.7",
     "ws": "^8.18.3"

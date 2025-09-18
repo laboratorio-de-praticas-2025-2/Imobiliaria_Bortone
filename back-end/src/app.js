@@ -10,6 +10,8 @@ import recomendacaoRouter from "./routes/recomendacaoImovelRoutes.js";
 import healthRouter from "./routes/healthRouter.js";
 import faqRoutes from "./routes/faqRoutes.js";
 import mapaRoutes from "./routes/mapaRoutes.js";
+import imoveisRouter from "./routes/ImoveisRouter.js";
+import imagemImovelRoutes from "./routes/ImagemImovelRoutes.js";
 import dashboardRouter from "./routes/dashboardRoutes.js";
 import initWebSocket from "./config/websocket.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
@@ -38,6 +40,8 @@ app.use("/health", healthRouter);
 app.use("/faq", faqRoutes);
 app.use("/mapa", mapaRoutes);
 app.use('/dashboard', dashboardRouter);
+app.use('/imoveis', imoveisRouter);
+app.use('/imagensimoveis', imagemImovelRoutes);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(errorHandler);
