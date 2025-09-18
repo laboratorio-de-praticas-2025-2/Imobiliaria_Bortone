@@ -4,6 +4,5 @@ const relatorioRouter = express.Router();
 
 // /relatorio?tipo=geral
 relatorioRouter.get("/relatorio", ReportController.gerarPDF); 
-//relatorioRouter.get("/relatorio/:tipo/preview",ReportController.previewPDF)
 
 export default relatorioRouter;
