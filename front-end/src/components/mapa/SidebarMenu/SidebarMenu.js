@@ -9,7 +9,7 @@ const { Search } = Input;
 
 const onSearch = (value) => console.log(value);
 
-export default function SidebarMenu() {
+export default function SidebarMenu({setImoveisMapa, setImoveisCarrossel}) {
       const [open, setOpen] = useState(false);
     return (
       <div className="">
@@ -21,14 +21,14 @@ export default function SidebarMenu() {
             onSearch={onSearch}
             style={{ width: "50%" }}
             allowClear
-            className="nav-search-map-mobile"
+            className={`nav-search-map-mobile ${open ? '!hidden' : ''}`}
           />
           <OrderButton onToggle={() => console.log("Ordenar")} />
         </div>
 
         {/* --- SIDEBAR FIXA DESKTOP --- */}
         <div className="hidden lg:block absolute top-0 left-0 z-[1050] h-full">
-          <SidebarDesk />
+          <SidebarDesk setImoveisMapa={setImoveisMapa} setImoveisCarrossel={setImoveisCarrossel} />
         </div>
 
         <div className="md:hidden">

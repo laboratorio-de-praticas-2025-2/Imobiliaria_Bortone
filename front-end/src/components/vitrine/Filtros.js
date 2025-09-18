@@ -14,7 +14,7 @@ export default function Filtros() {
     const { filterData, updateFilterData } = useFilterData();
 
     const handleSelectBuy = (option) => {
-      updateFilterData({ tipo_negociacao: option });
+      updateFilterData({ tipo_negociacao: option === "Comprar" ? "venda" : "aluguel" });
     };
 
     const handleSelectRooms = (option) => {
@@ -34,7 +34,7 @@ export default function Filtros() {
               <LocationInput />
               <DropdownFilter
                 options={optionsBuy}
-                selected={filterData.tipo_negociacao}
+                selected={filterData.tipo_negociacao || "Comprar"}
                 handleSelect={handleSelectBuy}
                 classname={"w-32"}
               />

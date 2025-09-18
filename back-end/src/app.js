@@ -1,15 +1,27 @@
-import 'dotenv/config';
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import connection from "./config/sequelize-config.js";
-import agendamentoRouter from './routes/agendamentoRoute.js';
-import recomendacaoRouter from './routes/recomendacaoImovelRoutes.js';
+import userRoutes from './routes/userRoutes.js'
+import "./models/Associations.js";
+import searchRouter from "./routes/imovelSearchRoutes.js";
+import agendamentoRouter from "./routes/agendamentoRoute.js";
+import recomendacaoRouter from "./routes/recomendacaoImovelRoutes.js";
 import healthRouter from "./routes/healthRouter.js";
 import faqRoutes from "./routes/faqRoutes.js";
 import relatorioRouter from './routes/reportsRoute.js';
+import mapaRoutes from "./routes/mapaRoutes.js";
+import dashboardRouter from "./routes/dashboardRoutes.js";
+import initWebSocket from "./config/websocket.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import path from "path";
+import { fileURLToPath } from "url";
+import http from "http";
+
 const app = express();
 
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Middlewares
 app.use(cors()); // Habilita o CORS para todas as origens
@@ -17,11 +29,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Rotas
+
 app.use('/', recomendacaoRouter);
-app.use('/agendamentos', agendamentoRouter );
-app.use('/health', healthRouter);
+app.use('/user', userRoutes );
+app.use("/search", searchRouter);
+app.use("/agendamentos", agendamentoRouter);
+app.use("/health", healthRouter);
 app.use("/faq", faqRoutes);
 app.use("/",relatorioRouter)
+app.use("/mapa", mapaRoutes);
+app.use('/dashboard', dashboardRouter);
+
+app.use(express.static(path.join(__dirname, "../public")));
+app.use(errorHandler);
+
+const server = http.createServer(app);
+initWebSocket(server);
 
 // Banco de dados
 connection
