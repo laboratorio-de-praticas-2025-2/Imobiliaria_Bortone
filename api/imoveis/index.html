@@ -1,0 +1,883 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Documentação de Imóveis API - Imobiliaria Bortone - Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#documentacao-de-imoveis-api" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-header__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imobiliaria Bortone - Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Documentação de Imóveis API
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-nav__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    Imobiliaria Bortone - Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RegrasGerais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../EstruturaDePastas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estrutura de Pastas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/NextConfig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/middlwareIndexacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Middleware
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/ManualdeTags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual de Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AlgoritmoDeRecomendacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BancoDeDados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dashboard
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MapaAPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MapaImplementacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Implementação da API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MapaResumo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resumo da Integração
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#post-apiimoveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /api/imoveis
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apiimoveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET /api/imoveis
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apiimoveisstatusstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET /api/imoveis/status/:status
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apiimoveisnegociacaotipo" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET /api/imoveis/negociacao/:tipo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apiimoveisid" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET /api/imoveis/:id
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#put-apiimoveisid" class="md-nav__link">
+    <span class="md-ellipsis">
+      PUT /api/imoveis/:id
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#patch-apiimoveisidstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      PATCH /api/imoveis/:id/status
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delete-apiimoveisid" class="md-nav__link">
+    <span class="md-ellipsis">
+      DELETE /api/imoveis/:id
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="documentacao-de-imoveis-api">Documentação de Imóveis API</h1>
+<p>Esta seção descreve os endpoints da API relacionados ao gerenciamento de imóveis.</p>
+<h3 id="post-apiimoveis">POST /api/imoveis</h3>
+<p>Descrição: Cria um novo imóvel, opcionalmente com dados da tabela 'casa'</p>
+<p>Método: POST</p>
+<p>URL: <code>/api/imoveis</code></p>
+<p>Parâmetros:
+- body <code>tipo</code> (obrigatório): Tipo do imóvel (ex: 'casa', 'apartamento', 'terreno').
+- body <code>endereco</code> (obrigatório): Endereço completo do imóvel.
+- body <code>cidade</code> (obrigatório): Cidade do imóvel.
+- body <code>estado</code> (obrigatório): Estado do imóvel.
+- body <code>preco</code> (obrigatório): Preço do imóvel.
+- body <code>area</code> (opcional): Área do imóvel em m².
+- body <code>descricao</code> (opcional): Descrição detalhada do imóvel.
+- body <code>murado</code> (opcional): Booleano indicando se o terreno é murado (para terrenos).
+- body <code>latitude</code> (opcional): Latitude da localização do imóvel.
+- body <code>longitude</code> (opcional): Longitude da localização do imóvel.
+- body <code>usuario_id</code> (opcional): ID do usuário proprietário do imóvel.
+- body <code>tipo_negociacao</code> (opcional): Tipo de negociação ('aluguel' ou 'venda', padrão: 'venda').
+- body <code>status</code> (opcional): Status do imóvel ('disponivel', 'indisponivel', 'vendido', 'locado', padrão: 'disponivel').
+- body <code>quartos</code> (condicional, para 'casa' ou 'apartamento'): Número de quartos.
+- body <code>banheiros</code> (condicional, para 'casa' ou 'apartamento'): Número de banheiros.
+- body <code>vagas</code> (condicional, para 'casa' ou 'apartamento'): Número de vagas de garagem.
+- body <code>possui_piscina</code> (condicional, para 'casa' ou 'apartamento'): Booleano indicando se possui piscina.
+- body <code>possui_jardim</code> (condicional, para 'casa' ou 'apartamento'): Booleano indicando se possui jardim.</p>
+<p>Exemplo de Requisição:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">POST</span><span class="w"> </span><span class="o">/</span><span class="nx">api</span><span class="o">/</span><span class="nx">imoveis</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span><span class="w"> </span><span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;tipo&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;casa&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;endereco&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Rua Exemplo, 123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;cidade&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;São Paulo&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;estado&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;SP&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;preco&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">500000.00</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;area&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">150</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;descricao&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Bela casa com 3 quartos&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;quartos&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;banheiros&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;vagas&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;possui_piscina&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;possui_jardim&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Exemplo de Resposta (201):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;casa&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;endereco&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rua Exemplo, 123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;cidade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;São Paulo&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;estado&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SP&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;preco&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500000</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;area&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;descricao&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bela casa com 3 quartos&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;murado&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;latitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;longitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;usuario_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tipo_negociacao&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;venda&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;disponivel&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data_cadastro&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-01T12:00:00.000Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data_update_status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-01T12:00:00.000Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;casa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;imovel_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;quartos&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;banheiros&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;vagas&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;possui_piscina&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;possui_jardim&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-01T12:00:00.000Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;updatedAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-01T12:00:00.000Z&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;terreno&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Códigos de Status: 201, 400, 500</p>
+<h3 id="get-apiimoveis">GET /api/imoveis</h3>
+<p>Descrição: Lista imóveis com filtros opcionais.</p>
+<p>Método: GET</p>
+<p>URL: <code>/api/imoveis</code></p>
+<p>Parâmetros:
+- query <code>tipo_negociacao</code> (opcional): Filtra por tipo de negociação ('aluguel' ou 'venda').
+- query <code>tipo</code> (opcional): Filtra por tipo de imóvel ('casa', 'apartamento', 'terreno').
+- query <code>minPreco</code> (opcional): Preço mínimo do imóvel.
+- query <code>maxPreco</code> (opcional): Preço máximo do imóvel.
+- query <code>minArea</code> (opcional): Área mínima do imóvel em m².
+- query <code>maxArea</code> (opcional): Área máxima do imóvel em m².</p>
+<p>Exemplo de Requisição:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">GET</span><span class="w"> </span><span class="o">/</span><span class="nx">api</span><span class="o">/</span><span class="nx">imoveis</span><span class="o">?</span><span class="nx">tipo_negociacao</span><span class="o">=</span><span class="nx">venda</span><span class="o">&amp;</span><span class="nx">tipo</span><span class="o">=</span><span class="nx">casa</span><span class="o">&amp;</span><span class="nx">minPreco</span><span class="o">=</span><span class="mf">100000</span><span class="o">&amp;</span><span class="nx">maxPreco</span><span class="o">=</span><span class="mf">200000</span>
+</code></pre></div>
+<p>Exemplo de Resposta (200):</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;casa&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;endereco&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rua Exemplo, 123&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;cidade&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;São Paulo&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;estado&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SP&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;preco&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;area&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;descricao&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bela casa com 3 quartos&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;murado&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;latitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;longitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;usuario_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tipo_negociacao&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;venda&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;disponivel&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;data_cadastro&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-01T12:00:00.000Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;data_update_status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-01T12:00:00.000Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;casa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;imovel_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;quartos&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;banheiros&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;vagas&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;possui_piscina&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;possui_jardim&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-01T12:00:00.000Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;updatedAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-01T12:00:00.000Z&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;terreno&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+<p>Códigos de Status: 200, 500</p>
+<h3 id="get-apiimoveisstatusstatus">GET /api/imoveis/status/:status</h3>
+<p>Descrição: Retorna imóveis filtrados por status.</p>
+<p>Método: GET</p>
+<p>URL: <code>/api/imoveis/status/:status</code></p>
+<p>Parâmetros:
+- path <code>status</code> (obrigatório): O status do imóvel ('disponivel', 'indisponivel', 'vendido', 'locado').</p>
+<p>Exemplo de Requisição:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">GET</span><span class="w"> </span><span class="o">/</span><span class="nx">api</span><span class="o">/</span><span class="nx">imoveis</span><span class="o">/</span><span class="nx">status</span><span class="o">/</span><span class="nx">disponivel</span>
+</code></pre></div>
+<p>Exemplo de Resposta (200):</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;casa&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;disponivel&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+<p>Códigos de Status: 200, 500</p>
+<h3 id="get-apiimoveisnegociacaotipo">GET /api/imoveis/negociacao/:tipo</h3>
+<p>Descrição: Retorna imóveis filtrados por tipo de negociação.</p>
+<p>Método: GET</p>
+<p>URL: <code>/api/imoveis/negociacao/:tipo</code></p>
+<p>Parâmetros:
+- path <code>tipo</code> (obrigatório): O tipo de negociação ('aluguel' ou 'venda').</p>
+<p>Exemplo de Requisição:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">GET</span><span class="w"> </span><span class="o">/</span><span class="nx">api</span><span class="o">/</span><span class="nx">imoveis</span><span class="o">/</span><span class="nx">negociacao</span><span class="o">/</span><span class="nx">venda</span>
+</code></pre></div>
+<p>Exemplo de Resposta (200):</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;casa&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tipo_negociacao&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;venda&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+<p>Códigos de Status: 200, 500</p>
+<h3 id="get-apiimoveisid">GET /api/imoveis/:id</h3>
+<p>Descrição: Retorna um imóvel específico pelo seu ID.</p>
+<p>Método: GET</p>
+<p>URL: <code>/api/imoveis/:id</code></p>
+<p>Parâmetros:
+- path <code>id</code> (obrigatório): O ID do imóvel a ser recuperado.</p>
+<p>Exemplo de Requisição:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">GET</span><span class="w"> </span><span class="o">/</span><span class="nx">api</span><span class="o">/</span><span class="nx">imoveis</span><span class="o">/</span><span class="mf">1</span>
+</code></pre></div>
+<p>Exemplo de Resposta (200):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;casa&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;endereco&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rua Exemplo, 123&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Códigos de Status: 200, 404, 500</p>
+<h3 id="put-apiimoveisid">PUT /api/imoveis/:id</h3>
+<p>Descrição: Atualiza um imóvel existente pelo seu ID.</p>
+<p>Método: PUT</p>
+<p>URL: <code>/api/imoveis/:id</code></p>
+<p>Parâmetros:
+- path <code>id</code> (obrigatório): O ID do imóvel a ser atualizado.
+- body (obrigatório): Os dados do imóvel a serem atualizados. (Mesmos parâmetros do POST, mas todos opcionais).</p>
+<p>Exemplo de Requisição:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">PUT</span><span class="w"> </span><span class="o">/</span><span class="nx">api</span><span class="o">/</span><span class="nx">imoveis</span><span class="o">/</span><span class="mf">1</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span><span class="w"> </span><span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;preco&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">550000.00</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;descricao&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Linda casa reformada com 3 quartos&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Exemplo de Resposta (200):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tipo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;casa&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;endereco&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rua Exemplo, 123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;preco&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">550000</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Códigos de Status: 200, 400, 404, 500</p>
+<h3 id="patch-apiimoveisidstatus">PATCH /api/imoveis/:id/status</h3>
+<p>Descrição: Atualiza o status de um imóvel específico pelo seu ID.</p>
+<p>Método: PATCH</p>
+<p>URL: <code>/api/imoveis/:id/status</code></p>
+<p>Parâmetros:
+- path <code>id</code> (obrigatório): O ID do imóvel a ter o status atualizado.
+- body <code>status</code> (obrigatório): O novo status do imóvel ('disponivel', 'indisponivel', 'vendido', 'locado').</p>
+<p>Exemplo de Requisição:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">PATCH</span><span class="w"> </span><span class="o">/</span><span class="nx">api</span><span class="o">/</span><span class="nx">imoveis</span><span class="o">/</span><span class="mf">1</span><span class="o">/</span><span class="nx">status</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span><span class="w"> </span><span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;status&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;vendido&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Exemplo de Resposta (200):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Status do imóvel atualizado com sucesso.&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Códigos de Status: 200, 400, 404, 500</p>
+<h3 id="delete-apiimoveisid">DELETE /api/imoveis/:id</h3>
+<p>Descrição: Exclui um imóvel específico pelo seu ID, incluindo todas as entidades relacionadas (Casa, Terreno, Imagens).</p>
+<p>Método: DELETE</p>
+<p>URL: <code>/api/imoveis/:id</code></p>
+<p>Parâmetros:
+- path <code>id</code> (obrigatório): O ID do imóvel a ser excluído.</p>
+<p>Exemplo de Requisição:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">DELETE</span><span class="w"> </span><span class="o">/</span><span class="nx">api</span><span class="o">/</span><span class="nx">imoveis</span><span class="o">/</span><span class="mf">1</span>
+</code></pre></div>
+<p>Exemplo de Resposta (200):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Imóvel e todas as entidades relacionadas foram excluídos com sucesso.&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Códigos de Status: 200, 404, 500</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
