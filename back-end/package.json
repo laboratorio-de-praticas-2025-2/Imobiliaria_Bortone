@@ -8,19 +8,23 @@
     "API",
     "imobiliária",
     "Bortone"
-  ],  
-
+  ],
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll"
   },
   "dependencies": {
-    "dotenv": "^17.2.1",
-    "express": "^5.1.0",
-    "sequelize": "^6.37.7",
-    "mysql2": "^3.3.3",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.14.4",
+    "sequelize": "^6.37.7",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.10"
   },
     "devDependencies": {

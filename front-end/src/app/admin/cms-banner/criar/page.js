@@ -33,12 +33,6 @@ export default function CriarBannerPage() {
               {/* Coluna do Formulário */}
               <div className="sm:w-[60%] flex flex-col gap-3 items-end">
                 <div className="flex flex-col sm:flex-row w-full justify-between items-center gap-3">
-                  <TextField
-                    name="titulo"
-                    label="Título do Banner"
-                    placeholder="Título do Banner"
-                    className="!w-[100%]"
-                  />
 
                   <UploadField
                     name="imagem"

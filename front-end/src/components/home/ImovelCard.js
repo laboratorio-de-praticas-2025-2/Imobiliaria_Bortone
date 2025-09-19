@@ -2,6 +2,7 @@ import { Button, Flex } from "antd";
 import { PiBathtub } from "react-icons/pi";
 import { BsDoorOpenFill } from "react-icons/bs";
 import { AiOutlineMessage } from "react-icons/ai";
+import Link from "next/link";
 
 /* eslint-disable @next/next/no-img-element */
 export default function ImovelCard({ imovel }) {
@@ -49,12 +50,14 @@ export default function ImovelCard({ imovel }) {
           gap={8}
           className="sm:!p-0 !p-3"
         >
-          <Button
-            shape="round"
-            className="!border-none !text-[var(--primary)] hover:!border-none hover:!text-white hover:!bg-[var(--primary)] w-full !bg-[#D5D8E5] sm:!bg-white"
-          >
-            Fazer Proposta
-          </Button>
+          <Link href={`/agendamento/${imovel.id}`} className="w-full">
+            <Button
+              shape="round"
+              className="!border-none !text-[var(--primary)] hover:!border-none hover:!text-white hover:!bg-[var(--primary)] w-full !bg-[#D5D8E5] sm:!bg-white"
+            >
+              Agendar visita
+            </Button>
+          </Link>
           <Button
             shape="circle"
             className="!border-none !text-[var(--primary)] hover:!border-none hover:!text-white hover:!bg-[var(--primary)] !bg-[#D5D8E5] sm:!bg-white"
