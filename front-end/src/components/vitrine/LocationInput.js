@@ -16,7 +16,12 @@ export default function LocationInput() {
           type="text"
           placeholder="Registro, São Paulo, Brasil"
           className="w-full rounded-3xl pl-10 pr-4 py-2 bg-[#EEF0F9] border-0 !text-[var(--primary)] !placeholder-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
-          onChange={(e) => updateFilterData({ regiao: e.target.value })}
+          onChange={(e) =>
+            updateFilterData({
+              endereco: e.target.value, // ou localizacao, conforme o back-end
+              // zere outros filtros se quiser busca só por endereço
+            })
+          }
         />
       </div>
     </div>

@@ -1,47 +1,52 @@
 "use client";
 import Link from "next/link";
-import { Form, Input, Button, Flex } from "antd";
+import { Form, Input, Button, Flex, message } from "antd";
 import { useSEO } from "@/hooks/useSEO";
 import { getSEOConfig } from "@/config/seo";
 import { useState } from "react";
+import axios from "axios";         
+import { useRouter } from "next/navigation"; 
 
 export default function LoginPage() {
   // SEO para página de login
   useSEO(getSEOConfig('/login'));
 
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const onFinish = async (values) => {
     setLoading(true);
 
-    try {
-      // 🔹 Mock da chamada à API
-      console.log("📡 Enviando login...", values);
+        const dados = {
+        email: values.email,
+        senha: values.password
+    };
 
-      // Simula delay de request
-      await new Promise((resolve) => setTimeout(resolve, 1200));
 
-      // Mock de resposta de sucesso
-      const mockResponse = {
-        success: true,
-        token: "fake-jwt-token-123",
-        user: {
-          id: 1,
-          name: "Amanda Dev",
-          email: values.email,
-        },
-      };
+      try {
+      console.log("📡 Enviando login...", dados);
 
-      if (mockResponse.success) {
-        message.success(`Bem-vinda, ${mockResponse.user.name}!`);
-        // Aqui no futuro: salvar token no localStorage/cookie
-        // e redirecionar com next/navigation -> router.push("/dashboard")
-      } else {
-        message.error("Credenciais inválidas, tente novamente.");
-      }
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/login`,
+        dados
+      );
+
+      message.success(response.data.message || `Login bem-sucedido!`);
+
+      localStorage.setItem('authToken', response.data.token);
+      localStorage.setItem('userInfo', JSON.stringify(response.data.user));
+
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
+
     } catch (error) {
       console.error(error);
-      message.error("Erro ao conectar com o servidor.");
+      if (error.response && error.response.data && error.response.data.message) {
+        message.error(error.response.data.message);
+      } else {
+        message.error("Erro ao conectar com o servidor.");
+      }
     } finally {
       setLoading(false);
     }

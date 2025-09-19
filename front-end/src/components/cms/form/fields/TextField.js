@@ -8,6 +8,7 @@ export default function TextField({
   className,
   classInput,
   readOnly = false,
+  required = true,
   value,
   onChange,
 }) {
@@ -16,11 +17,11 @@ export default function TextField({
       label={label}
       name={name}
       rules={
-        readOnly
+        readOnly || !required
           ? []
           : [{ required: true, message: "Este campo é obrigatório!" }]
       }
-      className={`custom-form-item ${className}`}
+      className={`custom-form-item ${required ? "required" : ""} ${className}`}
       labelCol={{ span: 24 }}
     >
       <Input

@@ -15,7 +15,7 @@ export default function UploadField({
       label={label}
       name={name}
       rules={[{ required: true, message: "Este campo é obrigatório!" }]}
-      className={`custom-form-item ${className}`}
+      className={`custom-form-item required ${className}`}
       labelCol={{ span: 24 }}
     >
       <Upload

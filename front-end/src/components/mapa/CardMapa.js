@@ -44,7 +44,7 @@ export default function CardMapa({ imovel }) {
 
       {/* Quartos e Banheiros */}
       <div className="inline-flex flex-row gap-2 mt-2">
-        {imovel.tipo === "Casa" ? (
+        {imovel.tipo === "Casa" || "Apartamento" ? (
           <>
             <div className="flex flex-col w-auto whitespace-nowrap">
               <div className="h-auto flex items-center justify-center px-2">

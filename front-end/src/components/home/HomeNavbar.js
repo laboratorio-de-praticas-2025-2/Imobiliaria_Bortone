@@ -46,7 +46,7 @@ export default function HomeNavbar({ className }) {
           />
         </Link>
 
-        <div className="flex items-center gap-10">
+        <div className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <Link href={link.path} key={link.name} className="h-full">
               <Flex
