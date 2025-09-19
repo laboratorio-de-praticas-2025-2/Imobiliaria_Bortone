@@ -7,9 +7,28 @@ describe("Testando rotas de Publicidade com service mockado", () => {
   let publicidadeServiceMock;
 
   beforeAll(async () => {
-    publicidadeServiceMock = (await import("../services/publicidadeService.js")).default;
+    // Garante que o cache de módulos seja limpo antes de aplicar o mock
+    jest.resetModules();
+
+    // Cria o mock do service diretamente no teste
+    jest.unstable_mockModule("../services/publicidadeService.js", () => ({
+      default: {
+        getAllPublicidades: jest.fn(),
+        getPublicidadeById: jest.fn(),
+        createPublicidade: jest.fn(),
+        updatePublicidade: jest.fn(),
+        deletePublicidade: jest.fn(),
+      },
+    }));
+
+    // Importa o service já mockado
+    const svc = await import("../services/publicidadeService.js");
+    publicidadeServiceMock = svc.default;
+
+    // Importa as rotas reais
     const { default: publicidadeRoutes } = await import("../routes/publicidadeRoutes.js");
 
+    // Configura o app Express para os testes
     app = express();
     app.use(express.json());
     app.use("/api", publicidadeRoutes);
