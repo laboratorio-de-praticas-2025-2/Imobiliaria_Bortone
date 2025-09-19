@@ -11,7 +11,7 @@ import healthRouter from "./routes/healthRouter.js";
 import faqRoutes from "./routes/faqRoutes.js";
 import mapaRoutes from "./routes/mapaRoutes.js";
 import imoveisRouter from "./routes/ImoveisRouter.js";
-import imagemImovelRoutes from "./routes/ImagemImovelRoutes.js";
+import imagemImovelRoutes from "./routes/imagemImovelRoutes.js";
 import dashboardRouter from "./routes/dashboardRoutes.js";
 import initWebSocket from "./config/websocket.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
