@@ -3,43 +3,62 @@
 import ShareButton from "@/components/blog/ShareButton";
 import HomeFooter from "@/components/home/HomeFooter";
 import HomeNavbar from "@/components/home/HomeNavbar";
-import { mockImoveis } from "@/constants/imoveis";
+import { mockImoveis } from "@/mock/imoveis";
 import "@/styles/imoveis.css";
-import { Input } from "antd";
+import { Input, Divider } from "antd";
 import "leaflet/dist/leaflet.css";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { BsDoorOpenFill } from "react-icons/bs";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { PiBathtub } from "react-icons/pi";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { PiBathtub } from "react-icons/pi";
-import { BsDoorOpenFill } from "react-icons/bs";
-import dynamic from "next/dynamic";
+import { useSEO } from "@/hooks/useSEO";
+import { FaArrowRight } from "react-icons/fa6";
 
 const { Search } = Input;
-const onSearch = (value) => console.log(value);
+const onSearch = async (value) => {
+  if (!value) return;
+  try {
+    const res = await fetch(
+      `${process.env.API_URL}/search/simples?endereco=${encodeURIComponent(
+        value
+      )}`,
+      { method: "GET" }
+    );
+    if (!res.ok) throw new Error("Erro ao buscar imóveis");
+    const data = await res.json();
+    // Atualiza a lista de imóveis exibida
+    setImoveis(data);
+  } catch (err) {
+    console.error("Erro na pesquisa:", err);
+  }
+};
 
 // Componente de mapa carregado dinamicamente
 const LeafletMap = dynamic(
   () =>
-    Promise.resolve(() => {
+    Promise.resolve(({ latitude, longitude }) => {
+      const mapRef = useRef(null);
+
       useEffect(() => {
-        const mapContainer = document.getElementById("map-pequeno");
-        if (!mapContainer || mapContainer.children.length > 0) return;
+        if (mapRef.current) return; // evita recriar
 
         import("leaflet").then((L) => {
-          const map = L.map(mapContainer, { zoomControl: false }).setView(
-            [-23.5505, -46.6333],
+          mapRef.current = L.map("map-pequeno", { zoomControl: false }).setView(
+            [latitude, longitude],
             13
           );
 
           L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: "© OpenStreetMap contributors",
-          }).addTo(map);
+          }).addTo(mapRef.current);
 
           const customIcon = L.icon({
             iconUrl: "/images/icon_loc.png",
@@ -48,13 +67,22 @@ const LeafletMap = dynamic(
             popupAnchor: [0, -32],
           });
 
-          L.marker([-23.5505, -46.6333], { icon: customIcon }).addTo(map);
+          L.marker([latitude, longitude], { icon: customIcon }).addTo(
+            mapRef.current
+          );
         });
-      }, []);
+
+        return () => {
+          if (mapRef.current) {
+            mapRef.current.remove(); // 🔥 destroi o mapa ao desmontar
+            mapRef.current = null;
+          }
+        };
+      }, [latitude, longitude]);
 
       return <div id="map-pequeno" className="mapa-pequeno" />;
     }),
-  { ssr: false } // garante que só renderize no cliente
+  { ssr: false }
 );
 
 export default function Mapa() {
@@ -80,12 +108,32 @@ export default function Mapa() {
     }
   }, [imoveis]);
 
-  if (loading) return <div>Carregando...</div>;
-
+  // Encontrar o imóvel atual
   const post = imoveis.find((p) => p.id === Number(id));
-  if (!post) return <div>Post não encontrado.</div>;
-
   const imovelAtual = post;
+
+  // SEO dinâmico para imóvel específico - sempre chamado
+  useSEO({
+    title: imovelAtual
+      ? `${imovelAtual.tipo} em ${imovelAtual.endereco}`
+      : "Imóvel",
+    description: imovelAtual
+      ? `${imovelAtual.tipo} com ${imovelAtual.quartos} quartos, ${
+          imovelAtual.banheiros
+        } banheiros em ${imovelAtual.endereco}. ${
+          imovelAtual.descricao?.substring(0, 120) ||
+          "Imóvel de qualidade em excelente localização."
+        }`
+      : "Imóvel de qualidade em excelente localização.",
+    keywords: imovelAtual
+      ? `${imovelAtual.tipo}, ${imovelAtual.endereco}, imóvel, ${imovelAtual.quartos} quartos, ${imovelAtual.banheiros} banheiros, ${imovelAtual.operacao}`
+      : "imóvel, casa, apartamento",
+    url: `https://imobiliaria-bortone.vercel.app/imoveis/${id}`,
+    image: imovelAtual?.imagens?.[0]?.url_imagem,
+  });
+
+  if (loading) return <div>Carregando...</div>;
+  if (!post) return <div>Post não encontrado.</div>;
   const slides = imovelAtual?.imagens || [];
   const toggleVerMais = () => setVerMais(!verMais);
 
@@ -214,7 +262,9 @@ export default function Mapa() {
               <p className="Gimovel">Gostou do imóvel?</p>
             </div>
             <div className="Dbotoes">
-              <button className="btn1">Agendar visita</button>
+              <Link href={`/agendamento/${imovelAtual.id}`}>
+                <button className="btn1">Agendar visita</button>
+              </Link>
               <button className="btn2">Propor valor</button>
             </div>
             <div className="md:pl-[10%] flex md:hidden absolute bottom-10 pl-[4%]">
@@ -246,20 +296,13 @@ export default function Mapa() {
         <div className="todo2">
           <div className="map_loc">
             <Link className="ir_loc" href="/mapa">
-              <div className="Ltxt">
-                <p>{imovelAtual.endereco}</p>
-                <p className="p2">{imovelAtual.cidade}</p>
+              <div>
+                <p className="text-[var(--primary)] text-xl">
+                  {imovelAtual.endereco}
+                </p>
+                <p className="text-[var(--primary)]">{imovelAtual.cidade}</p>
               </div>
-              <div className="ir_loc_icon">
-                <Image
-                  src="/images/icon_setaD.png"
-                  alt="icon_setaD"
-                  width={15}
-                  height={17}
-                  className="icon_setaD"
-                  link="/mapa"
-                />
-              </div>
+              <FaArrowRight color="#304383" />
             </Link>
 
             <LeafletMap
@@ -293,7 +336,7 @@ export default function Mapa() {
           </div>
         </div>
 
-        <hr className="linha-divisoria" />
+        <Divider size="large" />
       </main>
 
       <HomeFooter />

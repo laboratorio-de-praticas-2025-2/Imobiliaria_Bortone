@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { IoClose, IoMenu } from "react-icons/io5";
 import SidebarNav from "./SidebarNav";
+import Link from "next/link";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -67,13 +68,15 @@ export default function Sidebar() {
 
           {/* Logo embaixo */}
           <div className="flex justify-center">
-            <Image
-              src="/images/logo.svg"
-              alt="Logo Bortone"
-              width={50}
-              height={50}
-              className="object-contain md:flex hidden"
-            />
+            <Link href="/">
+              <Image
+                src="/images/logo.svg"
+                alt="Logo Bortone"
+                width={50}
+                height={50}
+                className="object-contain md:flex hidden"
+              />
+            </Link>
           </div>
         </div>
       )}

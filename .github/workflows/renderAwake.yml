@@ -1,0 +1,29 @@
+name: Keep Render Awake
+ 
+on: 
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+ 
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Request API
+        id: call_api
+        run: |
+          # Faz o request e salva body em response.txt
+          RESPONSE=$(curl -s -w " [status:%{http_code} tempo:%{time_total}s]" -o response.txt https://imobiliaria-bortone.onrender.com/health)
+          BODY=$(cat response.txt)
+          FULL_RESPONSE="$BODY$RESPONSE"
+
+          # Exporta para env
+          echo "response=$FULL_RESPONSE" >> $GITHUB_ENV
+ 
+      - name: Send to Discord
+        run: |
+          PAYLOAD=$(echo "${{ env.response }}" | jq -Rs .)
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{\"content\": $PAYLOAD}" \
+               "${{ secrets.DISCORD_WEBHOOK }}"

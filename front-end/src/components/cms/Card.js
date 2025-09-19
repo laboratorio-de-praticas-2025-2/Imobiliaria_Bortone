@@ -7,8 +7,8 @@ import { IoMdTrash } from "react-icons/io";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import Link from "next/link";
 
-export default function Card({banner}) {
-  const [checked, setChecked] = useState(banner.ativo);
+export default function Card({ item, href_cms = "banner", header = false }) {
+  const [checked, setChecked] = useState(item.ativo);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
 
   const onDelete = () => {
@@ -35,13 +35,19 @@ export default function Card({banner}) {
         />
       )}
       <div className="rounded-2xl flex flex-col w-fit bg-white mb-5">
-        <p className="p-3 text-lg font-bold">{banner.descricao}</p>
+        {header && (
+          <p className="p-3 text-lg font-bold">
+            [{item.id}] - {item.descricao || item.titulo}
+          </p>
+        )}
         <Image
-          src={banner.url_imagem}
-          alt={"Imagem do banner " + banner.id}
+          src={item.url_imagem}
+          alt={"Imagem do item " + item.id}
           width={425}
           height={130}
-          className="aspect-[4/2] object-cover"
+          className={`aspect-[4/2] object-cover ${
+            header ? "" : "rounded-t-2xl"
+          }`}
         />
         <div className="w-full flex justify-end gap-4 p-3">
           <div className="flex items-center gap-3">
@@ -64,7 +70,7 @@ export default function Card({banner}) {
               />
             </ConfigProvider>
           </div>
-          <Link href={`/admin/cms-banner/editar/${banner.id}`}>
+          <Link href={`/admin/cms-${href_cms}/editar/${item.id}`}>
             <BiPencil
               size={22}
               className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"

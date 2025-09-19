@@ -1,8 +1,61 @@
 "use client";
 import Link from "next/link";
-import { Form, Input, Button, Flex } from "antd";
+import { Form, Input, Button, Flex, message } from "antd";
+import { useSEO } from "@/hooks/useSEO";
+import { getSEOConfig } from "@/config/seo";
+import { useState } from "react";
+import axios from "axios";         
+import { useRouter } from "next/navigation"; 
 
 export default function LoginPage() {
+  // SEO para página de login
+  useSEO(getSEOConfig('/login'));
+
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const onFinish = async (values) => {
+    setLoading(true);
+
+        const dados = {
+        email: values.email,
+        senha: values.password
+    };
+
+
+      try {
+      console.log("📡 Enviando login...", dados);
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/login`,
+        dados
+      );
+
+      message.success(response.data.message || `Login bem-sucedido!`);
+
+      localStorage.setItem('authToken', response.data.token);
+      localStorage.setItem('userInfo', JSON.stringify(response.data.user));
+
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
+
+    } catch (error) {
+      console.error(error);
+      if (error.response && error.response.data && error.response.data.message) {
+        message.error(error.response.data.message);
+      } else {
+        message.error("Erro ao conectar com o servidor.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("❌ Falha no formulário:", errorInfo);
+  };
+
   return (
     <div>
       <div className="image-header" />
@@ -11,7 +64,12 @@ export default function LoginPage() {
           Faça seu login
         </h1>
         <Flex vertical className="login-form-container">
-          <Form name="login" autoComplete="off">
+          <Form
+            name="login"
+            autoComplete="off"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+          >
             <Flex vertical align="center">
               <Form.Item
                 name="email"
@@ -37,6 +95,7 @@ export default function LoginPage() {
                     type="primary"
                     htmlType="submit"
                     className="login-button"
+                    loading={loading}
                   >
                     Entrar
                   </Button>

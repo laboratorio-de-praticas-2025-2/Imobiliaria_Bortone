@@ -59,14 +59,14 @@
 }
 @font-face {
   font-family: "Glacial Indifference";
-  src: url("/fonts/GlacialIndifference-Regular.otf") format("opentype");
+  src: url("/fonts/glacial-indifference.regular.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Glacial Indifference";
-  src: url("/fonts/GlacialIndifference-Bold.otf") format("opentype");
+  src: url("/fonts/glacial-indifference.bold.otf") format("opentype");
   font-weight: bold;
   font-style: normal;
 }
@@ -95,4 +95,61 @@ body {
 
 p {
   margin: 0 !important;
+}
+
+
+/* Animções do CHAT */
+@keyframes emojiOpen {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-emojiOpen {
+  animation: emojiOpen 0.15s ease-out forwards;
+}
+
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-slideUpFade {
+  animation: slideUpFade 0.2s ease-out forwards;
+}
+
+/* Scrollbar geral */
+::-webkit-scrollbar {
+  width: 8px;              /* largura da barra vertical */
+  height: 8px;             /* altura da barra horizontal */
+}
+
+::-webkit-scrollbar-track {
+  background: ;      /* cor do trilho */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #4C62AE; /* cor do thumb */
+  border-radius: 9999px;     /* bordas arredondadas */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #3b4f8d; /* cor ao passar o mouse */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4C62AE #f1f1f1;
 }
