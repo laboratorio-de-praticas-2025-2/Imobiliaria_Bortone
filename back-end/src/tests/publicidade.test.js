@@ -1,84 +1,89 @@
+import { jest } from "@jest/globals";
 import request from "supertest";
-import app from "../app.js";
-import * as publicidadeController from "../controllers/publicidadeController.js";
+import express from "express";
 
-// Mocka todas as funções exportadas do controller
-jest.mock("../controllers/publicidadeController.js");
+describe("Testando rotas de Publicidade com service mockado", () => {
+  let app;
+  let publicidadeServiceMock;
 
-describe("Testes das rotas de Publicidade", () => {
-  const mockPublicidade = {
-    id: 1,
-    titulo: "Promoção imperdível",
-    conteudo: "Descontos em imóveis até 30%",
-    url_imagem: "https://exemplo.com/imagem.jpg",
-    usuario_id: 2,
-    ativo: true,
-  };
+  beforeAll(async () => {
+    publicidadeServiceMock = (await import("../services/publicidadeService.js")).default;
+    const { default: publicidadeRoutes } = await import("../routes/publicidadeRoutes.js");
 
-  beforeEach(() => {
+    app = express();
+    app.use(express.json());
+    app.use("/api", publicidadeRoutes);
+  });
+
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
-  test("GET /publicidade - deve retornar todas as publicidades", async () => {
-    publicidadeController.getAllPublicidades.mockImplementation((req, res) => {
-      res.status(200).json([mockPublicidade]);
-    });
+  it("GET /api/publicidade deve retornar lista de publicidades", async () => {
+    const mockData = [{ id: 1, titulo: "Promoção imperdível" }];
+    publicidadeServiceMock.getAllPublicidades.mockResolvedValue(mockData);
 
     const res = await request(app).get("/api/publicidade");
 
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toEqual([mockPublicidade]);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(mockData);
+    expect(publicidadeServiceMock.getAllPublicidades).toHaveBeenCalled();
   });
 
-  test("GET /publicidade/:id - deve retornar uma publicidade por ID", async () => {
-    publicidadeController.getPublicidadeById.mockImplementation((req, res) => {
-      res.status(200).json(mockPublicidade);
-    });
+  it("GET /api/publicidade/:id deve retornar uma publicidade", async () => {
+    const mockPub = { id: 1, titulo: "Promoção imperdível" };
+    publicidadeServiceMock.getPublicidadeById.mockResolvedValue(mockPub);
 
     const res = await request(app).get("/api/publicidade/1");
 
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toEqual(mockPublicidade);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(mockPub);
+    expect(publicidadeServiceMock.getPublicidadeById).toHaveBeenCalledWith(1);
   });
 
-  test("POST /publicidade - deve criar uma nova publicidade", async () => {
-    publicidadeController.createPublicidade.mockImplementation((req, res) => {
-      res.status(201).json(mockPublicidade);
-    });
+  it("POST /api/publicidade deve criar uma publicidade", async () => {
+    const payload = {
+      titulo: "Nova publicidade",
+      conteudo: "Descontos incríveis",
+      url_imagem: "https://exemplo.com/img.jpg",
+      usuario_id: 2,
+      ativo: true,
+    };
+    const created = { id: 1, ...payload };
 
-    const res = await request(app)
-      .post("/api/publicidade")
-      .send(mockPublicidade);
+    publicidadeServiceMock.createPublicidade.mockResolvedValue(created);
 
-    expect(res.statusCode).toBe(201);
-    expect(res.body).toEqual(mockPublicidade);
+    const res = await request(app).post("/api/publicidade").send(payload);
+
+    expect(res.status).toBe(201);
+    expect(res.body).toEqual(created);
+    expect(publicidadeServiceMock.createPublicidade).toHaveBeenCalledWith(payload);
   });
 
-  test("PUT /publicidade/:id - deve atualizar uma publicidade existente", async () => {
-    publicidadeController.updatePublicidade.mockImplementation((req, res) => {
-      res
-        .status(200)
-        .json({
-          message: "Publicidade atualizada com sucesso",
-          publicidade: mockPublicidade,
-        });
-    });
+  it("PUT /api/publicidade/:id deve atualizar uma publicidade", async () => {
+    const id = 1;
+    const updateData = { titulo: "Atualizada", ativo: false };
+    const updated = { id, ...updateData };
 
-    const res = await request(app)
-      .put("/api/publicidade/1")
-      .send(mockPublicidade);
+    publicidadeServiceMock.getPublicidadeById.mockResolvedValue(updated);
+    publicidadeServiceMock.updatePublicidade.mockResolvedValue(updated);
 
-    expect(res.statusCode).toBe(200);
-    expect(res.body.publicidade).toEqual(mockPublicidade);
+    const res = await request(app).put(`/api/publicidade/${id}`).send(updateData);
+
+    expect(res.status).toBe(200);
+    expect(res.body.publicidade).toEqual(updated);
+    expect(publicidadeServiceMock.updatePublicidade).toHaveBeenCalledWith(id, updateData);
   });
 
-  test("DELETE /publicidade/:id - deve excluir uma publicidade", async () => {
-    publicidadeController.deletePublicidade.mockImplementation((req, res) => {
-      res.status(204).send();
-    });
+  it("DELETE /api/publicidade/:id deve excluir uma publicidade", async () => {
+    const id = 1;
 
-    const res = await request(app).delete("/api/publicidade/1");
+    publicidadeServiceMock.getPublicidadeById.mockResolvedValue({ id });
+    publicidadeServiceMock.deletePublicidade.mockResolvedValue(true);
 
-    expect(res.statusCode).toBe(204);
+    const res = await request(app).delete(`/api/publicidade/${id}`);
+
+    expect(res.status).toBe(204);
+    expect(publicidadeServiceMock.deletePublicidade).toHaveBeenCalledWith(id);
   });
 });
