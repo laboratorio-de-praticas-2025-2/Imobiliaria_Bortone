@@ -76,7 +76,7 @@ export function handleConnection(ws) {
           if (Object.keys(chatService.agents).length === 0) {
             chatService.send(ws, {
               type: "status",
-              msg: "Nenhum atendente disponível no momento, aguarde...",
+              msg: "Obrigado por entrar em contato, em breve um atendente atenderá você.",
             });
           }
 
