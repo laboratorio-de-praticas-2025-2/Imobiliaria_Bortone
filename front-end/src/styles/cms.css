@@ -75,12 +75,12 @@
   font-size: 20px !important;
 }
 
-.custom-form-item .ant-form-item-required::before {
+.required .ant-form-item-required::before {
   display: none !important;
 }
 
 /* Cria o asterisco no final do label */
-.custom-form-item .ant-form-item-label::after {
+.required .ant-form-item-label::after {
   content: "*" !important;
   font-weight: 600 !important;
   color: #0d1b3e !important;
@@ -88,11 +88,11 @@
   margin-left: 4px !important;
 }
 
-.custom-form-item .ant-form-item-label > label::after {
+.custom-form-item  .ant-form-item-label > label::after {
   display: none;
 }
 
-.custom-form-item .ant-form-item-label > label {
+.custom-form-item  .ant-form-item-label > label {
   font-size: 20px !important;
 }
 

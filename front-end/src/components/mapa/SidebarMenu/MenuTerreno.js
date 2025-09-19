@@ -11,7 +11,7 @@ import PropertyType from "./PropertyType";
 import RectangularButton from "./RectangularButton";
 import SettingsButtons from "./SettingsButtons";
 
-export default function MenuTerreno({ activeType, setActiveType }) {
+export default function MenuTerreno({ activeType, setActiveType, setImoveisMapa, setImoveisCarrossel }) {
   const { updateFilters } = useFilters();
   const [selectedOptions, setSelectedOptions] = useState([]);
 
@@ -51,7 +51,7 @@ export default function MenuTerreno({ activeType, setActiveType }) {
       </div>
       <div className="pb-15">
         <Location />
-        <SettingsButtons type={"terreno"} />
+        <SettingsButtons type={"terreno"} setImoveisMapa={setImoveisMapa} setImoveisCarrossel={setImoveisCarrossel} />
       </div>
     </div>
   );

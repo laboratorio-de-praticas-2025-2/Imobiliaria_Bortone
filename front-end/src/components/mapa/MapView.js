@@ -1,14 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import "leaflet/dist/leaflet.css";
 import React from "react";
 import { useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 import ImovelMarker from "./ImovelMarker";
 import LocationButton from "./LocationButton";
 import L from "leaflet";
-import MarkerClusterGroup from "react-leaflet-markercluster";
+import MarkerClusterGroup from "react-leaflet-cluster";
+
+// Corrige o caminho dos ícones padrão do Leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+});
 
 const casaIcon = new L.Icon({
   iconUrl: "images/icons/casa.png",
@@ -22,8 +30,12 @@ function ZoomButtons() {
 
   return (
     <div className="zoom-buttons">
-      <button className="zoom-in" onClick={() => map.zoomIn()}>+</button>
-      <button className="zoom-out" onClick={() => map.zoomOut()}>−</button>
+      <button className="zoom-in" onClick={() => map.zoomIn()}>
+        +
+      </button>
+      <button className="zoom-out" onClick={() => map.zoomOut()}>
+        −
+      </button>
     </div>
   );
 }
@@ -48,10 +60,11 @@ export default function MapView({ imoveis }) {
   return (
     <div className="map-container">
       <MapContainer
+        key={JSON.stringify(imoveis.map((i) => i.id))} // força remount se os imóveis mudarem
         center={[-23.5, -46.6]}
         zoom={13}
         scrollWheelZoom={true}
-        zoomControl={false} // desativa zoom padrão
+        zoomControl={false}
         className="w-full h-full"
       >
         <TileLayer
