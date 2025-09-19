@@ -1,5 +1,10 @@
 // Lógica de negócio (ex: regras para cadastro, login, agendamento)
 import { randomUUID } from "crypto";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
+const JWTSecret = process.env.JWT_SECRET;
 
 // Estado em memória
 let agents = {}; // { agentId: ws }
@@ -113,6 +118,15 @@ function addMessageToHistory(userId, message) {
   }
 }
 
+function verifyToken(token) {
+  try {
+    const decoded = jwt.verify(token, JWTSecret);
+    return decoded;
+  } catch (error) {
+    return null;
+  }
+}
+
 export default {
   agents,
   users,
@@ -126,4 +140,5 @@ export default {
   endUserSession,
   clearUserTimeout,
   addMessageToHistory,
+  verifyToken,
 };

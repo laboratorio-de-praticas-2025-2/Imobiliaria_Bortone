@@ -26,13 +26,18 @@ export function handleConnection(ws) {
 
       // Conexão inicial
       if (data.type === "connect") {
-        role = data.role;
+        const decoded = chatService.verifyToken(data.token);
+        if (!decoded) {
+          ws.close(1008, "Token inválido");
+          return;
+        }
+
+        role = decoded.nivel;
+        currentId = decoded.id;
+        const nomeUsuario = data.nome || `Usuario ${currentId}`;
 
         // Usuário
         if (role === "user") {
-          currentId = chatService.getNextUserId();
-          const nomeUsuario = data.nome || `Usuário ${currentId}`;
-
           if (
             !dentroHorario() ||
             Object.keys(chatService.agents).length === 0
