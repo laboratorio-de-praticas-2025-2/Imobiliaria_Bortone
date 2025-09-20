@@ -6,23 +6,72 @@ import { BiPencil } from "react-icons/bi";
 import { IoMdTrash } from "react-icons/io";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import Link from "next/link";
+import axios from "axios";
 
-export default function Card({ item, href_cms = "banner", header = false }) {
+export default function Card({ item, href_cms = "banner", header = false, onDelete: onDeleteCallback, onToggle: onToggleCallback }) {
   const [checked, setChecked] = useState(item.ativo);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+
+  // Debug: verificar o que está sendo passado
+  console.log('Card item.url_imagem:', item.url_imagem);
+  console.log('Card item.url_imagem type:', typeof item.url_imagem);
+  console.log('Card item completo:', item);
+
+  // Função para validar e sanitizar a URL da imagem
+  const getValidImageSrc = () => {
+    if (!item.url_imagem || 
+        item.url_imagem === null || 
+        item.url_imagem === "" || 
+        item.url_imagem === "null" ||
+        typeof item.url_imagem !== 'string') {
+      return "/images/casa.png";
+    }
+    
+    // Se já começa com /, usar diretamente
+    if (item.url_imagem.startsWith('/')) {
+      return item.url_imagem;
+    }
+    
+    // Se não começa com /, adicionar o prefixo
+    return `/images/publicidadeImages/${item.url_imagem}`;
+  };
 
   const onDelete = () => {
     setIsConfirmModalVisible(true);
   };
 
-  const onConfirmDelete = () => {
-    console.log("Delete Confirmed");
-    setIsConfirmModalVisible(false);
+  const onConfirmDelete = async () => {
+    try {
+      const response = await axios.delete(`http://localhost:4000/publicidade/${item.id}`);
+      if (response.status === 204) {
+        alert("Publicidade excluída com sucesso!");
+        setIsConfirmModalVisible(false);
+        if (onDeleteCallback) {
+          onDeleteCallback();
+        }
+      } else {
+        alert("Erro inesperado ao excluir a publicidade");
+        setIsConfirmModalVisible(false);
+      }
+    } catch (error) {
+      console.log("Erro ao excluir a publicidade:", error);
+      alert("Erro ao excluir a publicidade");
+      setIsConfirmModalVisible(false);
+    }
   };
 
-  const onChange = (checked) => {
-    console.log(`switch to ${checked}`);
-    setChecked(checked);
+  const onChange = async (checked) => {
+    try {
+      const response = await axios.put(`http://localhost:4000/publicidade/${item.id}`, { ativo: checked });
+      if (response.status === 200) {
+        setChecked(checked);
+        if (onToggleCallback) {
+          onToggleCallback();
+        }
+      }
+    } catch {
+      console.log("Erro ao alterar status da publicidade");
+    }
   };
 
   return (
@@ -41,13 +90,11 @@ export default function Card({ item, href_cms = "banner", header = false }) {
           </p>
         )}
         <Image
-          src={item.url_imagem}
+          src={getValidImageSrc()}
           alt={"Imagem do item " + item.id}
           width={425}
           height={130}
-          className={`aspect-[4/2] object-cover ${
-            header ? "" : "rounded-t-2xl"
-          }`}
+          className={`aspect-[4/2] object-cover ${header ? "" : "rounded-t-2xl"}`}
         />
         <div className="w-full flex justify-end gap-4 p-3">
           <div className="flex items-center gap-3">

@@ -8,7 +8,7 @@ class PublicidadeService {
         conteudo: dadosCreatePublicidade.conteudo,
         url_imagem: dadosCreatePublicidade.url_imagem,
         usuario_id: dadosCreatePublicidade.usuario_id,
-        ativo: false
+        ativo: dadosCreatePublicidade.ativo
       });
       return newPublicidade;
     } catch (error) {
@@ -26,9 +26,13 @@ class PublicidadeService {
 
       updatePublicidade.titulo = dadosUpdatePublicidade.titulo ?? updatePublicidade.titulo;
       updatePublicidade.conteudo = dadosUpdatePublicidade.conteudo ?? updatePublicidade.conteudo;
-      updatePublicidade.url_imagem = dadosUpdatePublicidade.url_imagem ?? updatePublicidade.url_imagem;
       updatePublicidade.usuario_id = dadosUpdatePublicidade.usuario_id ?? updatePublicidade.usuario_id;
       updatePublicidade.ativo = dadosUpdatePublicidade.ativo ?? updatePublicidade.ativo;
+      
+      // Atualizar url_imagem apenas se for fornecida
+      if (dadosUpdatePublicidade.url_imagem !== undefined) {
+        updatePublicidade.url_imagem = dadosUpdatePublicidade.url_imagem;
+      }
 
       await updatePublicidade.save();
 

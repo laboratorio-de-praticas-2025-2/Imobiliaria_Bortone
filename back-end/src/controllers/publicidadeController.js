@@ -2,18 +2,31 @@ import publicidadeService from "../services/publicidadeService.js";
 
 export const createPublicidade = async (req, res) => {
   try {
-    const { titulo, conteudo, url_imagem, usuario_id, ativo } = req.body;
+    console.log('=== BACK-END DEBUG ===');
+    console.log('req.body:', req.body);
+    console.log('req.file:', req.file);
+    console.log('req.files:', req.files);
+    console.log('req.headers:', req.headers);
+    console.log('Content-Type:', req.headers['content-type']);
+    console.log('======================');
+    
+    const { titulo, conteudo, usuario_id, ativo } = req.body;
+    
+    // Se há arquivo enviado, usar o caminho completo
+    const url_imagem = req.file ? `/images/publicidadeImages/${req.file.filename}` : null;
+    
+    console.log('url_imagem calculada:', url_imagem);
+
+    // Converter strings para tipos corretos
+    const usuarioIdNumber = parseInt(usuario_id, 10);
+    const ativoBoolean = ativo === 'true';
 
     if (!titulo || !conteudo || !usuario_id) {
       return res.status(400).json({ error: "Título, conteúdo e ID do usuário são obrigatórios." });
     }
 
-    if (typeof usuario_id !== "number" || usuario_id <= 0) {
+    if (isNaN(usuarioIdNumber) || usuarioIdNumber <= 0) {
       return res.status(400).json({ error: "ID do usuário deve ser um número inteiro positivo." });
-    }
-
-    if (ativo !== undefined && typeof ativo !== "boolean") {
-      return res.status(400).json({ error: 'O atributo "ativo" deve ser true ou false.' });
     }
 
     // Aqui você poderia validar se o usuário existe, mas como não temos o model Usuario importado, vamos pular essa parte nos testes mockados
@@ -22,8 +35,8 @@ export const createPublicidade = async (req, res) => {
       titulo,
       conteudo,
       url_imagem,
-      usuario_id,
-      ativo,
+      usuario_id: usuarioIdNumber,
+      ativo: ativoBoolean,
     });
 
     return res.status(201).json(novaPublicidade);
@@ -82,25 +95,52 @@ export const getPublicidadeById = async (req, res) => {
 
 export const updatePublicidade = async (req, res) => {
   try {
+    console.log('=== UPDATE DEBUG ===');
+    console.log('req.body:', req.body);
+    console.log('req.file:', req.file);
+    console.log('req.params:', req.params);
+    console.log('===================');
+    
     const { id } = req.params;
-    const { titulo, conteudo, url_imagem, usuario_id, ativo } = req.body;
-
+    const { titulo, conteudo, usuario_id, ativo } = req.body;
+    
     if (!/^\d+$/.test(id)) {
       return res.status(400).json({ error: "ID inválido. O ID deve ser numérico." });
     }
 
-    const publicidadeExistente = await publicidadeService.getPublicidadeById(Number(id));
-    if (!publicidadeExistente) {
-      return res.status(404).json({ error: "Publicidade não encontrada" });
+    // Preparar dados para atualização - apenas campos que foram enviados
+    const updateData = {};
+    
+    // Converter tipos se necessário e adicionar apenas campos presentes
+    if (titulo !== undefined) {
+      updateData.titulo = titulo;
     }
-
-    const publicidadeAtualizada = await publicidadeService.updatePublicidade(Number(id), {
-      titulo,
-      conteudo,
-      url_imagem,
-      usuario_id,
-      ativo,
-    });
+    
+    if (conteudo !== undefined) {
+      updateData.conteudo = conteudo;
+    }
+    
+    if (usuario_id !== undefined) {
+      const usuarioIdNumber = parseInt(usuario_id, 10);
+      if (isNaN(usuarioIdNumber) || usuarioIdNumber <= 0) {
+        return res.status(400).json({ error: "ID do usuário deve ser um número inteiro positivo." });
+      }
+      updateData.usuario_id = usuarioIdNumber;
+    }
+    
+    if (ativo !== undefined) {
+      const ativoBoolean = ativo === 'true' || ativo === true;
+      updateData.ativo = ativoBoolean;
+    }
+    
+    // Se há arquivo enviado, usar o caminho completo
+    if (req.file) {
+      updateData.url_imagem = `/images/publicidadeImages/${req.file.filename}`;
+    }
+    
+    console.log('updateData:', updateData);
+    
+    const publicidadeAtualizada = await publicidadeService.updatePublicidade(Number(id), updateData);
 
     return res.status(200).json({
       message: "Publicidade atualizada com sucesso",

@@ -23,13 +23,14 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+
 // Middlewares
 app.use(cors()); // Habilita o CORS para todas as origens
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Rotas
-app.use("/publicidade", publicidadeRoutes);
+app.use("/", publicidadeRoutes);
 app.use('/', recomendacaoRouter);
 app.use('/user', userRoutes );
 app.use("/search", searchRouter);
@@ -40,6 +41,7 @@ app.use("/mapa", mapaRoutes);
 app.use('/dashboard', dashboardRouter);
 
 app.use(express.static(path.join(__dirname, "../public")));
+app.use('/images', express.static(path.join(__dirname, '../public/images')));
 app.use(errorHandler);
 
 const server = http.createServer(app);

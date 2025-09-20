@@ -2,33 +2,53 @@
 import Card from "@/components/cms/Card";
 import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
-import { publicidadesMock } from "@/mock/publicidades";
 import { useEffect, useState } from "react";
 import { RiStickyNoteAddLine } from "react-icons/ri";
+import axios from "axios";
 
 export default function CmsPublicidadePage() {
   const [publicidades, setPublicidades] = useState([]);
+  const [filteredPublicidades, setFilteredPublicidades] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
-  const [filterData, setFilterData] = useState({ order: null });
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    setPublicidades(publicidadesMock);
+    loadPublicidades();
   }, []);
+
+  // Filtrar publicidades baseado no termo de pesquisa
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setFilteredPublicidades(publicidades);
+    } else {
+      const filtered = publicidades.filter(publicidade =>
+        publicidade.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        publicidade.conteudo.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredPublicidades(filtered);
+    }
+    setCurrentPage(1); // Reset para primeira página ao pesquisar
+  }, [searchTerm, publicidades]);
+
+  const loadPublicidades = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/publicidade");
+      if (response.status === 200) {
+        setPublicidades(response.data);
+      }
+    } catch {
+      console.log("Erro ao carregar publicidades");
+    }
+  };
 
   // fatia os publicidades conforme página
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedPublicidades = publicidades.slice(startIndex, endIndex);
+  const paginatedPublicidades = filteredPublicidades.slice(startIndex, endIndex);
 
-  const onSearch = (value) => console.log("Search:", value);
-  const handleSelectOrder = (value) => {
-    setFilterData((prev) => ({ ...prev, order: value }));
-    console.log("Selected order:", value);
-  };
-  const updateFilterData = (newData) => {
-    setFilterData((prev) => ({ ...prev, ...newData }));
-    console.log("Update filter data:", newData);
+  const onSearch = (value) => {
+    setSearchTerm(value);
   };
 
   return (
@@ -42,9 +62,9 @@ export default function CmsPublicidadePage() {
               buttonIcon={<RiStickyNoteAddLine />}
               onSearch={onSearch}
               href={"/admin/cms-publicidades/criar"}
-              handleSelectOrder={handleSelectOrder}
-              filterData={filterData}
-              updateFilterData={updateFilterData}
+              filterData={{}}
+              handleSelectOrder={() => {}}
+              updateFilterData={() => {}}
             />
             <CMS.TableBody>
               {paginatedPublicidades.length > 0 ? (
@@ -55,6 +75,8 @@ export default function CmsPublicidadePage() {
                       item={publicidade}
                       href_cms="publicidades"
                       header={true}
+                      onDelete={loadPublicidades}
+                      onToggle={loadPublicidades}
                     />
                   ))}
                 </div>
@@ -65,7 +87,7 @@ export default function CmsPublicidadePage() {
 
             {/* Paginador controlado */}
             <CMS.TableFooter
-              postsData={publicidades}
+              postsData={filteredPublicidades}
               pageSize={pageSize}
               onPageChange={setCurrentPage}
             />
