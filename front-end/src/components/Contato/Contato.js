@@ -50,7 +50,6 @@ export default function Contato() {
                 <MdOutlineEmail /> E-mail
               </p>
               <p className="text-xl lg:text-2xl font-light">
-                {infoContato.contato.email}
               </p>
               <p className="text-xl lg:text-2xl font-light">
                 <Link
