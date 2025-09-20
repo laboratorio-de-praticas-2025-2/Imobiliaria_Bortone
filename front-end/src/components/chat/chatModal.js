@@ -1,11 +1,11 @@
 // components/chat/ChatModal.js
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ChatMessage from "./chatMessage.js";
 import { sendMessageMock } from "@/utils/chatService";
 import { IoIosCloseCircle , IoIosSend, IoIosMic } from "react-icons/io";
 import { RxAvatar } from "react-icons/rx";
-import { BsEmojiSmileFill  } from "react-icons/bs";
+import { BsEmojiSmileFill } from "react-icons/bs";
 import { IoSend } from "react-icons/io5";
 
 export default function ChatModal({ onClose }) {
@@ -14,17 +14,68 @@ export default function ChatModal({ onClose }) {
   ]);
   const [newMessage, setNewMessage] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
+  const [ws, setWs] = useState(null);
   const inputRef = useRef();
+  
+  const userToken = localStorage.getItem("token");
+  const userName = localStorage.getItem("name") || "Usuário";
 
-  const handleSend = async () => {
-    if (!newMessage.trim()) return;
+  // Conexão WebSocket
+  useEffect(() => {
+    const socket = new WebSocket("ws://localhost:3001"); // ou URL do back-end
+    setWs(socket);
+
+    socket.onopen = () => {
+      console.log("Conectado ao servidor WebSocket");
+      // Envia mensagem de conexão
+      socket.send(
+        JSON.stringify({
+          type: "connect",
+          token: userToken,
+          nome: userName,
+        })
+      );
+    };
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      if (data.type === "message") {
+        setMessages((prev) => [...prev, data.msg]);
+      }
+
+      if (data.type === "history") {
+        setMessages(data.messages || []);
+      }
+
+      if (data.type === "status") {
+        setMessages((prev) => [
+          ...prev,
+          { id: Date.now(), sender: "support", text: data.msg },
+        ]);
+      }
+    };
+
+    socket.onclose = () => {
+      console.log("Conexão WebSocket encerrada");
+    };
+
+    return () => {
+      socket.close();
+    };
+  }, [userToken, userName]);
+
+
+  const handleSend = () => {
+    if (!newMessage.trim() || !ws) return;
+  
+    const messageObj = { type: "message", text: newMessage };
+    ws.send(JSON.stringify(messageObj));
 
     const userMessage = { id: Date.now(), sender: "user", text: newMessage };
     setMessages((prev) => [...prev, userMessage]);
+  
     setNewMessage("");
-
-    const response = await sendMessageMock(newMessage);
-    setMessages((prev) => [...prev, response]);
   };
 
   const addEmoji = (emoji) => {

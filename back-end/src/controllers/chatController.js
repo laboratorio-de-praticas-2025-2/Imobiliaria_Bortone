@@ -32,7 +32,12 @@ export function handleConnection(ws) {
           return;
         }
 
-        role = decoded.nivel;
+        const roleMap = {
+          0: "agent", // admin → atendente
+          1: "user"   // user → usuário normal
+        };
+        
+        role = roleMap[decoded.nivel];
         currentId = decoded.id;
         const nomeUsuario = data.nome || `Usuario ${currentId}`;
 

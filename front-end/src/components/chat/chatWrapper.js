@@ -4,6 +4,7 @@ import ChatLauncherClient from "@/components/chat/chatLauncherClient";
 
 export default function ChatWrapper() {
   const pathname = usePathname();
+  const token = localStorage.getItem("token");
 
   // Rotas onde o chat NÃO deve aparecer
   const hiddenRoutes = ["/bem-vindo", "/login", "/cadastro"];
@@ -12,5 +13,5 @@ export default function ChatWrapper() {
     return null; // não renderiza o chat nessas páginas
   }
 
-  return <ChatLauncherClient />;
+  return <ChatLauncherClient token={token} />;
 }

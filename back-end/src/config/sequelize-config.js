@@ -5,17 +5,17 @@ dotenv.config();
 
 // Debug para garantir que as variáveis foram carregadas
 console.log("🔎 Variáveis do .env:");
-console.log("HOST:", process.env.HOST);
-console.log("BANCO:", process.env.BANCO);
-console.log("USER:", process.env.USER);
-console.log("USERPASSWORD:", process.env.USERPASSWORD ? "********" : "NÃO DEFINIDA");
+console.log("HOST:", process.env.DB_HOST);
+console.log("BANCO:", process.env.DB_DATABASE);
+console.log("USER:", process.env.DB_USER);
+console.log("USERPASSWORD:", process.env.DB_PASS ? "********" : "NÃO DEFINIDA");
 
 const sequelize = new Sequelize(
-  process.env.BANCO,            // Nome do banco
-  process.env.USER,             // Usuário
-  process.env.USERPASSWORD,     // Senha
+  process.env.DB_DATABASE,            // Nome do banco
+  process.env.DB_USER,             // Usuário
+  process.env.DB_PASS,     // Senha
   {
-    host: process.env.HOST,     // Servidor AlwaysData
+    host: process.env.DB_HOST,     // Servidor AlwaysData
     port: 3306,                 // Porta padrão MySQL
     dialect: "mysql",           // Dialeto
     logging: false,             // Oculta logs SQL no console
