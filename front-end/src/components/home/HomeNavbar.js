@@ -65,9 +65,9 @@ export default function HomeNavbar({ className }) {
           {/* Botão "Contate-nos" */}
           <button className="pl-5">
             <Link
-            href="https://wa.me/9999" // substitua pelo número
-            target="_blank"
-            rel="noopener noreferrer"
+              href="https://wa.me/9999" // substitua pelo número
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-5 py-2 rounded-full border-2 border-white bg-transparent
                          !text-white hover:!bg-white hover:!text-[#304383] transition-colors duration-200
                          whitespace-nowrap flex-shrink-0 min-w-[130px] text-sm md:text-base
@@ -84,7 +84,7 @@ export default function HomeNavbar({ className }) {
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
                 className="bg-[#EEF0F9] px-4 py-2 rounded-full cursor-pointer whitespace-nowrap flex items-center gap-1 relative z-[10000]"
-                style={{ color: "#304383" }}
+                style={{ color: "#304383", height: buttonHeightPX }}
               >
                 <span className="truncate">{user.nome}</span>
                 <IoIosArrowDown />
@@ -186,11 +186,67 @@ export default function HomeNavbar({ className }) {
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
                 className="bg-[#EEF0F9] px-4 py-2 rounded-full whitespace-nowrap flex items-center gap-1 cursor-pointer relative z-[10000]"
-                style={{ color: "#304383" }}
+                style={{ color: "#304383", height: buttonHeightPX }}
               >
                 <span className="truncate">{user.nome}</span>
                 <IoIosArrowDown />
               </button>
+
+              {/* Dropdown Mobile */}
+              <ul
+                className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9999]
+                            transition-all duration-300 ease-out
+                            ${
+                              userMenuOpen
+                                ? "opacity-100 translate-y-0"
+                                : "opacity-0 -translate-y-2 pointer-events-none"
+                            }`}
+                style={{
+                  paddingTop: buttonHeightPX,
+                  borderRadius: bottomRadius,
+                }}
+              >
+                {user.nivel === "administrador" && (
+                  <Link href={"/admin/dashboard"}>
+                    <li
+                      className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
+                                  flex justify-center items-center transition-all duration-300 ease-out
+                                  ${
+                                    userMenuOpen
+                                      ? "opacity-100 translate-y-0"
+                                      : "opacity-0 -translate-y-2"
+                                  }`}
+                      style={{
+                        color: "#304383",
+                        transitionDelay: delays[1],
+                      }}
+                    >
+                      CMS
+                    </li>
+                  </Link>
+                )}
+
+                <Link href={"/bem-vindo"}>
+                  <li
+                    className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
+                                flex justify-center items-center transition-all duration-300 ease-out
+                                ${
+                                  userMenuOpen
+                                    ? "opacity-100 translate-y-0"
+                                    : "opacity-0 -translate-y-2"
+                                }`}
+                    style={{
+                      color: "#304383",
+                      borderBottomLeftRadius: bottomRadius,
+                      borderBottomRightRadius: bottomRadius,
+                      transitionDelay:
+                        user.nivel === "administrador" ? delays[2] : delays[1],
+                    }}
+                  >
+                    Sair
+                  </li>
+                </Link>
+              </ul>
             </div>
           ) : (
             <Button
