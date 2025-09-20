@@ -1,10 +1,10 @@
-# 📦 Funcionalidade de Agendamento de Visitação
+#  Funcionalidade de Agendamento de Visitação
 
 Este módulo é responsável por registrar solicitações de visitas a imóveis, enviar e-mails de confirmação aos clientes e notificar a imobiliária sobre novos agendamentos. Implementado em **Express.js**, utiliza serviços de **SMTP** para envio de e-mails.
 
 ---
 
-## 🎯 Objetivo
+## Objetivo
 
 - Permitir que clientes agendem visitas a imóveis.  
 - Enviar confirmação de agendamento ao cliente via e-mail.  
@@ -12,22 +12,21 @@ Este módulo é responsável por registrar solicitações de visitas a imóveis,
 
 ---
 
-## 📥 Dados de Entrada
+## Dados de Entrada
 
 ### 1. Agendamento de Visita (`/agendamento`)
 
 O endpoint recebe um objeto JSON com os seguintes campos obrigatórios:
 
 - `name`: Nome do cliente  
-- `email`: E-mail do cliente  
-- `date`: Data da visita (YYYY-MM-DD)  
-- `time`: Horário da visita (HH:mm)  
+- `email`: E-mail do cliente 
+- `phone`: Telefone do cliente    
+- `cityState`: Município de residência do cliente
+- `propertyAddress`: Endereço do imóvel  
+- `propertyId`: Identificador do imóvel  
 
 Campos opcionais:
 
-- `phone`: Telefone do cliente  
-- `propertyAddress`: Endereço do imóvel  
-- `propertyId`: Identificador do imóvel  
 - `notes`: Observações adicionais  
 
 Exemplo de entrada:
@@ -37,17 +36,21 @@ Exemplo de entrada:
   "name": "Tiago Rodrigues",
   "email": "cliente@email.com",
   "phone": "11999999999",
-  "date": "2025-09-20",
-  "time": "15:00",
+  "cityState": "Registro/SP",
   "propertyAddress": "Rua Central, 123",
   "propertyId": 45,
   "notes": "Gostaria de confirmar vaga disponível"
 }
 ````
+📌 Observações:
+
+Os campos `propertyAddress` e `propertyId` **não são enviados pelo cliente**. Eles vêm diretamente do banco de dados, associados ao imóvel selecionado no site.
+
+Para usuários logados, os campos `name`, `email`, `phone` e `cityState` já vêm preenchidos automaticamente a partir do perfil.
 
 ---
 
-## 📤 Saída Esperada
+## Saída Esperada
 
 ### Agendamento de Visita
 
@@ -61,8 +64,7 @@ Sucesso (200):
     "name": "Tiago Rodrigues",
     "email": "cliente@email.com",
     "phone": "11999999999",
-    "date": "2025-09-20",
-    "time": "15:00",
+    "cityState": "Registro/SP",
     "propertyAddress": "Rua Central, 123",
     "propertyId": 45,
     "notes": "Gostaria de confirmar estacionamento disponível"
@@ -78,11 +80,11 @@ Erros possíveis:
 
 ---
 
-## ⚙️ Lógica Geral do Algoritmo
+##  Lógica Geral do Algoritmo
 
 ### 1. Registro do Agendamento
 
-* Valida campos obrigatórios (`name`, `email`, `date`, `time`).
+* Valida campos obrigatórios (`name`, `email`, `phone`,`cityState`).
 * Aplica **rate limiting** (máx. 5 agendamentos por minuto por IP/rota).
 * Limpa e normaliza campos (`name`, `propertyAddress`, `notes`).
 * Persiste os dados no banco de dados.
@@ -92,7 +94,6 @@ Erros possíveis:
 * Gera e envia e-mail automático contendo:
 
   * Nome do cliente
-  * Data e horário da visita
   * Endereço do imóvel
   * Observações
 
@@ -104,7 +105,6 @@ Erros possíveis:
 * Envia e-mail contendo:
 
   * Dados do cliente (nome, e-mail, telefone)
-  * Data e horário da visita
   * Imóvel relacionado
   * Observações adicionais
 
@@ -119,7 +119,7 @@ Erros possíveis:
 
 ---
 
-## 🛠️ Bibliotecas e Ferramentas
+## Bibliotecas e Ferramentas
 
 * `net` / `tls` → Conexão TCP/SSL com SMTP
 * `buffer` → Manipulação de dados de e-mail
@@ -127,7 +127,7 @@ Erros possíveis:
 
 ---
 
-## ⚠️ Desafios e Limitações
+## Desafios e Limitações
 
 * **Dependência de e-mail**: se o servidor SMTP estiver indisponível, a comunicação falha.
 * **Escalabilidade**: aumento no número de agendamentos pode impactar performance.
@@ -136,11 +136,14 @@ Erros possíveis:
 
 ---
 
-## 🚀 Testando os Endpoints
+## Testando os Endpoints
 
 ```http
-POST    /agendamento_visita       → Cria um novo agendamento
-GET     /agendamentos             → Lista agendamentos registrados
+→ Cria um novo agendamento
+POST /agendamento_visita 
+
+→ Lista agendamentos registrados
+GET /agendamentos             
 ```
 
 ### GET - exemplo de saída
@@ -154,8 +157,7 @@ GET     /agendamentos             → Lista agendamentos registrados
       "name": "Tiago Rodrigues",
       "email": "cliente@email.com",
       "phone": "11999999999",
-      "date": "2025-09-20",
-      "time": "15:00",
+      "cityState": "Registro/SP",
       "propertyAddress": "Rua Central, 123",
       "propertyId": 45,
       "notes": "Gostaria de confirmar estacionamento disponível"
