@@ -2,9 +2,9 @@
 import PostCard from "@/components/cms/PostCard";
 import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
-import { postsData } from "@/mock/posts";
 import { useEffect, useState } from "react";
 import { VscNewFile } from "react-icons/vsc";
+import { getAllArtigos } from "@/services/blogService";
 
 export default function CmsBannerPage() {
   const [publicacoes, setPublicacoes] = useState([]);
@@ -13,10 +13,17 @@ export default function CmsBannerPage() {
   const [filterData, setFilterData] = useState({ order: null });
 
   useEffect(() => {
-    setPublicacoes(postsData);
+    async function fetchData() {
+      try {
+        const response = await getAllArtigos();
+        setPublicacoes(response.artigos);
+      } catch (err) {
+        console.error("Erro ao carregar artigos:", err);
+      }
+    }
+    fetchData();
   }, []);
 
-  // fatia os publicacoes conforme página
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const paginatedPublicacoes = publicacoes.slice(startIndex, endIndex);
@@ -39,7 +46,7 @@ export default function CmsBannerPage() {
           <CMS.Table>
             <CMS.TableHeader
               buttonText="Nova Publicação"
-              buttonIcon={<VscNewFile fontWeight={"bold"}/>}
+              buttonIcon={<VscNewFile fontWeight={"bold"} />}
               onSearch={onSearch}
               href={"/admin/cms-publicacoes/criar"}
               handleSelectOrder={handleSelectOrder}
@@ -54,11 +61,10 @@ export default function CmsBannerPage() {
                   ))}
                 </div>
               ) : (
-                <p>No publi found.</p>
+                <p>Nenhuma publicação encontrada.</p>
               )}
             </CMS.TableBody>
 
-            {/* Paginador controlado */}
             <CMS.TableFooter
               postsData={publicacoes}
               pageSize={pageSize}
