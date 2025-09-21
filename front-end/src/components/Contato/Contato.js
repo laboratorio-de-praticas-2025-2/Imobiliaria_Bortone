@@ -67,7 +67,7 @@ export default function Contato() {
             Ou venha direto ate a Imobiliária Bortone!
           </p>
           <p className="text-lg md:text-2xl font-light">
-            Nos localizamos na {" "}
+            Nos localizamos na{" "}
             <Link
               href={infoContato.localizacao.googleMaps.url}
               target={infoContato.localizacao.googleMaps.target}
@@ -75,7 +75,7 @@ export default function Contato() {
               className="underline hover:opacity-80"
             >
               {infoContato.localizacao.endereco}
-            </Link> {" "}
+            </Link>{" "}
           </p>
         </div>
 
@@ -86,5 +86,4 @@ export default function Contato() {
       </div>
     </main>
   );
-  
 }

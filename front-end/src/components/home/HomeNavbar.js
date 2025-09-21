@@ -326,4 +326,5 @@ export default function HomeNavbar({ className }) {
       )}
     </div>
   );
+  
 }
