@@ -169,8 +169,8 @@ export default function ChatModal({ onClose }) {
 
       {/* Mensagens */}
       <div className="flex-1 p-3 space-y-2 overflow-y-auto bg-gray-50">
-        {messages.map((msg) => (
-          <ChatMessage key={msg.id} sender={msg.sender} text={msg.text} />
+        {messages.map((msg, idx) => (
+          <ChatMessage key={msg.id ? msg.id : `msg-${idx}`} sender={msg.sender} text={msg.text} />
         ))}
       </div>
 
