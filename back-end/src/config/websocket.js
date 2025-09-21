@@ -7,13 +7,15 @@ import { handleConnection } from "../controllers/chatController.js";
 export default function initWebSocket(server) {
   const ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    // Adicionar outras origens permitidas
+    "http://localhost:3001",
+    "https://imobiliaria-bortone.vercel.app",
+    // Adicionar outras origens permitidas em produção
   ];
 
   const wss = new WebSocketServer({ server });
   wss.on("connection", (ws, req) => {
     const origin = req.headers.origin;
-    if (!ALLOWED_ORIGINS.includes(origin)) {
+    if (origin && !ALLOWED_ORIGINS.includes(origin)) {
       ws.close(1008, "Origin não permitida");
       return;
     }
@@ -24,8 +26,23 @@ export default function initWebSocket(server) {
       ws.isAlive = true;
     });
 
-    // Autenticação JWT
-    const token = req.url.split("token=")[1];
+    // Para teste: permitir conexão sem JWT se for modo de desenvolvimento
+    const urlParams = new URLSearchParams(req.url.split('?')[1]);
+    const token = urlParams.get('token');
+    const testUserId = urlParams.get('testUserId');
+
+    // Modo de teste com usuários fixos (apenas em desenvolvimento)
+    if (testUserId && process.env.NODE_ENV === 'development') {
+      ws.userData = {
+        id: parseInt(testUserId),
+        nivel: testUserId === '1' ? 0 : 1, // User 1 = admin/agent, outros = user
+        nome: `Usuário ${testUserId}`
+      };
+      handleConnection(ws);
+      return;
+    }
+
+    // Autenticação JWT obrigatória
     if (!token) {
       ws.close(4001, "Token JWT obrigatório");
       return;

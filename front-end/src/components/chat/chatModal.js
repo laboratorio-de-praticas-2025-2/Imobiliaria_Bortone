@@ -2,8 +2,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import ChatMessage from "./chatMessage.js";
-import { sendMessageMock } from "@/utils/chatService";
-import { IoIosCloseCircle , IoIosSend, IoIosMic } from "react-icons/io";
+import { IoIosCloseCircle, IoIosSend, IoIosMic } from "react-icons/io";
 import { RxAvatar } from "react-icons/rx";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import { IoSend } from "react-icons/io5";
@@ -15,18 +14,39 @@ export default function ChatModal({ onClose }) {
   const [newMessage, setNewMessage] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
   const [ws, setWs] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
   const inputRef = useRef();
   
-  const userToken = localStorage.getItem("token");
-  const userName = localStorage.getItem("name") || "Usuário";
+  // Dados do usuário autenticado
+  const userToken = localStorage.getItem("authToken");
+  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+  const userName = userInfo?.nome || "Usuário";
+  const currentUserId = userInfo?.id || null;
 
   // Conexão WebSocket
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:3001"); // ou URL do back-end
+    // Verificar se usuário está autenticado
+    if (!userToken || !currentUserId) {
+      setMessages((prev) => [
+        ...prev,
+        { 
+          id: Date.now(), 
+          sender: "support", 
+          text: "❌ Você precisa fazer login para usar o chat.", 
+          timestamp: new Date() 
+        },
+      ]);
+      return;
+    }
+
+    const socketUrl = `ws://localhost:4000?token=${userToken}`;
+    const socket = new WebSocket(socketUrl);
     setWs(socket);
 
     socket.onopen = () => {
       console.log("Conectado ao servidor WebSocket");
+      setIsConnected(true);
+      
       // Envia mensagem de conexão
       socket.send(
         JSON.stringify({
@@ -39,9 +59,15 @@ export default function ChatModal({ onClose }) {
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      console.log("Mensagem recebida:", data);
 
       if (data.type === "message") {
-        setMessages((prev) => [...prev, data.msg]);
+        setMessages((prev) => [...prev, {
+          id: Date.now(),
+          sender: data.fromUserId === currentUserId ? "user" : "support",
+          text: data.text,
+          timestamp: new Date()
+        }]);
       }
 
       if (data.type === "history") {
@@ -51,31 +77,60 @@ export default function ChatModal({ onClose }) {
       if (data.type === "status") {
         setMessages((prev) => [
           ...prev,
-          { id: Date.now(), sender: "support", text: data.msg },
+          { id: Date.now(), sender: "support", text: data.msg, timestamp: new Date() },
+        ]);
+      }
+
+      if (data.error) {
+        console.error("Erro do WebSocket:", data.error);
+        setMessages((prev) => [
+          ...prev,
+          { id: Date.now(), sender: "support", text: `Erro: ${data.error}`, timestamp: new Date() },
         ]);
       }
     };
 
-    socket.onclose = () => {
-      console.log("Conexão WebSocket encerrada");
+    socket.onclose = (event) => {
+      console.log("Conexão WebSocket encerrada", event.code, event.reason);
+      setIsConnected(false);
+    };
+
+    socket.onerror = (error) => {
+      console.error("Erro WebSocket:", error);
+      setIsConnected(false);
     };
 
     return () => {
       socket.close();
     };
-  }, [userToken, userName]);
-
+  }, [userToken, userName, currentUserId]);
 
   const handleSend = () => {
-    if (!newMessage.trim() || !ws) return;
+    if (!newMessage.trim() || !ws || !isConnected) return;
+    
+    // Feedback visual imediato
+    setIsTyping(true);
   
-    const messageObj = { type: "message", text: newMessage };
+    const messageObj = { 
+      type: "message", 
+      text: newMessage.trim(),
+      fromUserId: currentUserId
+    };
+    
+    console.log("Enviando mensagem:", messageObj);
     ws.send(JSON.stringify(messageObj));
 
-    const userMessage = { id: Date.now(), sender: "user", text: newMessage };
+    // Adiciona a mensagem localmente para feedback imediato
+    const userMessage = { 
+      id: Date.now(), 
+      sender: "user", 
+      text: newMessage.trim(),
+      timestamp: new Date()
+    };
     setMessages((prev) => [...prev, userMessage]);
   
     setNewMessage("");
+    setIsTyping(false);
   };
 
   const addEmoji = (emoji) => {
@@ -98,9 +153,15 @@ export default function ChatModal({ onClose }) {
       <div className="flex items-center justify-between p-3 border-b bg-[#4C62AE]">
         <div className="flex items-center gap-2">
           <RxAvatar className="w-8 h-8 md:w-10 md:h-10" color="white" />
-          <h2 className="text-sm md:text-base text-white font-semibold">
-            Suporte Grupo Bortone
-          </h2>
+          <div>
+            <h2 className="text-sm md:text-base text-white font-semibold">
+              Suporte Imobiliária Bortone
+            </h2>
+            <p className="text-xs text-white/80">
+              {isConnected ? "🟢 Online" : "🔴 Conectando..."} 
+              {!testUserId && ` • ${userName}`}
+            </p>
+          </div>
         </div>
 
         <button onClick={onClose}>
@@ -157,13 +218,17 @@ export default function ChatModal({ onClose }) {
           placeholder="Digite sua mensagem..."
           className="flex-1 bg-white rounded-3xl px-3 py-2 text-sm focus:outline-none 
                      focus:ring focus:ring-blue-300"
+          disabled={!isConnected}
         />
 
-        {/* Botão enviar - só mobile/tablet */}
+        {/* Botão enviar */}
         <button
           onClick={handleSend}
-          className="flex w-10 h-10 rounded-full items-center justify-center 
-                      hover:scale-110 transition"
+          disabled={!isConnected}
+          className={`flex w-10 h-10 rounded-full items-center justify-center 
+                     hover:scale-110 transition ${
+                       isConnected ? 'opacity-100' : 'opacity-50 cursor-not-allowed'
+                     }`}
         >
           <IoSend color="white" className="w-6 h-6 text-white" />
         </button>
