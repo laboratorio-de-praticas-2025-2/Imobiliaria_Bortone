@@ -41,7 +41,7 @@ app.use("/mapa", mapaRoutes);
 app.use('/dashboard', dashboardRouter);
 
 app.use(express.static(path.join(__dirname, "../public")));
-app.use('/images', express.static(path.join(__dirname, '../public/images')));
+app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
 app.use(errorHandler);
 
 const server = http.createServer(app);

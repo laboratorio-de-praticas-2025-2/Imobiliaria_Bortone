@@ -68,24 +68,94 @@ class PublicidadeService {
     }
   }
 
-async getAllPublicidades(params = {}) {
-    const { search, ordenarPor = "id", direcao = "ASC" } = params;
-    const options = {};
-    // Filtro de busca por título
-    if (search) {
-      options.where = {
-        titulo: { [Op.like]: `%${search}%` }
+  async getAllPublicidades(params) {
+    try {
+      console.log('=== SERVICE DEBUG ===');
+      console.log('Parâmetros recebidos:', params);
+
+      const optionsPublicidade = {};
+
+      // Implementar filtros se necessário
+      if (params && params.titulo) {
+        optionsPublicidade.where = {
+          titulo: {
+            [PublicidadeModel.sequelize.Sequelize.Op.like]: `%${params.titulo}%`
+          }
+        };
+        console.log('Filtro por título aplicado:', params.titulo);
+      }
+
+      if (params && params.usuario_id) {
+        if (!optionsPublicidade.where) {
+          optionsPublicidade.where = {};
+        }
+        optionsPublicidade.where.usuario_id = params.usuario_id;
+        console.log('Filtro por usuário aplicado:', params.usuario_id);
+      }
+
+      // Implementar ordenação
+      if (params && params.ordenarPor) {
+        const ordemPublicidade = params.direcao === "DESC" ? "DESC" : "ASC";
+        console.log('Ordenação solicitada:', params.ordenarPor, 'direção:', ordemPublicidade);
+
+        if (params.ordenarPor === "data") {
+          // Usar ID para ordenação por data de inclusão (ID maior = mais recente)
+          optionsPublicidade.order = [["id", ordemPublicidade]];
+          console.log('Aplicando ordenação por ID (data)');
+        } else if (params.ordenarPor === "alfabetica") {
+          optionsPublicidade.order = [["titulo", ordemPublicidade]];
+          console.log('Aplicando ordenação alfabética por título');
+        }
+      } else {
+        // Ordenação padrão por data de inclusão (mais recente primeiro)
+        optionsPublicidade.order = [["id", "DESC"]];
+        console.log('Aplicando ordenação padrão (ID DESC)');
+      }
+
+      // Implementar paginação
+      const page = parseInt(params?.page) || 1;
+      const limit = parseInt(params?.limit) || 12; // 12 itens por página por padrão
+      const offset = (page - 1) * limit;
+
+      optionsPublicidade.limit = limit;
+      optionsPublicidade.offset = offset;
+
+      console.log('Paginação aplicada - Página:', page, 'Limite:', limit, 'Offset:', offset);
+      console.log('Options finais para busca:', JSON.stringify(optionsPublicidade, null, 2));
+
+      // Usar findAndCountAll para obter tanto os dados quanto o total de registros
+      const result = await PublicidadeModel.findAndCountAll(optionsPublicidade);
+
+      const totalItems = result.count;
+      const totalPages = Math.ceil(totalItems / limit);
+      const publicidades = result.rows;
+
+      console.log('Publicidades encontradas:', publicidades.length);
+      console.log('Total de registros:', totalItems);
+      console.log('Total de páginas:', totalPages);
+
+      if (publicidades.length > 0) {
+        console.log('Primeira publicidade:', publicidades[0].titulo, 'ID:', publicidades[0].id);
+        console.log('Última publicidade:', publicidades[publicidades.length - 1].titulo, 'ID:', publicidades[publicidades.length - 1].id);
+      }
+      console.log('====================');
+
+      // Retornar dados com metadados de paginação
+      return {
+        data: publicidades,
+        pagination: {
+          currentPage: page,
+          totalPages: totalPages,
+          totalItems: totalItems,
+          itemsPerPage: limit,
+          hasNextPage: page < totalPages,
+          hasPreviousPage: page > 1
+        }
       };
+    } catch (error) {
+      console.error('Erro no service:', error);
+      throw error;
     }
-    const campos = {
-      id: "id",
-      titulo: "titulo",
-      alfabetica: "alfabetica",
-      data: "data"
-    };
-    const campo = campos[ordenarPor] || "id";
-    options.order = [[campo, direcao.toUpperCase() === "DESC" ? "DESC" : "ASC"]];
-    return PublicidadeModel.findAll(options);
   }
 }
 

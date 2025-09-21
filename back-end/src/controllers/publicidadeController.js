@@ -48,21 +48,17 @@ export const createPublicidade = async (req, res) => {
 
 export const getAllPublicidades = async (req, res) => {
   try {
-    const { titulo, usuario_id, page = 1, limit = 10, order = "createdAt" } = req.query;
+    const { titulo, usuario_id, ordenarPor, direcao, page, limit } = req.query;
 
-    const pagina = parseInt(page, 10);
-    const limite = parseInt(limit, 10);
-
-    if (isNaN(pagina) || isNaN(limite) || pagina <= 0 || limite <= 0) {
-      return res.status(400).json({ error: "Parâmetros de paginação inválidos" });
-    }
+    console.log('Query params recebidos:', { titulo, usuario_id, ordenarPor, direcao, page, limit });
 
     const resultado = await publicidadeService.getAllPublicidades({
       titulo,
       usuario_id,
-      page: pagina,
-      limit: limite,
-      order,
+      ordenarPor,
+      direcao,
+      page,
+      limit,
     });
 
     return res.status(200).json(resultado);
