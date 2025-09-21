@@ -165,7 +165,7 @@ export default function CmsPublicidadePage() {
       <div className="md:ml-20">
         <CMS.Body title={"Publicidades"}>
           <CMS.Table>
-            <CMS.TableHeader
+            <CMS.TableHeaderPublicidade
               buttonText="Nova Publicidade"
               buttonIcon={<RiStickyNoteAddLine />}
               onSearch={onSearch}
@@ -199,7 +199,7 @@ export default function CmsPublicidadePage() {
             </CMS.TableBody>
 
             {/* Paginador controlado */}
-            <CMS.TableFooter
+            <CMS.TableFooterPublicidade
               pagination={pagination}
               currentPage={currentPage}
               onPageChange={handlePageChange}
