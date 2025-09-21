@@ -50,8 +50,6 @@ export default function Contato() {
                 <MdOutlineEmail /> E-mail
               </p>
               <p className="text-xl lg:text-2xl font-light">
-              </p>
-              <p className="text-xl lg:text-2xl font-light">
                 <Link
                   href={`mailto:${infoContato.contato.email}`}
                   className="underline hover:opacity-80"

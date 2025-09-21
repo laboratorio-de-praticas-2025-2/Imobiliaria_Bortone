@@ -18,7 +18,7 @@ export default function ContatoMapa() {
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
-        '&copy; <Link href={infoContato.localizacao.opensstreetmap.url}>OpenStreetMap</Link> contributors',
+        '&copy; <Link href="https://www.openstreetmap.org/copyright">OpenStreetMap</Link> contributors',
     }).addTo(map);
 
     const iconHtml = ReactDOMServer.renderToString(
