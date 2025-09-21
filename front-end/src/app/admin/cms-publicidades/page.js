@@ -12,7 +12,6 @@ export default function CmsPublicidadePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterData, setFilterData] = useState({});
   
-  // Estados para paginação
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -25,20 +24,13 @@ export default function CmsPublicidadePage() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Carregar dados iniciais apenas uma vez
     loadPublicidades();
   }, []);
 
-  // Filtrar publicidades baseado no termo de pesquisa (agora funciona com paginação)
-  // Filtrar publicidades baseado no termo de pesquisa
   useEffect(() => {
     if (searchTerm.trim() === "") {
-      // Se não há termo de busca, usar os dados originais da API
       setFilteredPublicidades(publicidades);
-      // Restaurar paginação original se havia busca antes
       if (publicidades.length > 0) {
-        // Se temos dados paginados da API, manter a paginação da API
-        // Caso contrário, calcular paginação local
         const isApiPaginated = pagination.totalItems > publicidades.length;
         if (!isApiPaginated) {
           setPagination(prev => ({
@@ -52,14 +44,12 @@ export default function CmsPublicidadePage() {
         }
       }
     } else {
-      // Se há termo de busca, filtrar localmente
       const filtered = publicidades.filter(publicidade =>
         publicidade.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
         publicidade.conteudo.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredPublicidades(filtered);
       setCurrentPage(1);
-      // Atualizar paginação para busca local
       setPagination(prev => ({
         ...prev,
         currentPage: 1,
@@ -71,7 +61,6 @@ export default function CmsPublicidadePage() {
     }
   }, [searchTerm, publicidades, currentPage]);
 
-  // Recarregar dados quando a ordenação ou página mudar (apenas se não há busca ativa)
   useEffect(() => {
     if (searchTerm.trim() === "") {
       loadPublicidades();
@@ -81,7 +70,6 @@ export default function CmsPublicidadePage() {
   const loadPublicidades = async () => {
     try {
       setIsLoading(true);
-      // Construir parâmetros de query baseado no filtro atual
       const params = new URLSearchParams();
 
       console.log('filterData.order atual:', filterData.order);
@@ -100,20 +88,17 @@ export default function CmsPublicidadePage() {
         console.log('Nenhuma ordenação específica, usando padrão');
       }
 
-      // Adicionar parâmetros de paginação
       params.append('page', currentPage.toString());
-      params.append('limit', '12'); // 12 itens por página
+      params.append('limit', '12');
 
-      const url = `http://localhost:4000/publicidade${params.toString() ? '?' + params.toString() : ''}`;
+      const url = `${process.env.URL_API}/publicidade${params.toString() ? '?' + params.toString() : ''}`;
       console.log('Fazendo requisição para:', url);
 
       const response = await axios.get(url);
       if (response.status === 200) {
         console.log('Dados recebidos:', response.data);
         
-        // Verificar se a resposta tem o formato de paginação
         if (response.data.data && response.data.pagination) {
-          // Formato com paginação
           setPublicidades(response.data.data);
           setFilteredPublicidades(response.data.data);
           setPagination(response.data.pagination);
@@ -138,7 +123,6 @@ export default function CmsPublicidadePage() {
 
   const onSearch = (value) => {
     setSearchTerm(value);
-    // Se o usuário limpou a busca, recarregar dados da API
     if (value.trim() === "" && searchTerm.trim() !== "") {
       setCurrentPage(1);
       loadPublicidades();
@@ -154,7 +138,6 @@ export default function CmsPublicidadePage() {
       console.log('filterData depois:', newFilterData);
       return newFilterData;
     });
-    // Resetar para página 1 quando mudar ordenação
     setCurrentPage(1);
     console.log('=============================');
   };
@@ -163,21 +146,17 @@ export default function CmsPublicidadePage() {
     setFilterData(prev => ({ ...prev, ...newData }));
   };
 
-  // Função para lidar com mudança de página
   const handlePageChange = (newPage) => {
     console.log('Mudando para página:', newPage);
     setCurrentPage(newPage);
   };
 
-  // Função para obter os itens da página atual (para busca local)
   const getCurrentPageItems = () => {
     if (searchTerm.trim() !== "") {
-      // Para busca local, paginar os resultados filtrados
       const startIndex = (currentPage - 1) * pagination.itemsPerPage;
       const endIndex = startIndex + pagination.itemsPerPage;
       return filteredPublicidades.slice(startIndex, endIndex);
     }
-    // Para busca da API, retornar todos os itens (já vêm paginados)
     return filteredPublicidades;
   };
 

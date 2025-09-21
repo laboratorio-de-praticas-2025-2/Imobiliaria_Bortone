@@ -12,7 +12,8 @@
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watchAll=false",
     "dev": "nodemon src/app.js",
-    "sync-db": "node sync-database.js"
+    "sync-db": "node sync-database.js",
+    "start": "node src/app.js"
   },
   "repository": {
     "type": "git",

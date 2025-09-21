@@ -30,10 +30,9 @@ export default function EditarPublicidadePage() {
 
   const loadPublicidade = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/publicidade/${id}`);
+      const response = await axios.get(`${process.env.URL_API}/publicidade/${id}`);
       if (response.status === 200) {
         setPublicidade(response.data);
-        // Limpar fileList para mostrar apenas imagem atual
         setFileList([]);
         console.log('Publicidade carregada:', response.data);
       }
@@ -67,7 +66,6 @@ export default function EditarPublicidadePage() {
         formData.append('usuario_id', publicidade.usuario_id.toString());
         formData.append('ativo', publicidade.ativo.toString());
         
-        // Se há arquivo novo selecionado, adicionar ao FormData
         if (fileList.length > 0 && fileList[0].originFileObj) {
           formData.append('url_imagem', fileList[0].originFileObj);
           console.log('Arquivo adicionado ao FormData:', fileList[0].originFileObj.name);
@@ -75,13 +73,12 @@ export default function EditarPublicidadePage() {
           console.log('Nenhum arquivo novo selecionado');
         }
 
-        // Debug: verificar o que está no FormData
         console.log('FormData entries:');
         for (let [key, value] of formData.entries()) {
           console.log(key, value);
         }
 
-        const response = await axios.put(`http://localhost:4000/publicidade/${id}`, formData, {
+        const response = await axios.put(`${process.env.URL_API}/publicidade/${id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

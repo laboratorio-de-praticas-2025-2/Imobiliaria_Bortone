@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Rotas
-app.use("/", publicidadeRoutes);
+app.use("/publicidade", publicidadeRoutes);
 app.use('/', recomendacaoRouter);
 app.use('/user', userRoutes );
 app.use("/search", searchRouter);

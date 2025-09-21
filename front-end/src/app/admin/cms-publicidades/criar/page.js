@@ -15,7 +15,6 @@ export default function CriarPublicidadePage() {
   const [fileList, setFileList] = useState([]);
   const router = useRouter();
 
-  // Debug: monitorar mudanças no fileList
   console.log('fileList atual:', fileList);
 
   const onFinish = async (values) => {
@@ -34,10 +33,9 @@ export default function CriarPublicidadePage() {
         const formData = new FormData();
         formData.append('titulo', values.titulo);
         formData.append('conteudo', values.conteudo);
-        formData.append('usuario_id', '1'); // String para FormData
-        formData.append('ativo', 'true'); // String para FormData
+        formData.append('usuario_id', '1'); 
+        formData.append('ativo', 'true');
         
-        // Se há arquivo selecionado, adicionar ao FormData
         if (fileList.length > 0 && fileList[0].originFileObj) {
           formData.append('url_imagem', fileList[0].originFileObj);
           console.log('Arquivo adicionado ao FormData:', fileList[0].originFileObj);
@@ -45,7 +43,7 @@ export default function CriarPublicidadePage() {
           console.log('Nenhum arquivo selecionado');
         }
 
-        const response = await axios.post("http://localhost:4000/publicidade", formData, {
+        const response = await axios.post(`${process.env.URL_API}/publicidade`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

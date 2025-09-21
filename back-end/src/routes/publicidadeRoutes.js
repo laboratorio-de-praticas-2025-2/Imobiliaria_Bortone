@@ -33,18 +33,18 @@ const upload = multer({ storage: storage });
 const router = Router();
 
 // Lista todas as publicidades
-router.get("/publicidade", getAllPublicidades);
+router.get("/", getAllPublicidades);
 
 // Busca uma publicidade pelo ID
-router.get("/publicidade/:id", getPublicidadeById);
+router.get("/:id", getPublicidadeById);
 
 // Cria uma nova publicidade
-router.post("/publicidade", upload.single('url_imagem'), createPublicidade);
+router.post("/", upload.single('url_imagem'), createPublicidade);
 
 // Atualiza uma publicidade existente
-router.put("/publicidade/:id", upload.single('url_imagem'), updatePublicidade);
+router.put("/:id", upload.single('url_imagem'), updatePublicidade);
 
 // Remove uma publicidade
-router.delete("/publicidade/:id", deletePublicidade);
+router.delete("/:id", deletePublicidade);
 
 export default router;
