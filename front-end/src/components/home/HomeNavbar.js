@@ -282,7 +282,7 @@ export default function HomeNavbar({ className }) {
 
           {/* Botão "Contate-nos" - Mobile */}
           <Link
-            href="https://wa.me/9999" // substitua pelo número
+            href="https://wa.me/5513996720645" // substitua pelo número
             target="_blank"
             rel="noopener noreferrer"
             className="px-5 py-2 rounded-full border-2 border-[#304383] bg-transparent 

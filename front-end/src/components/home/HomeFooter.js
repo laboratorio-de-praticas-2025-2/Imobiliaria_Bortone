@@ -49,6 +49,7 @@ export default function HomeFooter() {
               </Link>
             </p>
           </Flex>
+          
         </Flex>
         <Image
           src="/images/LogoPreta.svg"
