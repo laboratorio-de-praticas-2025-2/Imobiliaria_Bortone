@@ -2,6 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
+
 import {
 getAllPublicidades,
 getPublicidadeById,
@@ -12,11 +13,11 @@ deletePublicidade
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 // Configuração do multer para publicidadeImages (front-end)
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const uploadPath = path.join(__dirname, '../../../front-end/public/images/publicidadeImages');
+
     console.log('Multer destination:', uploadPath);
     cb(null, uploadPath);
   },
@@ -29,6 +30,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
 
 const router = Router();
 

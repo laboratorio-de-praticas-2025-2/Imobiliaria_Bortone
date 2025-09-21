@@ -8,6 +8,7 @@ export const createPublicidade = async (req, res) => {
     console.log('req.files:', req.files);
     console.log('req.headers:', req.headers);
     console.log('Content-Type:', req.headers['content-type']);
+
     console.log('======================');
     
     const { titulo, conteudo, usuario_id, ativo } = req.body;
@@ -17,6 +18,7 @@ export const createPublicidade = async (req, res) => {
     
     console.log('url_imagem calculada:', url_imagem);
 
+
     // Converter strings para tipos corretos
     const usuarioIdNumber = parseInt(usuario_id, 10);
     const ativoBoolean = ativo === 'true';
@@ -24,6 +26,7 @@ export const createPublicidade = async (req, res) => {
     if (!titulo || !conteudo || !usuario_id) {
       return res.status(400).json({ error: "Título, conteúdo e ID do usuário são obrigatórios." });
     }
+
 
     if (isNaN(usuarioIdNumber) || usuarioIdNumber <= 0) {
       return res.status(400).json({ error: "ID do usuário deve ser um número inteiro positivo." });
@@ -34,6 +37,7 @@ export const createPublicidade = async (req, res) => {
     const novaPublicidade = await publicidadeService.createPublicidade({
       titulo,
       conteudo,
+
       url_imagem,
       usuario_id: usuarioIdNumber,
       ativo: ativoBoolean,
@@ -42,6 +46,7 @@ export const createPublicidade = async (req, res) => {
     return res.status(201).json(novaPublicidade);
   } catch (error) {
     console.error("Erro ao criar publicidade:", error);
+
     return res.status(500).json({ error: "Erro interno no servidor" });
   }
 };
@@ -132,6 +137,7 @@ export const updatePublicidade = async (req, res) => {
     // Se há arquivo enviado, usar o caminho completo
     if (req.file) {
       updateData.url_imagem = `/images/publicidadeImages/${req.file.filename}`;
+
     }
     
     console.log('updateData:', updateData);

@@ -57,11 +57,18 @@ export default function CriarPublicidadePage() {
       }
     } else {
       alert("Preencha todos os campos!");
+
     }
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+    message.error("Por favor, corrija os erros no formulário!");
+  };
+
+  // Função para limpar o preview quando o arquivo é removido
+  const handleFileListChange = (newFileList) => {
+    setFileList(newFileList);
   };
 
 
@@ -77,19 +84,25 @@ export default function CriarPublicidadePage() {
               <p className="!text-[#0d1b3e] !font-semibold text-[16px]">
                 Prévia *
               </p>
-              {fileList.length > 0 ? (
-                <div className="w-[100%] md:h-[25vh] h-[13vh] bg-gray-200 rounded-3xl ">
-                  <Image
-                    src={URL.createObjectURL(fileList[0].originFileObj)}
+              {fileList.length > 0 && fileList[0].originFileObj ? (
+                <div className="w-[100%] md:h-[25vh] h-[13vh] bg-gray-200 rounded-3xl relative">
+                  <PublicidadeImage
+                    url_imagem={URL.createObjectURL(fileList[0].originFileObj)}
                     alt="Prévia da publicidade"
                     width={400}
                     height={320}
                     className="h-full w-full object-cover rounded-3xl"
                   />
+                  <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded text-xs">
+                    ✓ Imagem carregada
+                  </div>
                 </div>
               ) : (
-                <div className="md:h-[25vh] h-[13vh] w-[100%] bg-[#D4D4D4] rounded-3xl flex items-center justify-center text-white font-semibold text-xl">
-                  Imagem de capa
+                <div className="md:h-[25vh] h-[13vh] w-[100%] bg-[#D4D4D4] rounded-3xl flex items-center justify-center text-gray-600 font-semibold text-xl border-2 border-dashed border-gray-400">
+                  <div className="text-center">
+                    <div>📷</div>
+                    <div className="text-sm mt-2">Selecione uma imagem</div>
+                  </div>
                 </div>
               )}
 
@@ -103,10 +116,9 @@ export default function CriarPublicidadePage() {
                 <UploadField
                   name="url_imagem"
                   label="Imagem de capa"
-                  multiple={false}
                   className="!w-fit"
                   fileList={fileList}
-                  setFileList={setFileList}
+                  setFileList={handleFileListChange}
                 />
               </div>
 
@@ -119,7 +131,11 @@ export default function CriarPublicidadePage() {
               />
 
               <div className="flex justify-end mt-4">
-                <FormButton text="Publicar" icon={<UploadOutlined />} />
+                <FormButton 
+                  text={isSubmitting ? "Publicando..." : "Publicar"} 
+                  icon={<UploadOutlined />}
+                  disabled={isSubmitting}
+                />
               </div>
             </div>
           </Form.FormBody>
