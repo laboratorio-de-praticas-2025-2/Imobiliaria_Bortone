@@ -43,7 +43,7 @@ export default function CriarPublicidadePage() {
           console.log('Nenhum arquivo selecionado');
         }
 
-        const response = await axios.post(`${process.env.URL_API}/publicidade`, formData, {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/publicidade`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

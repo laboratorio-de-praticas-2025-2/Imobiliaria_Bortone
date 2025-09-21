@@ -30,7 +30,7 @@ export default function EditarPublicidadePage() {
 
   const loadPublicidade = async () => {
     try {
-      const response = await axios.get(`${process.env.URL_API}/publicidade/${id}`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`);
       if (response.status === 200) {
         setPublicidade(response.data);
         setFileList([]);
@@ -78,7 +78,7 @@ export default function EditarPublicidadePage() {
           console.log(key, value);
         }
 
-        const response = await axios.put(`${process.env.URL_API}/publicidade/${id}`, formData, {
+        const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

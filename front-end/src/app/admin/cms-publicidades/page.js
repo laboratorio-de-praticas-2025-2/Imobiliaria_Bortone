@@ -91,7 +91,7 @@ export default function CmsPublicidadePage() {
       params.append('page', currentPage.toString());
       params.append('limit', '12');
 
-      const url = `${process.env.URL_API}/publicidade${params.toString() ? '?' + params.toString() : ''}`;
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/publicidade${params.toString() ? '?' + params.toString() : ''}`;
       console.log('Fazendo requisição para:', url);
 
       const response = await axios.get(url);
@@ -104,7 +104,6 @@ export default function CmsPublicidadePage() {
           setPagination(response.data.pagination);
           console.log('Paginação recebida:', response.data.pagination);
         } else {
-          // Formato antigo (sem paginação) - fallback
           setPublicidades(response.data);
           setFilteredPublicidades(response.data);
           setPagination(prev => ({
