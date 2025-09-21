@@ -158,8 +158,7 @@ export default function ChatModal({ onClose }) {
               Suporte Imobiliária Bortone
             </h2>
             <p className="text-xs text-white/80">
-              {isConnected ? "🟢 Online" : "🔴 Conectando..."} 
-              {!testUserId && ` • ${userName}`}
+              {isConnected ? "🟢 Online" : "🔴 Conectando..."} • {userName}
             </p>
           </div>
         </div>
