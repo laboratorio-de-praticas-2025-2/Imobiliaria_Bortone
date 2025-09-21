@@ -107,9 +107,6 @@ export default function ChatModal({ onClose }) {
 
   const handleSend = () => {
     if (!newMessage.trim() || !ws || !isConnected) return;
-    
-    // Feedback visual imediato
-    setIsTyping(true);
   
     const messageObj = { 
       type: "message", 
@@ -130,7 +127,6 @@ export default function ChatModal({ onClose }) {
     setMessages((prev) => [...prev, userMessage]);
   
     setNewMessage("");
-    setIsTyping(false);
   };
 
   const addEmoji = (emoji) => {
