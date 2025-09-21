@@ -53,11 +53,7 @@ export default function DropdownFilter({
             {options.map((option) => (
               <button
                 key={option}
-                onClick={() => {
-                  handleSelect(option);
-                  setSelected(option);
-                  setOpen(false);
-                }}
+                onClick={() => handleSelect(option)}
                 className={`px-4 py-2 !text-[var(--primary)] rounded-2xl hover:bg-[#EEF0F9] text-left ${
                   option === selected ? "bg-[#EEF0F9]" : ""
                 }`}
