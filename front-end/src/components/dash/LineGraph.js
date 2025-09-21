@@ -22,36 +22,45 @@ ChartJS.register(
   Legend
 );
 
-export default function LineGraph() {
+// agora com parametro dos dados
+export default function LineGraph({alugueisPorMes}) {
+  // define os labels como nome do mes/ano
+  const monthNames = [
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+  ];
+  // mapeia os dados com base nas labels e no formato esperado
+  const labels = alugueisPorMes.map((item) => {
+    const [year, month] = item.mes.split("-");
+    return `${monthNames[parseInt(month) - 1]}/${year.slice(2)}`;
+  });
+
   const data = {
-    labels: [
-      "Janeiro",
-      "Fevereiro",
-      "Março",
-      "Abril",
-      "Maio",
-      "Junho",
-      "Julho",
-      "Agosto",
-      "Setembro",
-      "Outubro",
-      "Novembro",
-      "Dezembro",
-    ],
+    labels,
     datasets: [
       {
         label: "Casas",
-        data: [5, 10, 3, 10, 5, 15, 5, 7, , , ,],
-        borderColor: "#F39200",
+        data: alugueisPorMes.map((item) => item.Casa),
+        borderColor: "#F39C12",
         borderWidth: 4,
         fill: false,
         tension: 0,
         pointRadius: 0,
       },
-            {
+      {
         label: "Apartamentos",
-        data: [2, 5, 4, 8, 10, 7, 2, 12, , , ,],
-        borderColor: "#324587",
+        data: alugueisPorMes.map((item) => item.Apartamento),
+        borderColor: "#243B7B",
+        borderWidth: 4,
+        fill: false,
+        tension: 0,
+        pointRadius: 0,
+      },
+      {
+        label: "Terrenos",
+        data: alugueisPorMes.map((item) => item.Terreno),
+        /* data: [10, 5, 12, 1, 22, 13, 16, 11, 19, 7, 14, 9], */
+        borderColor: "#E74C3C",
         borderWidth: 4,
         fill: false,
         tension: 0,
@@ -60,14 +69,25 @@ export default function LineGraph() {
     ],
   };
 
+  // calcula o valor maximo entre todas as categorias para definir o teto do grafico
+  const maxValue = Math.max(
+    ...alugueisPorMes.map((m) =>
+      Math.max(m.Casa, m.Apartamento, m.Terreno)
+    )
+  );
+  // arredonda o teto para o proximo multiplo de 5
+  const graphCeiling =  maxValue + (5 - (maxValue % 5));
+  // defino os steps como 5
+  const stepSize = graphCeiling / 5;
+  
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
       y: {
         beginAtZero: true,
-        max: 50,
-        ticks: { stepSize: 5 },
+        max: graphCeiling,
+        ticks: { stepSize },  
         grid: { color: "#000000" },
       },
       x: { grid: { display: false } },

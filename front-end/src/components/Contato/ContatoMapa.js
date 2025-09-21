@@ -18,7 +18,7 @@ export default function ContatoMapa() {
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        '&copy; <Link href="https://www.openstreetmap.org/copyright">OpenStreetMap</Link> contributors',
     }).addTo(map);
 
     const iconHtml = ReactDOMServer.renderToString(
@@ -27,9 +27,9 @@ export default function ContatoMapa() {
 
     const customIcon = L.divIcon({
       html: iconHtml,
-      className: "custom-react-icon", 
-      iconSize: [38, 38], 
-      iconAnchor: [19, 38], 
+      className: "custom-react-icon",
+      iconSize: [38, 38],
+      iconAnchor: [19, 38],
     });
 
     L.marker([-24.491917, -47.848722], { icon: customIcon }).addTo(map);
