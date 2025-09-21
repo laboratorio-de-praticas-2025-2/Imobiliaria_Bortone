@@ -20,34 +20,7 @@ class DashboardService {
 
   // busca as estatisticas gerais dos imoveis (quantidade vendidos, disponiveis, alugados etc.) e de usuarios
   async estatisticasImoveisUsuarios() {
-    const query = `SELECT 
-        im.totalApartamentos,
-        im.totalCasas,
-        im.totalTerrenos,
-        im.totalVenda,
-        im.totalLocacao,
-        im.totalImoveis,
-        us.totalAdministradores,
-        us.totalVisitantes,
-        us.totalUsuarios
-    FROM (
-        SELECT  
-          SUM(CASE WHEN i.tipo = 'Apartamento' THEN 1 ELSE 0 END) AS totalApartamentos,
-          SUM(CASE WHEN i.tipo = 'Casa' THEN 1 ELSE 0 END) AS totalCasas,
-          SUM(CASE WHEN i.tipo = 'Terreno' THEN 1 ELSE 0 END) AS totalTerrenos,
-          SUM(CASE WHEN i.tipo_negociacao = 1 THEN 1 ELSE 0 END) AS totalVenda,
-          SUM(CASE WHEN i.tipo_negociacao = 2 THEN 1 ELSE 0 END) AS totalLocacao,
-          COUNT(1) as totalImoveis   
-        FROM imoveis i
-        WHERE i.status = 1
-    ) im
-    CROSS JOIN (
-        SELECT  
-          SUM(CASE WHEN f.nivel = 0 THEN 1 ELSE 0 END) AS totalAdministradores,
-          SUM(CASE WHEN f.nivel = 1 THEN 1 ELSE 0 END) AS totalVisitantes,
-          COUNT(1) as totalUsuarios   
-        FROM usuario f
-    ) us;`;
+    const query = `SELECT * FROM estatisticasImoveisUsuarios;`;
 
     // executa a query no BD usando sequelize
     const errorMessage =
@@ -57,46 +30,14 @@ class DashboardService {
   }
   // busca as estatisticas de vendas nos ultimos 30 dias e a sua %
   async estatisticasVendas() {
-    const query = `SELECT 
-    i.tipo AS tipoImovel,
-    COUNT(*) AS quantidade,
-    ROUND(100 * COUNT(*) / (SELECT COUNT(*) FROM imoveis WHERE status = 'vendido' 
-    AND data_update_status >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)), 2) 
-    AS porcentagem
-      FROM imoveis i
-      WHERE i.status = 'vendido' 
-      AND i.data_update_status >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
-    GROUP BY i.tipo;`;
+    const query = `SELECT * FROM estatisticasVendas;`;
 
     const errorMessage = "Falha ao recuperar estatísticas de vendas";
 
     return await this.#executeQuery(query, errorMessage);
   }
   async alugueisPorMes() {
-    const query = `SELECT 
-        m.mes,
-        t.tipo AS tipoImovel,
-        COALESCE(COUNT(i.id), 0) AS total
-    FROM (
-        -- gera os últimos 12 meses
-        SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL seq MONTH), '%Y-%m') AS mes
-        FROM (
-            SELECT 0 AS seq UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3
-            UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7
-            UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11
-        ) AS seqs
-    ) m
-    CROSS JOIN (
-        SELECT 'Apartamento' AS tipo
-        UNION ALL SELECT 'Casa'
-        UNION ALL SELECT 'Terreno'
-    ) t
-    LEFT JOIN imoveis i
-        ON i.tipo = t.tipo
-        AND i.status = 'locado'
-        AND DATE_FORMAT(i.data_update_status, '%Y-%m') = m.mes
-    GROUP BY m.mes, t.tipo
-    ORDER BY m.mes ASC, t.tipo;`;
+    const query = `SELECT * from alugueisPorMes;`;
 
     const errorMessage = "Falha ao recuperar estatísticas de aluguéis";
 
