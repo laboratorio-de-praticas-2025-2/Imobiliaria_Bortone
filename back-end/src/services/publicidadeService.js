@@ -1,4 +1,5 @@
 import PublicidadeModel from "../models/publicidadeModel.js";
+import { Op } from "sequelize";
 
 class PublicidadeService {
   async createPublicidade(dadosCreatePublicidade) {
@@ -67,26 +68,26 @@ class PublicidadeService {
     }
   }
 
-  async getAllPublicidades(params) {
-    try {
-      const optionsPublicidade = {};
-
-      if (params && params.ordenarPor) {
-        const ordemPublicidade = params.direcao === "DESC" ? "DESC" : "ASC";
-
-        if (params.ordenarPor === "data") {
-          optionsPublicidade.order = [["id", ordemPublicidade]];
-        } else if (params.ordenarPor === "alfabetica") {
-          optionsPublicidade.order = [["titulo", ordemPublicidade]];
-        }
-      }
-
-      const AllPublicidades = await PublicidadeModel.findAll(optionsPublicidade);
-      return AllPublicidades;
-    } catch (error) {
-      throw error;
+async getAllPublicidades(params = {}) {
+    const { search, ordenarPor = "id", direcao = "ASC" } = params;
+    const options = {};
+    // Filtro de busca por título
+    if (search) {
+      options.where = {
+        titulo: { [Op.like]: `%${search}%` }
+      };
     }
+    const campos = {
+      id: "id",
+      titulo: "titulo",
+      alfabetica: "alfabetica",
+      data: "data"
+    };
+    const campo = campos[ordenarPor] || "id";
+    options.order = [[campo, direcao.toUpperCase() === "DESC" ? "DESC" : "ASC"]];
+    return PublicidadeModel.findAll(options);
   }
 }
+
 
 export default new PublicidadeService();
