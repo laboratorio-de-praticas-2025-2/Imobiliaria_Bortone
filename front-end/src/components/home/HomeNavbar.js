@@ -4,10 +4,9 @@ import { navLinks } from "@/mock/navLinks";
 import { Button, Flex, Input } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, createElement } from "react";
+import { useState, createElement, useEffect } from "react";
 import { FaBars } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
-import { usersMock } from "@/mock/users";
 import { IoIosArrowDown } from "react-icons/io";
 
 const { Search } = Input;
@@ -16,9 +15,43 @@ const onSearch = (value) => console.log(value);
 export default function HomeNavbar({ className }) {
   const [open, setOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const user = usersMock[0] || null;
-  const isLoggedIn = !!user;
+  // Verificar se o usuário está logado
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    const userInfo = localStorage.getItem("userInfo");
+    
+    if (authToken && userInfo) {
+      try {
+        const parsedUser = JSON.parse(userInfo);
+        console.log("🔍 Dados do usuário carregados:", parsedUser);
+        console.log("🔍 Nível do usuário:", parsedUser.nivel, "Tipo:", typeof parsedUser.nivel);
+        setUser(parsedUser);
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error("Erro ao parsear dados do usuário:", error);
+        setUser(null);
+        setIsLoggedIn(false);
+      }
+    } else {
+      setUser(null);
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  // Função de logout
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userInfo");
+    setUser(null);
+    setIsLoggedIn(false);
+    setUserMenuOpen(false);
+    // Redirecionar para página de login
+    window.location.href = "/bem-vindo";
+  };
+
 
   const buttonHeightPX = 40;
   const bottomRadius = "20px";
@@ -86,7 +119,7 @@ export default function HomeNavbar({ className }) {
                 className="bg-[#EEF0F9] px-4 py-2 rounded-full cursor-pointer whitespace-nowrap flex items-center gap-1 relative z-[10000]"
                 style={{ color: "#304383", height: buttonHeightPX }}
               >
-                <span className="truncate">{user.nome}</span>
+                <span className="truncate">{user?.nome}</span>
                 <IoIosArrowDown />
               </button>
 
@@ -104,7 +137,7 @@ export default function HomeNavbar({ className }) {
                   borderRadius: bottomRadius,
                 }}
               >
-                {user.nivel === "administrador" && (
+                {user?.nivel === 0 && (
                   <Link href={"/admin/dashboard"}>
                     <li
                       className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
@@ -138,7 +171,7 @@ export default function HomeNavbar({ className }) {
                       borderBottomLeftRadius: bottomRadius,
                       borderBottomRightRadius: bottomRadius,
                       transitionDelay:
-                        user.nivel === "administrador" ? delays[2] : delays[1],
+                      user?.nivel === 0 ? delays[2] : delays[1],
                     }}
                   >
                     Sair
@@ -188,7 +221,7 @@ export default function HomeNavbar({ className }) {
                 className="bg-[#EEF0F9] px-4 py-2 rounded-full whitespace-nowrap flex items-center gap-1 cursor-pointer relative z-[10000]"
                 style={{ color: "#304383", height: buttonHeightPX }}
               >
-                <span className="truncate">{user.nome}</span>
+                <span className="truncate">{user?.nome}</span>
                 <IoIosArrowDown />
               </button>
 
@@ -206,7 +239,7 @@ export default function HomeNavbar({ className }) {
                   borderRadius: bottomRadius,
                 }}
               >
-                {user.nivel === "administrador" && (
+                {user?.nivel === 0 && (
                   <Link href={"/admin/dashboard"}>
                     <li
                       className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
@@ -240,7 +273,7 @@ export default function HomeNavbar({ className }) {
                       borderBottomLeftRadius: bottomRadius,
                       borderBottomRightRadius: bottomRadius,
                       transitionDelay:
-                        user.nivel === "administrador" ? delays[2] : delays[1],
+                      user?.nivel === 0 ? delays[2] : delays[1],
                     }}
                   >
                     Sair

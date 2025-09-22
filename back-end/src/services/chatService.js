@@ -23,7 +23,9 @@ function send(ws, data) {
 function broadcastAgents(data, options = {}) {
   const { excludeAgentId } = options;
   Object.entries(agents).forEach(([agentId, ws]) => {
-    if (excludeAgentId && agentId === excludeAgentId) return;
+    if (excludeAgentId && agentId === excludeAgentId) {
+      return;
+    }
     send(ws, data);
   });
 }

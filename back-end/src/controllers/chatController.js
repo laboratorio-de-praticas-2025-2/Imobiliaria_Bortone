@@ -246,16 +246,23 @@ export function handleConnection(ws) {
             return;
           }
 
-          newMsg = { userId: currentId, nome: "Atendente", text: data.text };
+          newMsg = { 
+            userId: currentId, 
+            nome: "Atendente", 
+            text: data.text,
+            timestamp: new Date().toISOString()
+          };
 
           // Adicionar mensagem ao histórico com limite de 100
           chatService.addMessageToHistory(targetUser, newMsg);
 
+          // Enviar para o usuário alvo
           chatService.send(chatService.users[targetUser].ws, {
             type: "message",
             msg: newMsg,
           });
-          // Broadcast para demais atendentes, mas não ecoar para o remetente
+          
+          // Broadcast para demais atendentes, EXCLUINDO o remetente para evitar duplicação
           chatService.broadcastAgents(
             {
               type: "message",
@@ -263,7 +270,7 @@ export function handleConnection(ws) {
               nome: chatService.users[targetUser].nome,
               msg: newMsg,
             },
-            { excludeAgentId: currentId }
+            { excludeAgentId: currentId.toString() }
           );
         }
       }

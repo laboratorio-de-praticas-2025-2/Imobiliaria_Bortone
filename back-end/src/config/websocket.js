@@ -7,7 +7,7 @@ import { handleConnection } from "../controllers/chatController.js";
 export default function initWebSocket(server) {
   const ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://localhost:3001",
+    "http://localhost:3001", 
     "https://imobiliaria-bortone.vercel.app",
     // Adicionar outras origens permitidas em produção
   ];
@@ -15,7 +15,14 @@ export default function initWebSocket(server) {
   const wss = new WebSocketServer({ server });
   wss.on("connection", (ws, req) => {
     const origin = req.headers.origin;
-    if (origin && !ALLOWED_ORIGINS.includes(origin)) {
+    
+    // Em desenvolvimento, permitir qualquer origem local
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    const isOriginAllowed = isDevelopment || 
+      !origin || 
+      ALLOWED_ORIGINS.some(allowedOrigin => origin.startsWith(allowedOrigin));
+    
+    if (!isOriginAllowed) {
       ws.close(1008, "Origin não permitida");
       return;
     }
