@@ -9,10 +9,6 @@
       
       
       
-        <link rel="prev" href="../RegrasGerais/">
-      
-      
-        <link rel="next" href="../frontend/NextConfig/">
       
       
       <link rel="icon" href="../assets/favicon.ico">
@@ -20,7 +16,7 @@
     
     
       
-        <title>Estrutura de Pastas - Imobiliaria Bortone - Documentação</title>
+        <title>Como Rodar o WebSocket - Chat de Suporte - Imobiliaria Bortone - Documentação</title>
       
     
     
@@ -74,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#estrutura-de-diretorios" class="md-skip">
+        <a href="#como-rodar-o-websocket-chat-de-suporte" class="md-skip">
           Ir para o conteúdo
         </a>
       
@@ -109,7 +105,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Estrutura de Pastas
+              Como Rodar o WebSocket - Chat de Suporte
             
           </span>
         </div>
@@ -257,19 +253,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../EstruturaDePastas/" class="md-nav__link">
         
   
   
@@ -280,7 +267,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -525,6 +511,176 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#passo-a-passo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Passo a Passo
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passo a Passo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-configurar-variaveis-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Configurar Variáveis de Ambiente
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-rodar-o-backend-com-websocket" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Rodar o Backend (com WebSocket)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-rodar-o-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Rodar o Frontend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-configurar-usuarios-no-banco" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Configurar Usuários no Banco
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-testar-o-chat" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Testar o Chat
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#urls-de-acesso" class="md-nav__link">
+    <span class="md-ellipsis">
+      URLs de Acesso
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-verificar-se-esta-funcionando" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como Verificar se Está Funcionando
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como Verificar se Está Funcionando">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#console-do-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Console do Backend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-do-frontend-f12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Console do Frontend (F12)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comandos-uteis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comandos Úteis
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solucao-de-problemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solução de Problemas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solução de Problemas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#websocket-nao-conecta" class="md-nav__link">
+    <span class="md-ellipsis">
+      WebSocket não conecta
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mensagens-nao-chegam" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mensagens não chegam
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface-nao-diferencia-agenteusuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interface não diferencia agente/usuário
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-de-funcionamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura de Funcionamento
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -539,55 +695,124 @@
 
 
 
-<h1 id="estrutura-de-diretorios">Estrutura de diretórios</h1>
-<div class="highlight"><pre><span></span><code>/imobiliaria_bortone
-│
-├──<span class="w"> </span>backend/<span class="w">                 </span><span class="c1"># API em Express.js (regras de negócio e dados)</span>
-│<span class="w">   </span>├──<span class="w"> </span>src/
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>config/<span class="w">          </span><span class="c1"># Configurações globais (conexão MySQL, variáveis de ambiente)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>models/<span class="w">          </span><span class="c1"># Modelos de dados (ex.: usuario.js, imovel.js)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>services/<span class="w">        </span><span class="c1"># Lógica de negócio (ex.: usuarioService.js, imovelService.js)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>controllers/<span class="w">     </span><span class="c1"># Controladores (recebem requisições → services)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>routes/<span class="w">          </span><span class="c1"># Rotas da API (REST: /users, /imoveis, /agendamentos)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>middlewares/<span class="w">     </span><span class="c1"># Autenticação, autorização, tratamento de erros, logs</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>utils/<span class="w">           </span><span class="c1"># Funções auxiliares (JWT, formatação de datas, etc.)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>tests/<span class="w">           </span><span class="c1"># Testes unitários e de integração</span>
-│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>app.js<span class="w">           </span><span class="c1"># Configuração principal do Express</span>
-│<span class="w">   </span>│
-│<span class="w">   </span>├──<span class="w"> </span>.env<span class="w">                 </span><span class="c1"># Variáveis de ambiente (não versionar)</span>
-│<span class="w">   </span>└──<span class="w"> </span>package.json<span class="w">         </span><span class="c1"># Dependências e scripts do backend</span>
-│
-├──<span class="w"> </span>frontend/<span class="w">                </span><span class="c1"># Aplicação em Next.js (UI e lógica do cliente)</span>
-│<span class="w">   </span>├──<span class="w"> </span>public/<span class="w">              </span><span class="c1"># Arquivos estáticos (imagens, favicon, fontes)</span>
-│<span class="w">   </span>├──<span class="w"> </span>src/
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>pages/<span class="w">           </span><span class="c1"># Rotas do Next.js</span>
-│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>index.js<span class="w">         </span><span class="c1"># Página inicial (carrossel, header, vitrine)</span>
-│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>imoveis/<span class="w">         </span><span class="c1"># Listagem e detalhes de imóveis</span>
-│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>auth/<span class="w">            </span><span class="c1"># Login e cadastro</span>
-│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>agendamentos/<span class="w">    </span><span class="c1"># Agendamentos (visualizar/criar)</span>
-│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>admin/<span class="w">           </span><span class="c1"># CMS (usuários, imóveis, anúncios, blog)</span>
-│<span class="w">   </span>│<span class="w">   </span>│
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>components/<span class="w">      </span><span class="c1"># Componentes reutilizáveis (botões, cards, header, footer)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>layouts/<span class="w">         </span><span class="c1"># Estruturas de layout (padrão, admin)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>hooks/<span class="w">           </span><span class="c1"># Hooks customizados (useAuth, useFetch, etc.)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>context/<span class="w">         </span><span class="c1"># Context API (autenticação, carrinho, etc.)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>services/<span class="w">        </span><span class="c1"># Comunicação com backend (axios/fetch)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>utils/<span class="w">           </span><span class="c1"># Funções auxiliares (validação, formatação, helpers)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>styles/<span class="w">          </span><span class="c1"># Estilos globais (CSS/Tailwind)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>constants/<span class="w">       </span><span class="c1"># Constantes globais (rotas, configs)</span>
-│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>tests/<span class="w">           </span><span class="c1"># Testes de UI e integração</span>
-│<span class="w">   </span>│
-│<span class="w">   </span>└──<span class="w"> </span>package.json<span class="w">         </span><span class="c1"># Dependências e scripts do frontend</span>
-│
-├──<span class="w"> </span>documentacao/<span class="w">            </span><span class="c1"># Documentação do projeto</span>
-│<span class="w">   </span>├──<span class="w"> </span>docs/<span class="w">                </span><span class="c1"># Páginas em Markdown (regras, guias, APIs, etc.)</span>
-│<span class="w">   </span>├──<span class="w"> </span>utils/<span class="w">               </span><span class="c1"># Imagens, ícones e assets de documentação</span>
-│<span class="w">   </span>└──<span class="w"> </span>mkdocs.yml<span class="w">           </span><span class="c1"># Configuração do MkDocs</span>
-│
-├──<span class="w"> </span>docker-compose.yml<span class="w">       </span><span class="c1"># Orquestração com Docker (backend, frontend, banco de dados)</span>
-└──<span class="w"> </span>README.md<span class="w">                </span><span class="c1"># Documentação principal (raiz do projeto)</span>
+<h1 id="como-rodar-o-websocket-chat-de-suporte">Como Rodar o WebSocket - Chat de Suporte</h1>
+<h2 id="passo-a-passo">Passo a Passo</h2>
+<h3 id="1-configurar-variaveis-de-ambiente">1. Configurar Variáveis de Ambiente</h3>
+<p>Certifique-se de que o arquivo <code>.env</code> no backend contém:</p>
+<div class="highlight"><pre><span></span><code># Banco de dados
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=sua_senha
+DB_NAME=imobiliaria_bortone
+
+# JWT
+JWT_SECRET=sua_chave_secreta_jwt
+
+# Servidor
+PORT=8080
+NODE_ENV=development
 </code></pre></div>
-<hr />
+<h3 id="2-rodar-o-backend-com-websocket">2. Rodar o Backend (com WebSocket)</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Ir para a pasta do backend</span>
+<span class="nb">cd</span><span class="w"> </span>back-end
+
+<span class="c1"># Instalar dependências (se necessário)</span>
+npm<span class="w"> </span>install
+
+<span class="c1"># Rodar o servidor</span>
+npm<span class="w"> </span>start
+<span class="c1"># ou</span>
+npm<span class="w"> </span>run<span class="w"> </span>dev
+</code></pre></div>
+<p><strong>O WebSocket roda automaticamente junto com o servidor Express!</strong></p>
+<h3 id="3-rodar-o-frontend">3. Rodar o Frontend</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Em outro terminal, ir para a pasta do frontend</span>
+<span class="nb">cd</span><span class="w"> </span>front-end
+
+<span class="c1"># Instalar dependências (se necessário)</span>
+npm<span class="w"> </span>install
+
+<span class="c1"># Rodar o frontend</span>
+npm<span class="w"> </span>run<span class="w"> </span>dev
+</code></pre></div>
+<h3 id="4-configurar-usuarios-no-banco">4. Configurar Usuários no Banco</h3>
+<p>Execute o SQL para definir níveis:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Criar um usuário administrador</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">usuario</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">nivel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;admin@test.com&#39;</span><span class="p">;</span>
+
+<span class="c1">-- Verificar usuários</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">nome</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="n">nivel</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">usuario</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="5-testar-o-chat">5. Testar o Chat</h3>
+<ol>
+<li><strong>Abra 2 navegadores diferentes</strong> (ou abas anônimas)</li>
+<li><strong>Faça login em um com</strong>: <code>admin@test.com</code> (será agente - nível 0)</li>
+<li><strong>Faça login no outro com</strong>: qualquer usuário comum (será usuário - nível 1)</li>
+<li><strong>Abra o chat</strong> em ambos</li>
+<li><strong>Envie mensagens</strong> e veja a comunicação funcionando</li>
+</ol>
+<h2 id="urls-de-acesso">URLs de Acesso</h2>
+<ul>
+<li><strong>Frontend</strong>: http://localhost:3000</li>
+<li><strong>Backend API</strong>: http://localhost:8080</li>
+<li><strong>WebSocket</strong>: ws://localhost:8080/ws (conecta automaticamente)</li>
+</ul>
+<h2 id="como-verificar-se-esta-funcionando">Como Verificar se Está Funcionando</h2>
+<h3 id="console-do-backend">Console do Backend</h3>
+<p>Você deve ver:
+<div class="highlight"><pre><span></span><code>Servidor iniciado com sucesso na porta 8080! 🚀
+✅ WebSocket conectado
+📩 Mensagem recebida: {...}
+</code></pre></div></p>
+<h3 id="console-do-frontend-f12">Console do Frontend (F12)</h3>
+<p>Você deve ver:
+<div class="highlight"><pre><span></span><code>🔗 Conectando WebSocket: ws://localhost:8080/ws?token=...
+✅ WebSocket conectado
+📤 Enviando mensagem: {...}
+📩 Mensagem recebida: {...}
+</code></pre></div></p>
+<h2 id="comandos-uteis">Comandos Úteis</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Backend</span>
+<span class="nb">cd</span><span class="w"> </span>back-end
+npm<span class="w"> </span>start<span class="w">          </span><span class="c1"># Rodar em produção</span>
+npm<span class="w"> </span>run<span class="w"> </span>dev<span class="w">        </span><span class="c1"># Rodar em desenvolvimento (com nodemon)</span>
+
+<span class="c1"># Frontend  </span>
+<span class="nb">cd</span><span class="w"> </span>front-end
+npm<span class="w"> </span>run<span class="w"> </span>dev<span class="w">        </span><span class="c1"># Rodar em desenvolvimento</span>
+npm<span class="w"> </span>run<span class="w"> </span>build<span class="w">      </span><span class="c1"># Build para produção</span>
+npm<span class="w"> </span>start<span class="w">          </span><span class="c1"># Rodar build de produção</span>
+
+<span class="c1"># Banco de dados (se usando Docker)</span>
+docker-compose<span class="w"> </span>up<span class="w">  </span><span class="c1"># Subir banco MySQL</span>
+</code></pre></div>
+<h2 id="solucao-de-problemas">Solução de Problemas</h2>
+<h3 id="websocket-nao-conecta">WebSocket não conecta</h3>
+<ol>
+<li>Verificar se backend está rodando na porta 8080</li>
+<li>Verificar se não há firewall bloqueando</li>
+<li>Verificar logs do console (F12)</li>
+</ol>
+<h3 id="mensagens-nao-chegam">Mensagens não chegam</h3>
+<ol>
+<li>Verificar se usuário está logado</li>
+<li>Verificar se token JWT é válido</li>
+<li>Verificar logs do backend</li>
+</ol>
+<h3 id="interface-nao-diferencia-agenteusuario">Interface não diferencia agente/usuário</h3>
+<ol>
+<li>Verificar se campo <code>nivel</code> está correto no banco</li>
+<li>Verificar se login retorna o campo <code>nivel</code></li>
+<li>Verificar localStorage no navegador (F12 &gt; Application &gt; Local Storage)</li>
+</ol>
+<h2 id="estrutura-de-funcionamento">Estrutura de Funcionamento</h2>
+<div class="highlight"><pre><span></span><code>Frontend (localhost:3000)
+    ↕ WebSocket
+Backend (localhost:8080/ws)
+    ↕ MySQL
+Banco de Dados (usuario.nivel)
+</code></pre></div>
+<p>O WebSocket já está <strong>100% configurado e pronto para usar</strong>! 🚀</p>
 
 
 
