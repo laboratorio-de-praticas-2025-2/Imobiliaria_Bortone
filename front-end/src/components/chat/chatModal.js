@@ -16,117 +16,175 @@ export default function ChatModal({ onClose }) {
   const [ws, setWs] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const inputRef = useRef();
-  
-  // Dados do usuário autenticado
-  const userToken = localStorage.getItem("authToken");
-  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
-  const userName = userInfo?.nome || "Usuário";
-  const currentUserId = userInfo?.id || null;
+  const listRef = useRef();
+
+  // Helper para montar URL do WS a partir da URL da API
+  const getWebSocketUrl = () => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
+      if (apiUrl) {
+        // Substitui http/https por ws/wss
+        return apiUrl.replace(/^http/, "ws");
+      }
+      // Fallback local
+      const proto = typeof window !== "undefined" && window.location?.protocol === "https:" ? "wss" : "ws";
+      const host = typeof window !== "undefined" ? window.location.hostname : "localhost";
+      return `${proto}://${host}:4000`;
+    } catch {
+      return "ws://localhost:4000";
+    }
+  };
+
+  // Scroll automático para a última mensagem
+  useEffect(() => {
+    if (!listRef.current) return;
+    listRef.current.scrollTop = listRef.current.scrollHeight;
+  }, [messages]);
 
   // Conexão WebSocket
   useEffect(() => {
-    // Verificar se usuário está autenticado
-    if (!userToken || !currentUserId) {
+    // Ler dados do usuário dentro do efeito (evita divergência de hidratação)
+    const token = localStorage.getItem("authToken");
+    const info = JSON.parse(localStorage.getItem("userInfo") || "{}");
+    const nome = info?.nome || "Usuário";
+    const userId = info?.id || null;
+
+    if (!token || !userId) {
       setMessages((prev) => [
         ...prev,
-        { 
-          id: Date.now(), 
-          sender: "support", 
-          text: "❌ Você precisa fazer login para usar o chat.", 
-          timestamp: new Date() 
+        {
+          id: Date.now(),
+          sender: "support",
+          text: "❌ Você precisa fazer login para usar o chat.",
+          timestamp: new Date(),
         },
       ]);
       return;
     }
 
-    const socketUrl = `ws://localhost:4000?token=${userToken}`;
-    const socket = new WebSocket(socketUrl);
-    setWs(socket);
+    let socket;
+    let reconnectTimer;
+    const connect = () => {
+      const baseWsUrl = getWebSocketUrl();
+      const wsUrl = `${baseWsUrl}?token=${token}`;
+      socket = new WebSocket(wsUrl);
+      setWs(socket);
 
-    socket.onopen = () => {
-      console.log("Conectado ao servidor WebSocket");
-      setIsConnected(true);
-      
-      // Envia mensagem de conexão
-      socket.send(
-        JSON.stringify({
-          type: "connect",
-          token: userToken,
-          nome: userName,
-        })
-      );
+      socket.onopen = () => {
+        setIsConnected(true);
+        // Envia mensagem de conexão
+        socket.send(
+          JSON.stringify({ type: "connect", token, nome })
+        );
+      };
+
+      socket.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          // Mensagem comum (pode vir em dois formatos do backend)
+          if (data.type === "message") {
+            // Formato quando vem de agente: { type, msg: { userId, text } }
+            if (data.msg) {
+              const fromMe = data.msg.fromUserId === userId || data.msg.userId === userId;
+              setMessages((prev) => [
+                ...prev,
+                {
+                  id: data.msg.timestamp || Date.now(),
+                  sender: fromMe ? "user" : "support",
+                  text: data.msg.text,
+                  timestamp: data.msg.timestamp ? new Date(data.msg.timestamp) : new Date(),
+                },
+              ]);
+            } else {
+              // Formato broadcast em desenvolvimento entre usuários
+              const fromMe = data.fromUserId === userId;
+              setMessages((prev) => [
+                ...prev,
+                {
+                  id: data.timestamp || Date.now(),
+                  sender: fromMe ? "user" : "support",
+                  text: data.text,
+                  timestamp: data.timestamp ? new Date(data.timestamp) : new Date(),
+                },
+              ]);
+            }
+          }
+
+          // Histórico
+          if (data.type === "history") {
+            const list = Array.isArray(data.messages) ? data.messages : [];
+            const mapped = list.map((m, idx) => {
+              const fromMe = m.fromUserId === userId;
+              return {
+                id: m.timestamp || `${Date.now()}-${idx}`,
+                sender: fromMe ? "user" : "support",
+                text: m.text || (m.msg && m.msg.text) || "",
+                timestamp: m.timestamp ? new Date(m.timestamp) : new Date(),
+              };
+            });
+            setMessages((prev) => {
+              // Mantém a saudação inicial, substitui mensagens anteriores por histórico
+              const header = prev.length && prev[0]?.id === 1 ? [prev[0]] : [];
+              return [...header, ...mapped];
+            });
+          }
+
+          // Status/informativos
+          if (data.type === "status") {
+            setMessages((prev) => [
+              ...prev,
+              { id: Date.now(), sender: "support", text: data.msg, timestamp: new Date() },
+            ]);
+          }
+
+          // Erros
+          if (data.error) {
+            setMessages((prev) => [
+              ...prev,
+              { id: Date.now(), sender: "support", text: `Erro: ${data.error}` },
+            ]);
+          }
+        } catch (e) {
+          console.error("Falha ao processar mensagem WS:", e);
+        }
+      };
+
+      socket.onclose = () => {
+        setIsConnected(false);
+        // Reconnect simples após breve atraso
+        reconnectTimer = setTimeout(() => connect(), 2000);
+      };
+
+      socket.onerror = () => {
+        setIsConnected(false);
+      };
     };
 
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log("Mensagem recebida:", data);
-
-      if (data.type === "message") {
-        setMessages((prev) => [...prev, {
-          id: Date.now(),
-          sender: data.fromUserId === currentUserId ? "user" : "support",
-          text: data.text,
-          timestamp: new Date()
-        }]);
-      }
-
-      if (data.type === "history") {
-        setMessages(data.messages || []);
-      }
-
-      if (data.type === "status") {
-        setMessages((prev) => [
-          ...prev,
-          { id: Date.now(), sender: "support", text: data.msg, timestamp: new Date() },
-        ]);
-      }
-
-      if (data.error) {
-        console.error("Erro do WebSocket:", data.error);
-        setMessages((prev) => [
-          ...prev,
-          { id: Date.now(), sender: "support", text: `Erro: ${data.error}`, timestamp: new Date() },
-        ]);
-      }
-    };
-
-    socket.onclose = (event) => {
-      console.log("Conexão WebSocket encerrada", event.code, event.reason);
-      setIsConnected(false);
-    };
-
-    socket.onerror = (error) => {
-      console.error("Erro WebSocket:", error);
-      setIsConnected(false);
-    };
-
+    connect();
     return () => {
-      socket.close();
+      if (reconnectTimer) clearTimeout(reconnectTimer);
+      try { socket && socket.close(); } catch {}
     };
-  }, [userToken, userName, currentUserId]);
+  }, []);
 
+  // Enviar mensagem
   const handleSend = () => {
     if (!newMessage.trim() || !ws || !isConnected) return;
-  
-    const messageObj = { 
-      type: "message", 
-      text: newMessage.trim(),
-      fromUserId: currentUserId
-    };
-    
-    console.log("Enviando mensagem:", messageObj);
-    ws.send(JSON.stringify(messageObj));
-
-    // Adiciona a mensagem localmente para feedback imediato
-    const userMessage = { 
-      id: Date.now(), 
-      sender: "user", 
-      text: newMessage.trim(),
-      timestamp: new Date()
-    };
-    setMessages((prev) => [...prev, userMessage]);
-  
-    setNewMessage("");
+    const payload = { type: "message", text: newMessage.trim() };
+    try {
+      ws.send(JSON.stringify(payload));
+      // Adiciona localmente para feedback imediato
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now(), sender: "user", text: newMessage.trim(), timestamp: new Date() },
+      ]);
+      setNewMessage("");
+    } catch (e) {
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now(), sender: "support", text: "Falha ao enviar. Tente novamente." },
+      ]);
+    }
   };
 
   const addEmoji = (emoji) => {
@@ -168,7 +226,7 @@ export default function ChatModal({ onClose }) {
       </div>
 
       {/* Mensagens */}
-      <div className="flex-1 p-3 space-y-2 overflow-y-auto bg-gray-50">
+      <div ref={listRef} className="flex-1 p-3 space-y-2 overflow-y-auto bg-gray-50">
         {messages.map((msg, idx) => (
           <ChatMessage key={msg.id ? msg.id : `msg-${idx}`} sender={msg.sender} text={msg.text} />
         ))}

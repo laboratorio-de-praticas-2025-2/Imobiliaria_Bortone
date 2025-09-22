@@ -11,16 +11,18 @@ export default function TextField({
   required = true,
   value,
   onChange,
+  rules = [],
 }) {
+  // Merge default required rule with custom rules
+  const validationRules = [
+    ...(readOnly || !required ? [] : [{ required: true, message: "Este campo é obrigatório!" }]),
+    ...rules
+  ];
   return (
     <FormAntd.Item
       label={label}
       name={name}
-      rules={
-        readOnly || !required
-          ? []
-          : [{ required: true, message: "Este campo é obrigatório!" }]
-      }
+      rules={validationRules}
       className={`custom-form-item ${required ? "required" : ""} ${className}`}
       labelCol={{ span: 24 }}
     >
