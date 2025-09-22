@@ -640,6 +640,75 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#2-niveis-de-usuario-invertidos-0-e-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Níveis de usuário invertidos (0 e 1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-melhorias-na-comunicacao-websocket" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Melhorias na Comunicação WebSocket
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-logs-de-debug-adicionados" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Logs de Debug Adicionados
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scripts-de-verificacao-criados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scripts de Verificação Criados
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testes-recomendados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testes Recomendados
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquivos-modificados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Arquivos Modificados
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sistema-de-niveis-documentacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sistema de Níveis (Documentação)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sistema de Níveis (Documentação)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#4-falha-na-conexao-websocket" class="md-nav__link">
     <span class="md-ellipsis">
       4. Falha na Conexão WebSocket
@@ -852,6 +921,75 @@
   </a>
   
 </li>
+        
+          <li class="md-nav__item">
+  <a href="#2-niveis-de-usuario-invertidos-0-e-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Níveis de usuário invertidos (0 e 1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-melhorias-na-comunicacao-websocket" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Melhorias na Comunicação WebSocket
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-logs-de-debug-adicionados" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Logs de Debug Adicionados
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scripts-de-verificacao-criados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scripts de Verificação Criados
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testes-recomendados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testes Recomendados
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquivos-modificados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Arquivos Modificados
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sistema-de-niveis-documentacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sistema de Níveis (Documentação)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sistema de Níveis (Documentação)">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#4-falha-na-conexao-websocket" class="md-nav__link">
@@ -1073,47 +1211,117 @@ at sign (jwt.js:204:14)
 <ol>
 <li>
 <p><strong>Correção Temporária Frontend:</strong>
-<div class="highlight"><pre><span></span><code><span class="c1">// Correção baseada em email para casos específicos problemáticos</span>
-<span class="kd">const</span><span class="w"> </span><span class="nx">getUserData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s2">&quot;userInfo&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s2">&quot;{}&quot;</span><span class="p">);</span>
-<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">nivel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">info</span><span class="o">?</span><span class="p">.</span><span class="nx">nivel</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="err">#</span><span class="w"> </span><span class="nx">Chat</span><span class="w"> </span><span class="nx">System</span><span class="w"> </span><span class="nx">Bug</span><span class="w"> </span><span class="nx">Fixes</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">22</span><span class="o">/</span><span class="mf">09</span><span class="o">/</span><span class="mf">2025</span>
 
-<span class="w">  </span><span class="c1">// Correção para emails específicos com dados incorretos no banco</span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">info</span><span class="o">?</span><span class="p">.</span><span class="nx">email</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;admin@test.com&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">nivel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Forçar agente</span>
-<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">info</span><span class="o">?</span><span class="p">.</span><span class="nx">email</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;user@test.com&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">nivel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// Forçar usuário</span>
-<span class="w">  </span><span class="p">}</span>
+<span class="err">##</span><span class="w"> </span><span class="nx">Problemas</span><span class="w"> </span><span class="nx">Identificados</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="nx">Corrigidos</span>
 
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">nivel</span><span class="o">:</span><span class="w"> </span><span class="ow">typeof</span><span class="w"> </span><span class="nx">nivel</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;string&#39;</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">nivel</span><span class="p">,</span><span class="w"> </span><span class="mf">10</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">nivel</span><span class="p">,</span>
-<span class="w">    </span><span class="nx">isAgent</span><span class="o">:</span><span class="w"> </span><span class="nx">nivel</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span>
-<span class="w">  </span><span class="p">};</span>
-<span class="p">};</span>
+<span class="err">###</span><span class="w"> </span><span class="mf">1.</span><span class="w"> </span><span class="nx">Usuário</span><span class="w"> </span><span class="s2">&quot;teste&quot;</span><span class="w"> </span><span class="nx">aparece</span><span class="w"> </span><span class="nx">como</span><span class="w"> </span><span class="s2">&quot;Usuario 13&quot;</span>
+
+<span class="o">**</span><span class="nx">Problema</span><span class="o">:**</span><span class="w"> </span><span class="nx">O</span><span class="w"> </span><span class="nx">nome</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nx">usuário</span><span class="w"> </span><span class="s2">&quot;teste&quot;</span><span class="w"> </span><span class="nx">não</span><span class="w"> </span><span class="nx">estava</span><span class="w"> </span><span class="nx">sendo</span><span class="w"> </span><span class="nx">exibido</span><span class="w"> </span><span class="nx">corretamente</span><span class="w"> </span><span class="nx">no</span><span class="w"> </span><span class="nx">chat</span><span class="p">,</span><span class="w"> </span><span class="nx">aparecendo</span><span class="w"> </span><span class="nx">como</span><span class="w"> </span><span class="s2">&quot;Usuario 13&quot;</span><span class="w"> </span><span class="nx">em</span><span class="w"> </span><span class="nx">vez</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nx">nome</span><span class="w"> </span><span class="nx">real</span><span class="p">.</span>
+
+<span class="o">**</span><span class="nx">Causa</span><span class="o">:**</span><span class="w"> </span>
+<span class="o">-</span><span class="w"> </span><span class="nx">A</span><span class="w"> </span><span class="nx">lógica</span><span class="w"> </span><span class="nx">de</span><span class="w"> </span><span class="nx">fallback</span><span class="w"> </span><span class="nx">no</span><span class="w"> </span><span class="sb">`chatController.js`</span><span class="w"> </span><span class="nx">estava</span><span class="w"> </span><span class="nx">usando</span><span class="w"> </span><span class="sb">`Usuario </span><span class="si">${</span><span class="nx">currentId</span><span class="si">}</span><span class="sb">`</span><span class="w"> </span><span class="nx">quando</span><span class="w"> </span><span class="nx">não</span><span class="w"> </span><span class="nx">encontrava</span><span class="w"> </span><span class="nx">o</span><span class="w"> </span><span class="nx">nome</span>
+<span class="o">-</span><span class="w"> </span><span class="nx">A</span><span class="w"> </span><span class="nx">ordem</span><span class="w"> </span><span class="nx">de</span><span class="w"> </span><span class="nx">prioridade</span><span class="w"> </span><span class="nx">dos</span><span class="w"> </span><span class="nx">campos</span><span class="w"> </span><span class="nx">estava</span><span class="w"> </span><span class="nx">incorreta</span>
+
+<span class="o">**</span><span class="nx">Solução</span><span class="w"> </span><span class="nx">Aplicada</span><span class="o">:**</span>
+<span class="sb">```javascript</span>
+<span class="sb">// ANTES (chatController.js linha 49)</span>
+<span class="sb">const nomeUsuario = data.nome || decoded.nome || `</span><span class="nx">Usuario</span><span class="w"> </span><span class="nx">$</span><span class="p">{</span><span class="nx">currentId</span><span class="p">}</span><span class="sb">`;</span>
+
+<span class="sb">// DEPOIS </span>
+<span class="sb">const nomeUsuario = decoded.nome || data.nome || decoded.email || `</span><span class="nx">Usuario</span><span class="w"> </span><span class="nx">$</span><span class="p">{</span><span class="nx">currentId</span><span class="p">}</span><span class="sb">`;</span>
 </code></pre></div></p>
 </li>
 <li>
-<p><strong>Interface Condicional:</strong>
-<div class="highlight"><pre><span></span><code><span class="c1">// Renderização baseada no nível do usuário</span>
-<span class="p">{</span><span class="nx">isAgent</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">(</span>
-<span class="w">  </span><span class="c1">// Interface do AGENTE - Lista de usuários e seleção</span>
-<span class="w">  </span><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;p-3 border-b&quot;</span><span class="o">&gt;</span>
-<span class="w">    </span><span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;</span><span class="nx">Usuários</span><span class="w"> </span><span class="nx">Online</span><span class="w"> </span><span class="p">({</span><span class="nx">connectedUsers</span><span class="p">.</span><span class="nx">length</span><span class="p">})</span><span class="o">&lt;</span><span class="err">/h3&gt;</span>
-<span class="w">    </span><span class="p">{</span><span class="nx">connectedUsers</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">user</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">(</span>
-<span class="w">      </span><span class="o">&lt;</span><span class="nx">button</span><span class="w"> </span><span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">user</span><span class="p">.</span><span class="nx">userId</span><span class="p">}</span><span class="w"> </span><span class="nx">onClick</span><span class="o">=</span><span class="p">{()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">setSelectedUser</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">userId</span><span class="p">)}</span><span class="o">&gt;</span>
-<span class="w">        </span><span class="p">{</span><span class="nx">user</span><span class="p">.</span><span class="nx">nome</span><span class="p">}</span>
-<span class="w">      </span><span class="o">&lt;</span><span class="err">/button&gt;</span>
-<span class="w">    </span><span class="p">))}</span>
-<span class="w">  </span><span class="o">&lt;</span><span class="err">/div&gt;</span>
-<span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">(</span>
-<span class="w">  </span><span class="c1">// Interface do USUÁRIO - Chat direto</span>
-<span class="w">  </span><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;flex-1 p-3&quot;</span><span class="o">&gt;</span>
-<span class="w">    </span><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Conversa</span><span class="w"> </span><span class="nx">com</span><span class="w"> </span><span class="nx">atendimento</span><span class="p">...</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-<span class="w">  </span><span class="o">&lt;</span><span class="err">/div&gt;</span>
-<span class="p">)}</span>
-</code></pre></div></p>
+<p>Priorizar o nome do token JWT (que vem do banco de dados)</p>
 </li>
+<li>Adicionar email como fallback antes do ID</li>
+<li>Garantir que o frontend envie o nome na conexão WebSocket</li>
 </ol>
+<h3 id="2-niveis-de-usuario-invertidos-0-e-1">2. Níveis de usuário invertidos (0 e 1)</h3>
+<p><strong>Problema:</strong> Usuários de nível 0 apareciam com interface de nível 1 e vice-versa.</p>
+<p><strong>Causa:</strong> 
+- Lógica de correção excessiva no frontend tentando "corrigir" níveis baseado em emails específicos
+- Interferência desnecessária na validação dos dados do localStorage</p>
+<p><strong>Solução Aplicada:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1">// ANTES - Lógica complexa com correções forçadas</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">info</span><span class="o">?</span><span class="p">.</span><span class="nx">email</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;admin@test.com&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">nivel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Admin sempre nível 0</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">info</span><span class="o">?</span><span class="p">.</span><span class="nx">email</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;user@test.com&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">nivel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// User sempre nível 1</span>
+<span class="p">}</span>
+
+<span class="c1">// DEPOIS - Usar diretamente o nível do banco</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">getUserData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ... </span>
+<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">nivel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">info</span><span class="o">?</span><span class="p">.</span><span class="nx">nivel</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">nivelNumerico</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">typeof</span><span class="w"> </span><span class="nx">nivel</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;string&#39;</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">nivel</span><span class="p">,</span><span class="w"> </span><span class="mf">10</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">nivel</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">isAgent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">nivelNumerico</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<ul>
+<li>Remover correções forçadas baseadas em email</li>
+<li>Confiar nos dados vindos do banco de dados via JWT</li>
+<li>Simplificar a lógica de determinação de nível</li>
+</ul>
+<h3 id="3-melhorias-na-comunicacao-websocket">3. Melhorias na Comunicação WebSocket</h3>
+<p><strong>Problema:</strong> Nome do usuário não estava sendo enviado corretamente na conexão WebSocket.</p>
+<p><strong>Solução:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1">// Garantir que o nome seja sempre enviado na conexão</span>
+<span class="nx">socket</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="w"> </span>
+<span class="w">  </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;connect&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">  </span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="nx">userData</span><span class="p">.</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span>
+<span class="w">  </span><span class="nx">nome</span><span class="o">:</span><span class="w"> </span><span class="nx">userData</span><span class="p">.</span><span class="nx">nome</span><span class="w"> </span><span class="c1">// ✅ Nome explícito</span>
+<span class="p">}));</span>
+</code></pre></div></p>
+<h3 id="4-logs-de-debug-adicionados">4. Logs de Debug Adicionados</h3>
+<p>Para facilitar futuras investigações:
+<div class="highlight"><pre><span></span><code><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`🔍 Conexão chat - ID: </span><span class="si">${</span><span class="nx">currentId</span><span class="si">}</span><span class="sb">, Nome: &quot;</span><span class="si">${</span><span class="nx">nomeUsuario</span><span class="si">}</span><span class="sb">&quot;, Nível: </span><span class="si">${</span><span class="nx">decoded</span><span class="p">.</span><span class="nx">nivel</span><span class="si">}</span><span class="sb">, Role: </span><span class="si">${</span><span class="nx">role</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</code></pre></div></p>
+<h2 id="scripts-de-verificacao-criados">Scripts de Verificação Criados</h2>
+<ol>
+<li><strong>check-users.js</strong> - Verifica todos os usuários no banco</li>
+<li><strong>create-test-user.js</strong> - Cria/corrige o usuário "teste"</li>
+</ol>
+<h2 id="testes-recomendados">Testes Recomendados</h2>
+<ol>
+<li>✅ Login com usuário nível 0 → Deve mostrar interface de agente</li>
+<li>✅ Login com usuário nível 1 → Deve mostrar interface de usuário</li>
+<li>✅ Usuário "teste" → Deve aparecer com nome "teste" no chat</li>
+<li>✅ WebSocket → Nome correto deve ser exibido nas mensagens</li>
+</ol>
+<h2 id="arquivos-modificados">Arquivos Modificados</h2>
+<ul>
+<li><code>/back-end/src/controllers/chatController.js</code></li>
+<li><code>/front-end/src/components/chat/chatModal.js</code></li>
+</ul>
+<h2 id="sistema-de-niveis-documentacao">Sistema de Níveis (Documentação)</h2>
+<ul>
+<li><strong>Nível 0</strong>: Administradores/Agentes de suporte (interface de painel)</li>
+<li><strong>Nível 1</strong>: Usuários comuns (interface de chat simples)</li>
+</ul>
+<p>O sistema agora confia integralmente nos dados do banco de dados, sem correções forçadas.
+<div class="highlight"><pre><span></span><code>2. **Interface Condicional:**
+```javascript
+// Renderização baseada no nível do usuário
+{isAgent ? (
+  // Interface do AGENTE - Lista de usuários e seleção
+  &lt;div className=&quot;p-3 border-b&quot;&gt;
+    &lt;h3&gt;Usuários Online ({connectedUsers.length})&lt;/h3&gt;
+    {connectedUsers.map((user) =&gt; (
+      &lt;button key={user.userId} onClick={() =&gt; setSelectedUser(user.userId)}&gt;
+        {user.nome}
+      &lt;/button&gt;
+    ))}
+  &lt;/div&gt;
+) : (
+  // Interface do USUÁRIO - Chat direto
+  &lt;div className=&quot;flex-1 p-3&quot;&gt;
+    &lt;p&gt;Conversa com atendimento...&lt;/p&gt;
+  &lt;/div&gt;
+)}
+</code></pre></div></p>
 <p><strong>🎯 Resultado:</strong> Interfaces diferenciadas funcionando corretamente.</p>
 <hr />
 <h3 id="4-falha-na-conexao-websocket">4. <strong>Falha na Conexão WebSocket</strong></h3>
