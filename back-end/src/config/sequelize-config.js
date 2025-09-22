@@ -3,13 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Debug para garantir que as variáveis foram carregadas
-console.log("🔎 Variáveis do .env:");
-console.log("HOST:", process.env.DB_HOST);
-console.log("BANCO:", process.env.DB_DATABASE);
-console.log("USER:", process.env.DB_USER);
-console.log("USERPASSWORD:", process.env.DB_PASS ? "********" : "NÃO DEFINIDA");
-
 const sequelize = new Sequelize(
   process.env.DB_DATABASE,            // Nome do banco
   process.env.DB_USER,             // Usuário
