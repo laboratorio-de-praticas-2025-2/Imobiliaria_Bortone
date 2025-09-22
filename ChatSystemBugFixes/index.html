@@ -9,6 +9,8 @@
       
       
       
+        <link rel="prev" href="../UserLevels/">
+      
       
       
       <link rel="icon" href="../assets/favicon.ico">
@@ -16,7 +18,7 @@
     
     
       
-        <title>🛠️ Relatório de Correção de Bugs - Sistema de Chat - Imobiliaria Bortone - Documentação</title>
+        <title>Relatório de Correção de Bugs do Chat - Imobiliaria Bortone - Documentação</title>
       
     
     
@@ -105,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              🛠️ Relatório de Correção de Bugs - Sistema de Chat
+              Relatório de Correção de Bugs do Chat
             
           </span>
         </div>
@@ -487,6 +489,294 @@
   
 
       </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WebSocket-Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Rodar o WebSocket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UserLevels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Níveis de Usuário
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Relatório de Correção de Bugs do Chat
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relatório de Correção de Bugs do Chat
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-executivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Resumo Executivo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problemas-identificados-e-solucoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚨 Problemas Identificados e Soluções
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚨 Problemas Identificados e Soluções">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-erro-de-hidratacao-react-ssrcsr-mismatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Erro de Hidratação React (SSR/CSR Mismatch)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-erro-jwt-secretorprivatekey-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Erro JWT "secretOrPrivateKey Required"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-diferenciacao-de-interface-por-nivel-de-usuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Diferenciação de Interface por Nível de Usuário
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-falha-na-conexao-websocket" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Falha na Conexão WebSocket
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-duplicacao-de-mensagens-do-agente" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Duplicação de Mensagens do Agente
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#melhorias-tecnicas-implementadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Melhorias Técnicas Implementadas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Melhorias Técnicas Implementadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-sistema-de-debug-estruturado" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Sistema de Debug Estruturado
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-gerenciamento-de-estado-aprimorado" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Gerenciamento de Estado Aprimorado
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-validacao-de-dados-robusta" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Validação de Dados Robusta
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#antes-vs-depois" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Antes vs Depois
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estado-final-do-sistema" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Estado Final do Sistema
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Estado Final do Sistema">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#funcionalidades-operacionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ Funcionalidades Operacionais:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛡️ Segurança:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escalabilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 Escalabilidade:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#licoes-aprendidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Lições Aprendidas
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proximas-melhorias-sugeridas" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔮 Próximas Melhorias Sugeridas
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 

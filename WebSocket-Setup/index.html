@@ -9,6 +9,10 @@
       
       
       
+        <link rel="prev" href="../api/ChatSuporte/">
+      
+      
+        <link rel="next" href="../UserLevels/">
       
       
       <link rel="icon" href="../assets/favicon.ico">
@@ -16,7 +20,7 @@
     
     
       
-        <title>Como Rodar o WebSocket - Chat de Suporte - Imobiliaria Bortone - Documentação</title>
+        <title>Como Rodar o WebSocket - Imobiliaria Bortone - Documentação</title>
       
     
     
@@ -105,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Como Rodar o WebSocket - Chat de Suporte
+              Como Rodar o WebSocket
             
           </span>
         </div>
@@ -482,6 +486,276 @@
   
   <span class="md-ellipsis">
     Chat Suporte
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Como Rodar o WebSocket
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Rodar o WebSocket
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#passo-a-passo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Passo a Passo
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passo a Passo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-configurar-variaveis-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Configurar Variáveis de Ambiente
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-rodar-o-backend-com-websocket" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Rodar o Backend (com WebSocket)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-rodar-o-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Rodar o Frontend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-configurar-usuarios-no-banco" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Configurar Usuários no Banco
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-testar-o-chat" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Testar o Chat
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#urls-de-acesso" class="md-nav__link">
+    <span class="md-ellipsis">
+      URLs de Acesso
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-verificar-se-esta-funcionando" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como Verificar se Está Funcionando
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como Verificar se Está Funcionando">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#console-do-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Console do Backend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-do-frontend-f12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Console do Frontend (F12)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comandos-uteis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comandos Úteis
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solucao-de-problemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solução de Problemas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solução de Problemas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#websocket-nao-conecta" class="md-nav__link">
+    <span class="md-ellipsis">
+      WebSocket não conecta
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mensagens-nao-chegam" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mensagens não chegam
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface-nao-diferencia-agenteusuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interface não diferencia agente/usuário
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-de-funcionamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura de Funcionamento
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UserLevels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Níveis de Usuário
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ChatSystemBugFixes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relatório de Correção de Bugs do Chat
     
   </span>
   
