@@ -1,12 +1,12 @@
 "use client";
+
 import { navLinks } from "@/mock/navLinks";
 import { Button, Flex, Input } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { createElement, useState } from "react";
+import { createElement, useState, useEffect } from "react";
 import { FaBars } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
-import { usersMock } from "@/mock/users";
 import { IoIosArrowDown } from "react-icons/io";
 
 const { Search } = Input;
@@ -16,9 +16,37 @@ export default function HomeNavbar({ className }) {
   const [open, setOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
-  // Altere para userMock[null] para simular deslogado, userMock[1] = usuário comum
-  const user = usersMock[0] || null;
-  const isLoggedIn = !!user;
+  const [user, setUser] = useState(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    const userInfo = localStorage.getItem("userInfo");
+
+    if (authToken && userInfo) {
+      try {
+        const parsedUser = JSON.parse(userInfo);
+        setUser(parsedUser);
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error("Erro ao parsear os dados: ", error)
+        setUser(null)
+        setIsLoggedIn(false)
+      }
+    } else {
+      setUser(null)
+      setIsLoggedIn(false)
+    }
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userInfo");
+    setUser(null);
+    setIsLoggedIn(false);
+    setUserMenuOpen(false);
+    window.location.href = "/bem-vindo";
+  };
 
   const buttonHeightPX = 40;
   const topRadius = "20px";
@@ -76,26 +104,24 @@ export default function HomeNavbar({ className }) {
             <ul
               className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9999] 
                           transition-all duration-300 ease-out 
-                          ${
-                            userMenuOpen
-                              ? "opacity-100 translate-y-0"
-                              : "opacity-0 -translate-y-2 pointer-events-none"
-                          }`}
+                          ${userMenuOpen
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 -translate-y-2 pointer-events-none"
+                }`}
               style={{
                 paddingTop: buttonHeightPX,
                 borderRadius: bottomRadius,
               }}
             >
-              {user.nivel === "administrador" && (
+              {user.nivel === 0 && (
                 <Link href={"/admin/dashboard"}>
                   <li
                     className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
                                 flex justify-center items-center transition-all duration-300 ease-out
-                                ${
-                                  userMenuOpen
-                                    ? "opacity-100 translate-y-0"
-                                    : "opacity-0 -translate-y-2"
-                                }`}
+                                ${userMenuOpen
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 -translate-y-2"
+                      }`}
                     style={{
                       color: "#304383",
                       transitionDelay: delays[1],
@@ -105,26 +131,24 @@ export default function HomeNavbar({ className }) {
                   </li>
                 </Link>
               )}
-              <Link href={"/bem-vindo"}>
-                <li
-                  className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
+              <li
+                onClick={handleLogout}
+                className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
                               flex justify-center items-center transition-all duration-300 ease-out
-                              ${
-                                userMenuOpen
-                                  ? "opacity-100 translate-y-0"
-                                  : "opacity-0 -translate-y-2"
-                              }`}
-                  style={{
-                    color: "#304383",
-                    borderBottomLeftRadius: bottomRadius,
-                    borderBottomRightRadius: bottomRadius,
-                    transitionDelay:
-                      user.nivel === "administrador" ? delays[2] : delays[1],
-                  }}
-                >
-                  Sair
-                </li>
-              </Link>
+                              ${userMenuOpen
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 -translate-y-2"
+                  }`}
+                style={{
+                  color: "#304383",
+                  borderBottomLeftRadius: bottomRadius,
+                  borderBottomRightRadius: bottomRadius,
+                  transitionDelay:
+                    user.nivel === 0 ? delays[2] : delays[1],
+                }}
+              >
+                Sair
+              </li>
             </ul>
           </div>
         ) : (
@@ -176,26 +200,24 @@ export default function HomeNavbar({ className }) {
               <ul
                 className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9999] 
                             transition-all duration-300 ease-out 
-                            ${
-                              userMenuOpen
-                                ? "opacity-100 translate-y-0"
-                                : "opacity-0 -translate-y-2 pointer-events-none"
-                            }`}
+                            ${userMenuOpen
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 -translate-y-2 pointer-events-none"
+                  }`}
                 style={{
                   paddingTop: buttonHeightPX,
                   borderRadius: bottomRadius,
                 }}
               >
-                {user.nivel === "administrador" && (
+                {user.nivel === 0 && (
                   <Link href={"/admin/dashboard"}>
                     <li
                       className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
                                   flex justify-center items-center transition-all duration-300 ease-out
-                                  ${
-                                    userMenuOpen
-                                      ? "opacity-100 translate-y-0"
-                                      : "opacity-0 -translate-y-2"
-                                  }`}
+                                  ${userMenuOpen
+                          ? "opacity-100 translate-y-0"
+                          : "opacity-0 -translate-y-2"
+                        }`}
                       style={{
                         color: "#304383",
                         transitionDelay: delays[1],
@@ -205,26 +227,24 @@ export default function HomeNavbar({ className }) {
                     </li>
                   </Link>
                 )}
-                <Link href={"/bem-vindo"}>
-                  <li
-                    className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
+                <li
+                  onClick={handleLogout}
+                  className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
                                 flex justify-center items-center transition-all duration-300 ease-out
-                                ${
-                                  userMenuOpen
-                                    ? "opacity-100 translate-y-0"
-                                    : "opacity-0 -translate-y-2"
-                                }`}
-                    style={{
-                      color: "#304383",
-                      borderBottomLeftRadius: bottomRadius,
-                      borderBottomRightRadius: bottomRadius,
-                      transitionDelay:
-                        user.nivel === "administrador" ? delays[2] : delays[1],
-                    }}
-                  >
-                    Sair
-                  </li>
-                </Link>
+                                ${userMenuOpen
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 -translate-y-2"
+                    }`}
+                  style={{
+                    color: "#304383",
+                    borderBottomLeftRadius: bottomRadius,
+                    borderBottomRightRadius: bottomRadius,
+                    transitionDelay:
+                      user.nivel === 0 ? delays[2] : delays[1],
+                  }}
+                >
+                  Sair
+                </li>
               </ul>
             </div>
           ) : (
