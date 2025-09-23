@@ -647,8 +647,6 @@ export const sendScheduleConfirmation = async (scheduleData) => {
       name,
       email,
       phone,
-      date,
-      time,
       propertyAddress,
       propertyId,
       notes,
@@ -672,12 +670,10 @@ export const sendScheduleConfirmation = async (scheduleData) => {
     const subjectUser = "Recebemos seu agendamento";
     const textUser = `Olá ${
       cleanName || ""
-    }, recebemos seu agendamento na Imobiliária Bortone. Em breve entraremos em contato para confirmar os detalhes. Data: ${date} - Horário: ${time}.`;
+    }, recebemos seu agendamento na Imobiliária Bortone. Em breve entraremos em contato para confirmar os detalhes.`;
     const htmlUser = `<p>Olá <strong>${
       cleanName || ""
-    }</strong>, recebemos seu agendamento na Imobiliária Bortone.</p><p>Em breve entraremos em contato para confirmar os detalhes.</p><p>Data: ${sanitizeHeaderValue(
-      date || ""
-    )} - Horário: ${sanitizeHeaderValue(time || "")}.</p>`;
+    }</strong>, recebemos seu agendamento na Imobiliária Bortone.</p><p>Em breve entraremos em contato para confirmar os detalhes.</p>`;
 
     // Para a empresa
     const imovelTag =
@@ -685,16 +681,12 @@ export const sendScheduleConfirmation = async (scheduleData) => {
     const subjectImob = `Novo agendamento: ${cleanName || ""}/${imovelTag}`;
     const textImob = `Novo agendamento:\nNome: ${cleanName}\nE-mail: ${userEmail}\nTelefone: ${
       phone || "-"
-    }\nData: ${date}\nHorário: ${time}\nImóvel: ${imovelTag}\nObservações: ${
+    }\nImóvel: ${imovelTag}\nObservações: ${
       cleanNotes || "-"
     }`;
     const htmlImob = `<div><h3>Novo agendamento</h3><ul><li><strong>Nome:</strong> ${cleanName}</li><li><strong>E-mail:</strong> ${userEmail}</li><li><strong>Telefone:</strong> ${
       phone || "-"
-    }</li><li><strong>Data:</strong> ${sanitizeHeaderValue(
-      date || ""
-    )}</li><li><strong>Horário:</strong> ${sanitizeHeaderValue(
-      time || ""
-    )}</li><li><strong>Imóvel:</strong> ${sanitizeHeaderValue(
+    }</li><li><strong>Imóvel:</strong> ${sanitizeHeaderValue(
       imovelTag
     )}</li></ul><p><strong>Observações:</strong> ${
       cleanNotes || "-"

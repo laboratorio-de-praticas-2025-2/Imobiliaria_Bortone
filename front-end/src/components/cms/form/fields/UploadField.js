@@ -11,19 +11,20 @@ export default function UploadField({
   setFileList,
 }) {
   return (
-    <FormAntd.Item
-      label={label}
-      name={name}
-      rules={[{ required: true, message: "Este campo é obrigatório!" }]}
-      className={`custom-form-item required ${className}`}
-      labelCol={{ span: 24 }}
-    >
+    <div className={`custom-form-item ${className}`}>
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        {label} <span className="text-red-500">*</span>
+      </label>
       <Upload
-        beforeUpload={() => false}
+        beforeUpload={(file) => {
+          // Permitir o arquivo ser adicionado à lista, mas não fazer upload automático
+          return false;
+        }}
         fileList={fileList}
-        onChange={({ fileList }) =>
-          setFileList(multiple ? fileList : fileList.slice(-1))
-        }
+        onChange={({ fileList }) => {
+          console.log('Upload onChange - fileList:', fileList);
+          setFileList(multiple ? fileList : fileList.slice(-1));
+        }}
         multiple={multiple}
         className="!w-fit"
       >
@@ -31,6 +32,6 @@ export default function UploadField({
           Selecionar arquivo <UploadOutlined />
         </Button>
       </Upload>
-    </FormAntd.Item>
+    </div>
   );
 }
