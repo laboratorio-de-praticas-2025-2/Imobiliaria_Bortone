@@ -10,7 +10,6 @@ import "dotenv/config";
 export default function ImoveisPage() {
   // SEO para página de imóveis
   useSEO(getSEOConfig("/imoveis"));
-  const [imoveis, setImoveis] = useState([]);
 
   return (
     <FilterDataProvider>
