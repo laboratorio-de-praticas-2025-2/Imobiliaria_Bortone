@@ -63,7 +63,7 @@ connection
 
 // Porta
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, function (erro) {
+server.listen(PORT, function (erro) {
   if (erro) {
     console.log("Ocorreu um erro! Erro: ", erro);
   } else {

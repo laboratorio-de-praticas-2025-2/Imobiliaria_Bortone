@@ -2,7 +2,7 @@ import userService from "../services/userServices.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-const JWTSecret = "bortonesecret";
+const JWTSecret = process.env.JWT_SECRET;
 
 const createUser = async (req, res) => {
   try {
@@ -71,4 +71,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-export default { createUser, loginUser, JWTSecret };
+export default { createUser, loginUser };

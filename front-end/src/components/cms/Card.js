@@ -42,7 +42,7 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
 
   const onConfirmDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:4000/publicidade/${item.id}`);
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${item.id}`);
       if (response.status === 204) {
         alert("Publicidade excluída com sucesso!");
         setIsConfirmModalVisible(false);
@@ -62,7 +62,7 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
 
   const onChange = async (checked) => {
     try {
-      const response = await axios.put(`http://localhost:4000/publicidade/${item.id}`, { ativo: checked });
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${item.id}`, { ativo: checked });
       if (response.status === 200) {
         setChecked(checked);
         if (onToggleCallback) {

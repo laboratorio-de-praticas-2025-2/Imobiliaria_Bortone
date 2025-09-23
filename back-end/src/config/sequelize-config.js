@@ -1,14 +1,28 @@
 import { Sequelize } from "sequelize";
-import "dotenv/config";
+import dotenv from "dotenv";
 
-const connection = new Sequelize(
-  process.env.DB_DATABASE,
-  process.env.DB_USER,
-  process.env.DB_PASS,
+dotenv.config();
+
+const sequelize = new Sequelize(
+  process.env.DB_DATABASE,            // Nome do banco
+  process.env.DB_USER,             // Usuário
+  process.env.DB_PASS,     // Senha
   {
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT,
+    host: process.env.DB_HOST,     // Servidor AlwaysData
+    port: 3306,                 // Porta padrão MySQL
+    dialect: "mysql",           // Dialeto
+    logging: false,             // Oculta logs SQL no console
   }
 );
 
-export default connection;
+// Teste de conexão (opcional, mas recomendado)
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("✅ Conexão com o banco estabelecida com sucesso!");
+  } catch (error) {
+    console.error("❌ Erro ao conectar com banco de dados:", error.message);
+  }
+})();
+
+export default sequelize;
