@@ -1,5 +1,6 @@
 "use client";
 
+
 import { navLinks } from "@/mock/navLinks";
 import { Button, Flex, Input } from "antd";
 import Image from "next/image";
@@ -244,11 +245,10 @@ export default function HomeNavbar({ className }) {
                     <li
                       className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
                                   flex justify-center items-center transition-all duration-300 ease-out
-                                  ${
-                                    userMenuOpen
-                                      ? "opacity-100 translate-y-0"
-                                      : "opacity-0 -translate-y-2"
-                                  }`}
+                                  ${userMenuOpen
+                          ? "opacity-100 translate-y-0"
+                          : "opacity-0 -translate-y-2"
+                        }`}
                       style={{
                         color: "#304383",
                         transitionDelay: delays[1],
