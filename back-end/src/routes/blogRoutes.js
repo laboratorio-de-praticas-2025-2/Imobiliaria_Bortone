@@ -1,12 +1,49 @@
-import express from "express";
-import blogController from "../controllers/blogController.js";
+import { Router } from "express";
+import multer from "multer";
+import path from "path";
+import { fileURLToPath } from "url";
+import { 
+  createArtigo, 
+  getAllArtigos, 
+  getArtigoById, 
+  updateArtigo, 
+  deleteArtigo 
+} from "../controllers/blogController.js";
 
-const blogRoutes = express.Router();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-blogRoutes.get("/blogs", blogController.getAllArtigos);
-blogRoutes.get("/blogs/:id", blogController.getArtigoById);
-blogRoutes.post("/blogs", blogController.createArtigo);
-blogRoutes.put("/blogs/:id", blogController.updateArtigo);
-blogRoutes.delete("/blogs/:id", blogController.deleteArtigo);
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadPath = path.join(
+      __dirname,
+      "../../../front-end/public/images/blogImages"
+    );
+    console.log("Multer destination:", uploadPath);
+    cb(null, uploadPath);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix =
+      Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const filename =
+      file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname);
+    console.log("Multer filename:", filename);
+    cb(null, filename);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+const blogRoutes = Router();
+
+blogRoutes.get("/", getAllArtigos);
+
+blogRoutes.get("/:id", getArtigoById);
+
+blogRoutes.post("/", upload.single("url_imagem"), createArtigo);
+
+blogRoutes.put("/:id", upload.single("url_imagem"), updateArtigo);
+
+blogRoutes.delete("/:id", deleteArtigo);
 
 export default blogRoutes;
