@@ -59,7 +59,7 @@ export default function ContentBlog() {
           <span className="text-[var(--primary)] lg:text-3xl text-[5.5vw] uppercase lemon-milk ">
             {post.titulo}
           </span>
-          <span className="text-[var(--primary)] lg:text-lg text-[3.8vw] uppercase lemon-milk ">
+          <span className="text-[var(--primary)] lg:text-lg text-[3.8vw] uppercase ">
             {post.data_publicacao}
           </span>
         </div>
