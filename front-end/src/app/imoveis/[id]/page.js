@@ -142,14 +142,6 @@ export default function Mapa() {
       <HomeNavbar />
 
       <main className="flex-1 teste">
-        {/* Barra de pesquisa */}
-        <div className="bpq">
-          <Search
-            placeholder="Pesquisa"
-            onSearch={onSearch}
-            className="imoveis-search-bar"
-          />
-        </div>
 
         {/* Carrossel */}
         <div className="imoveis-carousel">
