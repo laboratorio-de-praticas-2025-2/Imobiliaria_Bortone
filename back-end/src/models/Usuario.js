@@ -28,6 +28,11 @@ const User = connection.define('usuario', {
     celular: {
         type: Sequelize.STRING(20),
         allowNull: true
+    },
+    ativo: {
+        type: Sequelize.TINYINT,
+        allowNull: false,
+        defaultValue: 1
     }
 }, {
     tableName: 'usuario',
