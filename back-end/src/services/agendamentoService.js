@@ -8,6 +8,7 @@ const CRLF = "\r\n";
 /* =========================
    Helpers de template/HTML
    ========================= */
+   
 export function esc(s = "") {
   return String(s)
     .replace(/&/g, "&amp;")
