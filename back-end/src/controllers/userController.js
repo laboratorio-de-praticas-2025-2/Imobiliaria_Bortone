@@ -152,4 +152,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-export default { createUser, loginUser };
+export default { createUser, getUsers, getUserById, updateUser, deleteUser, loginUser };
