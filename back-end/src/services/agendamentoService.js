@@ -8,7 +8,7 @@ const CRLF = "\r\n";
 /* =========================
    Helpers de template/HTML
    ========================= */
-   
+
 export function esc(s = "") {
   return String(s)
     .replace(/&/g, "&amp;")
@@ -655,66 +655,34 @@ export const sendScheduleConfirmation = async (scheduleData) => {
 
     // Usuário
     const subjectUser = "Recebemos seu agendamento – Imobiliária Bortone";
+
     const textUser =
-      `Olá ${cleanName || ""}, recebemos seu agendamento.\n\n` +
-      (whenDate || whenTime ? `Data/Horário: ${whenDate} ${whenTime}\n` : ``) +
-      `Imóvel: ${imovelTag}\n` +
-      (cleanAddress ? `Endereço: ${cleanAddress}\n` : ``) +
-      `\nEm breve entraremos em contato para confirmar os detalhes.\n\n` +
+      `Olá ${cleanName || "usuário"}, recebemos seu agendamento.\n\n` +
+      `Em breve entraremos em contato para confirmar os detalhes.\n\n` +
       `Imobiliária Bortone`;
 
     const htmlUser = emailShell({
       title: "Agendamento recebido",
       bodyHTML: `
-        <p style="margin:0 0 12px;">Olá <strong>${esc(
-          cleanName || ""
-        )}</strong>,</p>
-        <p style="margin:0 0 16px;">Recebemos seu agendamento e já estamos verificando disponibilidade.</p>
-        <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin-top:8px">
-          <tr>
-            <td style="padding:10px 12px;border:1px solid #e5e7eb;width:180px;font-weight:600;">Imóvel</td>
-            <td style="padding:10px 12px;border:1px solid #e5e7eb;">${esc(
-              imovelTag
-            )}</td>
-          </tr>
-          ${
-            cleanAddress
-              ? `
-          <tr>
-            <td style="padding:10px 12px;border:1px solid #e5e7eb;font-weight:600;">Endereço</td>
-            <td style="padding:10px 12px;border:1px solid #e5e7eb;">${esc(
-              cleanAddress
-            )}</td>
-          </tr>`
-              : ``
-          }
-          ${
-            whenDate || whenTime
-              ? `
-          <tr>
-            <td style="padding:10px 12px;border:1px solid #e5e7eb;font-weight:600;">Data/Horário</td>
-            <td style="padding:10px 12px;border:1px solid #e5e7eb;">${esc(
-              `${whenDate} ${whenTime}`.trim()
-            )}</td>
-          </tr>`
-              : ``
-          }
-          <tr>
-            <td style="padding:10px 12px;border:1px solid #e5e7eb;font-weight:600;">Contato</td>
-            <td style="padding:10px 12px;border:1px solid #e5e7eb;">${esc(
-              cleanPhone
-            )}</td>
-          </tr>
-        </table>
-        ${
-          cleanNotes
-            ? `<p style="margin:16px 0 0;"><strong>Observações:</strong> ${esc(
-                cleanNotes
-              )}</p>`
-            : ``
-        }
-        <p style="margin:16px 0 0;">Em breve entraremos em contato para confirmar os detalhes.</p>
-      `,
+    <p style="margin: 0 0 12px;">
+      Olá <strong>${esc(cleanName || "usuário")}</strong>,
+    </p>
+    <p style="margin: 0 0 16px;">
+      Recebemos seu agendamento e já estamos verificando a disponibilidade.
+    </p>
+
+    ${
+      cleanNotes
+        ? `<p style="margin:16px 0 0;">
+            <strong>Observações:</strong> ${esc(cleanNotes)}
+          </p>`
+        : ""
+    }
+
+    <p style="margin:16px 0 0;">
+      Em breve entraremos em contato para confirmar os detalhes.
+    </p>
+  `,
       ctaHref: process.env.PORTAL_AGENDAMENTOS_URL || "",
       ctaLabel: "Acompanhar agendamento",
       footerNote: "Dúvidas? Responda este e-mail.",
