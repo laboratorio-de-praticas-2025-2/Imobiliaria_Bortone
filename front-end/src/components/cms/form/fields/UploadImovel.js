@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form as FormAntd, Upload, Button } from "antd";
 import PreviaImovel from "./PreviaImovel";
@@ -8,11 +7,23 @@ export default function UploadImovel({
   className,
   readOnly = false,
   multiple = false,
+  fileList,
+  setFileList,   // 👈 agora vem do pai
 }) {
-  const [fileList, setFileList] = useState([]);
-
   const handleRemove = (file) => {
     setFileList((prev) => prev.filter((f) => f.uid !== file.uid));
+  };
+
+  const handleChange = ({ file, fileList: newFileList }) => {
+    // filtra só os arquivos válidos e garante que originFileObj esteja presente
+    const validFiles = newFileList
+      .map(f => ({
+        ...f,
+        url: f.url || URL.createObjectURL(f.originFileObj), // gera url para preview
+      }))
+      .filter(f => !!f.originFileObj); 
+  
+    setFileList(validFiles);
   };
 
   return (
@@ -28,10 +39,7 @@ export default function UploadImovel({
             <div className="w-full flex justify-center items-center">
               <Upload
                 beforeUpload={() => false}
-                fileList={fileList}
-                onChange={({ fileList }) =>
-                  setFileList(multiple ? fileList : fileList.slice(-1))
-                }
+                onChange={handleChange}
                 multiple={multiple}
                 showUploadList={false}
               >
@@ -46,10 +54,7 @@ export default function UploadImovel({
               <PreviaImovel fileList={fileList} onRemove={handleRemove} />
               <Upload
                 beforeUpload={() => false}
-                fileList={fileList}
-                onChange={({ fileList }) =>
-                  setFileList(multiple ? fileList : fileList.slice(-1))
-                }
+                onChange={handleChange}
                 multiple={multiple}
                 showUploadList={false}
               >

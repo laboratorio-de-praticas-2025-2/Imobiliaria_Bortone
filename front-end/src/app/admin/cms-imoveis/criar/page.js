@@ -65,16 +65,21 @@ export default function CriarImovelPage() {
       if (response.status === 201) {
         const imovelId = response.data.id;
 
+        console.log("Arquivos selecionados:", fileList);
+
         for (const file of fileList) {
           const formData = new FormData();
           formData.append("imovel_id", imovelId);
-          formData.append("url_imagem", file.originFileObj);
-          await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/imagensImovel`, formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
+          formData.append("imagem", file.originFileObj); // continua funcionando
+          formData.append("descricao", values.descricao || ""); 
+        
+          await axios.post(
+            `${process.env.NEXT_PUBLIC_API_URL}/imagensImovel/upload`,
+            formData,
+            { headers: { "Content-Type": "multipart/form-data" } }
+          );
         }
+        
         alert("Imóvel cadastrado com sucesso!");
         router.push("/admin/cms-imoveis");
       }
@@ -229,8 +234,14 @@ export default function CriarImovelPage() {
                     />
                   </FormAntd.Item>
                 </div>
-                <UploadImovel className={"!w-full"} fileList={fileList} setFileList={setFileList} />
-                <TextAreaField
+                <UploadImovel
+                  className={"!w-full"}
+                  fileList={fileList}
+                  setFileList={setFileList}
+                  multiple = {true}
+                />
+
+                  <TextAreaField
                   name="descricao"
                   label="Descrição"
                   placeholder="Corpo da descrição"
