@@ -653,17 +653,17 @@ export const sendScheduleConfirmation = async (scheduleData) => {
 
     const client = new SMTPClient({ host, port, secure, user, pass, helo });
 
-    // Usuário
-    const subjectUser = "Recebemos seu agendamento – Imobiliária Bortone";
+// Usuário
+const subjectUser = "Recebemos seu agendamento – Imobiliária Bortone";
 
-    const textUser =
-      `Olá ${cleanName || "usuário"}, recebemos seu agendamento.\n\n` +
-      `Em breve entraremos em contato para confirmar os detalhes.\n\n` +
-      `Imobiliária Bortone`;
+const textUser =
+  `Olá ${cleanName || "usuário"}, recebemos seu agendamento.\n\n` +
+  `Em breve entraremos em contato para confirmar os detalhes.\n\n` +
+  `Imobiliária Bortone`;
 
-    const htmlUser = emailShell({
-      title: "Agendamento recebido",
-      bodyHTML: `
+const htmlUser = emailShell({
+  title: "Agendamento recebido",
+  bodyHTML: `
     <p style="margin: 0 0 12px;">
       Olá <strong>${esc(cleanName || "usuário")}</strong>,
     </p>
@@ -682,11 +682,14 @@ export const sendScheduleConfirmation = async (scheduleData) => {
     <p style="margin:16px 0 0;">
       Em breve entraremos em contato para confirmar os detalhes.
     </p>
+
+    <!-- Adiciona o link ao final do corpo do e-mail -->
+    <p style="margin:16px 0 0;">
+      Para acompanhar seu agendamento, clique no seguinte link: <a href="${process.env.PORTAL_AGENDAMENTOS_URL || ""}">${process.env.PORTAL_AGENDAMENTOS_URL || ""}</a>
+    </p>
   `,
-      ctaHref: process.env.PORTAL_AGENDAMENTOS_URL || "",
-      ctaLabel: "Acompanhar agendamento",
-      footerNote: "Dúvidas? Responda este e-mail.",
-    });
+  footerNote: "Dúvidas? Responda este e-mail.",
+});
 
     // Imobiliária
     const subjectImob = `Novo agendamento: ${cleanName || ""} / ${imovelTag}`;
@@ -697,83 +700,78 @@ export const sendScheduleConfirmation = async (scheduleData) => {
       `Imóvel: ${imovelTag}\n` +
       (cleanAddress ? `Endereço: ${cleanAddress}\n` : ``) +
       `Observações: ${cleanNotes || "-"}`;
+      
+// Função para transformar o link de agendamento para imóvel
+const transformarLink = (url) => {
+  return url.replace("/agendamentos/", "/imoveis/");
+};
 
-    const htmlImob = emailShell({
-      title: "Novo agendamento",
-      bodyHTML: `
-        <h3 style="margin:0 0 12px;">Detalhes do cliente</h3>
-        <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse">
-          <tr><td style="padding:8px 12px;border:1px solid #e5e7eb;width:180px;font-weight:600;">Nome</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(
-            cleanName
-          )}</td></tr>
-          <tr><td style="padding:8px 12px;border:1px solid #e5e7eb;font-weight:600;">E-mail</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(
-            userEmail
-          )}</td></tr>
-          <tr><td style="padding:8px 12px;border:1px solid #e5e7eb;font-weight:600;">Telefone</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(
-            cleanPhone
-          )}</td></tr>
-          ${
-            whenDate || whenTime
-              ? `<tr><td style="padding:8px 12px;border:1px solid #e5e7eb;font-weight:600;">Data/Horário</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(
-                  `${whenDate} ${whenTime}`.trim()
-                )}</td></tr>`
-              : ``
-          }
-        </table>
+// Defina um valor padrão para DASH_IMOB_URL se ele não estiver configurado corretamente
+const urlBase = process.env.DASH_IMOB_URL || "https://imobiliaria-bortone.vercel.app";
 
-       <h3 style="margin:16px 0 12px;">Imóvel</h3>
-<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse">
-  ${
-    cleanAddress
-      ? `
-    <tr>
-      <td style="padding:8px 12px;border:1px solid #e5e7eb;width:180px;font-weight:600;">Endereço</td>
-      <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(
-        cleanAddress
-      )}</td>
-    </tr>`
-      : ``
-  }
-</table>
+// Montando a URL do agendamento
+
+let urlOriginal = `${urlBase}/agendamentos/${encodeURIComponent(propertyId)}`;
 
 
-        ${
-          cleanNotes
-            ? `<p style="margin:16px 0 0;"><strong>Observações do cliente:</strong> ${esc(
-                cleanNotes
-              )}</p>`
-            : ``
-        }
-      `,
-      ctaHref:
-        (process.env.DASH_IMOB_URL || "") +
-        (propertyId ? `/imoveis/${encodeURIComponent(propertyId)}` : ""),
-      ctaLabel: "Abrir no dashboard",
-      footerNote: "Gerado automaticamente pelo módulo de Agendamentos.",
-    });
 
-    await Promise.all([
-      client.send({
-        from: fromEmpresa,
-        to: userEmail,
-        subject: subjectUser,
-        text: textUser,
-        html: htmlUser,
-      }),
-      client.send({
-        from: fromEmpresa,
-        to: destinatarioEmpresa,
-        subject: subjectImob,
-        text: textImob,
-        html: htmlImob,
-        replyTo: userEmail,
-      }),
-    ]);
+// Garantindo que o link não tenha slashes extras
+if (urlOriginal.indexOf("://") === -1) {
+  // Adiciona o domínio padrão se não tiver protocolo (http:// ou https://)
+  urlOriginal = `https://${urlOriginal}`;
+}
 
-    return {
-      success: true,
-      message: "Agendamento confirmado e e-mails enviados",
-    };
+// Transformando o link
+const urlTransformada = transformarLink(urlOriginal);
+
+// Agora passando a URL transformada no ctaHref do e-mail
+const htmlImob = emailShell({
+  title: "Novo agendamento",
+  ctaHref: urlTransformada, // Agora com a URL transformada
+  bodyHTML: `
+    <h3 style="margin:0 0 12px;">Detalhes do cliente</h3>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse">
+      <tr><td style="padding:8px 12px;border:1px solid #e5e7eb;width:180px;font-weight:600;">Nome</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(cleanName)}</td></tr>
+      <tr><td style="padding:8px 12px;border:1px solid #e5e7eb;font-weight:600;">E-mail</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(userEmail)}</td></tr>
+      <tr><td style="padding:8px 12px;border:1px solid #e5e7eb;font-weight:600;">Telefone</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(cleanPhone)}</td></tr>
+      ${whenDate || whenTime ? `<tr><td style="padding:8px 12px;border:1px solid #e5e7eb;font-weight:600;">Data/Horário</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(`${whenDate} ${whenTime}`.trim())}</td></tr>` : ``}
+    </table>
+
+    <h3 style="margin:16px 0 12px;">Imóvel</h3>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse">
+      ${cleanAddress ? `<tr><td style="padding:8px 12px;border:1px solid #e5e7eb;width:180px;font-weight:600;">Endereço</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(cleanAddress)}</td></tr>` : ``}
+    </table>
+
+    ${cleanNotes ? `<p style="margin:16px 0 0;"><strong>Observações do cliente:</strong> ${esc(cleanNotes)}</p>` : ``}
+  `,
+  ctaLabel: "Abrir Página do Imóvel",
+  footerNote: "Gerado automaticamente pelo módulo de Agendamentos.",
+});
+
+// Envio de e-mails
+await Promise.all([
+  client.send({
+    from: fromEmpresa,
+    to: userEmail,
+    subject: subjectUser,
+    text: textUser,
+    html: htmlUser,
+  }),
+  client.send({
+    from: fromEmpresa,
+    to: destinatarioEmpresa,
+    subject: subjectImob,
+    text: textImob,
+    html: htmlImob,
+    replyTo: userEmail,
+  }),
+]);
+
+return {
+  success: true,
+  message: "Agendamento confirmado e e-mails enviados",
+};
+
   } catch (error) {
     throw new Error(
       "Erro ao enviar confirmação de agendamento: " + error.message
