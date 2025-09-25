@@ -12,6 +12,8 @@ import { Form as FormAntd } from "antd";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { LuHousePlus } from "react-icons/lu";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
@@ -19,9 +21,67 @@ const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
 
 export default function CriarImovelPage() {
   const [form] = FormAntd.useForm();
+  const [fileList, setFileList] = useState([]);
+  const router = useRouter();
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const onFinish = async (values) => {
+    try {
+      const imovelData = {
+        usuario_id: 1,
+        tipo: tipoSelecionado.toLowerCase(),
+        status: statusSelecionado.toLowerCase(),
+        cidade: citiesSelecionado,
+        estado: selectedState,
+        endereco: values.endereco,
+        area: values.area,
+        preco: values.preco,
+        descricao: values.descricao,
+        possui_muro: values.possui_muro === "sim" ? true : false,
+        latitude: values.latitude,
+        longitude: values.longitude,
+      };
+
+      console.log(tipoSelecionado.toLowerCase())
+
+      let specificData = {};
+
+      if (tipoSelecionado.toLowerCase() === "casa") {
+        specificData = {
+          quartos: selectedBedrooms === "Quantidade" ? 0 : parseInt(selectedBedrooms),
+          banheiros: selectedBathrooms === "Quantidade" ? 0 : parseInt(selectedBathrooms),
+          vagas: selectedParking === "Quantidade" ? 0 : parseInt(selectedParking),
+          possui_piscina: values.possui_piscina === "sim" ? true : false,
+          possui_jardim: values.possui_jardim === "sim" ? true : false,
+        };
+      }
+
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/imoveis`, {
+        ...imovelData,
+        ...(tipoSelecionado.toLowerCase() === "casa" ? specificData : {}),
+        ...(tipoSelecionado.toLowerCase() === "terreno" ? specificData : {}),
+      });
+      
+
+      if (response.status === 201) {
+        const imovelId = response.data.id;
+
+        for (const file of fileList) {
+          const formData = new FormData();
+          formData.append("imovel_id", imovelId);
+          formData.append("url_imagem", file.originFileObj);
+          await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/imagensImovel`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+        }
+        alert("Imóvel cadastrado com sucesso!");
+        router.push("/admin/cms-imoveis");
+      }
+    } catch (error) {
+      console.error("Erro ao cadastrar imóvel:", error);
+      alert("Erro ao cadastrar imóvel. Tente novamente.");
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -169,7 +229,7 @@ export default function CriarImovelPage() {
                     />
                   </FormAntd.Item>
                 </div>
-                <UploadImovel className={"!w-full"} />
+                <UploadImovel className={"!w-full"} fileList={fileList} setFileList={setFileList} />
                 <TextAreaField
                   name="descricao"
                   label="Descrição"
