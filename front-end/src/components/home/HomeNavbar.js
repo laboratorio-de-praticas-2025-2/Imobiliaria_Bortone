@@ -1,5 +1,6 @@
 "use client";
 
+
 import { navLinks } from "@/mock/navLinks";
 import { Button, Flex, Input } from "antd";
 import Image from "next/image";
@@ -8,6 +9,7 @@ import { useState, createElement, useEffect } from "react";
 import { FaBars } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
+import { handleLogout } from "@/utils/auth";
 
 const { Search } = Input;
 const onSearch = (value) => console.log(value);
@@ -41,15 +43,13 @@ export default function HomeNavbar({ className }) {
     }
   }, []);
 
-  // Função de logout
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("userInfo");
+  // Função de logout customizada para limpar estados locais
+  const handleLogoutLocal = () => {
     setUser(null);
     setIsLoggedIn(false);
     setUserMenuOpen(false);
-    // Redirecionar para página de login
-    window.location.href = "/bem-vindo";
+    // Chama a função centralizada de logout
+    handleLogout();
   };
 
 
@@ -116,7 +116,7 @@ export default function HomeNavbar({ className }) {
             <div className="relative inline-block text-left">
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="bg-[#EEF0F9] px-4 py-2 rounded-full cursor-pointer whitespace-nowrap flex items-center gap-1 relative z-[10000]"
+                className="bg-[#EEF0F9] px-4 py-2 rounded-full cursor-pointer whitespace-nowrap flex items-center gap-1 relative z-[9000]"
                 style={{ color: "#304383", height: buttonHeightPX }}
               >
                 <span className="truncate">{user?.nome}</span>
@@ -125,7 +125,7 @@ export default function HomeNavbar({ className }) {
 
               {/* Dropdown */}
               <ul
-                className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9999]
+                className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9000]
                             transition-all duration-300 ease-out
                             ${
                               userMenuOpen
@@ -157,26 +157,25 @@ export default function HomeNavbar({ className }) {
                   </Link>
                 )}
 
-                <Link href={"/bem-vindo"}>
-                  <li
-                    className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
-                                flex justify-center items-center transition-all duration-300 ease-out
-                                ${
-                                  userMenuOpen
-                                    ? "opacity-100 translate-y-0"
-                                    : "opacity-0 -translate-y-2"
-                                }`}
-                    style={{
-                      color: "#304383",
-                      borderBottomLeftRadius: bottomRadius,
-                      borderBottomRightRadius: bottomRadius,
-                      transitionDelay:
-                      user?.nivel === 0 ? delays[2] : delays[1],
-                    }}
-                  >
-                    Sair
-                  </li>
-                </Link>
+                <li
+                  onClick={handleLogoutLocal}
+                  className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
+                              flex justify-center items-center transition-all duration-300 ease-out
+                              ${
+                                userMenuOpen
+                                  ? "opacity-100 translate-y-0"
+                                  : "opacity-0 -translate-y-2"
+                              }`}
+                  style={{
+                    color: "#304383",
+                    borderBottomLeftRadius: bottomRadius,
+                    borderBottomRightRadius: bottomRadius,
+                    transitionDelay:
+                    user?.nivel === 0 ? delays[2] : delays[1],
+                  }}
+                >
+                  Sair
+                </li>
               </ul>
             </div>
           ) : (
@@ -218,7 +217,7 @@ export default function HomeNavbar({ className }) {
             <div className="relative inline-block text-left">
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="bg-[#EEF0F9] px-4 py-2 rounded-full whitespace-nowrap flex items-center gap-1 cursor-pointer relative z-[10000]"
+                className="bg-[#EEF0F9] px-4 py-2 rounded-full whitespace-nowrap flex items-center gap-1 cursor-pointer relative z-[9000]"
                 style={{ color: "#304383", height: buttonHeightPX }}
               >
                 <span className="truncate">{user?.nome}</span>
@@ -227,7 +226,7 @@ export default function HomeNavbar({ className }) {
 
               {/* Dropdown Mobile */}
               <ul
-                className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9999]
+                className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9000]
                             transition-all duration-300 ease-out
                             ${
                               userMenuOpen
@@ -244,11 +243,10 @@ export default function HomeNavbar({ className }) {
                     <li
                       className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
                                   flex justify-center items-center transition-all duration-300 ease-out
-                                  ${
-                                    userMenuOpen
-                                      ? "opacity-100 translate-y-0"
-                                      : "opacity-0 -translate-y-2"
-                                  }`}
+                                  ${userMenuOpen
+                          ? "opacity-100 translate-y-0"
+                          : "opacity-0 -translate-y-2"
+                        }`}
                       style={{
                         color: "#304383",
                         transitionDelay: delays[1],
@@ -259,26 +257,25 @@ export default function HomeNavbar({ className }) {
                   </Link>
                 )}
 
-                <Link href={"/bem-vindo"}>
-                  <li
-                    className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
-                                flex justify-center items-center transition-all duration-300 ease-out
-                                ${
-                                  userMenuOpen
-                                    ? "opacity-100 translate-y-0"
-                                    : "opacity-0 -translate-y-2"
-                                }`}
-                    style={{
-                      color: "#304383",
-                      borderBottomLeftRadius: bottomRadius,
-                      borderBottomRightRadius: bottomRadius,
-                      transitionDelay:
-                      user?.nivel === 0 ? delays[2] : delays[1],
-                    }}
-                  >
-                    Sair
-                  </li>
-                </Link>
+                <li
+                  onClick={handleLogoutLocal}
+                  className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
+                              flex justify-center items-center transition-all duration-300 ease-out
+                              ${
+                                userMenuOpen
+                                  ? "opacity-100 translate-y-0"
+                                  : "opacity-0 -translate-y-2"
+                              }`}
+                  style={{
+                    color: "#304383",
+                    borderBottomLeftRadius: bottomRadius,
+                    borderBottomRightRadius: bottomRadius,
+                    transitionDelay:
+                    user?.nivel === 0 ? delays[2] : delays[1],
+                  }}
+                >
+                  Sair
+                </li>
               </ul>
             </div>
           ) : (
