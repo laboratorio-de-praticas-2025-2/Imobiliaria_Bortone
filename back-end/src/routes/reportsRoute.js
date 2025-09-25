@@ -3,6 +3,6 @@ import ReportController from '../controllers/reportsController.js';
 const relatorioRouter = express.Router();
 
 // /relatorio?tipo=geral
-relatorioRouter.get("/relatorio", ReportController.gerarPDF); 
+relatorioRouter.get("/", ReportController.gerarDadosParaRelatorio); 
 
 export default relatorioRouter;

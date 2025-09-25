@@ -1,20 +1,20 @@
 import ReportService from "../services/reportsService.js";
 
 class ReportController {
-  static async gerarPDF(req, res) {
+  async gerarDadosParaRelatorio(req, res) {
     try {
       const tipo = req.query.tipo || "geral";
 
-      const pdfBuffer = await ReportService.gerarPDF(tipo);
+      const dadosRelatorio = await ReportService.buscarDadosParaRelatorio(tipo);
 
-      res.setHeader("Content-Type", "application/pdf");
-      res.setHeader("Content-Disposition", "inline; filename=relatorio.pdf");
-      res.send(pdfBuffer);
+      res.send(dadosRelatorio);
     } catch (error) {
-      console.error("Erro ao gerar relatório:", error);
-      res.status(500).json({ error: "Erro ao gerar relatório PDF" });
+      console.error("Erro ao buscar dados para relatório:", error);
+      res
+        .status(500)
+        .json({ error: "Erro ao buscar dados para relatório PDF" });
     }
   }
 }
 
-export default ReportController;
+export default new ReportController();
