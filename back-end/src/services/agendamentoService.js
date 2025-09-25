@@ -653,6 +653,17 @@ export const sendScheduleConfirmation = async (scheduleData) => {
 
     const client = new SMTPClient({ host, port, secure, user, pass, helo });
 
+// Defina o valor base da URL, caso a variável de ambiente não esteja configurada
+const urlBase1 = process.env.DASH_IMOB_URL || "https://imobiliaria-bortone.vercel.app";
+
+// Monta a URL do imóvel usando o ID da propriedade
+let urlImovel = `${urlBase1}/imoveis/${encodeURIComponent(propertyId)}`;
+
+// Garantindo que a URL tenha o protocolo correto
+if (urlImovel.indexOf("://") === -1) {
+  urlImovel = `https://${urlImovel}`;
+}
+
 // Usuário
 const subjectUser = "Recebemos seu agendamento – Imobiliária Bortone";
 
@@ -685,11 +696,21 @@ const htmlUser = emailShell({
 
     <!-- Adiciona o link ao final do corpo do e-mail -->
     <p style="margin:16px 0 0;">
-      Para acompanhar seu agendamento, clique no seguinte link: <a href="${process.env.PORTAL_AGENDAMENTOS_URL || ""}">${process.env.PORTAL_AGENDAMENTOS_URL || ""}</a>
+       link do imóvel:  <a href="${urlImovel}">${urlImovel}</a>
     </p>
   `,
   footerNote: "Dúvidas? Responda este e-mail.",
 });
+
+// Envio de e-mail com o corpo HTML
+await client.send({
+  from: fromEmpresa,
+  to: userEmail,
+  subject: subjectUser,
+  text: textUser,
+  html: htmlUser,
+});
+
 
     // Imobiliária
     const subjectImob = `Novo agendamento: ${cleanName || ""} / ${imovelTag}`;
