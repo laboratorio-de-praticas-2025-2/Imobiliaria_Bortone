@@ -2,7 +2,7 @@ import { Spin } from "antd";
 import { IoShareSocialSharp } from "react-icons/io5";
 import { BsFillPrinterFill } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
-import Relatorio from "@/components/relatorio/relatorio";
+import Relatorio from "@/components/relatorio/Relatorio.js";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 
