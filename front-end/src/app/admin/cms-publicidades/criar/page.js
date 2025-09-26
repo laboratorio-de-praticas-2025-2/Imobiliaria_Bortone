@@ -43,7 +43,9 @@ export default function CriarPublicidadePage() {
           console.log('Nenhum arquivo selecionado');
         }
 
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/publicidade`, formData, {
+        const apiBase = process.env.NEXT_PUBLIC_API_URL;
+        console.log('API Base URL (NEXT_PUBLIC_API_URL):', apiBase);
+        const response = await axios.post(`${apiBase}/publicidade`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -52,8 +54,19 @@ export default function CriarPublicidadePage() {
           alert("Publicidade cadastrada com sucesso!");
           router.push("/admin/cms-publicidades");
         }
-      } catch {
-        console.log("Erro ao cadastrar a publicidade");
+      } catch (error) {
+        console.log("Erro ao cadastrar a publicidade", error);
+        if (error.response) {
+          console.log('Status:', error.response.status);
+            console.log('Data:', error.response.data);
+            alert(`Erro ao cadastrar (status ${error.response.status}): ${error.response.data?.error || 'Ver console'}`);
+        } else if (error.request) {
+            console.log('Nenhuma resposta recebida. Request:', error.request);
+            alert('Erro: servidor não respondeu. Ver console.');
+        } else {
+            console.log('Erro na configuração da requisição:', error.message);
+            alert('Erro ao preparar requisição. Ver console.');
+        }
       }
     } else {
       alert("Preencha todos os campos!");
