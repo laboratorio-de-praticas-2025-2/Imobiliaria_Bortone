@@ -43,7 +43,8 @@ app.use("/faq", faqRoutes);
 app.use("/mapa", mapaRoutes);
 app.use('/dashboard', dashboardRouter);
 app.use('/imoveis', imoveisRouter);
-app.use('/imagensImovel', imagemImovelRoutes);
+app.use('/imagemImovel', imagemImovelRoutes);
+
 app.use(express.static(path.join(__dirname, "../public")));
 app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
 app.use(errorHandler);
