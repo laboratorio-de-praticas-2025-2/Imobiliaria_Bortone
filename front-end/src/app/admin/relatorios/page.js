@@ -6,8 +6,8 @@ import PdfModal from "@/components/cms/table/PdfModal";
 import RelatorioTable from "@/components/cms/table/RelatorioTable";
 import { getRelatorioData } from "@/services/RelatorioService";
 import { message } from "antd";
-import { useState } from "react";
-import { IoCheckmarkCircle } from "react-icons/io5";  
+import { useRef, useState } from "react";
+import { IoCheckmarkCircle } from "react-icons/io5";
 import { useReactToPrint } from "react-to-print";
 
 export default function TableRelatorio() {
@@ -25,6 +25,8 @@ export default function TableRelatorio() {
   const [reportData, setReportData] = useState(null);
   const [record, setRecord] = useState();
   const pageSize = 5;
+
+  const componentToPrintRef = useRef();
 
   const reportsLines = [
     {
@@ -91,13 +93,13 @@ export default function TableRelatorio() {
   const updateFilterData = (newData) =>
     setFilterData((prev) => ({ ...prev, ...newData }));
 
-  const gerarPDF = (record) => {    
+  const gerarPDF = (record) => {
     setLoading(true);
     setPdfReady(false);
 
     getRelatorioData()
-      .then((res) =>  {
-        setReportData(res)
+      .then((res) => {
+        setReportData(res);
         setRecord(record);
       })
       .catch((err) => console.error(err))
@@ -139,15 +141,17 @@ export default function TableRelatorio() {
     showToast("Relatorio-Exemplo.pdf", "Compartilhamento concluído");
   };
 
-  const handlePrint = (ref) => {
-    return useReactToPrint({
-      contentRef: ref,
-      documentTitle: record ? record.pdfNome : "Relatorio-Imobiliaria-Bortone",
-      onAfterPrint: () => {
-        showToast(record ? `${record.pdfNome}.pdf` : "Relatorio-Imobiliaria-Bortone.pdf", "Impressão concluída!");    
-      },
-    });
-  };
+  const handlePrint = useReactToPrint({
+    contentRef: componentToPrintRef,
+    documentTitle: record ? record.pdfNome : "Relatorio-Imobiliaria-Bortone",
+    onAfterPrint: () => {
+      showToast(
+        record ? `${record.pdfNome}.pdf` : "Relatorio-Imobiliaria-Bortone.pdf",
+        "Impressão concluída!"
+      );
+    },
+  });
+
   const handleClose = () => setPdfReady(false);
 
   return (
@@ -165,6 +169,7 @@ export default function TableRelatorio() {
             toast={toast}
             reportData={reportData}
             record={record}
+            componentToPrintRef={componentToPrintRef}
           />
           {toast && (
             <div className="fixed top-5 right-0 w-120 bg-white shadow-lg rounded-xl p-4 flex items-start gap-3 z-50 animate-slide-in">

@@ -16,11 +16,8 @@ export default function PdfModal({
   toast,
   reportData,
   record,
+  componentToPrintRef
 }) {
-  const componentRef = useRef();
-  
-  const handlePrintTeste = onPrint(componentRef);
-
   return (
     (loading || pdfReady) && (
       <div className="fixed inset-0 bg-black/30 z-50 flex justify-center items-center">
@@ -45,7 +42,7 @@ export default function PdfModal({
                 [&_.page:first-child]:block [&_.page:first-child]:h-full                
                 [&_.page:not(:first-child)]:hidden"
                 >
-                  <div ref={componentRef}>
+                  <div ref={componentToPrintRef}>
                     <Relatorio data={reportData} />
                   </div>
                 </div>
@@ -75,7 +72,7 @@ export default function PdfModal({
                   <div className="flex gap-3 mt-7 justify-between">
                     <button
                       className="bg-white !text-[var(--primary)] !font-bold md:px-10 px-3 rounded-full"
-                      onClick={handlePrintTeste}
+                      onClick={onPrint}
                     >
                       Baixar PDF
                     </button>
