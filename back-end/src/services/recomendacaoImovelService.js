@@ -82,7 +82,7 @@ const inferirPreferencias = async (idsImoveis) => {
 };
 
 const INCLUDE_OPTIONS = [
-    { model: Casa, as: 'casa', attributes: ['quartos', 'banheiros', 'vagas'], where: { '$imovel.tipo$': 'Casa' }, required: false },
+    { model: Casa, as: 'casa', attributes: ['quartos', 'banheiros', 'vagas', "possui_piscina", "possui_jardim"], where: { '$imovel.tipo$': 'Casa' }, required: false },
     { model: ImagemImovel, as: 'imagem_imovel', attributes: ['id', 'url_imagem'], required: false } 
 ];
 
