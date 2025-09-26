@@ -11,7 +11,7 @@ export default function CmsPublicidadePage() {
   const [filteredPublicidades, setFilteredPublicidades] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterData, setFilterData] = useState({});
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -19,7 +19,7 @@ export default function CmsPublicidadePage() {
     totalItems: 0,
     itemsPerPage: 12,
     hasNextPage: false,
-    hasPreviousPage: false
+    hasPreviousPage: false,
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,31 +33,52 @@ export default function CmsPublicidadePage() {
       if (publicidades.length > 0) {
         const isApiPaginated = pagination.totalItems > publicidades.length;
         if (!isApiPaginated) {
-          setPagination(prev => ({
-            ...prev,
-            currentPage: currentPage,
-            totalItems: publicidades.length,
-            totalPages: Math.ceil(publicidades.length / prev.itemsPerPage),
-            hasNextPage: currentPage < Math.ceil(publicidades.length / prev.itemsPerPage),
-            hasPreviousPage: currentPage > 1
-          }));
+          setPagination((prev) => {
+            const totalPages = Math.max(
+              1,
+              Math.ceil(publicidades.length / prev.itemsPerPage)
+            );
+            return {
+              ...prev,
+              currentPage: currentPage,
+              totalItems: publicidades.length,
+              totalPages,
+              hasNextPage: currentPage < totalPages,
+              hasPreviousPage: currentPage > 1,
+            };
+          });
         }
+      } else {
+        setPagination((prev) => ({
+          ...prev,
+          totalItems: 0,
+          totalPages: 1,
+          hasNextPage: false,
+          hasPreviousPage: false,
+        }));
       }
     } else {
-      const filtered = publicidades.filter(publicidade =>
-        publicidade.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        publicidade.conteudo.toLowerCase().includes(searchTerm.toLowerCase())
+      const filtered = publicidades.filter(
+        (publicidade) =>
+          (publicidade.titulo || "").toLowerCase().includes(term) ||
+          (publicidade.conteudo || "").toLowerCase().includes(term)
       );
       setFilteredPublicidades(filtered);
       setCurrentPage(1);
-      setPagination(prev => ({
-        ...prev,
-        currentPage: 1,
-        totalItems: filtered.length,
-        totalPages: Math.ceil(filtered.length / prev.itemsPerPage),
-        hasNextPage: Math.ceil(filtered.length / prev.itemsPerPage) > 1,
-        hasPreviousPage: false
-      }));
+      setPagination((prev) => {
+        const totalPages = Math.max(
+          1,
+          Math.ceil(filtered.length / prev.itemsPerPage)
+        );
+        return {
+          ...prev,
+          currentPage: 1,
+          totalItems: filtered.length,
+          totalPages,
+          hasNextPage: totalPages > 1,
+          hasPreviousPage: false,
+        };
+      });
     }
   }, [searchTerm, publicidades, currentPage]);
 
@@ -72,44 +93,46 @@ export default function CmsPublicidadePage() {
       setIsLoading(true);
       const params = new URLSearchParams();
 
-      console.log('filterData.order atual:', filterData.order);
+      console.log("filterData.order atual:", filterData.order);
 
       if (filterData.order) {
         if (filterData.order === "Ordem alfabetica") {
-          params.append('ordenarPor', 'alfabetica');
-          params.append('direcao', 'ASC');
-          console.log('Aplicando ordenação alfabética ASC');
+          params.append("ordenarPor", "alfabetica");
+          params.append("direcao", "ASC");
+          console.log("Aplicando ordenação alfabética ASC");
         } else if (filterData.order === "Data de inclusão") {
-          params.append('ordenarPor', 'data');
-          params.append('direcao', 'DESC');
-          console.log('Aplicando ordenação por data DESC');
+          params.append("ordenarPor", "data");
+          params.append("direcao", "DESC");
+          console.log("Aplicando ordenação por data DESC");
         }
       } else {
-        console.log('Nenhuma ordenação específica, usando padrão');
+        console.log("Nenhuma ordenação específica, usando padrão");
       }
 
-      params.append('page', currentPage.toString());
-      params.append('limit', '12');
+      params.append('page', String(currentPage));
+      params.append('limit', String(pagination.itemsPerPage));
 
-      const url = `${process.env.NEXT_PUBLIC_API_URL}/publicidade${params.toString() ? '?' + params.toString() : ''}`;
-      console.log('Fazendo requisição para:', url);
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/publicidade${
+        params.toString() ? "?" + params.toString() : ""
+      }`;
+      console.log("Fazendo requisição para:", url);
 
       const response = await axios.get(url);
       if (response.status === 200) {
-        console.log('Dados recebidos:', response.data);
-        
+        console.log("Dados recebidos:", response.data);
+
         if (response.data.data && response.data.pagination) {
           setPublicidades(response.data.data);
           setFilteredPublicidades(response.data.data);
           setPagination(response.data.pagination);
-          console.log('Paginação recebida:', response.data.pagination);
+          console.log("Paginação recebida:", response.data.pagination);
         } else {
           setPublicidades(response.data);
           setFilteredPublicidades(response.data);
-          setPagination(prev => ({
+          setPagination((prev) => ({
             ...prev,
             totalItems: response.data.length,
-            totalPages: Math.ceil(response.data.length / prev.itemsPerPage)
+            totalPages: Math.ceil(response.data.length / prev.itemsPerPage),
           }));
         }
       }
@@ -129,24 +152,24 @@ export default function CmsPublicidadePage() {
   };
 
   const handleSelectOrder = (value) => {
-    console.log('=== ORDENAÇÃO SELECIONADA ===');
-    console.log('Valor selecionado:', value);
-    console.log('filterData antes:', filterData);
-    setFilterData(prev => {
+    console.log("=== ORDENAÇÃO SELECIONADA ===");
+    console.log("Valor selecionado:", value);
+    console.log("filterData antes:", filterData);
+    setFilterData((prev) => {
       const newFilterData = { ...prev, order: value };
-      console.log('filterData depois:', newFilterData);
+      console.log("filterData depois:", newFilterData);
       return newFilterData;
     });
     setCurrentPage(1);
-    console.log('=============================');
+    console.log("=============================");
   };
 
   const updateFilterData = (newData) => {
-    setFilterData(prev => ({ ...prev, ...newData }));
+    setFilterData((prev) => ({ ...prev, ...newData }));
   };
 
   const handlePageChange = (newPage) => {
-    console.log('Mudando para página:', newPage);
+    console.log("Mudando para página:", newPage);
     setCurrentPage(newPage);
   };
 
