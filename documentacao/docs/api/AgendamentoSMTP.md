@@ -124,8 +124,3 @@ Observações: Gostaria de confirmar estacionamento disponível.
 
 ```
 
----
-
-Quer que eu também ajuste os **exemplos de corpo de e-mail** para ficarem **100% genéricos** (sem nomes e endereços fictícios), ou prefere manter esses exemplos preenchidos para dar mais clareza?
-```
-
