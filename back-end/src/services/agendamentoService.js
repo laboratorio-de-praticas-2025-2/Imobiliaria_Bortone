@@ -1,97 +1,140 @@
-// agendamentoService.js
+// src/services/agendamentoService.js
 import net from "net";
 import tls from "tls";
 import { Buffer } from "buffer";
 
 const CRLF = "\r\n";
 
-// Rate limiting para agendamentos
+/* =========================
+   Helpers de template/HTML
+   ========================= */
+
+export function esc(s = "") {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// “Shell” estilizado (email base). Injete seu bodyHTML aqui.
+export function emailShell({
+  title = "",
+  bodyHTML = "",
+  ctaHref = "",
+  ctaLabel = "",
+  footerNote = "",
+} = {}) {
+  return `<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>${esc(title)}</title>
+</head>
+<body style="margin:0;background:#f3f4f6;font-family:Arial,Helvetica,sans-serif;color:#111827;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;margin:0 auto;">
+    <tr>
+      <td style="padding:24px 16px 0;">
+        <div style="background:#2c5aa0;color:#fff;border-radius:12px 12px 0 0;padding:24px;text-align:center;">
+          <div style="font-size:22px;font-weight:700;margin:0;">Imobiliária Bortone</div>
+          ${
+            title
+              ? `<div style="opacity:.95;margin-top:6px;">${esc(title)}</div>`
+              : ""
+          }
+        </div>
+        <div style="background:#ffffff;border:1px solid #e5e7eb;border-top:0;padding:24px;border-radius:0 0 12px 12px;">
+          ${bodyHTML}
+          ${
+            ctaHref && ctaLabel
+              ? `
+          <div style="text-align:center;margin-top:24px;">
+            <a href="${ctaHref}" style="display:inline-block;background:#2c5aa0;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:600;">
+              ${esc(ctaLabel)}
+            </a>
+          </div>`
+              : ""
+          }
+        </div>
+        <div style="text-align:center;color:#6b7280;font-size:12px;margin:16px 0 32px;">
+          ${footerNote ? esc(footerNote) : "Dúvidas? Responda este e-mail."}
+        </div>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+/* =========================
+   Rate limiting e segurança
+   ========================= */
 const rateLimitBuckets = new Map();
-
-// IPs em whitelist (sem limite de rate)
-const WHITELIST_IPS = [
-  '127.0.0.1',
-  '::1',
-  '::ffff:127.0.0.1'
-];
-
-// IPs em blacklist (bloqueados)
+const WHITELIST_IPS = ["127.0.0.1", "::1", "::ffff:127.0.0.1"];
 const BLACKLIST_IPS = [];
-
-// Log de tentativas suspeitas
 const suspiciousAttempts = new Map();
 
 function getRateLimitKey(ip, route) {
   return `${ip}::${route}`;
 }
-
 function isWhitelistedIP(ip) {
   return WHITELIST_IPS.includes(ip);
 }
-
 function isBlacklistedIP(ip) {
   return BLACKLIST_IPS.includes(ip);
 }
-
 function logSuspiciousActivity(ip, reason) {
   const now = Date.now();
   const key = `${ip}::${reason}`;
-  
   if (!suspiciousAttempts.has(key)) {
     suspiciousAttempts.set(key, { count: 0, firstSeen: now, lastSeen: now });
   }
-  
   const attempt = suspiciousAttempts.get(key);
   attempt.count += 1;
   attempt.lastSeen = now;
-  
-  // Log para auditoria
-  console.warn(`[SECURITY] Suspicious activity from ${ip}: ${reason} (count: ${attempt.count})`);
-  
-  // Se muitas tentativas suspeitas, adicionar à blacklist temporariamente
-  if (attempt.count > 10 && (now - attempt.firstSeen) < 300000) { // 5 minutos
+
+  console.warn(
+    `[SECURITY] Suspicious activity from ${ip}: ${reason} (count: ${attempt.count})`
+  );
+
+  if (attempt.count > 10 && now - attempt.firstSeen < 300000) {
     BLACKLIST_IPS.push(ip);
-    console.error(`[SECURITY] IP ${ip} temporarily blacklisted due to suspicious activity`);
+    console.error(
+      `[SECURITY] IP ${ip} temporarily blacklisted due to suspicious activity`
+    );
   }
 }
 
-function checkRateLimit(ip, route, windowMs = 60_000, max = 5) {
-  // Verificar blacklist
+export function checkRateLimit(ip, route, windowMs = 60_000, max = 5) {
   if (isBlacklistedIP(ip)) {
-    logSuspiciousActivity(ip, 'blacklisted_ip_attempt');
+    logSuspiciousActivity(ip, "blacklisted_ip_attempt");
     return false;
   }
-  
-  // Whitelist bypass
-  if (isWhitelistedIP(ip)) {
-    return true;
-  }
-  
+  if (isWhitelistedIP(ip)) return true;
+
   const now = Date.now();
   const key = getRateLimitKey(ip, route);
-
   let bucket = rateLimitBuckets.get(key);
   if (!bucket) {
     bucket = { count: 0, start: now };
     rateLimitBuckets.set(key, bucket);
   }
-
   if (now - bucket.start > windowMs) {
     bucket.count = 0;
     bucket.start = now;
   }
-
   bucket.count += 1;
-  
-  // Log tentativas excessivas
+
   if (bucket.count > max) {
-    logSuspiciousActivity(ip, 'rate_limit_exceeded');
+    logSuspiciousActivity(ip, "rate_limit_exceeded");
   }
-  
   return bucket.count <= max;
 }
 
-// Limites e utilidades de sanitização
+/* =========================
+   Sanitização & limites
+   ========================= */
 const LIMITS = {
   subject: 200,
   headerValue: 1000,
@@ -101,65 +144,55 @@ const LIMITS = {
   address: 200,
   notes: 2000,
   attachmentSize: 10485760, // 10MB
-  attachmentName: 255
+  attachmentName: 255,
 };
 
-// Tipos MIME permitidos para anexos
 const ALLOWED_MIME_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/gif',
-  'image/webp',
-  'application/pdf',
-  'text/plain',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'application/vnd.ms-excel',
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+  "application/pdf",
+  "text/plain",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 ];
 
-// Validação de anexos
 function validateAttachment(attachment) {
-  if (!attachment || typeof attachment !== 'object') {
-    throw new Error('Anexo inválido');
+  if (!attachment || typeof attachment !== "object") {
+    throw new Error("Anexo inválido");
   }
-  
-  const { filename, contentBase64, contentType = "application/octet-stream" } = attachment;
-  
-  if (!filename || typeof filename !== 'string') {
-    throw new Error('Nome do arquivo é obrigatório');
-  }
-  
-  if (!contentBase64 || typeof contentBase64 !== 'string') {
-    throw new Error('Conteúdo do arquivo é obrigatório');
-  }
-  
-  // Validação do nome do arquivo
+  const {
+    filename,
+    contentBase64,
+    contentType = "application/octet-stream",
+  } = attachment;
+  if (!filename || typeof filename !== "string")
+    throw new Error("Nome do arquivo é obrigatório");
+  if (!contentBase64 || typeof contentBase64 !== "string")
+    throw new Error("Conteúdo do arquivo é obrigatório");
   if (filename.length > LIMITS.attachmentName) {
-    throw new Error(`Nome do arquivo muito longo (máximo ${LIMITS.attachmentName} caracteres)`);
+    throw new Error(
+      `Nome do arquivo muito longo (máximo ${LIMITS.attachmentName} caracteres)`
+    );
   }
-  
-  // Validação de caracteres perigosos no nome
   if (/[<>:"/\\|?*]/.test(filename)) {
-    throw new Error('Nome do arquivo contém caracteres inválidos');
+    throw new Error("Nome do arquivo contém caracteres inválidos");
   }
-  
-  // Validação do tipo MIME
   if (!ALLOWED_MIME_TYPES.includes(contentType)) {
     throw new Error(`Tipo de arquivo não permitido: ${contentType}`);
   }
-  
-  // Validação do tamanho do conteúdo base64
   if (contentBase64.length > LIMITS.attachmentSize) {
-    throw new Error(`Arquivo muito grande (máximo ${LIMITS.attachmentSize} bytes)`);
+    throw new Error(
+      `Arquivo muito grande (máximo ${LIMITS.attachmentSize} bytes)`
+    );
   }
-  
-  // Validação se é base64 válido
   const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
   if (!base64Regex.test(contentBase64)) {
-    throw new Error('Conteúdo do arquivo não é base64 válido');
+    throw new Error("Conteúdo do arquivo não é base64 válido");
   }
-  
   return { filename, contentBase64, contentType };
 }
 
@@ -167,7 +200,6 @@ function truncate(str, max) {
   if (typeof str !== "string") return str;
   return str.length > max ? str.slice(0, max) : str;
 }
-
 function sanitizeHeaderValue(value, max = LIMITS.headerValue) {
   if (value == null) return "";
   const s = String(value)
@@ -175,65 +207,45 @@ function sanitizeHeaderValue(value, max = LIMITS.headerValue) {
     .trim();
   return truncate(s, max);
 }
-
 function normalizeEmail(email) {
   if (!email) return "";
   return String(email).trim().toLowerCase();
 }
 
-// Lista de domínios de email suspeitos/bloqueados
 const BLOCKED_DOMAINS = [
-  'tempmail.org',
-  '10minutemail.com',
-  'guerrillamail.com',
-  'mailinator.com',
-  'throwaway.email'
+  "tempmail.org",
+  "10minutemail.com",
+  "guerrillamail.com",
+  "mailinator.com",
+  "throwaway.email",
 ];
 
-// Validação de domínio de email
 function isValidEmailDomain(email) {
   if (!email) return false;
-  
-  const domain = email.split('@')[1];
+  const domain = email.split("@")[1];
   if (!domain) return false;
-  
-  // Verificar se o domínio não está na lista de bloqueados
-  if (BLOCKED_DOMAINS.includes(domain.toLowerCase())) {
-    return false;
-  }
-  
-  // Verificar se o domínio tem pelo menos um ponto
-  if (!domain.includes('.')) {
-    return false;
-  }
-  
+  if (BLOCKED_DOMAINS.includes(domain.toLowerCase())) return false;
+  if (!domain.includes(".")) return false;
   return true;
 }
-
 function isValidEmail(email) {
   if (!email) return false;
   const s = String(email);
   if (/[\r\n]/.test(s)) return false;
-  
-  // Regex mais robusta para validação de email
-  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-  
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   if (!emailRegex.test(s)) return false;
-  
-  // Validação adicional do domínio
   return isValidEmailDomain(s);
 }
 
-/**
- * Lê respostas do servidor SMTP (inclui multi-linha: "250-..." até "250 ...").
- */
+/* =========================
+   SMTP baixo nível
+   ========================= */
 function createLineReader(socket) {
   let buffer = "";
   const listeners = [];
-
   const onData = (chunk) => {
     buffer += chunk.toString("utf8");
-
     let idx;
     while ((idx = buffer.indexOf("\r\n")) >= 0) {
       const line = buffer.slice(0, idx);
@@ -241,9 +253,7 @@ function createLineReader(socket) {
       listeners.forEach((fn) => fn(line));
     }
   };
-
   socket.on("data", onData);
-
   return {
     onLine(fn) {
       listeners.push(fn);
@@ -254,10 +264,6 @@ function createLineReader(socket) {
   };
 }
 
-/**
- * Aguarda uma resposta SMTP completa (tratando multi-linha).
- * Retorna { code, lines }.
- */
 async function readResponse(socket) {
   return new Promise((resolve, reject) => {
     const lines = [];
@@ -295,25 +301,15 @@ async function readResponse(socket) {
 function base64(str) {
   return Buffer.from(str, "utf8").toString("base64");
 }
-
 function dotStuff(body) {
   return body.replace(/\r?\n\./g, "\r\n..");
 }
-
 function joinHeaders(headersObj) {
   return Object.entries(headersObj)
     .map(([k, v]) => `${k}: ${v}`)
     .join(CRLF);
 }
 
-/**
- * Monta MIME corretamente para 3 cenários:
- *  A) Só texto (html vazio) -> topo = text/plain
- *  B) Texto + HTML (sem anexos) -> topo = multipart/alternative
- *  C) Com anexos -> topo = multipart/mixed; primeiro part é:
- *     - multipart/alternative (se houver HTML), ou
- *     - text/plain (se NÃO houver HTML)
- */
 function buildMime({
   from,
   to,
@@ -343,9 +339,7 @@ function buildMime({
     "Message-ID": messageId,
     "MIME-Version": "1.0",
   };
-  if (replyTo) {
-    headers["Reply-To"] = sanitizeHeaderValue(replyTo);
-  }
+  if (replyTo) headers["Reply-To"] = sanitizeHeaderValue(replyTo);
 
   const altBoundary = `alt_${Math.random().toString(36).slice(2)}`;
   const mixedBoundary = `mix_${Math.random().toString(36).slice(2)}`;
@@ -373,7 +367,6 @@ function buildMime({
         LIMITS.textBody
       )}${CRLF}`;
     }
-
     const headersWithCT = {
       ...headers,
       "Content-Type": `multipart/alternative; boundary="${altBoundary}"`,
@@ -386,7 +379,6 @@ function buildMime({
     ...headers,
     "Content-Type": `multipart/mixed; boundary="${mixedBoundary}"`,
   };
-
   let mixedBody = "";
 
   if (html) {
@@ -406,9 +398,7 @@ function buildMime({
   for (const att of attachments) {
     const validatedAttachment = validateAttachment(att);
     const { filename, contentBase64, contentType } = validatedAttachment;
-    
-    // Sanitização adicional do nome do arquivo para headers
-    const sanitizedFilename = filename.replace(/[^\x20-\x7E]/g, '');
+    const sanitizedFilename = filename.replace(/[^\x20-\x7E]/g, "");
     mixedBody +=
       `--${mixedBoundary}${CRLF}` +
       `Content-Type: ${contentType}; name="${sanitizedFilename}"${CRLF}` +
@@ -418,8 +408,7 @@ function buildMime({
   }
 
   mixedBody += `--${mixedBoundary}--${CRLF}`;
-
-  return `${joinHeaders({ ...headersWithCT })}${CRLF}${CRLF}${mixedBody}`;
+  return `${joinHeaders(headersWithCT)}${CRLF}${CRLF}${mixedBody}`;
 }
 
 class SMTPClient {
@@ -436,7 +425,6 @@ class SMTPClient {
 
   async send({ from, to, cc, bcc, subject, text, html, replyTo, attachments }) {
     const { host, port, secure, user, pass, helo } = this.cfg;
-
     const rcpts = []
       .concat(to || [])
       .concat(cc || [])
@@ -578,7 +566,9 @@ class SMTPClient {
   }
 }
 
-// Serviços de email
+/* =========================
+   Serviços de e-mail (API)
+   ========================= */
 export const sendEmail = async (emailData) => {
   try {
     const {
@@ -617,9 +607,6 @@ export const sendEmail = async (emailData) => {
   }
 };
 
-// Exportar função de rate limiting
-export { checkRateLimit };
-
 export const sendScheduleConfirmation = async (scheduleData) => {
   try {
     const { appointment } = scheduleData;
@@ -643,16 +630,8 @@ export const sendScheduleConfirmation = async (scheduleData) => {
       );
     }
 
-    const {
-      name,
-      email,
-      phone,
-      date,
-      time,
-      propertyAddress,
-      propertyId,
-      notes,
-    } = appointment || {};
+    const { name, email, phone, propertyAddress, propertyId, notes } =
+      appointment || {};
 
     const userEmail = normalizeEmail(email);
     if (!isValidEmail(userEmail)) {
@@ -665,63 +644,155 @@ export const sendScheduleConfirmation = async (scheduleData) => {
       LIMITS.address
     );
     const cleanNotes = truncate(String(notes || "").trim(), LIMITS.notes);
+    const cleanPhone = (phone || "-").toString().trim();
+
+    const whenDate = (appointment?.date || "").toString().trim();
+    const whenTime = (appointment?.time || "").toString().trim();
+    const imovelTag =
+      cleanAddress || (propertyId ? `ID ${propertyId}` : "Imóvel");
 
     const client = new SMTPClient({ host, port, secure, user, pass, helo });
 
-    // Para o usuário
-    const subjectUser = "Recebemos seu agendamento";
-    const textUser = `Olá ${
-      cleanName || ""
-    }, recebemos seu agendamento na Imobiliária Bortone. Em breve entraremos em contato para confirmar os detalhes. Data: ${date} - Horário: ${time}.`;
-    const htmlUser = `<p>Olá <strong>${
-      cleanName || ""
-    }</strong>, recebemos seu agendamento na Imobiliária Bortone.</p><p>Em breve entraremos em contato para confirmar os detalhes.</p><p>Data: ${sanitizeHeaderValue(
-      date || ""
-    )} - Horário: ${sanitizeHeaderValue(time || "")}.</p>`;
+// Defina o valor base da URL, caso a variável de ambiente não esteja configurada
+const urlBase1 = process.env.DASH_IMOB_URL || "https://imobiliaria-bortone.vercel.app";
 
-    // Para a empresa
-    const imovelTag =
-      cleanAddress || (propertyId ? `ID ${propertyId}` : "Imóvel");
-    const subjectImob = `Novo agendamento: ${cleanName || ""}/${imovelTag}`;
-    const textImob = `Novo agendamento:\nNome: ${cleanName}\nE-mail: ${userEmail}\nTelefone: ${
-      phone || "-"
-    }\nData: ${date}\nHorário: ${time}\nImóvel: ${imovelTag}\nObservações: ${
-      cleanNotes || "-"
-    }`;
-    const htmlImob = `<div><h3>Novo agendamento</h3><ul><li><strong>Nome:</strong> ${cleanName}</li><li><strong>E-mail:</strong> ${userEmail}</li><li><strong>Telefone:</strong> ${
-      phone || "-"
-    }</li><li><strong>Data:</strong> ${sanitizeHeaderValue(
-      date || ""
-    )}</li><li><strong>Horário:</strong> ${sanitizeHeaderValue(
-      time || ""
-    )}</li><li><strong>Imóvel:</strong> ${sanitizeHeaderValue(
-      imovelTag
-    )}</li></ul><p><strong>Observações:</strong> ${
-      cleanNotes || "-"
-    }</p></div>`;
+// Monta a URL do imóvel usando o ID da propriedade
+let urlImovel = `${urlBase1}/imoveis/${encodeURIComponent(propertyId)}`;
 
-    await Promise.all([
-      client.send({
-        from: fromEmpresa,
-        to: userEmail,
-        subject: subjectUser,
-        text: textUser,
-        html: htmlUser,
-      }),
-      client.send({
-        from: fromEmpresa,
-        to: destinatarioEmpresa,
-        subject: subjectImob,
-        text: textImob,
-        html: htmlImob,
-        replyTo: userEmail,
-      }),
-    ]);
+// Garantindo que a URL tenha o protocolo correto
+if (urlImovel.indexOf("://") === -1) {
+  urlImovel = `https://${urlImovel}`;
+}
 
-    return {
-      success: true,
-      message: "Agendamento confirmado e e-mails enviados",
-    };
+// Usuário
+const subjectUser = "Recebemos seu agendamento – Imobiliária Bortone";
+
+const textUser =
+  `Olá ${cleanName || "usuário"}, recebemos seu agendamento.\n\n` +
+  `Em breve entraremos em contato para confirmar os detalhes.\n\n` +
+  `Imobiliária Bortone`;
+
+const htmlUser = emailShell({
+  title: "Agendamento recebido",
+  bodyHTML: `
+    <p style="margin: 0 0 12px;">
+      Olá <strong>${esc(cleanName || "usuário")}</strong>,
+    </p>
+    <p style="margin: 0 0 16px;">
+      Recebemos seu agendamento e já estamos verificando a disponibilidade.
+    </p>
+
+    ${
+      cleanNotes
+        ? `<p style="margin:16px 0 0;">
+            <strong>Observações:</strong> ${esc(cleanNotes)}
+          </p>`
+        : ""
+    }
+
+    <p style="margin:16px 0 0;">
+      Em breve entraremos em contato para confirmar os detalhes.
+    </p>
+
+    <!-- Adiciona o link ao final do corpo do e-mail -->
+    <p style="margin:16px 0 0;">
+       link do imóvel:  <a href="${urlImovel}">${urlImovel}</a>
+    </p>
+  `,
+  footerNote: "Dúvidas? Responda este e-mail.",
+});
+
+// Envio de e-mail com o corpo HTML
+await client.send({
+  from: fromEmpresa,
+  to: userEmail,
+  subject: subjectUser,
+  text: textUser,
+  html: htmlUser,
+});
+
+
+    // Imobiliária
+    const subjectImob = `Novo agendamento: ${cleanName || ""} / ${imovelTag}`;
+    const textImob =
+      `Novo agendamento\n` +
+      `Nome: ${cleanName}\nE-mail: ${userEmail}\nTelefone: ${cleanPhone}\n` +
+      (whenDate || whenTime ? `Data/Horário: ${whenDate} ${whenTime}\n` : ``) +
+      `Imóvel: ${imovelTag}\n` +
+      (cleanAddress ? `Endereço: ${cleanAddress}\n` : ``) +
+      `Observações: ${cleanNotes || "-"}`;
+      
+// Função para transformar o link de agendamento para imóvel
+const transformarLink = (url) => {
+  return url.replace("/agendamentos/", "/imoveis/");
+};
+
+// Defina um valor padrão para DASH_IMOB_URL se ele não estiver configurado corretamente
+const urlBase = process.env.DASH_IMOB_URL || "https://imobiliaria-bortone.vercel.app";
+
+// Montando a URL do agendamento
+
+let urlOriginal = `${urlBase}/agendamentos/${encodeURIComponent(propertyId)}`;
+
+
+
+// Garantindo que o link não tenha slashes extras
+if (urlOriginal.indexOf("://") === -1) {
+  // Adiciona o domínio padrão se não tiver protocolo (http:// ou https://)
+  urlOriginal = `https://${urlOriginal}`;
+}
+
+// Transformando o link
+const urlTransformada = transformarLink(urlOriginal);
+
+// Agora passando a URL transformada no ctaHref do e-mail
+const htmlImob = emailShell({
+  title: "Novo agendamento",
+  ctaHref: urlTransformada, // Agora com a URL transformada
+  bodyHTML: `
+    <h3 style="margin:0 0 12px;">Detalhes do cliente</h3>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse">
+      <tr><td style="padding:8px 12px;border:1px solid #e5e7eb;width:180px;font-weight:600;">Nome</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(cleanName)}</td></tr>
+      <tr><td style="padding:8px 12px;border:1px solid #e5e7eb;font-weight:600;">E-mail</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(userEmail)}</td></tr>
+      <tr><td style="padding:8px 12px;border:1px solid #e5e7eb;font-weight:600;">Telefone</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(cleanPhone)}</td></tr>
+      ${whenDate || whenTime ? `<tr><td style="padding:8px 12px;border:1px solid #e5e7eb;font-weight:600;">Data/Horário</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(`${whenDate} ${whenTime}`.trim())}</td></tr>` : ``}
+    </table>
+
+    <h3 style="margin:16px 0 12px;">Imóvel</h3>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse">
+      ${cleanAddress ? `<tr><td style="padding:8px 12px;border:1px solid #e5e7eb;width:180px;font-weight:600;">Endereço</td><td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(cleanAddress)}</td></tr>` : ``}
+    </table>
+
+    ${cleanNotes ? `<p style="margin:16px 0 0;"><strong>Observações do cliente:</strong> ${esc(cleanNotes)}</p>` : ``}
+  `,
+  ctaLabel: "Abrir Página do Imóvel",
+  footerNote: "Gerado automaticamente pelo módulo de Agendamentos.",
+});
+
+// Envio de e-mails
+await Promise.all([
+  client.send({
+    from: fromEmpresa,
+    to: userEmail,
+    subject: subjectUser,
+    text: textUser,
+    html: htmlUser,
+  }),
+  client.send({
+    from: fromEmpresa,
+    to: destinatarioEmpresa,
+    subject: subjectImob,
+    text: textImob,
+    html: htmlImob,
+    replyTo: userEmail,
+  }),
+]);
+
+return {
+  success: true,
+  message: "Agendamento confirmado e e-mails enviados",
+};
+
   } catch (error) {
     throw new Error(
       "Erro ao enviar confirmação de agendamento: " + error.message

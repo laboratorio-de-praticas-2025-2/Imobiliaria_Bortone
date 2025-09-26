@@ -103,16 +103,16 @@ const validateAppointmentInput = (input) => {
     throw new Error('appointment é obrigatório');
   }
   
-  const { name, email, phone, date, time, propertyAddress, propertyId, notes } = appointment;
+  const { name, email, phone, propertyAddress, propertyId, notes } = appointment;
   
   // Validação de campos obrigatórios
-  if (!name || !email || !date || !time) {
-    throw new Error('name, email, date e time são obrigatórios');
+  if (!name || !email) {
+    throw new Error('name e email são obrigatórios');
   }
   
   // Validação de tipos
-  if (typeof name !== 'string' || typeof email !== 'string' || typeof date !== 'string' || typeof time !== 'string') {
-    throw new Error('name, email, date e time devem ser strings');
+  if (typeof name !== 'string' || typeof email !== 'string') {
+    throw new Error('name e email devem ser strings');
   }
   
   // Validação de email
@@ -142,19 +142,7 @@ const validateAppointmentInput = (input) => {
     throw new Error('Observações muito longas (máximo 2000 caracteres)');
   }
   
-  // Validação de data (formato básico)
-  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-  if (!dateRegex.test(date)) {
-    throw new Error('Data deve estar no formato YYYY-MM-DD');
-  }
-  
-  // Validação de horário (formato básico)
-  const timeRegex = /^\d{2}:\d{2}$/;
-  if (!timeRegex.test(time)) {
-    throw new Error('Horário deve estar no formato HH:MM');
-  }
-  
-  return { appointment: { name, email, phone, date, time, propertyAddress, propertyId, notes } };
+  return { appointment: { name, email, phone, propertyAddress, propertyId, notes } };
 };
 
 export const sendScheduleConfirmation = async (req, res) => {

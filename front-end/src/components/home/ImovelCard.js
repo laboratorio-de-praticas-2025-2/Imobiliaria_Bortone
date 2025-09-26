@@ -10,8 +10,8 @@ export default function ImovelCard({ imovel }) {
       <div className="sm:p-3 bg-white sm:bg-[#DEE1F0] flex flex-col gap-2 align-middle rounded-xl sm:shadow-none shadow-lg">
         <div className="w-full aspect-[16/9]">
           <img
-            src={imovel.imagens[0].url_imagem}
-            alt={imovel.imagens[0].descricao}
+            src={"images/casa-isolada-no-campo.jpg"}
+            alt={"Imagem do imóvel"}
             className="w-full h-full object-cover rounded-md aspect-[16/9]"
           />
         </div>
