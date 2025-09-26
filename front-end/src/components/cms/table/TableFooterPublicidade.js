@@ -21,7 +21,7 @@ export default function TableFooterPublicidade({
     if (currentPage && currentPage !== internalCurrentPage) {
       setInternalCurrentPage(currentPage);
     }
-  }, [currentPage]);
+  }, [currentPage, internalCurrentPage]);
 
   const handleChange = (page) => {
     setInternalCurrentPage(page);

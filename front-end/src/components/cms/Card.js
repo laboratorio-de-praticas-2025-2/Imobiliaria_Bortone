@@ -19,21 +19,35 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
 
   // Função para validar e sanitizar a URL da imagem
   const getValidImageSrc = () => {
-    if (!item.url_imagem || 
-        item.url_imagem === null || 
-        item.url_imagem === "" || 
-        item.url_imagem === "null" ||
-        typeof item.url_imagem !== 'string') {
-      return "/images/casa.png";
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || '';
+    const placeholder = '/images/casa.png';
+
+    if (!item?.url_imagem || typeof item.url_imagem !== 'string') return placeholder;
+
+    let src = item.url_imagem.trim();
+
+    // Normalizar caso backend salve sem barra inicial
+    if (!src.startsWith('/')) {
+      // Se parece já ser um nome de arquivo salvo pelo multer
+      if (!src.startsWith('http')) {
+        src = `/images/publicidadeImages/${src}`;
+      }
     }
-    
-    // Se já começa com /, usar diretamente
-    if (item.url_imagem.startsWith('/')) {
-      return item.url_imagem;
+
+    // Se for caminho relativo local (/images/...) precisamos usar direto em produção do Next.
+    // Porém o erro 400 do _next/image pode ocorrer se a imagem não existir no momento do build ou se houver CSP bloqueando.
+    // Para evitar transformação errada pelo loader, podemos usar a URL absoluta do backend se disponível.
+    if (src.startsWith('/images/')) {
+      // Se apiBase contém domínio (http) e não é o mesmo host do frontend (deploy vercel), usar absoluto.
+      if (apiBase.startsWith('http')) {
+        // Evitar dupla barra
+        const normalizedBase = apiBase.replace(/\/$/, '');
+        return `${normalizedBase}${src}`;
+      }
+      return src; // fallback
     }
-    
-    // Se não começa com /, adicionar o prefixo
-    return `/images/publicidadeImages/${item.url_imagem}`;
+
+    return src;
   };
 
   const onDelete = () => {
@@ -95,6 +109,12 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
           width={425}
           height={130}
           className={`aspect-[4/2] object-cover ${header ? "" : "rounded-t-2xl"}`}
+          onError={(e) => {
+            // fallback se a imagem não carregar (erro 400 ou 404)
+            try {
+              e.target.src = '/images/casa.png';
+            } catch {}
+          }}
         />
         <div className="w-full flex justify-end gap-4 p-3">
           <div className="flex items-center gap-3">
