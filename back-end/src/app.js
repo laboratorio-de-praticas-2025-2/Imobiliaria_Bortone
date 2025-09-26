@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import publicidadeRoutes from "./routes/publicidadeRoutes.js";
 import connection from "./config/sequelize-config.js";
+import blogRoutes from "./routes/blogRoutes.js";
 import userRoutes from './routes/userRoutes.js'
 import "./models/Associations.js";
 import searchRouter from "./routes/imovelSearchRoutes.js";
@@ -41,6 +42,7 @@ app.use("/health", healthRouter);
 app.use("/faq", faqRoutes);
 app.use("/mapa", mapaRoutes);
 app.use('/dashboard', dashboardRouter);
+app.use("/publicacoes", blogRoutes);
 app.use('/imoveis', imoveisRouter);
 app.use('/imagensimoveis', imagemImovelRoutes);
 

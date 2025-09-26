@@ -4,8 +4,10 @@ const isDev = process.env.NODE_ENV !== "production";
 const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
-    domains: [],
-    remotePatterns: [],
+    domains: ["localhost"],
+    remotePatterns: [
+      { protocol: "http", hostname: "localhost", port: "4000" },
+    ],
     unoptimized: false,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -44,7 +46,7 @@ const nextConfig = {
               "default-src 'self'",
               scriptSrc,
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: blob: https://*.tile.openstreetmap.org",
+              "img-src 'self' data: blob: https://*.tile.openstreetmap.org http://localhost:4000",
               "font-src 'self' data:",
               "connect-src *",
               "frame-ancestors 'none'",

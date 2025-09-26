@@ -33,6 +33,7 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "mysql2": "^3.14.4",
+    "nodemon": "^3.1.10",
     "sequelize": "^6.37.7",
     "ws": "^8.18.3"
   },
