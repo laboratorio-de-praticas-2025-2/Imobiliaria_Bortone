@@ -5,14 +5,18 @@ class ReportService {
   async buscarDadosParaRelatorio(tipo) {
     //TODO: IMPLEMENTAR CONDICIONAL PARA VARIA TIPO DE DADO BUSCADO NO TIPO COM BASE NO PARAMETRO "tipo"
 
-    const query = fs.readFileSync("./src/queries/dados-pdf-geral.sql", "utf-8");
+    const QUERY = `SELECT * FROM dadosRelatorioGeral;`
 
-    const dadosRelatorio = await sequelize.query(query, {
+    const dadosRelatorio = await sequelize.query(QUERY, {
       type: sequelize.QueryTypes.SELECT,
       logging: false,
     });
+    
+    if (dadosRelatorio.length === 0) {
+      throw new Error("Nenhum dado encontrado para o relatório.");
+    }
 
-    return dadosRelatorio;
+    return dadosRelatorio[0];
   }
 }
 
