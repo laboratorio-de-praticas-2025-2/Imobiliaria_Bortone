@@ -7,16 +7,18 @@ class ReportService {
 
     const QUERY = `SELECT * FROM dadosRelatorioGeral;`
 
-    const dadosRelatorio = await sequelize.query(QUERY, {
+    const response = await sequelize.query(QUERY, {
       type: sequelize.QueryTypes.SELECT,
       logging: false,
     });
-    
-    if (dadosRelatorio.length === 0) {
+
+    if (response.length === 0) {
       throw new Error("Nenhum dado encontrado para o relatório.");
     }
 
-    return dadosRelatorio[0];
+    const dadosRelatorio = JSON.parse(response[0].resultado);
+
+    return dadosRelatorio;
   }
 }
 
