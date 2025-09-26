@@ -33,58 +33,27 @@ export default function CmsPublicidadePage() {
       if (publicidades.length > 0) {
         const isApiPaginated = pagination.totalItems > publicidades.length;
         if (!isApiPaginated) {
-<<<<<<< Updated upstream
           setPagination((prev) => {
             const totalPages = Math.max(
               1,
               Math.ceil(publicidades.length / prev.itemsPerPage)
             );
-=======
-          setPagination(prev => {
-            const totalPages = Math.max(1, Math.ceil(publicidades.length / prev.itemsPerPage));
->>>>>>> Stashed changes
             return {
               ...prev,
               currentPage: currentPage,
               totalItems: publicidades.length,
               totalPages,
               hasNextPage: currentPage < totalPages,
-<<<<<<< Updated upstream
               hasPreviousPage: currentPage > 1,
-=======
-              hasPreviousPage: currentPage > 1
->>>>>>> Stashed changes
             };
           });
         }
       } else {
-<<<<<<< Updated upstream
-        setPagination((prev) => ({
-=======
         setPagination(prev => ({
->>>>>>> Stashed changes
           ...prev,
           totalItems: 0,
           totalPages: 1,
           hasNextPage: false,
-<<<<<<< Updated upstream
-          hasPreviousPage: false,
-        }));
-      }
-    } else {
-      const filtered = publicidades.filter(
-        (publicidade) =>
-          (publicidade.titulo || "").toLowerCase().includes(term) ||
-          (publicidade.conteudo || "").toLowerCase().includes(term)
-      );
-      setFilteredPublicidades(filtered);
-      setCurrentPage(1);
-      setPagination((prev) => {
-        const totalPages = Math.max(
-          1,
-          Math.ceil(filtered.length / prev.itemsPerPage)
-        );
-=======
           hasPreviousPage: false
         }));
       }
@@ -98,18 +67,13 @@ export default function CmsPublicidadePage() {
       setCurrentPage(1);
       setPagination(prev => {
         const totalPages = Math.max(1, Math.ceil(filtered.length / prev.itemsPerPage));
->>>>>>> Stashed changes
         return {
           ...prev,
           currentPage: 1,
           totalItems: filtered.length,
           totalPages,
           hasNextPage: totalPages > 1,
-<<<<<<< Updated upstream
-          hasPreviousPage: false,
-=======
           hasPreviousPage: false
->>>>>>> Stashed changes
         };
       });
     }
@@ -126,7 +90,6 @@ export default function CmsPublicidadePage() {
       setIsLoading(true);
       const params = new URLSearchParams();
 
-<<<<<<< Updated upstream
       console.log("filterData.order atual:", filterData.order);
 
       if (filterData.order) {
@@ -141,22 +104,11 @@ export default function CmsPublicidadePage() {
         }
       } else {
         console.log("Nenhuma ordenação específica, usando padrão");
-=======
-      if (filterData.order) {
-        if (filterData.order === "Ordem alfabetica") {
-          params.append('ordenarPor', 'alfabetica');
-          params.append('direcao', 'ASC');
-        } else if (filterData.order === "Data de inclusão") {
-          params.append('ordenarPor', 'data');
-          params.append('direcao', 'DESC');
-        }
->>>>>>> Stashed changes
       }
 
       params.append('page', String(currentPage));
       params.append('limit', String(pagination.itemsPerPage));
 
-<<<<<<< Updated upstream
       const url = `${process.env.NEXT_PUBLIC_API_URL}/publicidade${
         params.toString() ? "?" + params.toString() : ""
       }`;
@@ -172,37 +124,12 @@ export default function CmsPublicidadePage() {
           setPagination(response.data.pagination);
           console.log("Paginação recebida:", response.data.pagination);
         } else {
-=======
-      const url = `${process.env.NEXT_PUBLIC_API_URL}/publicidade${params.toString() ? '?' + params.toString() : ''}`;
-
-      const response = await axios.get(url);
-      if (response.status === 200) {
-        if (response.data && response.data.data && response.data.pagination) {
-          setPublicidades(response.data.data);
-          setFilteredPublicidades(response.data.data);
-          setPagination(response.data.pagination);
-        } else if (Array.isArray(response.data)) {
->>>>>>> Stashed changes
           setPublicidades(response.data);
           setFilteredPublicidades(response.data);
           setPagination((prev) => ({
             ...prev,
             totalItems: response.data.length,
-<<<<<<< Updated upstream
             totalPages: Math.ceil(response.data.length / prev.itemsPerPage),
-=======
-            totalPages: Math.max(1, Math.ceil(response.data.length / prev.itemsPerPage))
-          }));
-        } else {
-          setPublicidades([]);
-          setFilteredPublicidades([]);
-          setPagination(prev => ({
-            ...prev,
-            totalItems: 0,
-            totalPages: 1,
-            hasNextPage: false,
-            hasPreviousPage: false
->>>>>>> Stashed changes
           }));
         }
       }
@@ -233,7 +160,6 @@ export default function CmsPublicidadePage() {
   };
 
   const handleSelectOrder = (value) => {
-<<<<<<< Updated upstream
     console.log("=== ORDENAÇÃO SELECIONADA ===");
     console.log("Valor selecionado:", value);
     console.log("filterData antes:", filterData);
@@ -244,10 +170,6 @@ export default function CmsPublicidadePage() {
     });
     setCurrentPage(1);
     console.log("=============================");
-=======
-    setFilterData(prev => ({ ...prev, order: value }));
-    setCurrentPage(1);
->>>>>>> Stashed changes
   };
 
   const updateFilterData = (newData) => {
@@ -255,13 +177,8 @@ export default function CmsPublicidadePage() {
   };
 
   const handlePageChange = (newPage) => {
-<<<<<<< Updated upstream
     console.log("Mudando para página:", newPage);
     setCurrentPage(newPage);
-=======
-    const page = Math.max(1, newPage);
-    setCurrentPage(page);
->>>>>>> Stashed changes
   };
 
   const getCurrentPageItems = () => {
