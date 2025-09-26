@@ -114,24 +114,12 @@ class PublicidadeService {
       optionsPublicidade.limit = limit;
       optionsPublicidade.offset = offset;
 
-      console.log('Paginação aplicada - Página:', page, 'Limite:', limit, 'Offset:', offset);
-      console.log('Options finais para busca:', JSON.stringify(optionsPublicidade, null, 2));
 
       const result = await PublicidadeModel.findAndCountAll(optionsPublicidade);
 
       const totalItems = result.count;
       const totalPages = Math.ceil(totalItems / limit);
       const publicidades = result.rows;
-
-      console.log('Publicidades encontradas:', publicidades.length);
-      console.log('Total de registros:', totalItems);
-      console.log('Total de páginas:', totalPages);
-
-      if (publicidades.length > 0) {
-        console.log('Primeira publicidade:', publicidades[0].titulo, 'ID:', publicidades[0].id);
-        console.log('Última publicidade:', publicidades[publicidades.length - 1].titulo, 'ID:', publicidades[publicidades.length - 1].id);
-      }
-      console.log('====================');
 
       return {
         data: publicidades,

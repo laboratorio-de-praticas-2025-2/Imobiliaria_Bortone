@@ -15,21 +15,9 @@ export default function CriarPublicidadePage() {
   const [fileList, setFileList] = useState([]);
   const router = useRouter();
 
-  console.log('fileList atual:', fileList);
-
   const onFinish = async (values) => {
     if (values.titulo && values.conteudo) {
       try {
-        console.log('=== FRONT-END DEBUG ===');
-        console.log('values:', values);
-        console.log('fileList:', fileList);
-        console.log('fileList.length:', fileList.length);
-        if (fileList.length > 0) {
-          console.log('fileList[0]:', fileList[0]);
-          console.log('fileList[0].originFileObj:', fileList[0].originFileObj);
-        }
-        console.log('========================');
-
         const formData = new FormData();
         formData.append('titulo', values.titulo);
         formData.append('conteudo', values.conteudo);
@@ -38,22 +26,23 @@ export default function CriarPublicidadePage() {
         
         if (fileList.length > 0 && fileList[0].originFileObj) {
           formData.append('url_imagem', fileList[0].originFileObj);
-          console.log('Arquivo adicionado ao FormData:', fileList[0].originFileObj);
-        } else {
-          console.log('Nenhum arquivo selecionado');
         }
 
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/publicidade`, formData, {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+        
+        const response = await axios.post(`${apiUrl}/publicidade`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
+        
         if (response.status === 201) {
           alert("Publicidade cadastrada com sucesso!");
           router.push("/admin/cms-publicidades");
         }
-      } catch {
-        console.log("Erro ao cadastrar a publicidade");
+      } catch (error) {
+        console.error("Erro ao cadastrar a publicidade:", error);
+        alert("Erro ao cadastrar publicidade.");
       }
     } else {
       alert("Preencha todos os campos!");
@@ -61,7 +50,7 @@ export default function CriarPublicidadePage() {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    // Handle form validation errors if needed
   };
 
 

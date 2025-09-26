@@ -90,20 +90,14 @@ export default function CmsPublicidadePage() {
       setIsLoading(true);
       const params = new URLSearchParams();
 
-      console.log("filterData.order atual:", filterData.order);
-
       if (filterData.order) {
         if (filterData.order === "Ordem alfabetica") {
           params.append("ordenarPor", "alfabetica");
           params.append("direcao", "ASC");
-          console.log("Aplicando ordenação alfabética ASC");
         } else if (filterData.order === "Data de inclusão") {
           params.append("ordenarPor", "data");
           params.append("direcao", "DESC");
-          console.log("Aplicando ordenação por data DESC");
         }
-      } else {
-        console.log("Nenhuma ordenação específica, usando padrão");
       }
 
       params.append('page', String(currentPage));
@@ -112,24 +106,26 @@ export default function CmsPublicidadePage() {
       const url = `${process.env.NEXT_PUBLIC_API_URL}/publicidade${
         params.toString() ? "?" + params.toString() : ""
       }`;
-      console.log("Fazendo requisição para:", url);
 
       const response = await axios.get(url);
       if (response.status === 200) {
-        console.log("Dados recebidos:", response.data);
 
+        // Garantir que sempre temos um array
+        let publicidadesData = [];
+        
         if (response.data.data && response.data.pagination) {
-          setPublicidades(response.data.data);
-          setFilteredPublicidades(response.data.data);
+          publicidadesData = Array.isArray(response.data.data) ? response.data.data : [];
+          setPublicidades(publicidadesData);
+          setFilteredPublicidades(publicidadesData);
           setPagination(response.data.pagination);
-          console.log("Paginação recebida:", response.data.pagination);
         } else {
-          setPublicidades(response.data);
-          setFilteredPublicidades(response.data);
+          publicidadesData = Array.isArray(response.data) ? response.data : [];
+          setPublicidades(publicidadesData);
+          setFilteredPublicidades(publicidadesData);
           setPagination((prev) => ({
             ...prev,
-            totalItems: response.data.length,
-            totalPages: Math.ceil(response.data.length / prev.itemsPerPage),
+            totalItems: publicidadesData.length,
+            totalPages: Math.ceil(publicidadesData.length / prev.itemsPerPage),
           }));
         }
       }
@@ -160,16 +156,11 @@ export default function CmsPublicidadePage() {
   };
 
   const handleSelectOrder = (value) => {
-    console.log("=== ORDENAÇÃO SELECIONADA ===");
-    console.log("Valor selecionado:", value);
-    console.log("filterData antes:", filterData);
     setFilterData((prev) => {
       const newFilterData = { ...prev, order: value };
-      console.log("filterData depois:", newFilterData);
       return newFilterData;
     });
     setCurrentPage(1);
-    console.log("=============================");
   };
 
   const updateFilterData = (newData) => {
@@ -177,17 +168,19 @@ export default function CmsPublicidadePage() {
   };
 
   const handlePageChange = (newPage) => {
-    console.log("Mudando para página:", newPage);
     setCurrentPage(newPage);
   };
 
   const getCurrentPageItems = () => {
+    // Garantir que filteredPublicidades seja sempre um array
+    const publicidades = Array.isArray(filteredPublicidades) ? filteredPublicidades : [];
+    
     if (searchTerm.trim() !== "") {
       const startIndex = (currentPage - 1) * pagination.itemsPerPage;
       const endIndex = startIndex + pagination.itemsPerPage;
-      return filteredPublicidades.slice(startIndex, endIndex);
+      return publicidades.slice(startIndex, endIndex);
     }
-    return filteredPublicidades;
+    return publicidades;
   };
 
   return (
