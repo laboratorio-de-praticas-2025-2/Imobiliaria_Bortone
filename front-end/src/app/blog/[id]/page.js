@@ -2,41 +2,47 @@
 import ShareButton from "@/components/blog/ShareButton";
 import HomeFooter from "@/components/home/HomeFooter";
 import HomeNavbar from "@/components/home/HomeNavbar";
-import { postsData } from "@/mock/posts";
 import { Image, Spin } from "antd";
 import { useParams } from "next/navigation";
 import { useSEO } from "@/hooks/useSEO";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function ContentBlog() {
   const { id } = useParams(); // pega o id da URL
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [apiImage, setApiImage] = useState("");
 
-  // 🔹 Mockado: busca no array local
+  // Busca real no backend
   useEffect(() => {
-    if (!id) return;
-
-    // Simula delay de chamada à API
-    const timeout = setTimeout(() => {
-      const foundPost = postsData.find((p) => String(p.id) === id);
-      setPost(foundPost || null);
-      setLoading(false);
-    }, 800);
-
-    return () => clearTimeout(timeout);
+    const load = async () => {
+      if (!id) return;
+      try {
+        setLoading(true);
+        const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+        const apiUrl = (rawApiUrl || "").replace(/\/api\/?$/, "");
+        const resp = await axios.get(`${apiUrl}/publicacoes/${id}`);
+        const data = resp.data;
+        const img = data?.url_imagem ? (data.url_imagem.startsWith("/") ? `${apiUrl}${data.url_imagem}` : data.url_imagem) : "";
+        setApiImage(img);
+        setPost(data);
+      } catch (e) {
+        console.error("Erro ao carregar artigo:", e);
+        setPost(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
   }, [id]);
 
-  // 🔹 SEO dinâmico
   useSEO({
-    title: post?.title || "Post do Blog",
-    description:
-      post?.excerpt ||
-      post?.content?.substring(0, 160) ||
-      "Leia nosso post sobre imóveis e mercado imobiliário.",
+    title: post?.titulo || "Post do Blog",
+    description: post?.conteudo?.substring(0, 160) || "Leia nosso post sobre imóveis e mercado imobiliário.",
     keywords: "blog, imóveis, mercado imobiliário, dicas, notícias",
     url: `https://imobiliaria-bortone.vercel.app/blog/${id}`,
-    image: post?.image,
+    image: apiImage,
   });
 
   if (loading) {
@@ -66,12 +72,14 @@ export default function ContentBlog() {
         <hr className="border-t border-[#D7D7D7] py-5" />
 
         <div className="md:px-16">
-          <Image
-            src={post.url_imagem}
-            alt=""
-            width="100%"
-            className="w-screen md:w-full max-h-[500px] object-cover rounded-none md:!rounded-[25px]"
-          />
+          {apiImage && (
+            <Image
+              src={apiImage}
+              alt="Imagem do artigo"
+              width="100%"
+              className="w-screen md:w-full max-h-[500px] object-cover rounded-none md:!rounded-[25px]"
+            />
+          )}
 
           {/* ShareButton só em desktop, abaixo da imagem */}
           <div className="hidden md:flex justify-end pt-2">

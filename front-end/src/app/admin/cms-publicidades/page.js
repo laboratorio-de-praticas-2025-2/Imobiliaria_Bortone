@@ -11,7 +11,7 @@ export default function CmsPublicidadePage() {
   const [filteredPublicidades, setFilteredPublicidades] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterData, setFilterData] = useState({});
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -19,7 +19,7 @@ export default function CmsPublicidadePage() {
     totalItems: 0,
     itemsPerPage: 12,
     hasNextPage: false,
-    hasPreviousPage: false
+    hasPreviousPage: false,
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -86,22 +86,34 @@ export default function CmsPublicidadePage() {
             hasPreviousPage: currentPage > 1
           }));
         }
+      } else {
+        setPagination(prev => ({
+          ...prev,
+          totalItems: 0,
+          totalPages: 1,
+          hasNextPage: false,
+          hasPreviousPage: false
+        }));
       }
     } else {
+      const term = searchTerm.toLowerCase();
       const filtered = publicidades.filter(publicidade =>
-        publicidade.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        publicidade.conteudo.toLowerCase().includes(searchTerm.toLowerCase())
+        (publicidade.titulo || "").toLowerCase().includes(term) ||
+        (publicidade.conteudo || "").toLowerCase().includes(term)
       );
       setFilteredPublicidades(filtered);
       setCurrentPage(1);
-      setPagination(prev => ({
-        ...prev,
-        currentPage: 1,
-        totalItems: filtered.length,
-        totalPages: Math.ceil(filtered.length / prev.itemsPerPage),
-        hasNextPage: Math.ceil(filtered.length / prev.itemsPerPage) > 1,
-        hasPreviousPage: false
-      }));
+      setPagination(prev => {
+        const totalPages = Math.max(1, Math.ceil(filtered.length / prev.itemsPerPage));
+        return {
+          ...prev,
+          currentPage: 1,
+          totalItems: filtered.length,
+          totalPages,
+          hasNextPage: totalPages > 1,
+          hasPreviousPage: false
+        };
+      });
     }
   }, [searchTerm, publicidades, pagination.totalItems, currentPage]);
 
@@ -118,28 +130,30 @@ export default function CmsPublicidadePage() {
     if (value.trim() === "" && searchTerm.trim() !== "") {
       setCurrentPage(1);
       loadPublicidades();
+    } else if (value.trim() !== "") {
+      setCurrentPage(1);
     }
   };
 
   const handleSelectOrder = (value) => {
-    console.log('=== ORDENAÇÃO SELECIONADA ===');
-    console.log('Valor selecionado:', value);
-    console.log('filterData antes:', filterData);
-    setFilterData(prev => {
+    console.log("=== ORDENAÇÃO SELECIONADA ===");
+    console.log("Valor selecionado:", value);
+    console.log("filterData antes:", filterData);
+    setFilterData((prev) => {
       const newFilterData = { ...prev, order: value };
-      console.log('filterData depois:', newFilterData);
+      console.log("filterData depois:", newFilterData);
       return newFilterData;
     });
     setCurrentPage(1);
-    console.log('=============================');
+    console.log("=============================");
   };
 
   const updateFilterData = (newData) => {
-    setFilterData(prev => ({ ...prev, ...newData }));
+    setFilterData((prev) => ({ ...prev, ...newData }));
   };
 
   const handlePageChange = (newPage) => {
-    console.log('Mudando para página:', newPage);
+    console.log("Mudando para página:", newPage);
     setCurrentPage(newPage);
   };
 
@@ -158,7 +172,7 @@ export default function CmsPublicidadePage() {
       <div className="md:ml-20">
         <CMS.Body title={"Publicidades"}>
           <CMS.Table>
-            <CMS.TableHeaderPublicidade
+            <CMS.TableHeader
               buttonText="Nova Publicidade"
               buttonIcon={<RiStickyNoteAddLine />}
               onSearch={onSearch}
@@ -187,16 +201,16 @@ export default function CmsPublicidadePage() {
                   ))}
                 </div>
               ) : (
-                <p>Nenhuma publicidade encontrada.</p>
+                <p className="text-center py-8">Nenhuma publicidade encontrada.</p>
               )}
             </CMS.TableBody>
 
             {/* Paginador controlado */}
-            <CMS.TableFooterPublicidade
-              pagination={pagination}
-              currentPage={currentPage}
+            <CMS.TableFooter
+              postsData={pagination}
+              pageSize={pagination.itemsPerPage}
               onPageChange={handlePageChange}
-              isLoading={isLoading}
+              currentPage={currentPage}
             />
           </CMS.Table>
         </CMS.Body>
