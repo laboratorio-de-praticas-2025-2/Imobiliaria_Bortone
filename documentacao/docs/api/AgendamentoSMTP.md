@@ -40,14 +40,13 @@ A implementação usa net/tls para abrir sockets TCP/TLS e implementa manualment
 
 ## Estrutura de arquivos
 
-```
+
 - agendamentoController.js → Valida entrada HTTP, normaliza dados, permite integração com mapaService para buscar detalhes do imóvel e chama serviços.
 
 - agendamentoRoute.js → Define middlewares (headers de segurança, validação de content-type e payload size), rotas: /send, /schedule, /:id, /agendar, /property-notification.
 
 - agendamentoService.js → Implementa SMTP client, validações de anexos, construção MIME, rate limiting, blacklist/whitelist.
 
-```
 ---
 
 ## Configuração do Servidor SMTP
@@ -156,12 +155,6 @@ Envio direto de e-mail (teste).
 ```
 { "success": true, "message": "Email enviado com sucesso", "data": { "ok": true, "message": "Enviado" } }
 ```
-
-| Rota      | Método | Payload              | Resposta | Descrição                            |
-| --------- | ------ | -------------------- | -------- | ------------------------------------ |
-| /schedule | POST   | dados do agendamento | 200 JSON | Envia e-mails para usuário e empresa |
-| /send     | POST   | e-mail completo      | 200 JSON | Teste de envio direto                |
-
 
 ---
 
