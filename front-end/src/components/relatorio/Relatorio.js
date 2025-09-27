@@ -13,12 +13,18 @@ export default function Relatorio({ data }) {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
-  });  
+  });
   return (
     <>
       {/* Página 1 */}
       <div className="page">
         <header>
+          <Image
+            src="/images/logoEscura.svg"
+            alt="Logo Bortone"
+            width={180}
+            height={50}
+          />
           <div className="header-meta">Emitido em: {currDate}</div>
         </header>
 
@@ -80,6 +86,12 @@ export default function Relatorio({ data }) {
       {/* Página 2 */}
       <div className="page">
         <header>
+          <Image
+            src="/images/logoEscura.svg"
+            alt="Logo Bortone"
+            width={180}
+            height={50}
+          />
           <div className="header-meta">Emitido em: {currDate}</div>
         </header>
 
@@ -106,9 +118,14 @@ export default function Relatorio({ data }) {
       {/* Página 3 */}
       <div className="page">
         <header>
+          <Image
+            src="/images/logoEscura.svg"
+            alt="Logo Bortone"
+            width={180}
+            height={50}
+          />
           <div className="header-meta">Emitido em: {currDate}</div>
         </header>
-
         <h2 className="title">Relatório de Vendas</h2>
 
         <div className="card-content">
@@ -132,6 +149,12 @@ export default function Relatorio({ data }) {
       {/* Página 4 */}
       <div className="page">
         <header>
+          <Image
+            src="/images/logoEscura.svg"
+            alt="Logo Bortone"
+            width={180}
+            height={50}
+          />
           <div className="header-meta">Emitido em: {currDate}</div>
         </header>
 

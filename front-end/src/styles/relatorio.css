@@ -50,7 +50,7 @@ header {
   text-align: left;
   font-size: 24px;
   font-weight: bold;
-  margin: 20px 0;
+  margin: 40px 0;
 }
  
 .card-container {
@@ -147,7 +147,8 @@ footer {
   bottom: 10mm;
   left: 20mm;
   right: 20mm;
-  font-size: 18px;
-  color: #304383;
+  font-weight: 900;
+  font-size: 20px;
+  color: #000000;
   text-align: right;
 }
