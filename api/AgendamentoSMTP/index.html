@@ -1,0 +1,1341 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../Agendamento/">
+      
+      
+      
+      <link rel="icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Funcionalidade do envio de e-mail - Imobiliaria Bortone - Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#modulo-smtp-agendamento-de-visitas" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-header__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imobiliaria Bortone - Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Funcionalidade do envio de e-mail
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-nav__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    Imobiliaria Bortone - Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RegrasGerais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../EstruturaDePastas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estrutura de Pastas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/NextConfig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/middlwareIndexacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Middleware
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/ManualdeTags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual de Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AlgoritmoDeRecomendacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BancoDeDados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dashboard
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MapaAPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MapaImplementacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Implementação da API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MapaResumo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resumo da Integração
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ChatSuporte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chat Suporte
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../WebSocket-Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Rodar o WebSocket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../UserLevels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Níveis de Usuário
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ChatSystemBugFixes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relatório de Correção de Bugs do Chat
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Agendamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agendamento de Visitação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidade do envio de e-mail
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidade do envio de e-mail
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#glossario" class="md-nav__link">
+    <span class="md-ellipsis">
+      Glossário
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#descricao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Descrição
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Objetivo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-de-arquivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura de arquivos
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracao-do-servidor-smtp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuração do Servidor SMTP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuração do Servidor SMTP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explicacao-sobre-variaveis-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explicação sobre variáveis de ambiente
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-de-envio-de-e-mails" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fluxo de Envio de E-mails
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fluxo de Envio de E-mails">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requisicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Requisições
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requisições">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rota-post-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rota POST /schedule
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rota POST /schedule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resposta-sucesso-200" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resposta sucesso (200)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rota-post-send" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rota POST /send
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rota POST /send">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resposta-sucesso-200_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resposta sucesso (200)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validações
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#montagem-de-mensagem-por-meio-do-mime" class="md-nav__link">
+    <span class="md-ellipsis">
+      Montagem de mensagem por meio do MIME
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      Segurança
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemplo-de-uso-no-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemplo de uso no Frontend
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitações
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#glossario" class="md-nav__link">
+    <span class="md-ellipsis">
+      Glossário
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#descricao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Descrição
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Objetivo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-de-arquivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura de arquivos
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracao-do-servidor-smtp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuração do Servidor SMTP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuração do Servidor SMTP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explicacao-sobre-variaveis-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explicação sobre variáveis de ambiente
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-de-envio-de-e-mails" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fluxo de Envio de E-mails
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fluxo de Envio de E-mails">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requisicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Requisições
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requisições">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rota-post-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rota POST /schedule
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rota POST /schedule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resposta-sucesso-200" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resposta sucesso (200)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rota-post-send" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rota POST /send
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rota POST /send">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resposta-sucesso-200_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resposta sucesso (200)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validações
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#montagem-de-mensagem-por-meio-do-mime" class="md-nav__link">
+    <span class="md-ellipsis">
+      Montagem de mensagem por meio do MIME
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      Segurança
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemplo-de-uso-no-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemplo de uso no Frontend
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitações
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="modulo-smtp-agendamento-de-visitas">Módulo SMTP – Agendamento de Visitas</h1>
+<h2 id="glossario">Glossário</h2>
+<ul>
+<li><strong>SMTP (Simple Mail Transfer Protocol):</strong> protocolo para envio de e-mail entre servidores.</li>
+<li><strong>TCP:</strong> protocolo que garante que os dados cheguem completos, na ordem certa e sem erros entre dois dispositivos.</li>
+<li><strong>TLS:</strong> protocolo que criptografa e protege a comunicação sobre o TCP, garantindo segurança e integridade dos dados.</li>
+<li><strong>Socket:</strong> um ponto de conexão entre dois computadores na rede que permite enviar e receber dados.</li>
+<li><strong>HELO/EHLO:</strong> comandos de identificação; <code>EHLO</code> pede extensões (STARTTLS, AUTH, etc.).</li>
+<li><strong>STARTTLS:</strong> comando que solicita upgrade da conexão para TLS sobre a mesma socket.</li>
+<li><strong>SMTPS:</strong> TLS direto (porta 465).</li>
+<li><strong>AUTH PLAIN / AUTH LOGIN:</strong> métodos de autenticação (base64).</li>
+<li><strong>MIME:</strong> Multipurpose Internet Mail Extensions — formato para mensagens com várias partes (text, html, attachments).</li>
+<li><strong>multipart/alternative:</strong> partes alternativas (por ex., plain text e HTML).</li>
+<li><strong>multipart/mixed:</strong> estrutura que pode conter alternativas + anexos.</li>
+<li><strong>CRLF:</strong> <code>\r\n</code> — fim de linha no SMTP (obrigatório).</li>
+<li><strong>dot-stuffing:</strong> duplicar leading <code>.</code> em linhas do corpo antes de enviar (por RFC).</li>
+<li><strong>Message-ID:</strong> identificador único do e-mail.</li>
+<li><strong>SPF/DKIM/DMARC:</strong> mecanismos para autenticação de e-mail (evitam spoofing e melhoram entrega).</li>
+<li><strong>Base64:</strong> codificação usada para anexos binários em SMTP.</li>
+<li><strong>Rate limiting:</strong> limitar número de requisições por IP/endpoint para mitigar abuso.</li>
+<li><strong>Whitelist / Blacklist:</strong> IPs explicitamente permitidos/negados.</li>
+</ul>
+<hr />
+<h2 id="descricao">Descrição</h2>
+<p>O módulo de Agendamento implementa um sistema de envio de e-mails baseado no protocolo SMTP sem depender de bibliotecas externas. Ele garante que tanto o cliente quanto a equipe interna recebam confirmações e notificações sobre o agendamento.
+A implementação usa net/tls para abrir sockets TCP/TLS e implementa manualmente os comandos SMTP, autenticação (PLAIN/LOGIN) e construção de mensagens MIME (texto, HTML, anexos).</p>
+<hr />
+<h2 id="objetivo">Objetivo</h2>
+<ul>
+<li>Enviar confirmação de agendamento ao usuário (cliente) e notificar a imobiliária.</li>
+<li>Implementar validações e proteção contra abuso (rate limit, blacklist/whitelist, bloqueio de domínios temporários).</li>
+<li>Registrar logs de auditoria para rastreabilidade.</li>
+</ul>
+<hr />
+<h2 id="estrutura-de-arquivos">Estrutura de arquivos</h2>
+<ul>
+<li>
+<p>agendamentoController.js → Valida entrada HTTP, normaliza dados, permite integração com mapaService para buscar detalhes do imóvel e chama serviços.</p>
+</li>
+<li>
+<p>agendamentoRoute.js → Define middlewares (headers de segurança, validação de content-type e payload size), rotas: /send, /schedule, /:id, /agendar, /property-notification.</p>
+</li>
+<li>
+<p>agendamentoService.js → Implementa SMTP client, validações de anexos, construção MIME, rate limiting, blacklist/whitelist.</p>
+</li>
+</ul>
+<hr />
+<h2 id="configuracao-do-servidor-smtp">Configuração do Servidor SMTP</h2>
+<p>Antes de rodar o módulo, é necessário configurar as variáveis de ambiente:</p>
+<div class="highlight"><pre><span></span><code>- SMTP_HOST=mail.example.com     
+- SMTP_PORT=587                     
+- SMTP_SECURE=false                 
+- SMTP_USER=usuario                 
+- SMTP_PASS=senha             
+- SMTP_HELO=localhost             
+- MAIL_FROM_EMPRESA=noreply@ex.com 
+- MAIL_TO_EMPRESA=agendamentos@...
+- NODE_ENV=development|production
+</code></pre></div>
+<h3 id="explicacao-sobre-variaveis-de-ambiente">Explicação sobre variáveis de ambiente</h3>
+<ul>
+<li>SMTP_HOST — Endereço do servidor SMTP (ex: smtp.gmail.com).</li>
+<li>SMTP_PORT — Porta do servidor (587 para TLS, 465 para SSL).</li>
+<li>SMTP_SECURE — Define se a conexão deve usar SSL/TLS.</li>
+<li>SMTP_USER — E-mail usado para autenticação.</li>
+<li>SMTP_PASS — Senha ou token de acesso do e-mail. A senha é gerada por meio da autenticação de dois fatores.</li>
+<li>SMTP_HELO — Valor usado em EHLO/HELO. Default é "localhost".</li>
+<li>MAIL_FROM_EMPRESA — E-mail obrigatório para envios automáticos (sendScheduleConfirmation).</li>
+<li>MAIL_TO_EMPRESA — E-mail interno opcional; default é "agendamentos@imobiliaria-bortone.com.br".</li>
+<li>NODE_ENV — Define o ambiente da aplicação e controla a exposição de detalhes de erro (development ou production).</li>
+</ul>
+<p>Observação: Nunca commitar credenciais no repositório.</p>
+<hr />
+<h2 id="fluxo-de-envio-de-e-mails">Fluxo de Envio de E-mails</h2>
+<ol>
+<li><strong>Requisição HTTP</strong> chega no controller (ex.: /schedule).</li>
+<li><strong>Controller</strong> valida e normaliza input (regex de e-mail, tamanhos, trims).</li>
+<li><strong>Controller</strong> aplica lógica específica (ex.: busca imovel por ID via mapaService e mescla endereço).</li>
+<li><strong>Verificação de segurança</strong>, Controller checa rate limit: agendamentoService.checkRateLimit(clientIP, route):<ul>
+<li>Limite de 5 agendamentos por minuto por IP.</li>
+<li>Bloqueio de IPs em blacklist.</li>
+<li>Bloqueio de domínios suspeitos (ex: Mailinator, TempMail).</li>
+</ul>
+</li>
+<li><strong>Controller</strong> chama agendamentoService.sendScheduleConfirmation({ appointment }).</li>
+<li><strong>sendScheduleConfirmation</strong> monta textos e HTML (usuário e empresa), cria SMTPClient com host/port/secure/user/pass/helo.</li>
+<li><strong>SMTPClient.send()</strong> abre socket (plain TCP ou TLS), aguarda banner (220), envia EHLO, verifica STARTTLS e, se disponível + desejado, faz upgrade TLS.</li>
+<li><strong>Autentica</strong> (AUTH PLAIN ou AUTH LOGIN) se user/pass informados.</li>
+<li><strong>Realiza a troca de comandos SMTP</strong> (<code>EHLO/HELO</code>, <code>AUTH</code>, <code>MAIL FROM</code>, <code>RCPT TO</code>, <code>DATA</code>, <code>QUIT</code>).</li>
+<li><strong>Constrói mensagem MIME</strong> via buildMime(...), aplica dot-stuffing, escreve o corpo e finaliza com .\r\n.</li>
+<li><strong>Construção da mensagem MIME</strong>:<ul>
+<li>Apenas texto <strong>OU</strong></li>
+<li>Texto + HTML (multipart/alternative) <strong>OU</strong></li>
+<li>Texto + HTML + Anexos (multipart/mixed).</li>
+</ul>
+</li>
+<li><strong>Lê</strong> a resposta (250) e encerra com QUIT.</li>
+<li><strong>Envio da mensagem</strong> e retorno da resposta JSON para o cliente.</li>
+</ol>
+<hr />
+<h3 id="requisicoes">Requisições</h3>
+<h4 id="rota-post-schedule">Rota POST /schedule</h4>
+<p>Recebe dados de agendamento, aplica rate limit, busca dados do imóvel (se id) e envia 2 e-mails (usuário + empresa).</p>
+<div class="highlight"><pre><span></span><code>{
+  &quot;name&quot;: &quot;Tiago Rodrigues&quot;,
+  &quot;email&quot;: &quot;tiago@example.com&quot;,
+  &quot;phone&quot;: &quot;11999999999&quot;,
+  &quot;propertyId&quot;: &quot;123&quot;,
+  &quot;propertyAddress&quot;: &quot;Rua das Flores, 100&quot;,
+  &quot;cityState&quot;: &quot;São Paulo - SP&quot;,
+  &quot;notes&quot;: &quot;Prefiro horário da manhã&quot;
+}
+</code></pre></div>
+<h6 id="resposta-sucesso-200">Resposta sucesso (200)</h6>
+<div class="highlight"><pre><span></span><code>{ &quot;success&quot;: true, &quot;message&quot;: &quot;Agendamento confirmado e e-mails enviados com sucesso&quot;, &quot;data&quot;: { &quot;success&quot;: true, &quot;message&quot;: &quot;Agendamento confirmado e e-mails enviados&quot; } }
+</code></pre></div>
+<h4 id="rota-post-send">Rota POST /send</h4>
+<p>Envio direto de e-mail (teste).</p>
+<div class="highlight"><pre><span></span><code>{
+  &quot;host&quot;: &quot;smtp.servidor.com&quot;,
+  &quot;port&quot;: 587,
+  &quot;secure&quot;: false,
+  &quot;user&quot;: &quot;usuario&quot;,
+  &quot;pass&quot;: &quot;senha&quot;,
+  &quot;from&quot;: &quot;noreply@imobiliaria.com&quot;,
+  &quot;to&quot;: &quot;cliente@example.com&quot;,
+  &quot;subject&quot;: &quot;Teste&quot;,
+  &quot;text&quot;: &quot;Mensagem em texto&quot;,
+  &quot;html&quot;: &quot;&lt;b&gt;Mensagem HTML&lt;/b&gt;&quot;,
+  &quot;attachments&quot;: [
+    { &quot;filename&quot;: &quot;doc.pdf&quot;, &quot;contentBase64&quot;: &quot;JVBERi0x...&quot;, &quot;contentType&quot;: &quot;application/pdf&quot; }
+  ]
+}
+</code></pre></div>
+<h5 id="resposta-sucesso-200_1">Resposta sucesso (200)</h5>
+<div class="highlight"><pre><span></span><code>{ &quot;success&quot;: true, &quot;message&quot;: &quot;Email enviado com sucesso&quot;, &quot;data&quot;: { &quot;ok&quot;: true, &quot;message&quot;: &quot;Enviado&quot; } }
+</code></pre></div>
+<hr />
+<h3 id="validacoes">Validações</h3>
+<ul>
+<li><strong>E-mail</strong> → Regex robusta + bloqueio de domínios temporários.</li>
+<li><strong>Porta SMTP</strong> → Deve estar entre 1 e 65535.</li>
+<li><strong>Secure (TLS)</strong> → Obrigatoriamente booleano.</li>
+<li><strong>Subject</strong> → Máximo 200 caracteres.</li>
+<li><strong>Texto</strong> → Máximo 10.000 caracteres.</li>
+<li><strong>HTML</strong> → Máximo 20.000 caracteres.</li>
+<li><strong>Anexos</strong> →<ul>
+<li>Tamanho máx. 10MB.</li>
+<li>Tipos permitidos: <code>.jpeg, .png, .gif, .webp, .pdf, .txt, .doc, .docx, .xls, .xlsx</code>.</li>
+<li>Nome máx. 255 caracteres (sem caracteres perigosos como <code>&lt;, &gt;, :, /, \\</code>).</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="montagem-de-mensagem-por-meio-do-mime">Montagem de mensagem por meio do MIME</h2>
+<p>A função <code>buildMime()</code> implementa a construção de e-mail para três cenários:</p>
+<ol>
+<li><strong>Apenas texto (sem HTML, sem anexos)</strong><ul>
+<li><code>Content-Type: text/plain; charset="utf-8"</code></li>
+<li>Corpo: texto truncado para <code>LIMITS.textBody</code>.</li>
+</ul>
+</li>
+<li><strong>Texto + HTML (sem anexos)</strong><ul>
+<li><code>Content-Type: multipart/alternative; boundary="alt_..."</code></li>
+<li>Parte 1: <code>text/plain</code></li>
+<li>Parte 2: <code>text/html</code></li>
+<li>Fecha <code>-alt_...--</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Com anexos</strong></p>
+<ul>
+<li><code>Content-Type: multipart/mixed; boundary="mix_..."</code></li>
+<li>Primeiro part: <code>multipart/alternative</code> (se houver HTML) ou <code>text/plain</code></li>
+<li>
+<p>Em seguida: cada anexo com:</p>
+<div class="highlight"><pre><span></span><code>--mix_...
+Content-Type: &lt;contentType&gt;; name=&quot;filename&quot;
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=&quot;filename&quot;
+
+&lt;base64 content&gt;
+</code></pre></div>
+</li>
+<li>
+<p>Fecha <code>-mix_...--</code></p>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>Observações técnicas:</strong></p>
+<ul>
+<li><strong>Headers importantes:</strong> sempre incluir From, To, Cc (opcional), Subject, Date, Message-ID e MIME-Version: 1.0.</li>
+<li><strong>Dot-stuffing:</strong> se uma linha do corpo começar com ., duplicar o ponto (. → ..) antes de enviar.</li>
+<li><strong>Fim de linha:</strong> todas as linhas devem terminar com \r\n (CRLF), como exige o padrão SMTP.</li>
+<li><strong>Encoding:</strong>
+   Anexos → base64
+   Texto e HTML → 7bit (UTF-8). Se o conteúdo tiver caracteres especiais, pode usar quoted-printable.</li>
+</ul>
+<hr />
+<h2 id="seguranca">Segurança</h2>
+<ul>
+<li>Uso de <strong>TLS/SSL</strong> para conexão segura com o servidor SMTP.</li>
+<li>Armazenamento seguro de credenciais via <strong>variáveis de ambiente</strong>.</li>
+<li><strong>Proteção contra spam:</strong> limite de disparos por evento configurado no sistema.</li>
+<li><strong>Rate limiting</strong>de 5 requisições/minuto por IP.</li>
+<li><strong>Whitelist de IPs:</strong> <code>127.0.0.1</code>, <code>::1</code>.</li>
+<li><strong>Blacklist dinâmica</strong>, IPs suspeitos podem ser bloqueados temporariamente.</li>
+<li>Limite de tamanho de <strong>payload e anexos</strong>.</li>
+<li><strong>Logs de auditoria</strong>, todas as requisições logadas com IP, User-Agent, rota e horário.</li>
+<li><strong>Headers de segurança:</strong> <code>X-Content-Type-Options</code>, <code>X-Frame-Options</code>, <code>X-XSS-Protection</code>, <code>Content-Security-Policy</code>.</li>
+<li><strong>Sanitização</strong>, uma prevenção contra injeção de headers e XSS em e-mails HTML.</li>
+</ul>
+<hr />
+<h2 id="exemplo-de-uso-no-frontend">Exemplo de uso no Frontend</h2>
+<p>Ao finalizar o agendamento no frontend:</p>
+<ol>
+<li>O usuário preenche os dados do agendamento.</li>
+<li>O frontend envia a requisição ao backend.</li>
+<li>O backend dispara os e-mails configurados.</li>
+<li>O cliente recebe a confirmação diretamente na caixa de entrada.</li>
+<li>A imobiliária recebe o e-mail de solicitação de agendamento do cliente</li>
+</ol>
+<hr />
+<h2 id="limitacoes">Limitações</h2>
+<ul>
+<li>Implementar SMTP por conta própria exige atenção e manutenção.</li>
+<li>Não possui fila de envio automática. Se o serviço cair, os e-mails podem ser perdidos.</li>
+<li>Anexos grandes ficam na memória como base64</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
