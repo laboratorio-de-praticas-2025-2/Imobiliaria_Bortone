@@ -1,14 +1,43 @@
-import { Sequelize } from "sequelize";
-import "dotenv/config";
+//Teste Sequelize local - Não usar
+//import Sequelize from "sequelize"
 
-const connection = new Sequelize(
-  process.env.DB_DATABASE,
-  process.env.DB_USER,
-  process.env.DB_PASS,
-  {
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT,
-  }
-);
+//const connection = new Sequelize({
+    //dialect: "mysql",
+    //host: "localhost",
+    //username: "root",
+    //password: "",
+    //database: "lp_imobiliaria",
+    //timezone: "-03:00",
+//})
 
-export default connection;
+//export default connection
+
+
+//import { Sequelize } from "sequelize";
+//import dotenv from "dotenv";
+
+//otenv.config();
+
+//const sequelize = new Sequelize(
+  //process.env.DB_DATABASE,            // Nome do banco
+  //process.env.DB_USER,             // Usuário
+  //process.env.DB_PASS,     // Senha
+  //{
+    //host: process.env.DB_HOST,     // Servidor AlwaysData
+    //port: 3306,                 // Porta padrão MySQL
+    //dialect: "mysql",           // Dialeto
+    //logging: false,             // Oculta logs SQL no console
+  //}
+//);
+
+// Teste de conexão (opcional, mas recomendado)
+//(async () => {
+ // try {
+   // await sequelize.authenticate();
+    //console.log("✅ Conexão com o banco estabelecida com sucesso!");
+  //} catch (error) {
+    //console.error("❌ Erro ao conectar com banco de dados:", error.message);
+  //}
+//})();
+
+//export default sequelize;

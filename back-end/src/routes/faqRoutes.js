@@ -1,6 +1,7 @@
 import express from "express";
-const faqRoutes = express.Router();
 import faqController from "../controllers/faqController.js";
+
+const faqRoutes = express.Router();
 
 faqRoutes.get("/", faqController.getAllFaqs);
 faqRoutes.post("/", faqController.createFaq);
