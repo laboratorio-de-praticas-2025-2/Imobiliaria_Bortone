@@ -1,29 +1,62 @@
 "use client";
-import { postsData } from "@/mock/posts";
 import { Card, Col, ConfigProvider, Pagination, Row } from "antd";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
-export default function Cards() {
+export default function Cards({ searchTerm = "" }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [totalItems, setTotalItems] = useState(0);
 
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 7; // 7 cards por página
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedPosts = posts.slice(startIndex, startIndex + pageSize);
 
-  // Mock de chamada à API
+  const buildImage = (apiUrl, url) => {
+    if (!url) return "";
+    if (url.startsWith("/")) return `${apiUrl}${url}`;
+    return url;
+  };
+
   useEffect(() => {
-    setLoading(true);
-    const fetchPosts = async () => {
-      // simula delay de chamada real
-      await new Promise((res) => setTimeout(res, 800));
-      setPosts(postsData); // usa mock como se viesse da API
-      setLoading(false);
+    const load = async () => {
+      try {
+        setLoading(true);
+        const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+        const apiUrl = (rawApiUrl || "").replace(/\/api\/?$/, "");
+        const params = new URLSearchParams();
+        
+        // Adiciona parâmetro de busca se houver termo
+        if (searchTerm && searchTerm.trim()) {
+          params.append("titulo", searchTerm.trim());
+        }
+        
+        // Busca todos os registros - força limite alto para pegar todos
+        params.append("limit", "1000"); // Limite alto para pegar todos
+        const url = `${apiUrl}/publicacoes?${params.toString()}`;
+        const resp = await axios.get(url);
+        const data = resp.data?.data || resp.data || [];
+        const mapped = data.map((p) => ({
+          ...p,
+          url_imagem: buildImage(apiUrl, p.url_imagem),
+        }));
+        setPosts(mapped);
+        setTotalItems(mapped.length);
+      } catch (e) {
+        console.error("Erro ao carregar posts do blog:", e);
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchPosts();
-  }, []);
+    load();
+  }, [currentPage, searchTerm]);
+
+  // Reset página quando termo de busca muda
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   if (loading) {
     return <div className="text-center text-[var(--primary)]">Carregando posts...</div>;
@@ -136,7 +169,7 @@ export default function Cards() {
             className="custom-pagination"
             current={currentPage}
             pageSize={pageSize}
-            total={postsData.length}
+            total={totalItems}
             onChange={(page) => setCurrentPage(page)}
           />
         </ConfigProvider>

@@ -10,15 +10,45 @@ import Image from "next/image";
 import Sidebar from "@/components/cms/Sidebar";
 
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function CriarPostPage() {
   const [fileList, setFileList] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const router = useRouter();
 
-  const onFinish = (values) => {
-    setFormValues(values);
-    console.log("Success:", values);
+  const onFinish = async (values) => {
+    if (values.titulo && values.conteudo) {
+      try {
+        const formData = new FormData();
+        formData.append("titulo", values.titulo);
+        formData.append("conteudo", values.conteudo);
+        formData.append("usuario_id", "1");
+
+        if (fileList.length > 0 && fileList[0].originFileObj) {
+          formData.append("url_imagem", fileList[0].originFileObj);
+        }
+
+        const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+        const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
+
+        const response = await axios.post(`${apiUrl}/publicacoes`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        if (response.status === 201) {
+          alert("Publicação criada com sucesso!");
+          router.push("/admin/cms-publicacoes");
+        }
+      } catch (error) {
+        console.error("Erro ao criar publicação:", error);
+        alert("Não foi possível criar a publicação.");
+      }
+    } else {
+      alert("Preencha todos os campos!");
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
