@@ -38,5 +38,6 @@ nav:
   - Implementação da API de Mapa: api/MapaImplementacao.md
   - Resumo da Integração: api/MapaResumo.md
   - Agendamento de Visitação: api/Agendamento.md
+  - Funcionalidade do envio de e-mail: api/AgendamentoSMTP.md
 
   
