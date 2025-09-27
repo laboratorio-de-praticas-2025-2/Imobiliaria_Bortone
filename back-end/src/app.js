@@ -21,6 +21,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import http from "http";
 
+
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -33,7 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Rotas
-app.use("/publicidade", publicidadeRoutes);
+
 app.use('/', recomendacaoRouter);
 app.use('/user', userRoutes );
 app.use("/search", searchRouter);
@@ -45,6 +46,7 @@ app.use('/dashboard', dashboardRouter);
 app.use("/publicacoes", blogRoutes);
 app.use('/imoveis', imoveisRouter);
 app.use('/imagensimoveis', imagemImovelRoutes);
+app.use('/publicidade', publicidadeRoutes);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
@@ -72,3 +74,4 @@ server.listen(PORT, function (erro) {
     console.log(`Servidor iniciado com sucesso na porta ${PORT}! 🚀`);
   }
 });
+

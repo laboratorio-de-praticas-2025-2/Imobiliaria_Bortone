@@ -21,6 +21,7 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useSEO } from "@/hooks/useSEO";
 import { FaArrowRight } from "react-icons/fa6";
+import axios from "axios";
 
 const { Search } = Input;
 const onSearch = async (value) => {
@@ -93,6 +94,29 @@ export default function Mapa() {
   const descricaoRef = useRef(null);
 
   const { id } = useParams();
+
+  // Registra a visita quando o componente é montado
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (!userInfo || !id) return;
+
+    const registrarVisita = async () => {
+      try {
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/recomendacao_imovel`,
+          {
+            usuario_id: userInfo.id,
+            imovel_id: Number(id),
+            data_visita: new Date().toISOString().slice(0, 10),
+          }
+        );
+      } catch (err) {
+        console.error("Erro ao registrar visita:", err);
+      }
+    };
+
+    registrarVisita();
+  }, []);
 
   useEffect(() => {
     setLoading(true);

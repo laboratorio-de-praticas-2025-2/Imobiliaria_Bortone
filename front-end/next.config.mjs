@@ -4,9 +4,20 @@ const isDev = process.env.NODE_ENV !== "production";
 const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
-    domains: ["localhost"],
+    domains: [],
     remotePatterns: [
-      { protocol: "http", hostname: "localhost", port: "4000" },
+      {
+        protocol: 'https',
+        hostname: '**.onrender.com'
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost'
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1'
+      }
     ],
     unoptimized: false,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
