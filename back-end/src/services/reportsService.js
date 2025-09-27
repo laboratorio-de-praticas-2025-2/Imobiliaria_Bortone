@@ -5,17 +5,23 @@ class ReportService {
   async buscarDadosParaRelatorio(tipo) {
     //TODO: IMPLEMENTAR CONDICIONAL PARA VARIA TIPO DE DADO BUSCADO NO TIPO COM BASE NO PARAMETRO "tipo"
 
+    let QUERY;
     switch (tipo) {
       case "geral":
-        const QUERY = `SELECT * FROM dadosRelatorioGeral;`
+        QUERY = `SELECT * FROM dadosRelatorioGeral;`;
+        break;
       case "imoveis":
-        const QUERY = `SELECT * FROM dadosRelatorioImoveis;`
+        QUERY = `SELECT * FROM dadosRelatorioImoveis;`;
+        break;
       case "vendas":
-        const QUERY = `SELECT * FROM dadosRelatorioVendas;`
+        QUERY = `SELECT * FROM dadosRelatorioVendas;`;
+        break;
       case "alugueis":
-        const QUERY = `SELECT * FROM dadosRelatorioAlugueis;`
+        QUERY = `SELECT * FROM dadosRelatorioAlugueis;`;
+        break;
       case "usuarios":
-        const QUERY = `SELECT * FROM dadosRelatorioUsuarios;`
+        QUERY = `SELECT * FROM dadosRelatorioUsuarios;`;
+        break;
       default:
         throw new Error("Tipo de relatório inválido.");
     }
