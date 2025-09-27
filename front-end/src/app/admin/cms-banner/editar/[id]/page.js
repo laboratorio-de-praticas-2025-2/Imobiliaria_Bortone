@@ -1,29 +1,48 @@
 "use client";
+
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { UploadOutlined } from "@ant-design/icons";
+
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import Form from "@/components/cms/form";
 import FormButton from "@/components/cms/form/fields/Button";
-import PreviaBanner from "@/components/cms/form/fields/PreviaBanner";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
-import TextField from "@/components/cms/form/fields/TextField";
 import UploadField from "@/components/cms/form/fields/UploadField";
 import Sidebar from "@/components/cms/Sidebar";
-import { bannersMock } from "@/mock/banner";
-import { UploadOutlined } from "@ant-design/icons";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+
+const BACKEND_BASE_URL = "http://localhost:4000";
 
 export default function EditarBannerPage() {
-   const params = useParams(); 
-   const id = params?.id;
-  const [fileList, setFileList] = useState([]);
+  const { id } = useParams();
   const [banner, setBanner] = useState(null);
-  const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const [fileList, setFileList] = useState([]);
   const [formValues, setFormValues] = useState(null);
+  const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
 
   useEffect(() => {
-    const found = bannersMock.find((b) => String(b.id) === String(id));
-    setBanner(found);
+    if (!id) return;
+    const fetchBanner = async () => {
+      try {
+        const res = await fetch(`${BACKEND_BASE_URL}/banner/${id}`);
+        const data = await res.json();
+        setBanner(data);
+        if (data.url_imagem) {
+          // Inicializa fileList com a imagem existente para que o UploadField a reconheça
+          setFileList([
+            {
+              uid: "-1",
+              name: data.url_imagem.split("/").pop(),
+              status: "done",
+              url: `${BACKEND_BASE_URL}${data.url_imagem}`,
+            },
+          ]);
+        }
+      } catch (err) {
+        console.error("Erro ao buscar banner:", err);
+      }
+    };
+    fetchBanner();
   }, [id]);
 
   const onFinish = (values) => {
@@ -31,15 +50,38 @@ export default function EditarBannerPage() {
     setIsConfirmModalVisible(true);
   };
 
-  const onConfirm = () => {
-    console.log("Edit Success:", formValues);
-    setIsConfirmModalVisible(false);
-    window.location.href = "/admin/cms-banner";
+  const onConfirm = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("descricao", formValues.descricao);
+      formData.append("usuario_id", 1);
+      formData.append("ativo", true);
+
+      // Se um novo arquivo foi selecionado (tem originFileObj), use-o
+      if (fileList.length > 0 && fileList[0].originFileObj) {
+        formData.append("imagem", fileList[0].originFileObj);
+      }
+
+      const res = await fetch(`${BACKEND_BASE_URL}/banner/${id}`, {
+        method: "PUT",
+        body: formData,
+      });
+
+      if (res.ok) {
+        alert("Banner atualizado com sucesso!");
+        setIsConfirmModalVisible(false);
+        window.location.href = "/admin/cms-banner";
+      } else {
+        const data = await res.json();
+        alert("Erro ao atualizar banner: " + (data.error || "Desconhecido"));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao enviar o formulário.");
+    }
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Edit Failed:", errorInfo);
-  };
+  const onFinishFailed = (errorInfo) => console.log("Edit Failed:", errorInfo);
 
   if (!banner) return <div>Carregando...</div>;
 
@@ -59,37 +101,18 @@ export default function EditarBannerPage() {
           <Form.FormBody
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            initialValues={{
-              descricao: banner.descricao,
-            }}
+            initialValues={{ descricao: banner.descricao }}
           >
-            <div className="flex flex-col sm:flex-row w-full gap-6">
-              <div className="sm:w-[60%] flex flex-col gap-3 items-end">
-                <div className="flex flex-col sm:flex-row w-full justify-between items-center gap-3">
+            <div className="flex flex-col w-full gap-6">
+              <div className="w-full flex flex-col gap-3 items-end">
+                <UploadField
+                  name="imagem"
+                  label="Imagem do Banner"
+                  multiple={false}
+                  fileList={fileList}
+                  setFileList={setFileList}
+                />
 
-                  <UploadField
-                    name="imagem"
-                    label="Imagem do Banner"
-                    multiple={false}
-                    className="!w-fit"
-                    fileList={fileList}
-                    setFileList={setFileList}
-                  />
-
-                  {fileList.length > 0 ? (
-                    <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5">
-                      <Image
-                        src={URL.createObjectURL(fileList[0].originFileObj)}
-                        alt="Prévia do banner"
-                        width={400}
-                        height={320}
-                        className="h-full w-full object-cover rounded-3xl"
-                      />
-                    </div>
-                  ) : (
-                    <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5" />
-                  )}
-                </div>
                 <TextAreaField
                   name="descricao"
                   label="Descrição"
@@ -97,23 +120,10 @@ export default function EditarBannerPage() {
                   rows={18}
                   className="!w-full !h-full"
                 />
+
                 <FormButton
                   text="Salvar"
-                  className="!hidden sm:!flex"
                   onClick={() => setIsConfirmModalVisible(true)}
-                  icon={<UploadOutlined />}
-                />
-              </div>
-
-              <div className="sm:w-[40%] hidden sm:flex">
-                <PreviaBanner fileList={fileList} />
-              </div>
-
-              <div className="sm:hidden w-full flex flex-col gap-3.5 items-center">
-                <PreviaBanner fileList={fileList} />
-                <FormButton
-                  text="Salvar"
-                  className="!flex !sm:hidden"
                   icon={<UploadOutlined />}
                 />
               </div>

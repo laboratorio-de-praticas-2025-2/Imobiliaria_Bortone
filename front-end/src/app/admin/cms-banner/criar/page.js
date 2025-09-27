@@ -8,14 +8,45 @@ import { UploadOutlined } from "@ant-design/icons";
 import FormButton from "@/components/cms/form/fields/Button";
 import Image from "next/image";
 import Sidebar from "@/components/cms/Sidebar";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function CriarBannerPage() {
   const [fileList, setFileList] = useState([]);
+  const [isClient, setIsClient] = useState(false);
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  // Garante que certas partes só rodem no cliente
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const onFinish = async (values) => {
+    try {
+      const formData = new FormData();
+
+      if (fileList.length > 0) {
+        formData.append("imagem", fileList[0].originFileObj);
+      }
+
+      formData.append("descricao", values.descricao);
+      formData.append("usuario_id", 1);
+      formData.append("ativo", true);
+
+      const res = await fetch("http://localhost:4000/banner", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        alert("Banner criado com sucesso!");
+        setFileList([]);
+      } else {
+        const data = await res.json();
+        alert("Erro ao criar banner: " + (data.error || "Desconhecido"));
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao enviar o formulário.");
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
