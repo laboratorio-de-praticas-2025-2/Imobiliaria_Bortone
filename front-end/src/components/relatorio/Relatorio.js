@@ -26,7 +26,7 @@ export default function Relatorio({ data }) {
       <div className="page">
         <header>
           <Image
-            src="/images/LogoPreta.svg"
+            src="/images/LogoAzul.svg"
             alt="Logo Bortone"
             width={180}
             height={50}
@@ -93,7 +93,7 @@ export default function Relatorio({ data }) {
       <div className="page">
         <header>
           <Image
-            src="/images/LogoPreta.svg"
+            src="/images/LogoAzul.svg"
             alt="Logo Bortone"
             width={180}
             height={50}
@@ -125,7 +125,7 @@ export default function Relatorio({ data }) {
       <div className="page">
         <header>
           <Image
-            src="/images/LogoPreta.svg"
+            src="/images/LogoAzul.svg"
             alt="Logo Bortone"
             width={180}
             height={50}
@@ -156,7 +156,7 @@ export default function Relatorio({ data }) {
       <div className="page">
         <header>
           <Image
-            src="/images/LogoPreta.svg"
+            src="/images/LogoAzul.svg"
             alt="Logo Bortone"
             width={180}
             height={50}
