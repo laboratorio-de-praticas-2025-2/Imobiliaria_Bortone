@@ -2,7 +2,7 @@
   "contato": {
     "email": "contato@grupobortone.com.br",
      "emailMenssagem": {
-      "url": "mailito:contato@grupobortone.com.br?subject=Imobiliario",
+      "url": "mailto:contato@grupobortone.com.br?subject=Imobiliario",
       "target": "_blank",
       "rel": "noreferrer"
     }
