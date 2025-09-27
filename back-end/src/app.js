@@ -10,6 +10,7 @@ import agendamentoRouter from "./routes/agendamentoRoute.js";
 import recomendacaoRouter from "./routes/recomendacaoImovelRoutes.js";
 import healthRouter from "./routes/healthRouter.js";
 import faqRoutes from "./routes/faqRoutes.js";
+import relatorioRouter from './routes/reportsRoute.js';
 import mapaRoutes from "./routes/mapaRoutes.js";
 import imoveisRouter from "./routes/ImoveisRouter.js";
 import imagemImovelRoutes from "./routes/imagemImovelRoutes.js";
@@ -19,7 +20,6 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import http from "http";
-
 
 const app = express();
 
@@ -40,6 +40,7 @@ app.use("/search", searchRouter);
 app.use("/agendamentos", agendamentoRouter);
 app.use("/health", healthRouter);
 app.use("/faq", faqRoutes);
+app.use("/relatorio", relatorioRouter)
 app.use("/mapa", mapaRoutes);
 app.use('/dashboard', dashboardRouter);
 app.use('/publicidade', publicidadeRoutes);
