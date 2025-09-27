@@ -1,16 +1,21 @@
 {
   "contato": {
-    "email": "contato@grupobortone.com.br"
+    "email": "contato@grupobortone.com.br",
+     "emailMenssagem": {
+      "url": "mailito:contato@grupobortone.com.br?subject=Imobiliario",
+      "target": "_blank",
+      "rel": "noreferrer"
+    }
   },
   "redesSociais": {
     "instagram": "https://www.instagram.com/explore/locations/1340102492689939/bortone-contabilidade-imobiliaria-e-despachante",
     "facebook": "https://www.facebook.com/grupobortone/?locale=pt_BR",
     "rel": "noreferrer"
   },
-  "telefoneWhats": {
+ "telefoneWhats": {
     "telefone": "(13) 99672-0645",
     "whatsapp": {
-      "url": "https://api.whatsapp.com/send?phone=5513996720645&text=Ol%C3%A1%2C%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es.",
+      "url": "https://api.whatsapp.com/send?phone=5513996720645&text=Ola%20visitei%20o%20site%20da%20Imobili%C3%A1ria%20Bortone%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20im%C3%B3veis.",
       "target": "_blank",
       "rel": "noreferrer"
     }
