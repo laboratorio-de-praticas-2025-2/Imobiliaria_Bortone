@@ -21,9 +21,26 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useSEO } from "@/hooks/useSEO";
 import { FaArrowRight } from "react-icons/fa6";
+import axios from "axios";
 
 const { Search } = Input;
-const onSearch = (value) => console.log(value);
+const onSearch = async (value) => {
+  if (!value) return;
+  try {
+    const res = await fetch(
+      `${process.env.API_URL}/search/simples?endereco=${encodeURIComponent(
+        value
+      )}`,
+      { method: "GET" }
+    );
+    if (!res.ok) throw new Error("Erro ao buscar imóveis");
+    const data = await res.json();
+    // Atualiza a lista de imóveis exibida
+    setImoveis(data);
+  } catch (err) {
+    console.error("Erro na pesquisa:", err);
+  }
+};
 
 // Componente de mapa carregado dinamicamente
 const LeafletMap = dynamic(
@@ -78,6 +95,29 @@ export default function Mapa() {
 
   const { id } = useParams();
 
+  // Registra a visita quando o componente é montado
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (!userInfo || !id) return;
+
+    const registrarVisita = async () => {
+      try {
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/recomendacao_imovel`,
+          {
+            usuario_id: userInfo.id,
+            imovel_id: Number(id),
+            data_visita: new Date().toISOString().slice(0, 10),
+          }
+        );
+      } catch (err) {
+        console.error("Erro ao registrar visita:", err);
+      }
+    };
+
+    registrarVisita();
+  }, []);
+
   useEffect(() => {
     setLoading(true);
     setImoveis(mockImoveis);
@@ -95,14 +135,25 @@ export default function Mapa() {
   // Encontrar o imóvel atual
   const post = imoveis.find((p) => p.id === Number(id));
   const imovelAtual = post;
-  
+
   // SEO dinâmico para imóvel específico - sempre chamado
   useSEO({
-    title: imovelAtual ? `${imovelAtual.tipo} em ${imovelAtual.endereco}` : "Imóvel",
-    description: imovelAtual ? `${imovelAtual.tipo} com ${imovelAtual.quartos} quartos, ${imovelAtual.banheiros} banheiros em ${imovelAtual.endereco}. ${imovelAtual.descricao?.substring(0, 120) || 'Imóvel de qualidade em excelente localização.'}` : "Imóvel de qualidade em excelente localização.",
-    keywords: imovelAtual ? `${imovelAtual.tipo}, ${imovelAtual.endereco}, imóvel, ${imovelAtual.quartos} quartos, ${imovelAtual.banheiros} banheiros, ${imovelAtual.operacao}` : "imóvel, casa, apartamento",
+    title: imovelAtual
+      ? `${imovelAtual.tipo} em ${imovelAtual.endereco}`
+      : "Imóvel",
+    description: imovelAtual
+      ? `${imovelAtual.tipo} com ${imovelAtual.quartos} quartos, ${
+          imovelAtual.banheiros
+        } banheiros em ${imovelAtual.endereco}. ${
+          imovelAtual.descricao?.substring(0, 120) ||
+          "Imóvel de qualidade em excelente localização."
+        }`
+      : "Imóvel de qualidade em excelente localização.",
+    keywords: imovelAtual
+      ? `${imovelAtual.tipo}, ${imovelAtual.endereco}, imóvel, ${imovelAtual.quartos} quartos, ${imovelAtual.banheiros} banheiros, ${imovelAtual.operacao}`
+      : "imóvel, casa, apartamento",
     url: `https://imobiliaria-bortone.vercel.app/imoveis/${id}`,
-    image: imovelAtual?.imagens?.[0]?.url_imagem
+    image: imovelAtual?.imagens?.[0]?.url_imagem,
   });
 
   if (loading) return <div>Carregando...</div>;
@@ -235,7 +286,9 @@ export default function Mapa() {
               <p className="Gimovel">Gostou do imóvel?</p>
             </div>
             <div className="Dbotoes">
-              <button className="btn1">Agendar visita</button>
+              <Link href={`/agendamento/${imovelAtual.id}`}>
+                <button className="btn1">Agendar visita</button>
+              </Link>
               <button className="btn2">Propor valor</button>
             </div>
             <div className="md:pl-[10%] flex md:hidden absolute bottom-10 pl-[4%]">
@@ -268,7 +321,9 @@ export default function Mapa() {
           <div className="map_loc">
             <Link className="ir_loc" href="/mapa">
               <div>
-                <p className="text-[var(--primary)] text-xl">{imovelAtual.endereco}</p>
+                <p className="text-[var(--primary)] text-xl">
+                  {imovelAtual.endereco}
+                </p>
                 <p className="text-[var(--primary)]">{imovelAtual.cidade}</p>
               </div>
               <FaArrowRight color="#304383" />

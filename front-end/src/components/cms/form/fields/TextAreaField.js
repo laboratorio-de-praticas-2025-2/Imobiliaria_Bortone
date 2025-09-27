@@ -10,14 +10,19 @@ export default function TextAreaField({
   rows = 6,
   className,
   value,
+  required = true,
   onChange
 }) {
   return (
     <FormAntd.Item
       label={label}
       name={name}
-      rules={[{ required: true, message: "Este campo é obrigatório!" }]}
-      className={`custom-form-item ${className}`}
+      rules={
+        !required
+          ? []
+          : [{ required: true, message: "Este campo é obrigatório!" }]
+      }
+      className={`custom-form-item ${required ? "required" : ""} ${className}`}
       labelCol={{ span: 24 }}
     >
       <TextArea

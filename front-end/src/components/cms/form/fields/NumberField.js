@@ -10,6 +10,7 @@ export default function NumberField({
   onChange,
   placeholder,
   style,
+  required = true,
   min,
   max,
   defaultValue,
@@ -20,11 +21,11 @@ export default function NumberField({
       label={label}
       name={name}
       rules={
-        readOnly
+        readOnly || !required
           ? []
           : [{ required: true, message: "Este campo é obrigatório!" }]
       }
-      className={`custom-form-item ${className}`}
+      className={`custom-form-item ${required ? "required" : ""} ${className}`}
       labelCol={{ span: 24 }}
     >
       <Input

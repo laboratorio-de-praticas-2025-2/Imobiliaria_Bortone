@@ -1,5 +1,8 @@
 // Lógica de negócio (ex: regras para cadastro, login, agendamento)
 import { randomUUID } from "crypto";
+import jwt from "jsonwebtoken";
+
+const JWTSecret = process.env.JWT_SECRET;
 
 // Estado em memória
 let agents = {}; // { agentId: ws }
@@ -20,7 +23,9 @@ function send(ws, data) {
 function broadcastAgents(data, options = {}) {
   const { excludeAgentId } = options;
   Object.entries(agents).forEach(([agentId, ws]) => {
-    if (excludeAgentId && agentId === excludeAgentId) return;
+    if (excludeAgentId && agentId === excludeAgentId) {
+      return;
+    }
     send(ws, data);
   });
 }
@@ -64,6 +69,16 @@ function endUserSession(userId, reason = "disconnect") {
       reason: reason,
     });
 
+    // Notificar todos usuários sobre saída
+    Object.entries(users).forEach(([otherId, otherData]) => {
+      if (otherId !== userId) {
+        send(otherData.ws, {
+          type: "status",
+          msg: `${userData.nome} saiu do chat.`,
+        });
+      }
+    });
+
     // Fechar conexão se ainda estiver aberta
     if (userData.ws && userData.ws.readyState === userData.ws.OPEN) {
       userData.ws.close();
@@ -94,12 +109,21 @@ function addMessageToHistory(userId, message) {
   if (!history[userId]) {
     history[userId] = [];
   }
-  
+
   history[userId].push(message);
-  
+
   // Manter apenas as últimas 100 mensagens
   if (history[userId].length > 100) {
     history[userId] = history[userId].slice(-100);
+  }
+}
+
+function verifyToken(token) {
+  try {
+    const decoded = jwt.verify(token, JWTSecret);
+    return decoded;
+  } catch (error) {
+    return null;
   }
 }
 
@@ -116,4 +140,5 @@ export default {
   endUserSession,
   clearUserTimeout,
   addMessageToHistory,
+  verifyToken,
 };

@@ -9,12 +9,26 @@ export default function InputNumerico({ label, value, onChange, type }) {
         style={{ width: "100%" }}
         value={value}
         onChange={onChange}
-        formatter={(value) =>
-          type === "area"
-            ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " m²"
-            : `R$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-        }
-        parser={(value) => value.replace(/\D/g, "")} // só dígitos
+        onKeyDown={(e) => {
+          const allowedKeys = [
+            "Backspace",
+            "Delete",
+            "ArrowLeft",
+            "ArrowRight",
+            "Tab",
+          ];
+          // Bloqueia qualquer tecla que não seja número ou controle
+          if (!/[0-9]/.test(e.key) && !allowedKeys.includes(e.key)) {
+            e.preventDefault();
+          }
+        }}
+        formatter={(val) => {
+          if (!val && val !== 0) return "";
+          const onlyNumbers = String(val).replace(/\D/g, "");
+          const formatted = onlyNumbers.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+          return type === "area" ? `${formatted} m²` : `R$ ${formatted}`;
+        }}
+        parser={(val) => (val ? val.replace(/\D/g, "") : "")}
         className="!bg-transparent !border-[var(--primary)] !border-2 !text-[var(--primary)]"
       />
     </div>

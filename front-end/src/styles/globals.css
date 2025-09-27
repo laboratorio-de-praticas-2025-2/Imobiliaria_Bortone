@@ -128,3 +128,28 @@ p {
 .animate-slideUpFade {
   animation: slideUpFade 0.2s ease-out forwards;
 }
+
+/* Scrollbar geral */
+::-webkit-scrollbar {
+  width: 8px;              /* largura da barra vertical */
+  height: 8px;             /* altura da barra horizontal */
+}
+
+::-webkit-scrollbar-track {
+  background: ;      /* cor do trilho */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #4C62AE; /* cor do thumb */
+  border-radius: 9999px;     /* bordas arredondadas */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #3b4f8d; /* cor ao passar o mouse */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4C62AE #f1f1f1;
+}

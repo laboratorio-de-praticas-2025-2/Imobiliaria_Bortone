@@ -6,23 +6,86 @@ import { BiPencil } from "react-icons/bi";
 import { IoMdTrash } from "react-icons/io";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import Link from "next/link";
+import axios from "axios";
 
-export default function Card({ item, href_cms = "banner", header = false }) {
+export default function Card({ item, href_cms = "banner", header = false, onDelete: onDeleteCallback, onToggle: onToggleCallback }) {
   const [checked, setChecked] = useState(item.ativo);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+
+  // Debug: verificar o que está sendo passado
+  console.log('Card item.url_imagem:', item.url_imagem);
+  console.log('Card item.url_imagem type:', typeof item.url_imagem);
+  console.log('Card item completo:', item);
+
+  // Função para validar e sanitizar a URL da imagem
+  const getValidImageSrc = () => {
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || '';
+    const placeholder = '/images/casa.png';
+
+    if (!item?.url_imagem || typeof item.url_imagem !== 'string') return placeholder;
+
+    let src = item.url_imagem.trim();
+
+    // Normalizar caso backend salve sem barra inicial
+    if (!src.startsWith('/')) {
+      // Se parece já ser um nome de arquivo salvo pelo multer
+      if (!src.startsWith('http')) {
+        src = `/images/publicidadeImages/${src}`;
+      }
+    }
+
+    // Se for caminho relativo local (/images/...) precisamos usar direto em produção do Next.
+    // Porém o erro 400 do _next/image pode ocorrer se a imagem não existir no momento do build ou se houver CSP bloqueando.
+    // Para evitar transformação errada pelo loader, podemos usar a URL absoluta do backend se disponível.
+    if (src.startsWith('/images/')) {
+      // Se apiBase contém domínio (http) e não é o mesmo host do frontend (deploy vercel), usar absoluto.
+      if (apiBase.startsWith('http')) {
+        // Evitar dupla barra
+        const normalizedBase = apiBase.replace(/\/$/, '');
+        return `${normalizedBase}${src}`;
+      }
+      return src; // fallback
+    }
+
+    return src;
+  };
 
   const onDelete = () => {
     setIsConfirmModalVisible(true);
   };
 
-  const onConfirmDelete = () => {
-    console.log("Delete Confirmed");
-    setIsConfirmModalVisible(false);
+  const onConfirmDelete = async () => {
+    try {
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${item.id}`);
+      if (response.status === 204) {
+        alert("Publicidade excluída com sucesso!");
+        setIsConfirmModalVisible(false);
+        if (onDeleteCallback) {
+          onDeleteCallback();
+        }
+      } else {
+        alert("Erro inesperado ao excluir a publicidade");
+        setIsConfirmModalVisible(false);
+      }
+    } catch (error) {
+      console.log("Erro ao excluir a publicidade:", error);
+      alert("Erro ao excluir a publicidade");
+      setIsConfirmModalVisible(false);
+    }
   };
 
-  const onChange = (checked) => {
-    console.log(`switch to ${checked}`);
-    setChecked(checked);
+  const onChange = async (checked) => {
+    try {
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${item.id}`, { ativo: checked });
+      if (response.status === 200) {
+        setChecked(checked);
+        if (onToggleCallback) {
+          onToggleCallback();
+        }
+      }
+    } catch {
+      console.log("Erro ao alterar status da publicidade");
+    }
   };
 
   return (
@@ -41,13 +104,17 @@ export default function Card({ item, href_cms = "banner", header = false }) {
           </p>
         )}
         <Image
-          src={item.url_imagem}
+          src={getValidImageSrc()}
           alt={"Imagem do item " + item.id}
           width={425}
           height={130}
-          className={`aspect-[4/2] object-cover ${
-            header ? "" : "rounded-t-2xl"
-          }`}
+          className={`aspect-[4/2] object-cover ${header ? "" : "rounded-t-2xl"}`}
+          onError={(e) => {
+            // fallback se a imagem não carregar (erro 400 ou 404)
+            try {
+              e.target.src = '/images/casa.png';
+            } catch {}
+          }}
         />
         <div className="w-full flex justify-end gap-4 p-3">
           <div className="flex items-center gap-3">

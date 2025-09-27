@@ -9,11 +9,11 @@ import "@/styles/faq.css";
 import "@/styles/dashboard.css"
 import "antd/dist/reset.css";
 import "@/styles/cms.css";
+import "leaflet/dist/leaflet.css";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import ChatWrapper from "@/components/chat/chatWrapper";
-
 
 export default function RootLayout({ children }) {
   return (

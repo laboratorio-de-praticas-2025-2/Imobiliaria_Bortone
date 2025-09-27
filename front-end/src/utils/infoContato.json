@@ -1,0 +1,33 @@
+{
+  "contato": {
+    "email": "contato@grupobortone.com.br"
+  },
+  "redesSociais": {
+    "instagram": "https://www.instagram.com/explore/locations/1340102492689939/bortone-contabilidade-imobiliaria-e-despachante",
+    "facebook": "https://www.facebook.com/grupobortone/?locale=pt_BR",
+    "rel": "noreferrer"
+  },
+  "telefoneWhats": {
+    "telefone": "(13) 99672-0645",
+    "whatsapp": {
+      "url": "https://api.whatsapp.com/send?phone=5513996720645&text=Ol%C3%A1%2C%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es.",
+      "target": "_blank",
+      "rel": "noreferrer"
+    }
+  },
+  "localizacao": {
+    "endereco": "Rua Tamekishi Takano, 713 - Centro - Registro - SP",
+    "latitude": -24.4966434,
+    "longitude": -47.8440571,
+    "googleMaps": {
+      "url": "https://www.google.com/maps/place/Grupo+Bortone+-+Contabilidade+e+Imobiliaria/@-24.4968485,-47.8440017,20.5z/data=!4m6!3m5!1s0x94c53380caf3ed97:0x9710fe9448755e1c!8m2!3d-24.4966434!4d-47.8440571!16s%2Fg%2F11hb5q5xgn?entry=ttu",
+      "target": "_blank",
+      "rel": "noreferrer"
+    },
+    "opensstreetmap": {
+      "url": "https://www.openstreetmap.org/?mlat=-24.4966434&mlon=-47.8440571#map=19/-24.49664/-47.84406",
+      "target": "_blank",
+      "rel": "noreferrer"
+    }
+  }
+}

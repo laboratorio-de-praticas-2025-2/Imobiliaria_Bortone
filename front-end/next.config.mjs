@@ -4,6 +4,27 @@ const isDev = process.env.NODE_ENV !== "production";
 const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
+    domains: [],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.onrender.com'
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost'
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1'
+      }
+    ],
+    unoptimized: false,
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: false,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   async headers() {
     const scriptSrc = [
@@ -38,7 +59,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https://*.tile.openstreetmap.org",
               "font-src 'self' data:",
-              "connect-src 'self' https://vitals.vercel-insights.com https://imobiliaria-bortone.onrender.com/* ws://localhost:*/ ws://127.0.0.1:*/",
+              "connect-src *",
               "frame-ancestors 'none'",
             ].join("; "),
           },
