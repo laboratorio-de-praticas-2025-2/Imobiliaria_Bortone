@@ -97,7 +97,7 @@ export default function TableRelatorio() {
     setLoading(true);
     setPdfReady(false);
 
-    getRelatorioData()
+    getRelatorioData(record.tipo)
       .then((res) => {
         setReportData(res);
         setRecord(record);
