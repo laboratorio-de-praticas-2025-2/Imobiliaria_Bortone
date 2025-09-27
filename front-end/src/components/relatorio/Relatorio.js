@@ -14,6 +14,12 @@ export default function Relatorio({ data }) {
     month: "2-digit",
     year: "numeric",
   });
+
+  // Safety check to ensure data exists
+  if (!data) {
+    return <div>Carregando dados do relatório...</div>;
+  }
+
   return (
     <>
       {/* Página 1 */}
@@ -35,7 +41,7 @@ export default function Relatorio({ data }) {
             <Card
               name={"imoveis_disponiveis"}
               label={"Total de imóveis disponíveis"}
-              value={data.imoveis.totalImoveis}
+              value={data.imoveis?.totalImoveis || 0}
               labelCol={{ span: 24 }}
               className={"!text-lg"}
               icon={
@@ -45,7 +51,7 @@ export default function Relatorio({ data }) {
             <Card
               name={"apartamentos_disponiveis"}
               label={"Apartamentos disponíveis"}
-              value={data.imoveis.totalApartamentos}
+              value={data.imoveis?.totalApartamentos || 0}
               labelCol={{ span: 24 }}
               className={"!text-lg"}
               icon={
@@ -57,7 +63,7 @@ export default function Relatorio({ data }) {
             <Card
               name={"casas_disponiveis"}
               label={"Casas disponíveis"}
-              value={data.imoveis.totalCasas}
+              value={data.imoveis?.totalCasas || 0}
               labelCol={{ span: 24 }}
               className={"!text-lg"}
               icon={
@@ -67,7 +73,7 @@ export default function Relatorio({ data }) {
             <Card
               name={"terrenos_disponiveis"}
               label={"Terrenos disponíveis"}
-              value={data.imoveis.totalTerrenos}
+              value={data.imoveis?.totalTerrenos || 0}
               labelCol={{ span: 24 }}
               className={"!text-lg"}
               icon={
@@ -103,7 +109,7 @@ export default function Relatorio({ data }) {
               name={"locacoes"}
               label={"Total de imóveis disponíveis para locação"}
               className={"!text-3xl"}
-              value={data.alugueis.totalLocacao}
+              value={data.alugueis?.totalLocacao || 0}
               labelCol={{ span: 24 }}
               icon={
                 <MdOutlineBedroomParent className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl" />
@@ -134,7 +140,7 @@ export default function Relatorio({ data }) {
               name={"vendas"}
               label={"Total de imóveis disponíveis para venda"}
               className={"!text-xl"}
-              value={data.vendas.totalVenda}
+              value={data.vendas?.totalVenda || 0}
               labelCol={{ span: 24 }}
               icon={
                 <PiCoinsFill className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl" />
@@ -165,7 +171,7 @@ export default function Relatorio({ data }) {
             <Card
               name={"usuarios_cadastrados"}
               label={"Total de usuários cadastrados"}
-              value={data.usuarios.totalUsuarios}
+              value={data.usuarios?.totalUsuarios || 0}
               labelCol={{ span: 24 }}
               className={"!text-xl"}
               icon={
@@ -175,7 +181,7 @@ export default function Relatorio({ data }) {
             <Card
               name={"usuarios_administradores"}
               label={"Usuários administradores"}
-              value={data.usuarios.totalAdministradores}
+              value={data.usuarios?.totalAdministradores || 0}
               labelCol={{ span: 24 }}
               className={"!text-xl"}
               icon={
@@ -185,7 +191,7 @@ export default function Relatorio({ data }) {
             <Card
               name={"casas_visitantes"}
               label={"Usuários visitantes"}
-              value={data.usuarios.totalVisitantes}
+              value={data.usuarios?.totalVisitantes || 0}
               labelCol={{ span: 24 }}
               className={"!text-xl"}
               icon={
