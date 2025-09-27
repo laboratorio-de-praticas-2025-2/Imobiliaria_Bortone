@@ -5,7 +5,20 @@ class ReportService {
   async buscarDadosParaRelatorio(tipo) {
     //TODO: IMPLEMENTAR CONDICIONAL PARA VARIA TIPO DE DADO BUSCADO NO TIPO COM BASE NO PARAMETRO "tipo"
 
-    const QUERY = `SELECT * FROM dadosRelatorioGeral;`
+    switch (tipo) {
+      case "geral":
+        const QUERY = `SELECT * FROM dadosRelatorioGeral;`
+      case "imoveis":
+        const QUERY = `SELECT * FROM dadosRelatorioImoveis;`
+      case "vendas":
+        const QUERY = `SELECT * FROM dadosRelatorioVendas;`
+      case "alugueis":
+        const QUERY = `SELECT * FROM dadosRelatorioAlugueis;`
+      case "usuarios":
+        const QUERY = `SELECT * FROM dadosRelatorioUsuarios;`
+      default:
+        throw new Error("Tipo de relatório inválido.");
+    }
 
     const response = await sequelize.query(QUERY, {
       type: sequelize.QueryTypes.SELECT,
