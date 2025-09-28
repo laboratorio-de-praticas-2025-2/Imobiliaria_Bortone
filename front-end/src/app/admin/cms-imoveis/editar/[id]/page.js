@@ -119,29 +119,74 @@ export default function EditarImovelPage({ params }) {
         const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
         const imagesData = imagesResponse.data;
 
-        // Process and set the fileList
-        console.log('DEBUG: imagesData from API:', imagesData);
-        console.log('DEBUG: apiUrl:', apiUrl);
+        // Process and set the fileList with improved error handling
+        console.log('DEBUG EDITAR: imagesData from API:', imagesData);
+        console.log('DEBUG EDITAR: apiUrl:', apiUrl);
         
-        const formattedImages = imagesData.map(image => {
-          const fullUrl = `${apiUrl}${image.url_imagem}`;
-          console.log('DEBUG: Image URL construída:', fullUrl);
-          console.log('DEBUG: image.url_imagem original:', image.url_imagem);
-          
-          return {
-            uid: image.id, // Use image.id as unique identifier
-            name: image.url_imagem.split('/').pop(), // Extract filename from URL
-            status: 'done',
-            url: fullUrl, // Use URL as stored in database (already contains /images/imoveis/)
-            originalId: image.id, // Store original ID for comparison
-            isOriginal: true, // Mark as original image
-            filename: image.url_imagem // Store just the filename for database
-          };
-        });
+        if (!Array.isArray(imagesData)) {
+          console.warn('DEBUG EDITAR: imagesData não é array:', imagesData);
+          setFileList([]);
+          setOriginalImages([]);
+          return;
+        }
         
-        console.log('DEBUG: formattedImages:', formattedImages);
+        const formattedImages = imagesData.map((image, index) => {
+          try {
+            // Validação básica do objeto imagem
+            if (!image || !image.url_imagem) {
+              console.warn(`DEBUG EDITAR: Imagem inválida no índice ${index}:`, image);
+              return null;
+            }
+            
+            // Construir URL completa da imagem
+            const cleanApiUrl = apiUrl?.replace(/\/+$/, '') || '';
+            let cleanImageUrl = image.url_imagem;
+            
+            // Se já é uma URL completa, use como está
+            if (cleanImageUrl.startsWith('http://') || cleanImageUrl.startsWith('https://')) {
+              console.log(`DEBUG EDITAR: URL já completa: ${cleanImageUrl}`);
+              return {
+                uid: `image-${image.id}-${index}`,
+                name: cleanImageUrl.split('/').pop() || `image-${image.id}`,
+                status: 'done',
+                url: cleanImageUrl,
+                originalId: image.id,
+                isOriginal: true,
+                filename: image.url_imagem
+              };
+            }
+            
+            // Garantir que a URL relativa esteja correta
+            if (!cleanImageUrl.startsWith('/')) {
+              cleanImageUrl = `/${cleanImageUrl}`;
+            }
+            
+            const fullUrl = `${cleanApiUrl}${cleanImageUrl}`;
+            
+            console.log('DEBUG EDITAR: Construindo URL:');
+            console.log('  - Image original:', image.url_imagem);
+            console.log('  - API URL limpa:', cleanApiUrl);
+            console.log('  - Image URL limpa:', cleanImageUrl);
+            console.log('  - URL final:', fullUrl);
+            
+            return {
+              uid: `image-${image.id}-${index}`, // Unique identifier mais robusto
+              name: image.url_imagem.split('/').pop() || `image-${image.id}`,
+              status: 'done',
+              url: fullUrl,
+              originalId: image.id,
+              isOriginal: true,
+              filename: image.url_imagem
+            };
+          } catch (error) {
+            console.error(`DEBUG EDITAR: Erro ao processar imagem ${index}:`, error, image);
+            return null;
+          }
+        }).filter(Boolean); // Remove entradas nulas
+        
+        console.log('DEBUG EDITAR: formattedImages processadas:', formattedImages);
         setFileList(formattedImages);
-        setOriginalImages(imagesData); // Store original images for comparison
+        setOriginalImages(imagesData);
 
         // preencher seleções locais (para os DropdownField customizados)
         setTipoSelecionado(found.tipo ?? "Selecione o Tipo");
