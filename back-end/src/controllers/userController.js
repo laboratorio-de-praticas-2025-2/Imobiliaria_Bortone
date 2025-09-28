@@ -27,6 +27,113 @@ const createUser = async (req, res) => {
   }
 };
 
+// Cadastro específico para CMS
+const createCmsUser = async (req, res) => {
+  try {
+    const { nome, email, senha, nivel, celular } = req.body;
+
+    if (!nome || !email || !senha || nivel === undefined || celular === undefined) {
+      return res.status(400).json({ error: "Todos os campos são obrigatórios." });
+    }
+
+    const hashedPassword = await bcrypt.hash(senha, 10);
+
+    const newUser = await userService.createCmsUser({
+      nome,
+      email,
+      senha: hashedPassword,
+      nivel,
+      celular,
+    });
+
+    return res.status(201).json(newUser);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Erro interno do servidor." });
+  }
+};
+
+const getUsers = async (req, res) => {
+  try {
+    const users = await userService.getAll();
+    return res.status(200).json(users);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Erro interno do servidor." });
+  }
+};
+
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await userService.getById(id);
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuário não encontrado." });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Erro interno do servidor." });
+  }
+};
+
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nome, email, senha, nivel, celular } = req.body;
+
+    if (nivel && nivel !== 0 && nivel !== 1) {
+      return res.status(400).json({ error: "O nível deve ser 0 ou 1." });
+    }
+
+    if (email) {
+      const existingUser = await userService.getOne(email);
+
+      if (existingUser && existingUser.id !== Number(id)) {
+        return res.status(400).json({ error: "Email já está em uso." });
+      }
+    }
+
+    let hashedPassword = senha ? await bcrypt.hash(senha, 10) : undefined;
+
+    const updatedRows = await userService.update(id, {
+      nome,
+      email,
+      senha: hashedPassword,
+      nivel,
+      celular,
+    });
+
+    if (updatedRows === 0) {
+      return res.status(404).json({ error: "Usuário não encontrado." });
+    }
+
+    return res.sendStatus(204);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Erro interno do servidor." });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedRows = await userService.delete(id);
+
+    if (deletedRows === 0) {
+      return res.status(404).json({ error: "Usuário não encontrado." });
+    }
+
+    return res.sendStatus(204);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Erro interno do servidor." });
+  }
+};
+
 const loginUser = async (req, res) => {
   try {
     const { email, senha } = req.body;
@@ -71,4 +178,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-export default { createUser, loginUser, JWTSecret };
+export default { createUser, createCmsUser, getUsers, getUserById, updateUser, deleteUser, loginUser, JWTSecret };

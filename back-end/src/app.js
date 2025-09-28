@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import publicidadeRoutes from "./routes/publicidadeRoutes.js";
 import connection from "./config/sequelize-config.js";
+import blogRoutes from "./routes/blogRoutes.js";
 import userRoutes from './routes/userRoutes.js'
 import "./models/Associations.js";
 import searchRouter from "./routes/imovelSearchRoutes.js";
@@ -10,6 +11,7 @@ import agendamentoRouter from "./routes/agendamentoRoute.js";
 import recomendacaoRouter from "./routes/recomendacaoImovelRoutes.js";
 import healthRouter from "./routes/healthRouter.js";
 import faqRoutes from "./routes/faqRoutes.js";
+import relatorioRouter from './routes/reportsRoute.js';
 import mapaRoutes from "./routes/mapaRoutes.js";
 import imoveisRouter from "./routes/ImoveisRouter.js";
 import imagemImovelRoutes from "./routes/imagemImovelRoutes.js";
@@ -19,7 +21,6 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import http from "http";
-
 
 const app = express();
 
@@ -40,10 +41,13 @@ app.use("/search", searchRouter);
 app.use("/agendamentos", agendamentoRouter);
 app.use("/health", healthRouter);
 app.use("/faq", faqRoutes);
+app.use("/relatorio", relatorioRouter)
 app.use("/mapa", mapaRoutes);
 app.use('/dashboard', dashboardRouter);
 app.use('/imoveis', imoveisRouter);
 app.use('/imagemImovel', imagemImovelRoutes);
+app.use("/publicacoes", blogRoutes);
+app.use('/publicidade', publicidadeRoutes);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));

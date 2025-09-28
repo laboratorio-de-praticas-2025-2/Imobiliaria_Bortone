@@ -1,42 +1,87 @@
 "use client";
 import { useParams } from "next/navigation";
-import ConfirmModal from "@/components/cms/ConfirmModal";
 import Form from "@/components/cms/form";
 import FormButton from "@/components/cms/form/fields/Button";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import TextField from "@/components/cms/form/fields/TextField";
 import UploadField from "@/components/cms/form/fields/UploadField";
 import Sidebar from "@/components/cms/Sidebar";
-import PreviaPost from "@/components/cms/form/fields/PreviaPost";
-import { postsData } from "@/mock/posts";
 import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function EditarPostPage() {
-   const params = useParams(); 
-   const id = params?.id;
+  const params = useParams();
+  const id = params?.id;
+  const router = useRouter();
   const [fileList, setFileList] = useState([]);
   const [post, setPost] = useState(null);
-  const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
-  const [formValues, setFormValues] = useState(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [imageError, setImageError] = useState(false);
 
-  useEffect(() => {
-    const found = postsData.find((b) => String(b.id) === String(id));
-    setPost(found);
-  }, [id]);
-
-  const onFinish = (values) => {
-    setFormValues(values);
-    setIsConfirmModalVisible(true);
+  // Função para gerar URL da imagem com fallback
+  const getImageUrl = () => {
+    if (imageError || !post?.url_imagem) {
+      return "/404.png";
+    }
+    
+    let imageUrl = post.url_imagem;
+    if (!imageUrl.startsWith("/")) {
+      imageUrl = `/images/blogImages/${imageUrl}`;
+    }
+    const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+    const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
+    if (imageUrl.startsWith("/images/") && apiUrl) {
+      return `${apiUrl}${imageUrl}`;
+    }
+    return imageUrl;
   };
 
-  const onConfirm = () => {
-    console.log("Edit Success:", formValues);
-    setIsConfirmModalVisible(false);
-    window.location.href = "/admin/cms-publicacoes";
+  // Usaremos caminhos relativos para imagens (sem hostname) para evitar exigência de domains no Next/Image
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+        const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
+        const response = await axios.get(`${apiUrl}/publicacoes/${id}`);
+        setPost(response.data);
+        setTitle(response.data?.titulo || "");
+        setContent(response.data?.conteudo || "");
+      } catch (error) {
+        console.error("Erro ao carregar publicação:", error);
+      }
+    };
+    if (id) fetchPost();
+  }, [id]);
+
+  const onFinish = async (values) => {
+    try {
+      const formData = new FormData();
+      if (values.titulo) formData.append("titulo", values.titulo);
+      if (values.conteudo) formData.append("conteudo", values.conteudo);
+      if (fileList.length > 0 && fileList[0].originFileObj) {
+        formData.append("url_imagem", fileList[0].originFileObj);
+      }
+
+      const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+      const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
+
+      const response = await axios.put(`${apiUrl}/publicacoes/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (response.status === 200) {
+        alert("Publicação atualizada com sucesso!");
+        router.push("/admin/cms-publicacoes");
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar publicação:", error);
+      alert("Não foi possível atualizar a publicação.");
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -47,13 +92,6 @@ export default function EditarPostPage() {
 
   return (
     <>
-      {isConfirmModalVisible && (
-        <ConfirmModal
-          message="Você tem certeza que deseja alterar o registro definitivamente?"
-          onConfirm={onConfirm}
-          onCancel={() => setIsConfirmModalVisible(false)}
-        />
-      )}
       <Sidebar />
       <div className="md:ml-20">
         <Form.Body title="Publicações | Edição">
@@ -98,7 +136,18 @@ export default function EditarPostPage() {
                       />
                     </div>
                   ) : (
-                    <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5" />
+                    <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5">
+                      <Image
+                        src={getImageUrl()}
+                        alt="Imagem atual"
+                        width={400}
+                        height={320}
+                        className="h-full w-full object-cover rounded-3xl"
+                        onError={() => {
+                          setImageError(true);
+                        }}
+                      />
+                    </div>
                   )}
                 </div>
                 <TextAreaField
@@ -118,19 +167,53 @@ export default function EditarPostPage() {
               </div>
 
               <div className="sm:w-[40%] hidden sm:flex">
-                <PreviaPost
-                  fileList={fileList}
-                  title={title || post.titulo}
-                  content={content || post.conteudo}
-                />
+                <div className="w-full">
+                  {fileList.length > 0 ? (
+                    <Image
+                      src={URL.createObjectURL(fileList[0].originFileObj)}
+                      alt="Prévia do banner"
+                      width={600}
+                      height={400}
+                      className="w-full h-auto rounded-3xl"
+                    />
+                  ) : (
+                    <Image
+                      src={getImageUrl()}
+                      alt="Imagem atual"
+                      width={600}
+                      height={400}
+                      className="w-full h-auto rounded-3xl"
+                      onError={() => {
+                        setImageError(true);
+                      }}
+                    />
+                  )}
+                </div>
               </div>
 
               <div className="sm:hidden w-full flex flex-col gap-3.5 items-center">
-                <PreviaPost
-                  fileList={fileList}
-                  title={title || post.titulo}
-                  content={content || post.conteudo}
-                />
+                <div className="w-full">
+                  {fileList.length > 0 ? (
+                    <Image
+                      src={URL.createObjectURL(fileList[0].originFileObj)}
+                      alt="Prévia do banner"
+                      width={600}
+                      height={400}
+                      className="w-full h-auto rounded-3xl"
+                    />
+                  ) : (
+                    <Image
+                      src={getImageUrl()}
+                      alt="Imagem atual"
+                      width={600}
+                      height={400}
+                      className="w-full h-auto rounded-3xl"
+                      onError={() => {
+                        setImageError(true);
+                      }}
+                    />
+                  )}
+                </div>
                 <FormButton
                   text="Publicar"
                   className="!flex !sm:hidden"

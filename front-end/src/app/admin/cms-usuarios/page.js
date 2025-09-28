@@ -2,8 +2,8 @@
 import { Table } from "antd";
 import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
-import { usersMock } from "@/mock/users";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { MdPersonAdd } from "react-icons/md";
 import { BiPencil } from "react-icons/bi";
 import { IoMdTrash } from "react-icons/io";
@@ -37,13 +37,24 @@ export default function CmsUserPage() {
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const { styles } = useStyle();
 
-  const onDelete = () => {
+  const [deleteId, setDeleteId] = useState(null);
+  const onDelete = (id) => {
+    setDeleteId(id);
     setIsConfirmModalVisible(true);
   };
 
-  const onConfirmDelete = () => {
-    console.log("Delete Confirmed");
-    setIsConfirmModalVisible(false);
+  const onConfirmDelete = async () => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      await axios.delete(`${apiUrl}/user/user/${deleteId}`);
+      setUsers((prev) => prev.filter((u) => u.id !== deleteId));
+      setIsConfirmModalVisible(false);
+      setDeleteId(null);
+    } catch (err) {
+      console.error("Erro ao deletar usuário:", err);
+      setIsConfirmModalVisible(false);
+      setDeleteId(null);
+    }
   };
 
   const columns = [
@@ -84,7 +95,7 @@ export default function CmsUserPage() {
               className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
             />
           </Link>
-          <button onClick={onDelete}>
+          <button onClick={() => onDelete(record.id)}>
             <IoMdTrash
               size={22}
               className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
@@ -97,7 +108,17 @@ export default function CmsUserPage() {
   ];
 
   useEffect(() => {
-    setUsers(usersMock);
+    async function fetchUsers() {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        const res = await axios.get(`${apiUrl}/user/users`);
+        setUsers(Array.isArray(res.data) ? res.data : []);
+      } catch (err) {
+        console.error("Erro ao buscar usuários:", err);
+        setUsers([]);
+      }
+    }
+    fetchUsers();
   }, []);
 
   // fatia os usuários conforme página
