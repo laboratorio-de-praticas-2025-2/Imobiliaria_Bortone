@@ -13,6 +13,7 @@ export default function ContentBlog() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [apiImage, setApiImage] = useState("");
+  const [imageError, setImageError] = useState(false);
 
   // Busca real no backend
   useEffect(() => {
@@ -91,12 +92,12 @@ export default function ContentBlog() {
 
         <div className="md:px-16">
           <Image
-            src={apiImage}
+            src={imageError ? "/404.png" : apiImage}
             alt="Imagem do artigo"
             width="100%"
             className="w-screen md:w-full max-h-[500px] object-cover rounded-none md:!rounded-[25px]"
             onError={() => {
-              setApiImage("/404.png");
+              setImageError(true);
             }}
           />
 
