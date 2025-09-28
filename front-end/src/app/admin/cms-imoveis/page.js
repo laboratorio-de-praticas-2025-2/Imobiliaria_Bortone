@@ -12,6 +12,7 @@ import { IoMdPause } from "react-icons/io";
 import Link from "next/link";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import { createStyles } from "antd-style";
+import axios from "axios";
 
 const useStyle = createStyles(({ css, token }) => {
   const { antCls } = token;
@@ -35,7 +36,18 @@ export default function CmsUserPage() {
   const [imoveis, setImoveis] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
-  const [filterData, setFilterData] = useState({ order: null });
+  const [filterData, setFilterData] = useState({
+    order: null,
+    searchTerm: null,
+    advancedSearch: false, // Indicates if advanced search is active
+    tipoNegocio: null,
+    tipo: null,
+    preco: null,
+    area: null,
+    quartos: null,
+    banheiros: null,
+    vagas: null,
+  });
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const { styles } = useStyle();
 
@@ -56,6 +68,53 @@ export default function CmsUserPage() {
       )
     );
   };
+
+  const fetchImoveis = async () => {
+    try {
+      const queryParams = new URLSearchParams();
+      if (filterData.order) {
+        queryParams.append("order", filterData.order);
+      }
+      if (filterData.searchTerm) {
+        queryParams.append("searchTerm", filterData.searchTerm);
+      }
+      if (filterData.advancedSearch) {
+        if (filterData.tipoNegocio.toLowerCase() == "comprar") queryParams.append("tipo_negociacao", "venda");
+        else if (filterData.tipoNegocio.toLowerCase() == "alugar") queryParams.append("tipo_negociacao", "aluguel")
+        if (filterData.tipo) queryParams.append("tipo", filterData.tipo);
+        if (filterData.preco) {
+          queryParams.append("minPreco", filterData.preco[0]);
+          queryParams.append("maxPreco", filterData.preco[1]);
+        }
+        if (filterData.area) {
+          queryParams.append("minArea", filterData.area[0]);
+          queryParams.append("maxArea", filterData.area[1]);
+        }
+        if (filterData.quartos) queryParams.append("quartos", filterData.quartos);
+        if (filterData.banheiros) queryParams.append("banheiros", filterData.banheiros);
+        if (filterData.vagas) queryParams.append("vagas", filterData.vagas);
+      }
+
+      const requestUrl = `${process.env.NEXT_PUBLIC_API_URL}/imoveis?${queryParams.toString()}`;
+      console.log("Fetching data from endpoint:", requestUrl)
+      const response = await axios.get(
+        requestUrl
+      );
+      console.log("API Response Data:", response.data);
+      if (Array.isArray(response.data)) {
+        setImoveis(response.data);
+      } else {
+        console.warn("API did not return an array for imoveis, received:", response.data);
+        setImoveis([]); 
+      }
+    } catch (error) {
+      console.error("Error fetching imoveis:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchImoveis();
+  }, [filterData, currentPage]);
 
   const columns = [
     {
@@ -110,34 +169,34 @@ export default function CmsUserPage() {
     },
     {
       title: "Murado",
-      dataIndex: "possui_muro",
+      dataIndex:"murado",
       key: "murado",
       render: (value) => (value ? "Sim" : "-"),
     },
     {
       title: "Jardim",
-      dataIndex: "possui_jardim",
+      dataIndex: ['casa',"possui_jardim"],
       key: "jardim",
       render: (value) => (value ? "Sim" : "-"),
     },
     {
       title: "Quartos",
-      dataIndex: "quartos",
+      dataIndex: ['casa',"quartos"],
       key: "quartos",
     },
     {
       title: "Banheiros",
-      dataIndex: "banheiros",
+      dataIndex: ['casa',"banheiros"],
       key: "banheiros",
     },
     {
       title: "Vagas",
-      dataIndex: "vagas",
+      dataIndex: ['casa',"vagas"],
       key: "vagas",
     },
     {
       title: "Piscina",
-      dataIndex: "possui_piscina",
+      dataIndex: ['casa',"possui_piscina"],
       key: "piscina",
       render: (value) => (value ? "Sim" : "-"),
     },
@@ -188,10 +247,6 @@ export default function CmsUserPage() {
     },
   ];
 
-  useEffect(() => {
-    setImoveis(mockImoveis);
-  }, []);
-
   // fatia os imoveis conforme página, mantém o boolean 'ativo' e adiciona textos de exibição
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -201,14 +256,35 @@ export default function CmsUserPage() {
     verificadoText: item.verificado ? "Sim" : "-",
   }));
 
-  const onSearch = (value) => console.log("Search:", value);
+  const onSearch = (value) => {
+    setFilterData((prev) => ({
+      ...prev,//
+      searchTerm: value || null,
+      advancedSearch: false,
+    }));
+  };
   const handleSelectOrder = (value) => {
-    setFilterData((prev) => ({ ...prev, order: value }));
-    console.log("Selected order:", value);
+    setFilterData((prev) => ({
+      ...prev,
+      order: value === "Ordenar por" ? null : value,
+      advancedSearch: false, 
+    }));
   };
   const updateFilterData = (newData) => {
-    setFilterData((prev) => ({ ...prev, ...newData }));
-    console.log("Update filter data:", newData);
+    setFilterData((prev) => {
+      const newState = { ...prev, ...newData };
+      console.log("FilterData after update:", newState); // Log the updated state
+      return newState;
+    });
+  };
+
+  const handleAdvancedSearch = (filters) => {
+    setFilterData({
+      ...filters,
+      searchTerm: null, // Clear simple search term
+      order: null, // Clear simple order filter
+      advancedSearch: true, // Indicate advanced search is active
+    });
   };
 
   return (
@@ -233,6 +309,7 @@ export default function CmsUserPage() {
               filterData={filterData}
               updateFilterData={updateFilterData}
               type={"imovel"}
+              onAdvancedSearch={handleAdvancedSearch}
             />
             <CMS.TableBody table={true}>
               <Table

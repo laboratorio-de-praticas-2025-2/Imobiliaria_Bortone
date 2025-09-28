@@ -74,7 +74,7 @@ export default function CriarImovelPage() {
           formData.append("descricao", values.descricao || ""); 
         
           await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/imagensImovel/upload`,
+            `${process.env.NEXT_PUBLIC_API_URL}/imagemImovel/upload`,
             formData,
             { headers: { "Content-Type": "multipart/form-data" } }
           );

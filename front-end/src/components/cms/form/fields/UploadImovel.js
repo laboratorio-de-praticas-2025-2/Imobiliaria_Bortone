@@ -1,22 +1,23 @@
 "use client";
-import React, { useEffect } from "react";
 import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form as FormAntd, Upload, Button } from "antd";
 import PreviaImovel from "./PreviaImovel";
+import {useEffect} from "react";
 
 export default function UploadImovel({
   className,
   multiple = false,
   fileList,
-  setFileList,
+  setFileList,   // 👈 agora vem do pai
 }) {
-
+  
   // revoga single object URL
   const revokeIfBlob = (url) => {
     try {
       if (url && url.startsWith?.("blob:")) URL.revokeObjectURL(url);
     } catch {}
   };
+
 
   // remove chamado pela previa
   const handleRemove = (file) => {
@@ -60,11 +61,17 @@ export default function UploadImovel({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
   return (
     <div className="!w-full">
-      <FormAntd.Item label={"Imagens"} className={`custom-form-item required !w-full ${className}`} labelCol={{ span: 24 }}>
+      <FormAntd.Item
+        label={"Imagens"}
+        className={`custom-form-item required !w-full ${className}`}
+        labelCol={{ span: 24 }}
+      >
         <div className="bg-[#CED2E1] w-full h-[15vh] rounded-lg p-2 flex items-center">
           {fileList.length === 0 ? (
+            // botão centralizado quando não há imagens
             <div className="w-full flex justify-center items-center">
               <Upload
                 beforeUpload={() => false}
@@ -79,6 +86,7 @@ export default function UploadImovel({
               </Upload>
             </div>
           ) : (
+            // quando houver imagens, mostra as prévias + botão de adicionar
             <div className="h-full flex items-center gap-4 overflow-x-auto">
               <PreviaImovel fileList={fileList} onRemove={handleRemove} />
               <Upload
@@ -88,7 +96,11 @@ export default function UploadImovel({
                 showUploadList={false}
                 fileList={fileList}
               >
-                <Button shape="circle" icon={<PlusOutlined />} className="!text-[var(--primary)] !border-[var(--primary)] !w-10 !h-10" />
+                <Button
+                  shape="circle"
+                  icon={<PlusOutlined />}
+                  className="!text-[var(--primary)] !border-[var(--primary)] !w-10 !h-10"
+                />
               </Upload>
             </div>
           )}
