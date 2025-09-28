@@ -39,7 +39,7 @@ export default function CmsUserPage() {
   const [filterData, setFilterData] = useState({
     order: null,
     searchTerm: null,
-    advancedSearch: false, // Indicates if advanced search is active
+    advancedSearch: false, 
     tipoNegocio: null,
     tipo: null,
     preco: null,
@@ -64,7 +64,6 @@ export default function CmsUserPage() {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       await axios.delete(`${apiUrl}/imoveis/${imovelToDelete}`);
       
-      // Remove the deleted imóvel from the state
       setImoveis(prev => prev.filter(imovel => imovel.id !== imovelToDelete));
       
       console.log("Imóvel deletado com sucesso!");
@@ -72,11 +71,11 @@ export default function CmsUserPage() {
       setImovelToDelete(null);
     } catch (error) {
       console.error("Erro ao deletar imóvel:", error);
-      // Here you could add a notification to show the error to the user
+      
     }
   };
 
-  // toggle status between Disponível and Indisponível
+  
   const handleToggleActive = async (id) => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -84,13 +83,10 @@ export default function CmsUserPage() {
       
       if (!imovel) return;
       
-      // Determine new status: if currently "Indisponível", change to "Disponível", otherwise change to "Indisponível"
       const newStatus = imovel.status === "indisponivel" ? "disponivel" : "indisponivel";
       
-      // Update via API
       await axios.patch(`${apiUrl}/imoveis/${id}/status`, { status: newStatus });
       
-      // Update local state
       setImoveis((prev) =>
         prev.map((item) =>
           item.id === id ? { ...item, status: newStatus } : item
@@ -234,12 +230,12 @@ export default function CmsUserPage() {
       key: "piscina",
       render: (value) => (value ? "Sim" : "-"),
     },
-    // Coluna de Pause / Start
+    
     {
       title: "Ações",
       key: "acoes",
       fixed: "right",
-      width: 140, // ajuste conforme precisar
+      width: 140,
       render: (_, record) => (
         <div className="flex gap-4">
           {/* pause/play */}
@@ -281,7 +277,6 @@ export default function CmsUserPage() {
     },
   ];
 
-  // fatia os imoveis conforme página e adiciona textos de exibição
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const paginatedMock = imoveis.slice(startIndex, endIndex).map((item) => ({
@@ -291,7 +286,7 @@ export default function CmsUserPage() {
 
   const onSearch = (value) => {
     setFilterData((prev) => ({
-      ...prev,//
+      ...prev,
       searchTerm: value || null,
       advancedSearch: false,
     }));
@@ -306,7 +301,7 @@ export default function CmsUserPage() {
   const updateFilterData = (newData) => {
     setFilterData((prev) => {
       const newState = { ...prev, ...newData };
-      console.log("FilterData after update:", newState); // Log the updated state
+      console.log("FilterData after update:", newState);
       return newState;
     });
   };
@@ -314,9 +309,9 @@ export default function CmsUserPage() {
   const handleAdvancedSearch = (filters) => {
     setFilterData({
       ...filters,
-      searchTerm: null, // Clear simple search term
-      order: null, // Clear simple order filter
-      advancedSearch: true, // Indicate advanced search is active
+      searchTerm: null, 
+      order: null,
+      advancedSearch: true, 
     });
   };
 
@@ -355,8 +350,7 @@ export default function CmsUserPage() {
                 pagination={false}
                 className={styles.customTable}
                 scroll={{ x: "max-content" }}
-                // aplica transparência na linha quando status === "Indisponível"
-                rowClassName={(record) => (record.status === "indisponivel" ? "opacity-50" : "")}
+                 rowClassName={(record) => (record.status === "indisponivel" ? "opacity-50" : "")}
               />
             </CMS.TableBody>
 

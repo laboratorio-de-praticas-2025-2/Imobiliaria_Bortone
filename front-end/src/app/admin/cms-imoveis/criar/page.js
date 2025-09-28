@@ -28,7 +28,7 @@ export default function CriarImovelPage() {
     try {
       const imovelData = {
         usuario_id: 1,
-        tipo: tipoSelecionado.toLowerCase(),
+        tipo: tipoSelecionado,
         status: statusSelecionado.toLowerCase(),
         cidade: citiesSelecionado,
         estado: selectedState,
@@ -41,11 +41,11 @@ export default function CriarImovelPage() {
         longitude: values.longitude,
       };
 
-      console.log(tipoSelecionado.toLowerCase())
+      console.log(tipoSelecionado)
 
       let specificData = {};
 
-      if (tipoSelecionado.toLowerCase() === "casa") {
+      if (tipoSelecionado === "Casa") {
         specificData = {
           quartos: selectedBedrooms === "Quantidade" ? 0 : parseInt(selectedBedrooms),
           banheiros: selectedBathrooms === "Quantidade" ? 0 : parseInt(selectedBathrooms),
@@ -57,8 +57,8 @@ export default function CriarImovelPage() {
 
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/imoveis`, {
         ...imovelData,
-        ...(tipoSelecionado.toLowerCase() === "casa" ? specificData : {}),
-        ...(tipoSelecionado.toLowerCase() === "terreno" ? specificData : {}),
+        ...(tipoSelecionado === "Casa" ? specificData : {}),
+        ...(tipoSelecionado === "Terreno" ? specificData : {}),
       });
       
 
@@ -95,7 +95,7 @@ export default function CriarImovelPage() {
   // adicione próximo aos useState (no topo do componente)
   const handleTipoSelect = (option) => {
     setTipoSelecionado(option);
-    if (option && option.toLowerCase() === "terreno") {
+    if (option && option === "Terreno") {
       setSelectedBedrooms("Quantidade");
       setSelectedBathrooms("Quantidade");
       setSelectedParking("Quantidade");
@@ -310,7 +310,7 @@ export default function CriarImovelPage() {
                   </FormAntd.Item>
 
                   {tipoSelecionado &&
-                    tipoSelecionado.toLowerCase() !== "terreno" && (
+                    tipoSelecionado !== "Terreno" && (
                       <FormAntd.Item
                         label={"Possui Piscina?"}
                         name="possui_piscina"
@@ -333,7 +333,7 @@ export default function CriarImovelPage() {
                     )}
                 </div>
                 {tipoSelecionado &&
-                  tipoSelecionado.toLowerCase() !== "terreno" && (
+                  tipoSelecionado !== "Terreno" && (
                     <>
                       <div className=" flex flex-row gap-2 !w-full">
                         <FormAntd.Item
@@ -450,7 +450,7 @@ export default function CriarImovelPage() {
                 </div>
                 {/* MOVA latitude/longitude para cá quando for Terreno */}
                 {tipoSelecionado &&
-                  tipoSelecionado.toLowerCase() === "terreno" && (
+                  tipoSelecionado === "Terreno" && (
                     <>
                       <div className=" flex flex-row gap-2 !w-full">
                         <TextField
@@ -483,7 +483,7 @@ export default function CriarImovelPage() {
                   className="!w-full"
                 />
                 {tipoSelecionado &&
-                  tipoSelecionado.toLowerCase() != "terreno" && (
+                  tipoSelecionado != "Terreno" && (
                     <div className=" flex flex-row gap-2 !w-full">
                       {/* inputs somente leitura; serão preenchidos pelo mapa */}
 
@@ -507,7 +507,7 @@ export default function CriarImovelPage() {
                   )}
                 <div
                   className={`map-cms ${
-                    tipoSelecionado?.toLowerCase() === "terreno"
+                    tipoSelecionado === "Terreno"
                       ? "h-[38vh]"
                       : "h-[30vh]"
                   }`}

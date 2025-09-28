@@ -124,9 +124,10 @@ export default function EditarImovelPage({ params }) {
           uid: image.id, // Use image.id as unique identifier
           name: image.url_imagem.split('/').pop(), // Extract filename from URL
           status: 'done',
-          url: `${apiUrl}/images/imoveis/${image.url_imagem}`, // Assuming image.url is the path from uploads folder
+          url: `${apiUrl}/images/imoveis/${image.url_imagem}`, // Full URL for display
           originalId: image.id, // Store original ID for comparison
-          isOriginal: true // Mark as original image
+          isOriginal: true, // Mark as original image
+          filename: image.url_imagem // Store just the filename for database
         }));
         setFileList(formattedImages);
         setOriginalImages(imagesData); // Store original images for comparison
@@ -217,12 +218,14 @@ export default function EditarImovelPage({ params }) {
           formData.append('imovel_id', id);
           formData.append('descricao', newImage.name || 'Imagem do imóvel');
           
-          await axios.post(`${apiUrl}/imagemimovel/upload`, formData, {
+          const response = await axios.post(`${apiUrl}/imagemimovel/upload`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
-          console.log(`Imagem ${newImage.name} enviada com sucesso`);
+          
+          // The API should return the filename (not full URL) for database storage
+          console.log(`Imagem ${newImage.name} enviada com sucesso. Filename: ${response.data.url_imagem}`);
         } catch (error) {
           console.error(`Erro ao fazer upload da imagem ${newImage.name}:`, error);
         }
@@ -246,7 +249,7 @@ export default function EditarImovelPage({ params }) {
         quartos: selectedBedrooms !== "Quantidade" ? parseInt(selectedBedrooms) : undefined,
         banheiros: selectedBathrooms !== "Quantidade" ? parseInt(selectedBathrooms) : undefined,
         vagas: selectedParking !== "Quantidade" ? parseInt(selectedParking) : undefined,
-        possui_muro: formValues.possui_muro === "sim",
+        murado: formValues.possui_muro === "sim",
         possui_piscina: formValues.possui_piscina === "sim",
         possui_jardim: formValues.possui_jardim === "sim",
         // Manter o usuario_id original do imóvel

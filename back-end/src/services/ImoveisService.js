@@ -11,7 +11,7 @@ export const create = async (imovelData, casaData) => {
   try {
     const newImovel = await Imovel.create(imovelData, { transaction });
 
-    if (imovelData.tipo === 'casa' || imovelData.tipo === 'apartamento') {
+    if (imovelData.tipo.toLowerCase() === 'casa' || imovelData.tipo.toLowerCase() === 'apartamento') {
       await Casa.create({
         ...casaData,
         imovel_id: newImovel.id
@@ -82,7 +82,7 @@ export const update = async (id, imovelData, casaData) => {
 
     await imovel.update(imovelData, { transaction });
 
-    if (imovelData.tipo === 'casa') {
+    if (imovelData.tipo.toLowerCase() === 'casa') {
       const casa = await Casa.findOne({ where: { imovel_id: id }, transaction });
       if (casa) {
         await casa.update(casaData, { transaction });
