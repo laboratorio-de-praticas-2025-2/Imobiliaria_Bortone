@@ -7,7 +7,7 @@ class ReportService {
     try {
       return await sequelize.query(query, {
         type: sequelize.QueryTypes.SELECT,
-        logging: true,
+        logging: false,
       });
     } catch (dbError) {
       console.error(`${errorMessage}:`, {
@@ -53,7 +53,7 @@ class ReportService {
   }
 
   async obterDadosGerais() {
-    const [imoveis, usuarios, vendas, alugueis] = await Promise.all([
+    const [{imoveis}, {usuarios}, {vendas},{alugueis}] = await Promise.all([
       this.obterDadosImoveis(),
       this.obterDadosUsuarios(),
       this.obterDadosVendas(),
@@ -76,8 +76,10 @@ class ReportService {
       QUERY_IMOVEIS,
       ERROR_MESSAGE
     );
-    
-    return JSON.parse(queryResponse[0]?.imoveis || 0);
+
+    return {
+      imoveis: JSON.parse(queryResponse[0]?.imoveis || 0),
+    }
   }
 
   async obterDadosUsuarios() {
@@ -106,9 +108,11 @@ class ReportService {
     ]);
 
     return {
-      totalUsuarios: totalResult[0]?.total || 0,
-      totalAdministradores: adminResult[0]?.total || 0,
-      totalVisitantes: visitantesResult[0]?.total || 0,
+      usuarios: {
+        totalUsuarios: totalResult[0]?.total || 0,
+        totalAdministradores: adminResult[0]?.total || 0,
+        totalVisitantes: visitantesResult[0]?.total || 0,
+      },
     };
   }
 
@@ -117,19 +121,24 @@ class ReportService {
     const ERROR_MESSAGE = "Falha ao recuperar dados de vendas para relatório";
 
     const vendaResult = await this.#executeQuery(QUERY_VENDAS, ERROR_MESSAGE);
-    console.log("aaaaaa");
-    console.log(vendaResult[0]?.vendas);
 
-    return JSON.parse(vendaResult[0]?.vendas || 0);
+    return {
+      vendas: JSON.parse(vendaResult[0]?.vendas || 0),
+    };
   }
 
   async obterDadosAlugueis() {
     const QUERY_LOCACOES = `select * from dadosRelatorioLocacoes`;
     const ERROR_MESSAGE = "Falha ao recuperar dados de locações para relatório";
 
-    const queryResponse = await this.#executeQuery(QUERY_LOCACOES, ERROR_MESSAGE);
+    const queryResponse = await this.#executeQuery(
+      QUERY_LOCACOES,
+      ERROR_MESSAGE
+    );
 
-    return JSON.parse(queryResponse[0]?.alugueis || 0);
+    return {
+      alugueis: JSON.parse(queryResponse[0]?.alugueis || 0),
+    };
   }
 }
 
