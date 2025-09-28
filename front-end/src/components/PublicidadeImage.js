@@ -14,28 +14,41 @@ export default function PublicidadeImage({
   const [loading, setLoading] = useState(true);
 
   // Função para determinar a URL correta da imagem
-  const getImageSrc = () => {
-    // Se houve erro, usar imagem padrão
-    if (error) {
-      return "/images/placeholder.jpg";
+  const getValidImageSrc = () => {
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+    const placeholder = '/images/casa.png';
+    if (!url_imagem || typeof url_imagem !== 'string') return placeholder;
+
+    let src = url_imagem.trim();
+    // Normalizar caso backend salve sem barra inicial
+    if (!src.startsWith('/')) {
+      // Se parece já ser um nome de arquivo salvo pelo multer
+      if (!src.startsWith('http')) {
+        // Determinar a pasta baseada no href_cms
+        const folderMap = {
+          'publicidades': 'publicidadeImages',
+          'banner': 'bannerImages',
+          'publicacoes': 'blogImages'
+        };
+        const folder = folderMap[href_cms] || 'publicidadeImages';
+        src = `/images/${folder}/${src}`;
+      }
     }
 
-    // Se não há URL válida, usar imagem padrão
-    if (!url_imagem || 
-        url_imagem === null || 
-        url_imagem === "" || 
-        url_imagem === "null" ||
-        typeof url_imagem !== 'string') {
-      return "/images/placeholder.jpg";
+    // Se for caminho relativo local (/images/...) precisamos usar direto em produção do Next.
+    // Porém o erro 400 do _next/image pode ocorrer se a imagem não existir no momento do build ou se houver CSP bloqueando.
+    // Para evitar transformação errada pelo loader, podemos usar a URL absoluta do backend se disponível.
+    if (src.startsWith('/images/')) {
+      // Se apiBase contém domínio (http) e não é o mesmo host do frontend (deploy vercel), usar absoluto.
+      if (apiBase.startsWith('http')) {
+        // Evitar dupla barra
+        const normalizedBase = apiBase.replace(/\/$/, '');
+        return `${normalizedBase}${src}`;
+      }
+      return src; // fallback
     }
-    
-    // Se já começa com /, usar diretamente
-    if (url_imagem.startsWith('/')) {
-      return url_imagem;
-    }
-    
-    // Se não começa com /, adicionar o prefixo
-    return `/images/publicidadeImages/${url_imagem}`;
+
+    return src;
   };
 
   const handleError = () => {
@@ -51,7 +64,7 @@ export default function PublicidadeImage({
   return (
     <div className="relative">
       <Image
-        src={getImageSrc()}
+        src={getValidImageSrc()}
         alt={alt}
         width={width}
         height={height}
