@@ -1,12 +1,23 @@
 import User from "../models/Usuario.js";
 
 class UserService {
- async create({ nome, email, senha, nivel = 1, celular = null }) {
+  async create({ nome, email, senha, nivel = 1, celular = null }) {
     try {
       const newUser = await User.create({ nome, email, senha, nivel, celular });
       return newUser;
     } catch (error) {
       console.log("Erro ao criar usuário:", error);
+      throw error;
+    }
+  }
+
+  // Cadastro específico para CMS, sem valores predefinidos
+  async createCmsUser({ nome, email, senha, nivel, celular }) {
+    try {
+      const newUser = await User.create({ nome, email, senha, nivel, celular });
+      return newUser;
+    } catch (error) {
+      console.log("Erro ao criar usuário CMS:", error);
       throw error;
     }
   }
