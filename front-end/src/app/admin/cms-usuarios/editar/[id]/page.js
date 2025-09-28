@@ -12,6 +12,7 @@ export default function EditarUserPage({ params }) {
   const id = params?.id;
   const [user, setUser] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState(null);
 
   useEffect(() => {
@@ -34,18 +35,26 @@ export default function EditarUserPage({ params }) {
   };
 
   const onConfirm = async () => {
+    setIsLoading(true);
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const { senha, ...rest } = formValues;
       const payload = {
-        ...formValues,
+        ...rest,
         nivel: formValues.nivel === "administrador" ? 0 : 1,
-        ativo: 1 
+        ativo: 1
       };
-      await axios.put(`${apiUrl}/user/${id}`, payload);
+      if (senha) {
+        payload.senha = senha;
+      }
+      await axios.patch(`${apiUrl}/user/user/${id}`, payload);
       setIsConfirmModalVisible(false);
       window.location.href = "/admin/cms-usuarios";
     } catch (err) {
       console.error("Erro ao editar usuário:", err);
+      setIsConfirmModalVisible(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -62,6 +71,7 @@ export default function EditarUserPage({ params }) {
           message="Você tem certeza que deseja alterar o registro definitivamente?"
           onConfirm={onConfirm}
           onCancel={() => setIsConfirmModalVisible(false)}
+          confirmDisabled={isLoading}
         />
       )}
       <Sidebar />
@@ -118,6 +128,7 @@ export default function EditarUserPage({ params }) {
                   label="Senha"
                   placeholder="Senha do Usuário"
                   className="!w-[100%]"
+                  required={false}
                 />
                 <FormButton text="Salvar Alterações" />
               </div>
