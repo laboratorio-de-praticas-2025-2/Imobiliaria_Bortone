@@ -49,24 +49,58 @@ export default function CmsUserPage() {
     vagas: null,
   });
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const [imovelToDelete, setImovelToDelete] = useState(null);
   const { styles } = useStyle();
 
-  const onDelete = () => {
+  const onDelete = (imovelId) => {
+    setImovelToDelete(imovelId);
     setIsConfirmModalVisible(true);
   };
 
-  const onConfirmDelete = () => {
-    console.log("Delete Confirmed");
-    setIsConfirmModalVisible(false);
+  const onConfirmDelete = async () => {
+    if (!imovelToDelete) return;
+    
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      await axios.delete(`${apiUrl}/imoveis/${imovelToDelete}`);
+      
+      // Remove the deleted imóvel from the state
+      setImoveis(prev => prev.filter(imovel => imovel.id !== imovelToDelete));
+      
+      console.log("Imóvel deletado com sucesso!");
+      setIsConfirmModalVisible(false);
+      setImovelToDelete(null);
+    } catch (error) {
+      console.error("Erro ao deletar imóvel:", error);
+      // Here you could add a notification to show the error to the user
+    }
   };
 
-  // toggle ativo / pausado
-  const handleToggleActive = (id) => {
-    setImoveis((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, ativo: !item.ativo } : item
-      )
-    );
+  // toggle status between Disponível and Indisponível
+  const handleToggleActive = async (id) => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const imovel = imoveis.find(item => item.id === id);
+      
+      if (!imovel) return;
+      
+      // Determine new status: if currently "Indisponível", change to "Disponível", otherwise change to "Indisponível"
+      const newStatus = imovel.status === "indisponivel" ? "disponivel" : "indisponivel";
+      
+      // Update via API
+      await axios.patch(`${apiUrl}/imoveis/${id}/status`, { status: newStatus });
+      
+      // Update local state
+      setImoveis((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, status: newStatus } : item
+        )
+      );
+      
+      console.log(`Status do imóvel ${id} alterado para: ${newStatus}`);
+    } catch (error) {
+      console.error("Erro ao alterar status do imóvel:", error);
+    }
   };
 
   const fetchImoveis = async () => {
@@ -211,16 +245,16 @@ export default function CmsUserPage() {
           {/* pause/play */}
           <button
             onClick={() => handleToggleActive(record.id)}
-            aria-label={record.ativo ? "Pausar" : "Iniciar"}
+            aria-label={record.status === "indisponivel" ? "Ativar" : "Pausar"}
             className="flex items-center"
           >
-            {record.ativo ? (
-              <IoMdPause
+            {record.status === "indisponivel" ? (
+              <FaPlay
                 size={22}
                 className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
               />
             ) : (
-              <FaPlay
+              <IoMdPause
                 size={22}
                 className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
               />
@@ -236,7 +270,7 @@ export default function CmsUserPage() {
           </Link>
 
           {/* excluir */}
-          <button onClick={onDelete}>
+          <button onClick={() => onDelete(record.id)}>
             <IoMdTrash
               size={22}
               className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
@@ -247,12 +281,11 @@ export default function CmsUserPage() {
     },
   ];
 
-  // fatia os imoveis conforme página, mantém o boolean 'ativo' e adiciona textos de exibição
+  // fatia os imoveis conforme página e adiciona textos de exibição
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const paginatedMock = imoveis.slice(startIndex, endIndex).map((item) => ({
     ...item,
-    ativoText: item.ativo ? "Sim" : "-",
     verificadoText: item.verificado ? "Sim" : "-",
   }));
 
@@ -291,9 +324,12 @@ export default function CmsUserPage() {
     <>
       {isConfirmModalVisible && (
         <ConfirmModal
-          message="Você tem certeza que deseja excluir o registro definitivamente?"
+          message={`Você tem certeza que deseja excluir o imóvel ID ${imovelToDelete} definitivamente?`}
           onConfirm={onConfirmDelete}
-          onCancel={() => setIsConfirmModalVisible(false)}
+          onCancel={() => {
+            setIsConfirmModalVisible(false);
+            setImovelToDelete(null);
+          }}
         />
       )}
       <Sidebar />
@@ -319,8 +355,8 @@ export default function CmsUserPage() {
                 pagination={false}
                 className={styles.customTable}
                 scroll={{ x: "max-content" }}
-                // aplica transparência na linha quando ativo === false
-                rowClassName={(record) => (record.ativo ? "" : "opacity-50")}
+                // aplica transparência na linha quando status === "Indisponível"
+                rowClassName={(record) => (record.status === "indisponivel" ? "opacity-50" : "")}
               />
             </CMS.TableBody>
 
