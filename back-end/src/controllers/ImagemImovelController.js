@@ -1,12 +1,12 @@
 import multer from 'multer';
 import path from 'path';
-import crypto from 'crypto'; // Importa o módulo crypto
+import crypto from 'crypto'; 
 import * as ImagemImovelService from '../services/ImagemImovelService.js';
 
-// Configuração do Multer para armazenamento de arquivos
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '../front-end/public/images/imoveis/'); // Onde as imagens serão salvas
+    cb(null, '../front-end/public/images/imoveis/'); 
   },
   filename: (req, file, cb) => {
     const extname = path.extname(file.originalname); // Obtém a extensão original do arquivo
@@ -35,7 +35,7 @@ export const uploadImage = (req, res) => {
     }
 
     try {
-      const url_imagem = `/images/imoveis/${req.file.filename}`; // Caminho onde a imagem foi salva
+      const url_imagem = req.file.filename; // Apenas o nome do arquivo, sem o caminho
       const novaImagem = await ImagemImovelService.createImagem({
         imovel_id: parseInt(imovel_id),
         url_imagem,
