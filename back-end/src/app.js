@@ -1,19 +1,17 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
-import http from "http";
-
 import publicidadeRoutes from "./routes/publicidadeRoutes.js";
 import connection from "./config/sequelize-config.js";
-import userRoutes from './routes/userRoutes.js';
+import blogRoutes from "./routes/blogRoutes.js";
+import userRoutes from './routes/userRoutes.js'
 import "./models/Associations.js";
 import searchRouter from "./routes/imovelSearchRoutes.js";
 import agendamentoRouter from "./routes/agendamentoRoute.js";
 import recomendacaoRouter from "./routes/recomendacaoImovelRoutes.js";
 import healthRouter from "./routes/healthRouter.js";
 import faqRoutes from "./routes/faqRoutes.js";
+import relatorioRouter from './routes/reportsRoute.js';
 import mapaRoutes from "./routes/mapaRoutes.js";
 import imoveisRouter from "./routes/ImoveisRouter.js";
 import imagemImovelRoutes from "./routes/imagemImovelRoutes.js";
@@ -21,6 +19,9 @@ import dashboardRouter from "./routes/dashboardRoutes.js";
 import initWebSocket from "./config/websocket.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import bannerRoutes from './routes/bannerRoutes.js';
+import path from "path";
+import { fileURLToPath } from "url";
+import http from "http";
 
 const app = express();
 
@@ -36,6 +37,28 @@ app.use(express.urlencoded({ extended: false }));
 
 // Servir arquivos estáticos da pasta 'uploads' (para imagens)
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+// Rotas
+
+app.use('/', recomendacaoRouter);
+app.use('/user', userRoutes );
+app.use("/search", searchRouter);
+app.use("/agendamentos", agendamentoRouter);
+app.use("/health", healthRouter);
+app.use("/faq", faqRoutes);
+app.use("/relatorio", relatorioRouter)
+app.use("/mapa", mapaRoutes);
+app.use('/dashboard', dashboardRouter);
+app.use('/imoveis', imoveisRouter);
+app.use('/imagemImovel', imagemImovelRoutes);
+app.use("/publicacoes", blogRoutes);
+app.use('/publicidade', publicidadeRoutes);
+
+app.use(express.static(path.join(__dirname, "../public")));
+app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
+app.use(errorHandler);
+
+const server = http.createServer(app);
+initWebSocket(server);
 
 // Servir arquivos públicos
 app.use(express.static(path.join(__dirname, "../public")));
@@ -73,16 +96,11 @@ connection
 // Inicializar servidor
 // ----------------------
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Servidor iniciado com sucesso na porta ${PORT}! 🚀`);
+server.listen(PORT, function (erro) {
+  if (erro) {
+    console.log("Ocorreu um erro! Erro: ", erro);
+  } else {
+    console.log(`Servidor iniciado com sucesso na porta ${PORT}! 🚀`);
+  }
 });
 
-
-
-
-
-
-// Se quiser habilitar WebSocket futuramente:
-// const server = http.createServer(app);
-// initWebSocket(server);
-// server.listen(PORT, () => console.log(`Servidor WS rodando na porta ${PORT}`));

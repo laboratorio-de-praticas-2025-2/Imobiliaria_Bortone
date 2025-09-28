@@ -27,6 +27,35 @@ const createUser = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
+=======
+// Cadastro específico para CMS
+const createCmsUser = async (req, res) => {
+  try {
+    const { nome, email, senha, nivel, celular } = req.body;
+
+    if (!nome || !email || !senha || nivel === undefined || celular === undefined) {
+      return res.status(400).json({ error: "Todos os campos são obrigatórios." });
+    }
+
+    const hashedPassword = await bcrypt.hash(senha, 10);
+
+    const newUser = await userService.createCmsUser({
+      nome,
+      email,
+      senha: hashedPassword,
+      nivel,
+      celular,
+    });
+
+    return res.status(201).json(newUser);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Erro interno do servidor." });
+  }
+};
+
+>>>>>>> origin/develop
 const getUsers = async (req, res) => {
   try {
     const users = await userService.getAll();
@@ -152,4 +181,8 @@ const loginUser = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 export default { createUser, getUsers, getUserById, updateUser, deleteUser, loginUser, JWTSecret };
+=======
+export default { createUser, createCmsUser, getUsers, getUserById, updateUser, deleteUser, loginUser, JWTSecret };
+>>>>>>> origin/develop

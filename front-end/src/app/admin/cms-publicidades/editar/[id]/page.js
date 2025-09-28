@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import Form from "@/components/cms/form";
 import FormButton from "@/components/cms/form/fields/Button";
@@ -10,31 +10,91 @@ import Sidebar from "@/components/cms/Sidebar";
 import {  Form as FormAntd } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { publicidadesMock } from "@/mock/publicidades";
+import { useEffect, useState, useCallback } from "react";
+import axios from "axios";
 
 export default function EditarPublicidadePage() {
-   const params = useParams(); 
-   const id = params?.id;
+  const params = useParams(); 
+  const id = params?.id;
+  const router = useRouter();
   const [fileList, setFileList] = useState([]);
   const [publicidade, setPublicidade] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [formValues, setFormValues] = useState(null);
 
-  useEffect(() => {
-    const found = publicidadesMock.find((b) => String(b.id) === String(id));
-    setPublicidade(found);
+  const loadPublicidade = useCallback(async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`);
+      if (response.status === 200) {
+        setPublicidade(response.data);
+        setFileList([]);
+        console.log('Publicidade carregada:', response.data);
+      }
+    } catch {
+      console.log("Erro ao carregar publicidade");
+    }
   }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      loadPublicidade();
+    }
+  }, [id, loadPublicidade]);
 
   const onFinish = (values) => {
     setFormValues(values);
     setIsConfirmModalVisible(true);
   };
 
-  const onConfirm = () => {
-    console.log("Edit Success:", formValues);
-    setIsConfirmModalVisible(false);
-    window.location.href = "/admin/cms-publicidades";
+  const onConfirm = async () => {
+    if (formValues.titulo && formValues.conteudo) {
+      try {
+        console.log('=== FRONT-END DEBUG ===');
+        console.log('fileList:', fileList);
+        console.log('fileList.length:', fileList.length);
+        if (fileList.length > 0) {
+          console.log('fileList[0]:', fileList[0]);
+          console.log('fileList[0].originFileObj:', fileList[0].originFileObj);
+        }
+        console.log('formValues:', formValues);
+        console.log('publicidade:', publicidade);
+        console.log('=======================');
+        
+        const formData = new FormData();
+        formData.append('titulo', formValues.titulo);
+        formData.append('conteudo', formValues.conteudo);
+        formData.append('usuario_id', publicidade.usuario_id.toString());
+        formData.append('ativo', publicidade.ativo.toString());
+        
+        if (fileList.length > 0 && fileList[0].originFileObj) {
+          formData.append('url_imagem', fileList[0].originFileObj);
+          console.log('Arquivo adicionado ao FormData:', fileList[0].originFileObj.name);
+        } else {
+          console.log('Nenhum arquivo novo selecionado');
+        }
+
+        console.log('FormData entries:');
+        for (let [key, value] of formData.entries()) {
+          console.log(key, value);
+        }
+
+        const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        
+        if (response.status === 200) {
+          alert("Publicidade atualizada com sucesso!");
+          setIsConfirmModalVisible(false);
+          router.push("/admin/cms-publicidades");
+        }
+      } catch (error) {
+        console.log("Erro ao atualizar a publicidade:", error);
+      }
+    } else {
+      alert("Preencha todos os campos!");
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -68,14 +128,35 @@ export default function EditarPublicidadePage() {
               <p className="!text-[#0d1b3e] !font-semibold text-[16px]">
                 Prévia *
               </p>
-              {fileList.length > 0 ? (
+              {fileList.length > 0 && fileList[0].originFileObj ? (
                 <div className="w-[100%] md:h-[25vh] h-[13vh] bg-gray-200 rounded-3xl ">
                   <Image
                     src={URL.createObjectURL(fileList[0].originFileObj)}
-                    alt="Prévia da publicidade"
+                    alt="Nova imagem selecionada"
                     width={400}
                     height={320}
                     className="h-full w-full object-cover rounded-3xl"
+                  />
+                </div>
+              ) : publicidade?.url_imagem ? (
+                <div className="w-[100%] md:h-[25vh] h-[13vh] bg-gray-200 rounded-3xl ">
+                  <Image
+                    src={(function() {
+                      const apiBase = process.env.NEXT_PUBLIC_API_URL || '';
+                      let src = publicidade.url_imagem || '';
+                      if (!src) return '/images/casa.png';
+                      if (!src.startsWith('/')) src = `/images/publicidadeImages/${src}`;
+                      if (src.startsWith('/images/') && apiBase.startsWith('http')) {
+                        const normalizedBase = apiBase.replace(/\/$/, '');
+                        return `${normalizedBase}${src}`;
+                      }
+                      return src;
+                    })()}
+                    alt="Imagem atual"
+                    width={400}
+                    height={320}
+                    className="h-full w-full object-cover rounded-3xl"
+                    onError={(e) => { try { e.target.src = '/images/casa.png'; } catch {} }}
                   />
                 </div>
               ) : (
@@ -83,6 +164,7 @@ export default function EditarPublicidadePage() {
                   Imagem de capa
                 </div>
               )}
+              
 
               <div className="flex md:flex-row flex-col md:gap-6 gap-4">
                 <TextField

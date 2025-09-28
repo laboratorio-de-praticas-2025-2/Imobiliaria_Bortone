@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { handleImgError } from "../../utils/imageFallback";
 import Card from "./CardMapa";
 
 export default function CarrosselMapa({ imoveis }) {
@@ -89,6 +90,7 @@ export default function CarrosselMapa({ imoveis }) {
               src="images/top-carousel.svg"
               alt="topo"
               className="absolute z-1"
+              onError={handleImgError}
             />
           )}
 

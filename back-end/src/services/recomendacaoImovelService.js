@@ -1,5 +1,10 @@
 import RecomendacaoImovel from "../models/recomendacaoImovelModal.js";
 import Imovel from "../models/Imovel.js";
+<<<<<<< HEAD
+=======
+import Casa from "../models/Casa.js";
+import ImagemImovel from "../models/ImagemImovel.js";
+>>>>>>> origin/develop
 import { Sequelize } from "sequelize";
 // Importa o Lodash para simplificar a manipulação de arrays e objetos.
 import _ from "lodash";
@@ -79,8 +84,18 @@ const inferirPreferencias = async (idsImoveis) => {
   return preferencias;
 };
 
+<<<<<<< HEAD
 // Retorna até 20 imóveis mais populares do sistema (geral), usados como fallback.
 const getImoveisPopulares = async () => {
+=======
+const INCLUDE_OPTIONS = [
+    { model: Casa, as: 'casa', attributes: ['quartos', 'banheiros', 'vagas', "possui_piscina", "possui_jardim"], where: { '$imovel.tipo$': 'Casa' }, required: false },
+    { model: ImagemImovel, as: 'imagem_imovel', attributes: ['id', 'url_imagem'], required: false } 
+];
+
+// Retorna até 20 imóveis mais populares do sistema (geral), usados como fallback.
+const getImoveisPopulares = async (idsImoveisVisitados = []) => {
+>>>>>>> origin/develop
   // `attributes` define as colunas que vão vir como resposta.
   const imoveisPopulares = await RecomendacaoImovel.findAll({
     attributes: [
@@ -109,6 +124,10 @@ const getImoveisPopulares = async () => {
       status: "disponivel",
     },
     limit: 20,
+<<<<<<< HEAD
+=======
+    include: INCLUDE_OPTIONS
+>>>>>>> origin/develop
   });
 };
 
@@ -152,6 +171,10 @@ export const getRecomendacoesByUserId = async (usuario_id) => {
     let imoveisRecomendados = await Imovel.findAll({
       where: filtros,
       limit: 20,
+<<<<<<< HEAD
+=======
+      include: INCLUDE_OPTIONS
+>>>>>>> origin/develop
     });
 
     // Segunda tentativa (fallback): se a primeira falhar, suaviza a busca
@@ -168,6 +191,10 @@ export const getRecomendacoesByUserId = async (usuario_id) => {
       imoveisRecomendados = await Imovel.findAll({
         where: filtrosExpandidos,
         limit: 20,
+<<<<<<< HEAD
+=======
+        include: INCLUDE_OPTIONS
+>>>>>>> origin/develop
       });
     }
 

@@ -5,7 +5,7 @@ import HomeFooter from "@/components/home/HomeFooter";
 import HomeNavbar from "@/components/home/HomeNavbar";
 import { mockImoveis } from "@/mock/imoveis";
 import "@/styles/imoveis.css";
-import { Input } from "antd";
+import { Input, Divider } from "antd";
 import "leaflet/dist/leaflet.css";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -20,27 +20,46 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useSEO } from "@/hooks/useSEO";
+import { FaArrowRight } from "react-icons/fa6";
+import axios from "axios";
 
 const { Search } = Input;
-const onSearch = (value) => console.log(value);
+const onSearch = async (value) => {
+  if (!value) return;
+  try {
+    const res = await fetch(
+      `${process.env.API_URL}/search/simples?endereco=${encodeURIComponent(
+        value
+      )}`,
+      { method: "GET" }
+    );
+    if (!res.ok) throw new Error("Erro ao buscar imóveis");
+    const data = await res.json();
+    // Atualiza a lista de imóveis exibida
+    setImoveis(data);
+  } catch (err) {
+    console.error("Erro na pesquisa:", err);
+  }
+};
 
 // Componente de mapa carregado dinamicamente
 const LeafletMap = dynamic(
   () =>
-    Promise.resolve(() => {
+    Promise.resolve(({ latitude, longitude }) => {
+      const mapRef = useRef(null);
+
       useEffect(() => {
-        const mapContainer = document.getElementById("map-pequeno");
-        if (!mapContainer || mapContainer.children.length > 0) return;
+        if (mapRef.current) return; // evita recriar
 
         import("leaflet").then((L) => {
-          const map = L.map(mapContainer, { zoomControl: false }).setView(
-            [-23.5505, -46.6333],
+          mapRef.current = L.map("map-pequeno", { zoomControl: false }).setView(
+            [latitude, longitude],
             13
           );
 
           L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: "© OpenStreetMap contributors",
-          }).addTo(map);
+          }).addTo(mapRef.current);
 
           const customIcon = L.icon({
             iconUrl: "/images/icon_loc.png",
@@ -49,13 +68,22 @@ const LeafletMap = dynamic(
             popupAnchor: [0, -32],
           });
 
-          L.marker([-23.5505, -46.6333], { icon: customIcon }).addTo(map);
+          L.marker([latitude, longitude], { icon: customIcon }).addTo(
+            mapRef.current
+          );
         });
-      }, []);
+
+        return () => {
+          if (mapRef.current) {
+            mapRef.current.remove();
+            mapRef.current = null;
+          }
+        };
+      }, [latitude, longitude]);
 
       return <div id="map-pequeno" className="mapa-pequeno" />;
     }),
-  { ssr: false } // garante que só renderize no cliente
+  { ssr: false }
 );
 
 export default function Mapa() {
@@ -68,15 +96,62 @@ export default function Mapa() {
   const { id } = useParams();
 
   useEffect(() => {
-    setLoading(true);
-    setImoveis(mockImoveis);
-    setLoading(false);
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (!userInfo || !id) return;
+
+    const registrarVisita = async () => {
+      try {
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/recomendacao_imovel`,
+          {
+            usuario_id: userInfo.id,
+            imovel_id: Number(id),
+            data_visita: new Date().toISOString().slice(0, 10),
+          }
+        );
+      } catch (err) {
+        console.error("Erro ao registrar visita:", err);
+      }
+    };
+
+    registrarVisita();
   }, []);
+
+  useEffect(() => {
+    const fetchImovel = async () => {
+      try {
+        setLoading(true);
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        
+        // Buscar dados do imóvel
+        const imovelResponse = await axios.get(`${apiUrl}/imoveis/${id}`);
+        const imovelData = imovelResponse.data;
+        
+        // Buscar imagens do imóvel
+        const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
+        const imagesData = imagesResponse.data;
+        
+        // Combinar dados do imóvel com imagens
+        const imovelCompleto = {
+          ...imovelData,
+          imagens: imagesData
+        };
+        
+        setImoveis([imovelCompleto]);
+        setLoading(false);
+      } catch (error) {
+        console.error("Erro ao carregar imóvel:", error);
+        setLoading(false);
+      }
+    };
+    
+    fetchImovel();
+  }, [id]);
 
   useEffect(() => {
     if (descricaoRef.current) {
       const alturaTotal = descricaoRef.current.scrollHeight;
-      const alturaLimitada = 100; // altura máxima do .descricao-reduzida
+      const alturaLimitada = 100;
       setMostrarBotao(alturaTotal > alturaLimitada);
     }
   }, [imoveis]);
@@ -84,14 +159,25 @@ export default function Mapa() {
   // Encontrar o imóvel atual
   const post = imoveis.find((p) => p.id === Number(id));
   const imovelAtual = post;
-  
+
   // SEO dinâmico para imóvel específico - sempre chamado
   useSEO({
-    title: imovelAtual ? `${imovelAtual.tipo} em ${imovelAtual.endereco}` : "Imóvel",
-    description: imovelAtual ? `${imovelAtual.tipo} com ${imovelAtual.quartos} quartos, ${imovelAtual.banheiros} banheiros em ${imovelAtual.endereco}. ${imovelAtual.descricao?.substring(0, 120) || 'Imóvel de qualidade em excelente localização.'}` : "Imóvel de qualidade em excelente localização.",
-    keywords: imovelAtual ? `${imovelAtual.tipo}, ${imovelAtual.endereco}, imóvel, ${imovelAtual.quartos} quartos, ${imovelAtual.banheiros} banheiros, ${imovelAtual.operacao}` : "imóvel, casa, apartamento",
+    title: imovelAtual
+      ? `${imovelAtual.tipo} em ${imovelAtual.endereco}`
+      : "Imóvel",
+    description: imovelAtual
+      ? `${imovelAtual.tipo} com ${imovelAtual.casa?.quartos || 0} quartos, ${
+          imovelAtual.casa?.banheiros || 0
+        } banheiros em ${imovelAtual.endereco}. ${
+          imovelAtual.descricao?.substring(0, 120) ||
+          "Imóvel de qualidade em excelente localização."
+        }`
+      : "Imóvel de qualidade em excelente localização.",
+    keywords: imovelAtual
+      ? `${imovelAtual.tipo}, ${imovelAtual.endereco}, imóvel, ${imovelAtual.casa?.quartos || 0} quartos, ${imovelAtual.casa?.banheiros || 0} banheiros`
+      : "imóvel, casa, apartamento",
     url: `https://imobiliaria-bortone.vercel.app/imoveis/${id}`,
-    image: imovelAtual?.imagens?.[0]?.url_imagem
+    image: imovelAtual?.imagens?.[0]?.url_imagem,
   });
 
   if (loading) return <div>Carregando...</div>;
@@ -136,7 +222,7 @@ export default function Mapa() {
                 <SwiperSlide key={idx} className="flex justify-center">
                   <div className="slide-card w-full">
                     <Image
-                      src={slide.url_imagem}
+                      src={`${process.env.NEXT_PUBLIC_API_URL}/images/imoveis/${slide.url_imagem}`}
                       alt={`Imóvel ${imovelAtual.id}`}
                       width={407}
                       height={195}
@@ -150,7 +236,7 @@ export default function Mapa() {
             slides.map((slide, idx) => (
               <div key={idx} className="slide-card w-full">
                 <Image
-                  src={slide.url_imagem}
+                  src={`${process.env.NEXT_PUBLIC_API_URL}/images/imoveis/${slide.url_imagem}`}
                   alt={`Imóvel ${imovelAtual.id}`}
                   width={407}
                   height={195}
@@ -176,14 +262,14 @@ export default function Mapa() {
           <div className="descricao">
             <div className="Dtexto">
               <div className="t1">
-                {imovelAtual.tipo === "Casa" ||
-                imovelAtual.tipo === "Apartamento" ? (
+                {imovelAtual.tipo.toLowerCase() === "casa" ||
+                imovelAtual.tipotoLowerCase() === "Apartamento" ? (
                   <>
                     <p>{imovelAtual.tipo}</p>
                     <p className="T1ponto"> • </p>
                     <p>{imovelAtual.area}m²</p>
                   </>
-                ) : imovelAtual.tipo === "Terreno" ? (
+                ) : imovelAtual.tipotoLowerCase() === "Terreno" ? (
                   <>
                     <p>{imovelAtual.tipo}</p>
                   </>
@@ -198,13 +284,13 @@ export default function Mapa() {
                       <BsDoorOpenFill />
                     </div>
                     <p className="!text-lg md:!text-2xl">
-                      {imovelAtual.quartos} quartos
+                      {imovelAtual.casa?.quartos || 0} quartos
                     </p>
                     <div className="h-auto flex items-center justify-center !text-lg md:!text-2xl">
                       <PiBathtub />
                     </div>
                     <p className="!text-lg md:!text-2xl">
-                      {imovelAtual.banheiros} banheiros
+                      {imovelAtual.casa?.banheiros || 0} banheiros
                     </p>
                   </>
                 ) : imovelAtual.tipo === "Terreno" ? (
@@ -224,7 +310,9 @@ export default function Mapa() {
               <p className="Gimovel">Gostou do imóvel?</p>
             </div>
             <div className="Dbotoes">
-              <button className="btn1">Agendar visita</button>
+              <Link href={`/agendamento/${imovelAtual.id}`}>
+                <button className="btn1">Agendar visita</button>
+              </Link>
               <button className="btn2">Propor valor</button>
             </div>
             <div className="md:pl-[10%] flex md:hidden absolute bottom-10 pl-[4%]">
@@ -256,20 +344,13 @@ export default function Mapa() {
         <div className="todo2">
           <div className="map_loc">
             <Link className="ir_loc" href="/mapa">
-              <div className="Ltxt">
-                <p>{imovelAtual.endereco}</p>
-                <p className="p2">{imovelAtual.cidade}</p>
+              <div>
+                <p className="text-[var(--primary)] text-xl">
+                  {imovelAtual.endereco}
+                </p>
+                <p className="text-[var(--primary)]">{imovelAtual.cidade}</p>
               </div>
-              <div className="ir_loc_icon">
-                <Image
-                  src="/images/icon_setaD.png"
-                  alt="icon_setaD"
-                  width={15}
-                  height={17}
-                  className="icon_setaD"
-                  link="/mapa"
-                />
-              </div>
+              <FaArrowRight color="#304383" />
             </Link>
 
             <LeafletMap
@@ -303,7 +384,7 @@ export default function Mapa() {
           </div>
         </div>
 
-        <hr className="linha-divisoria" />
+        <Divider size="large" />
       </main>
 
       <HomeFooter />

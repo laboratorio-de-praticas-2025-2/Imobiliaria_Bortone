@@ -64,7 +64,14 @@ export default function CriarBannerPage() {
               {/* Coluna do Formulário */}
               <div className="sm:w-[60%] flex flex-col gap-3 items-end">
                 <div className="flex flex-col sm:flex-row w-full justify-between items-center gap-3">
-
+                  <TextField
+                    name="titulo"
+                    label="Título do banner (opcional)"
+                    placeholder="Título do banner"
+                    className="!w-[100%]"
+                    value={titulo}
+                    onChange={(e) => setTitulo(e.target.value)}
+                  />
                   <UploadField
                     name="imagem"
                     label="Imagem do Banner"
@@ -90,26 +97,36 @@ export default function CriarBannerPage() {
                 </div>
                 <TextAreaField
                   name="descricao"
-                  label="Descrição"
-                  placeholder="Corpo da descrição"
+                  label="Descrição (opcional)"
+                  placeholder="Descrição do banner"
                   rows={18}
                   className="!w-full !h-full"
+                  value={descricao}
+                  onChange={(e) => setDescricao(e.target.value)}
                 />
                 <FormButton
-                  text="Publicar"
+                  text="Criar Banner"
                   className="!hidden sm:!flex"
                   icon={<UploadOutlined />}
                 />
               </div>
 
               <div className="sm:w-[40%] hidden sm:flex">
-                <PreviaBanner fileList={fileList} />
+                <PreviaBanner 
+                  fileList={fileList} 
+                  titulo={titulo}
+                  descricao={descricao}
+                />
               </div>
 
               <div className="sm:hidden w-full flex flex-col gap-3.5 items-center">
-                <PreviaBanner fileList={fileList} />
+                <PreviaBanner 
+                  fileList={fileList} 
+                  titulo={titulo}
+                  descricao={descricao}
+                />
                 <FormButton
-                  text="Publicar"
+                  text="Criar Banner"
                   className="!flex !sm:hidden"
                   icon={<UploadOutlined />}
                 />

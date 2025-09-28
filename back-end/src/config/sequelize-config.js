@@ -16,13 +16,13 @@ const sequelize = new Sequelize(
 );
 
 // Teste de conexão (opcional, mas recomendado)
-//(async () => {
- // try {
-   // await sequelize.authenticate();
-    //console.log("✅ Conexão com o banco estabelecida com sucesso!");
-  //} catch (error) {
-    //console.error("❌ Erro ao conectar com banco de dados:", error.message);
-  //}
-//})();
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("✅ Conexão com o banco estabelecida com sucesso!");
+  } catch (error) {
+    console.error("❌ Erro ao conectar com banco de dados:", error.message);
+  }
+})();
 
 export default sequelize;

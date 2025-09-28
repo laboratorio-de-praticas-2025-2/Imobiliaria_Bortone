@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useSEO } from "@/hooks/useSEO";
 import { getSEOConfig } from "@/config/seo";
 
-const isLoggedIn = false;
+const isLoggedIn = true;
 
 export default function Home() {
   // SEO para página inicial

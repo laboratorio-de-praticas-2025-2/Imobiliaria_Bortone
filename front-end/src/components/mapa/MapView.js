@@ -1,12 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import "leaflet/dist/leaflet.css";
+import React from "react";
+import { handleImgError } from "../../utils/imageFallback";
 import { useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 import ImovelMarker from "./ImovelMarker";
 import LocationButton from "./LocationButton";
 import L from "leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
+
+// Corrige o caminho dos ícones padrão do Leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+});
 
 const casaIcon = new L.Icon({
   iconUrl: "images/icons/casa.png",
@@ -20,8 +31,12 @@ function ZoomButtons() {
 
   return (
     <div className="zoom-buttons">
-      <button className="zoom-in" onClick={() => map.zoomIn()}>+</button>
-      <button className="zoom-out" onClick={() => map.zoomOut()}>−</button>
+      <button className="zoom-in" onClick={() => map.zoomIn()}>
+        +
+      </button>
+      <button className="zoom-out" onClick={() => map.zoomOut()}>
+        −
+      </button>
     </div>
   );
 }
@@ -32,17 +47,25 @@ export default function MapView({ imoveis }) {
 
   const handleHover = (imovel, map) => {
     setHoverImovel(imovel);
-    const point = map.latLngToContainerPoint([imovel.latitude, imovel.longitude]);
+    const point = map.latLngToContainerPoint([
+      imovel.latitude,
+      imovel.longitude,
+    ]);
     setCardPosition({ x: point.x, y: point.y });
+  };
+
+  const handleLeave = () => {
+    setTimeout(() => setHoverImovel(null), 100); // delay para evitar flicker
   };
 
   return (
     <div className="map-container">
       <MapContainer
+        key={JSON.stringify(imoveis.map((i) => i.id))} // força remount se os imóveis mudarem
         center={[-23.5, -46.6]}
         zoom={13}
         scrollWheelZoom={true}
-        zoomControl={false} // desativa zoom padrão
+        zoomControl={false}
         className="w-full h-full"
       >
         <TileLayer
@@ -50,23 +73,30 @@ export default function MapView({ imoveis }) {
           attribution="&copy; OpenStreetMap contributors"
         />
 
-        {imoveis.map((imovel) => (
-          <ImovelMarker
-            key={imovel.id}
-            imovel={imovel}
-            icon={casaIcon}
-            onHover={handleHover}
-            onLeave={() => setHoverImovel(null)}
-          />
-        ))}
+        <MarkerClusterGroup
+          chunkedLoading
+          showCoverageOnHover={false}
+          spiderfyOnMaxZoom={true}
+          maxClusterRadius={40}
+        >
+          {imoveis.map((imovel) => (
+            <ImovelMarker
+              key={imovel.id}
+              imovel={imovel}
+              icon={casaIcon}
+              onHover={handleHover}
+              onLeave={handleLeave}
+            />
+          ))}
+        </MarkerClusterGroup>
 
         <div className="map-controls">
-            <div className="location-button-wrapper">
-                <LocationButton />
-            </div>
-            <div className="zoom-button-wrapper">
-                <ZoomButtons />
-            </div>
+          <div className="location-button-wrapper">
+            <LocationButton />
+          </div>
+          <div className="zoom-button-wrapper">
+            <ZoomButtons />
+          </div>
         </div>
       </MapContainer>
 
@@ -79,9 +109,14 @@ export default function MapView({ imoveis }) {
           }}
         >
           <img
-            src={hoverImovel.imagem}
+            src={
+              (hoverImovel.imagens && hoverImovel.imagens.length > 0 && hoverImovel.imagens[0].url_imagem) ||
+              hoverImovel.imagem ||
+              "/404.png"
+            }
             alt="Imagem do imóvel"
             className="w-full h-32 object-cover mb-2 rounded"
+            onError={handleImgError}
           />
           <a className="card-preco">
             <p>R$ {hoverImovel.preco.toLocaleString()}</p>

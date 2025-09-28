@@ -5,6 +5,7 @@ import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
 import { useEffect, useState } from "react";
 import { FaImage } from "react-icons/fa6";
+import axios from "axios";
 
 // URL base do backend
 const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
@@ -43,6 +44,10 @@ const toggleStatus = async (id) => {
 
 export default function CmsBannerPage() {
   const [banners, setBanners] = useState([]);
+  const [filteredBanners, setFilteredBanners] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterData, setFilterData] = useState({});
+
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -129,12 +134,17 @@ export default function CmsBannerPage() {
               buttonIcon={<FaImage />}
               onSearch={onSearch}
               href={"/admin/cms-banner/criar"}
-              handleSelectOrder={handleSelectOrder}
               filterData={filterData}
+              handleSelectOrder={handleSelectOrder}
               updateFilterData={updateFilterData}
             />
             <CMS.TableBody>
-              {paginatedBanners.length > 0 ? (
+              {isLoading ? (
+                <div className="flex justify-center items-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                  <span className="ml-2">Carregando...</span>
+                </div>
+              ) : getCurrentPageItems().length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-center">
                   {paginatedBanners.map(banner => (
                     <Card
@@ -151,9 +161,10 @@ export default function CmsBannerPage() {
               )}
             </CMS.TableBody>
             <CMS.TableFooter
-              postsData={banners}
-              pageSize={pageSize}
-              onPageChange={setCurrentPage}
+              postsData={pagination}
+              pageSize={pagination.itemsPerPage}
+              onPageChange={handlePageChange}
+              currentPage={currentPage}
             />
           </CMS.Table>
         </CMS.Body>

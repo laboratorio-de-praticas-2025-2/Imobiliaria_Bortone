@@ -17,7 +17,12 @@ const ImagemImovel = connection.define("imagem_imovel", {
     },
     descricao: {
         type: Sequelize.STRING,
+<<<<<<< HEAD
         allowNull: false
+=======
+        allowNull: true,
+        defaultValue: "Imagem do imóvel"
+>>>>>>> origin/develop
     }},
     {
     tableName: 'imagem_imovel',
