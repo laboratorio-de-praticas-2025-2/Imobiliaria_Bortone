@@ -72,7 +72,7 @@ export default function PdfModal({
                   <div className="flex gap-3 mt-7 justify-between">
                     <button
                       className="bg-white !text-[var(--primary)] !font-bold md:px-10 px-3 rounded-full"
-                      onClick={onPrint}
+                      onClick={onDownload}
                     >
                       Baixar PDF
                     </button>

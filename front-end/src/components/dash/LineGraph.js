@@ -166,7 +166,7 @@ export default function LineGraph({ alugueisPorMes }) {
 
         <div className="items-center justify-items-center w-full h-full">
           <div className="w-full h-[250px] md:h-[300px]" ref={containerRef}>
-            {isContainerReady ? (
+            {isReady ? (
               <Line data={data} options={options} />
             ) : (
               <div className="flex items-center justify-center h-full">

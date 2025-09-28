@@ -7,6 +7,7 @@ import RelatorioTable from "@/components/cms/table/RelatorioTable";
 import { getRelatorioData } from "@/services/RelatorioService";
 import { message } from "antd";
 import { useRef, useState } from "react";
+import { exportRelatorioToPdf } from "@/utils/pdfUtils";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { useReactToPrint } from "react-to-print";
 
@@ -110,15 +111,16 @@ export default function TableRelatorio() {
   };
 
   // PDF Modal handlers
-  const handleDownload = () => {
-    const url = "/relatorios/Relatorio-Exemplo.pdf";
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "Relatorio-Exemplo.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    showToast("Relatorio-Exemplo.pdf", "Download concluído");
+  const handleDownload = async () => {
+    try {
+      if (!componentToPrintRef.current) throw new Error('Ref não encontrado');
+      const fileName = record ? `${record.pdfNome}.pdf` : 'Relatorio-Imobiliaria-Bortone.pdf';
+      await exportRelatorioToPdf(componentToPrintRef.current, fileName);
+      showToast(fileName, 'Download concluído');
+    } catch (e) {
+      console.error(e);
+      message.error('Falha ao gerar PDF');
+    }
   };
   const handleShare = async () => {
     const fileUrl = "/relatorios/Relatorio-Exemplo.pdf";
