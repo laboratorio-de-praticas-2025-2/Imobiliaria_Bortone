@@ -2,7 +2,7 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
-import { handleImgError } from "@/utils/imageFallback";
+import { handleImgError } from "../../utils/imageFallback";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
