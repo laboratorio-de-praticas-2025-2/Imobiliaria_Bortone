@@ -1,6 +1,7 @@
 "use client";
 import { Card, Col, ConfigProvider, Pagination, Row } from "antd";
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -15,9 +16,22 @@ export default function Cards({ searchTerm = "" }) {
   const paginatedPosts = posts.slice(startIndex, startIndex + pageSize);
 
   const buildImage = (apiUrl, url) => {
-    if (!url) return "";
-    if (url.startsWith("/")) return `${apiUrl}${url}`;
-    return url;
+    if (!url) return "/404.png"; // Fallback image
+    
+    // Normalizar URL da imagem
+    let imageUrl = url;
+    
+    // Se não começar com /, adicionar prefixo padrão para imagens de blog
+    if (!imageUrl.startsWith("/")) {
+      imageUrl = `/images/blogImages/${imageUrl}`;
+    }
+    
+    // Se for caminho relativo e tiver API URL, montar URL absoluta
+    if (imageUrl.startsWith("/images/") && apiUrl) {
+      return `${apiUrl}${imageUrl}`;
+    }
+    
+    return imageUrl;
   };
 
   useEffect(() => {
@@ -82,12 +96,17 @@ export default function Cards({ searchTerm = "" }) {
                 <Card hoverable>
                   <div className="relative h-120 rounded-3xl overflow-hidden group">
                     {/* Imagem com filtro */}
-                    <div
-                      className="absolute inset-0 bg-cover bg-center brightness-80  group-hover:brightness-60 group-hover:saturate-70 group-hover:blur-10  transition-all duration-300 "
-                      style={{
-                        backgroundImage: `url(${paginatedPosts[0].url_imagem})`,
-                      }}
-                    />
+                    <div className="absolute inset-0">
+                      <Image
+                        src={paginatedPosts[0].url_imagem}
+                        alt={paginatedPosts[0].titulo}
+                        fill
+                        className="object-cover brightness-80 group-hover:brightness-60 group-hover:saturate-70 group-hover:blur-10 transition-all duration-300"
+                        onError={(e) => {
+                          e.target.src = "/404.png";
+                        }}
+                      />
+                    </div>
                     {/* Conteúdo sobreposto sem filtro */}
                     <div className="relative z-10 p-6 py-10 flex flex-col justify-end h-full">
                       <h2 className="text-white font-bold md:text-3xl text-xl lemon-milk">
@@ -123,10 +142,17 @@ export default function Cards({ searchTerm = "" }) {
                 <Card hoverable>
                   <div className="relative h-130 rounded-3xl overflow-hidden group">
                     {/* Imagem com filtro */}
-                    <div
-                      className="absolute inset-0 bg-cover bg-center brightness-80  group-hover:brightness-60 group-hover:saturate-70 transition-all duration-300"
-                      style={{ backgroundImage: `url(${post.url_imagem})` }}
-                    />
+                    <div className="absolute inset-0">
+                      <Image
+                        src={post.url_imagem}
+                        alt={post.titulo}
+                        fill
+                        className="object-cover brightness-80 group-hover:brightness-60 group-hover:saturate-70 transition-all duration-300"
+                        onError={(e) => {
+                          e.target.src = "/404.png";
+                        }}
+                      />
+                    </div>
                     {/* Conteúdo sobreposto sem filtro */}
                     <div className="relative z-10 p-6 py-10 flex flex-col justify-end h-full">
                       <h2 className="text-white font-bold md:text-3xl text-xl lemon-milk">
