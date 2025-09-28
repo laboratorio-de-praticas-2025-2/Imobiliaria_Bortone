@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React from "react";
+import { handleImgError } from "@/utils/imageFallback";
 import { FaShoppingCart } from "react-icons/fa";
 import { RiMessage2Fill } from "react-icons/ri";
 import { PiBathtub } from "react-icons/pi";
@@ -16,9 +17,14 @@ export default function CardMapa({ imovel }) {
       {/* Imagem do imóvel */}
       <div className="w-full h-28 sm:h-36 border-0 rounded-lg overflow-hidden relative">
         <img
-          src={imovel.imagens[0].url_imagem}
+          src={
+            (imovel.imagens && imovel.imagens.length > 0 && imovel.imagens[0].url_imagem) ||
+            imovel.imagem ||
+            "/404.png"
+          }
           alt={`Imagem do imóvel ${imovel.id}`}
           className="w-full h-full object-cover rounded-md transform transition-transform duration-500 group-hover:scale-105"
+          onError={handleImgError}
         />
       </div>
 

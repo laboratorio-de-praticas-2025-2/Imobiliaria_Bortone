@@ -2,7 +2,7 @@
 import Card from "@/components/cms/Card";
 import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import axios from "axios";
 
@@ -23,69 +23,23 @@ export default function CmsPublicidadePage() {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    loadPublicidades();
-  }, []);
-
-  useEffect(() => {
-    if (searchTerm.trim() === "") {
-      setFilteredPublicidades(publicidades);
-      if (publicidades.length > 0) {
-        const isApiPaginated = pagination.totalItems > publicidades.length;
-        if (!isApiPaginated) {
-          setPagination((prev) => {
-            const totalPages = Math.max(
-              1,
-              Math.ceil(publicidades.length / prev.itemsPerPage)
-            );
-            return {
-              ...prev,
-              currentPage: currentPage,
-              totalItems: publicidades.length,
-              totalPages,
-              hasNextPage: currentPage < totalPages,
-              hasPreviousPage: currentPage > 1,
-            };
-          });
-        }
-      } else {
-        setPagination(prev => ({
-          ...prev,
-          totalItems: 0,
-          totalPages: 1,
-          hasNextPage: false,
-          hasPreviousPage: false
-        }));
+  const buildQueryParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (filterData.order) {
+      if (filterData.order === "Ordem alfabetica") {
+        params.append('ordenarPor', 'alfabetica');
+        params.append('direcao', 'ASC');
+      } else if (filterData.order === "Data de inclusão") {
+        params.append('ordenarPor', 'data');
+        params.append('direcao', 'DESC');
       }
-    } else {
-      const term = searchTerm.toLowerCase();
-      const filtered = publicidades.filter(publicidade =>
-        (publicidade.titulo || "").toLowerCase().includes(term) ||
-        (publicidade.conteudo || "").toLowerCase().includes(term)
-      );
-      setFilteredPublicidades(filtered);
-      setCurrentPage(1);
-      setPagination(prev => {
-        const totalPages = Math.max(1, Math.ceil(filtered.length / prev.itemsPerPage));
-        return {
-          ...prev,
-          currentPage: 1,
-          totalItems: filtered.length,
-          totalPages,
-          hasNextPage: totalPages > 1,
-          hasPreviousPage: false
-        };
-      });
     }
-  }, [searchTerm, publicidades, currentPage]);
-
-  useEffect(() => {
-    if (searchTerm.trim() === "") {
-      loadPublicidades();
-    }
+    params.append('page', currentPage.toString());
+    params.append('limit', '12');
+    return params;
   }, [filterData.order, currentPage]);
 
-  const loadPublicidades = async () => {
+  const loadPublicidades = useCallback(async () => {
     try {
       setIsLoading(true);
       const params = new URLSearchParams();
@@ -143,7 +97,65 @@ export default function CmsPublicidadePage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [buildQueryParams]);
+
+  useEffect(() => {
+    loadPublicidades();
+  }, [loadPublicidades]);
+
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setFilteredPublicidades(publicidades);
+      if (publicidades.length > 0) {
+        const isApiPaginated = pagination.totalItems > publicidades.length;
+        if (!isApiPaginated) {
+          setPagination(prev => ({
+            ...prev,
+            currentPage,
+            totalItems: publicidades.length,
+            totalPages: Math.ceil(publicidades.length / prev.itemsPerPage),
+            hasNextPage: currentPage < Math.ceil(publicidades.length / prev.itemsPerPage),
+            hasPreviousPage: currentPage > 1
+          }));
+        }
+      } else {
+        setPagination(prev => ({
+          ...prev,
+          totalItems: 0,
+          totalPages: 1,
+          hasNextPage: false,
+          hasPreviousPage: false
+        }));
+      }
+    } else {
+      const term = searchTerm.toLowerCase();
+      const filtered = publicidades.filter(publicidade =>
+        (publicidade.titulo || "").toLowerCase().includes(term) ||
+        (publicidade.conteudo || "").toLowerCase().includes(term)
+      );
+      setFilteredPublicidades(filtered);
+      setCurrentPage(1);
+      setPagination(prev => {
+        const totalPages = Math.max(1, Math.ceil(filtered.length / prev.itemsPerPage));
+        return {
+          ...prev,
+          currentPage: 1,
+          totalItems: filtered.length,
+          totalPages,
+          hasNextPage: totalPages > 1,
+          hasPreviousPage: false
+        };
+      });
+    }
+  }, [searchTerm, publicidades, pagination.totalItems, currentPage]);
+
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      loadPublicidades();
+    }
+  }, [filterData.order, currentPage, searchTerm, loadPublicidades]);
+
+  // removida versão antiga de loadPublicidades substituída por useCallback
 
   const onSearch = (value) => {
     setSearchTerm(value);
@@ -156,11 +168,16 @@ export default function CmsPublicidadePage() {
   };
 
   const handleSelectOrder = (value) => {
+    console.log("=== ORDENAÇÃO SELECIONADA ===");
+    console.log("Valor selecionado:", value);
+    console.log("filterData antes:", filterData);
     setFilterData((prev) => {
       const newFilterData = { ...prev, order: value };
+      console.log("filterData depois:", newFilterData);
       return newFilterData;
     });
     setCurrentPage(1);
+    console.log("=============================");
   };
 
   const updateFilterData = (newData) => {
@@ -168,6 +185,7 @@ export default function CmsPublicidadePage() {
   };
 
   const handlePageChange = (newPage) => {
+    console.log("Mudando para página:", newPage);
     setCurrentPage(newPage);
   };
 

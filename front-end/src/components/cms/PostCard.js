@@ -8,6 +8,7 @@ import Link from "next/link";
 
 export default function PostCard({ item, onDelete }) {
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const onDeleteClick = () => {
     setIsConfirmModalVisible(true);
@@ -25,6 +26,28 @@ export default function PostCard({ item, onDelete }) {
     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
   };
 
+  // Função para normalizar URL da imagem
+  const buildImageUrl = (url) => {
+    if (!url) return "/404.png";
+    
+    let imageUrl = url;
+    
+    // Se não começar com /, adicionar prefixo padrão para imagens de blog
+    if (!imageUrl.startsWith("/")) {
+      imageUrl = `/images/blogImages/${imageUrl}`;
+    }
+    
+    // Se for caminho relativo /images/... e existir NEXT_PUBLIC_API_URL, monta URL absoluta
+    const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+    const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
+    
+    if (imageUrl.startsWith("/images/") && apiUrl) {
+      return `${apiUrl}${imageUrl}`;
+    }
+    
+    return imageUrl;
+  };
+
   return (
     <>
       {isConfirmModalVisible && (
@@ -38,17 +61,31 @@ export default function PostCard({ item, onDelete }) {
         <p className="p-3 text-lg font-bold" title={item.titulo}>
           {truncate(item.titulo, 40)}
         </p>
-        {item.url_imagem ? (
+        {item.url_imagem && !imageError ? (
           <div className="aspect-[4/2] w-full overflow-hidden">
             <Image
-              src={item.url_imagem}
+              src={buildImageUrl(item.url_imagem)}
               alt={"Imagem do item " + item.id}
+              width={425}
+              height={130}
+              className="w-full h-full object-cover"
+              onError={() => {
+                setImageError(true);
+              }}
+            />
+          </div>
+        ) : (
+          <div className="aspect-[4/2] w-full overflow-hidden">
+            <Image
+              src="/404.png"
+              alt="Imagem não encontrada"
               width={425}
               height={130}
               className="w-full h-full object-cover"
             />
           </div>
-        ) : (
+        )}
+        {!item.url_imagem && (
           <div className="aspect-[4/2] w-full bg-gray-200 flex items-center justify-center">
             <span className="text-gray-500 text-sm">Sem imagem</span>
           </div>

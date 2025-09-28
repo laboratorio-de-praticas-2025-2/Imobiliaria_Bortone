@@ -1,6 +1,6 @@
 import { options, quantityOptions, quantityVagasOptions } from "@/mock/filters";
 import { Flex } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DropdownFilter from "@/components/vitrine/DropdownFilter";
 import BotaoPesquisar from "@/components/vitrine/PesquisaAvancada/BotaoPesquisar";
 import QuantidadeComodos from "@/components/vitrine/PesquisaAvancada/QuantidadeComodos";
@@ -8,30 +8,42 @@ import SliderArea from "@/components/vitrine/PesquisaAvancada/SliderArea";
 import SliderPreco from "@/components/vitrine/PesquisaAvancada/SliderPreco";
 import ToggleCompraAluguel from "@/components/vitrine/PesquisaAvancada/ToggleCompraAluguel";
 
-export default function PesquisaAvancadaModal() {
-  const [selectedQuartos, setSelectedQuartos] = useState(null);
-  const [selectedBanheiros, setSelectedBanheiros] = useState(null);
-  const [selectedVagas, setSelectedVagas] = useState(null);
-  const [selectedTipo, setSelectedTipo] = useState("Casa");
-  const [preco, setPreco] = useState([150000, 400000]);
-  const [area, setArea] = useState([100, 10000]);
-  const [tipoNegocio, setTipoNegocio] = useState("Comprar");
+export default function PesquisaAvancadaModal({
+  onClose,
+  filterData,
+  updateFilterData,
+  onAdvancedSearch,
+}) {
+  const [selectedQuartos, setSelectedQuartos] = useState(filterData.quartos || null);
+  const [selectedBanheiros, setSelectedBanheiros] = useState(filterData.banheiros || null);
+  const [selectedVagas, setSelectedVagas] = useState(filterData.vagas || null);
+  const [selectedTipo, setSelectedTipo] = useState(filterData.tipo || "Casa");
+  const [preco, setPreco] = useState(filterData.preco || [150000, 400000]);
+  const [area, setArea] = useState(filterData.area || [100, 10000]);
+  const [tipoNegocio, setTipoNegocio] = useState(filterData.tipoNegocio || "venda");
+
+  useEffect(() => {
+    setSelectedQuartos(filterData.quartos || null);
+    setSelectedBanheiros(filterData.banheiros || null);
+    setSelectedVagas(filterData.vagas || null);
+    setSelectedTipo(filterData.tipo || "Casa");
+    setTipoNegocio(filterData.tipoNegocio || "Comprar");
+  }, [filterData]);
 
   const handlePesquisar = () => {
-    const filtros = {
+    const filters = {
       tipoNegocio,
       tipo: selectedTipo,
       preco,
-      ...(selectedTipo === "Casa" && {
-        quartos: selectedQuartos,
-        banheiros: selectedBanheiros,
-        vagas: selectedVagas,
-      }),
-      ...(selectedTipo === "Terreno" && { area }),
+      quartos: selectedTipo === "Casa" ? selectedQuartos : null,
+      banheiros: selectedTipo === "Casa" ? selectedBanheiros : null,
+      vagas: selectedTipo === "Casa" ? selectedVagas : null,
     };
-
-    console.log("Filtros enviados:", filtros);
-    // Aqui você pode fazer a requisição com os filtros
+    if (selectedTipo === "Terreno") {
+      filters.area = area;
+    }
+    onAdvancedSearch(filters);
+    onClose();
   };
 
   return (
@@ -45,14 +57,22 @@ export default function PesquisaAvancadaModal() {
             selected={selectedTipo}
             handleSelect={setSelectedTipo}
           />
-          <SliderPreco value={preco} onChange={setPreco} />
+          <SliderPreco value={preco} onChange={(value) => { 
+            console.log("SliderPreco changed to:", value); 
+            setPreco(value); 
+            // updateFilterData({ preco: value }); 
+          }} />
           {selectedTipo === "Terreno" && (
-            <SliderArea value={area} onChange={setArea} />
+            <SliderArea value={area} onChange={(value) => { 
+              console.log("SliderArea changed to:", value); 
+              setArea(value); 
+              // updateFilterData({ area: value }); 
+            }} />
           )}
           {selectedTipo === "Casa" && (
             <>
               <QuantidadeComodos
-                title="QuartosASDASDA"
+                title="Quartos"
                 selected={selectedQuartos}
                 setSelected={setSelectedQuartos}
                 quantity={quantityOptions}

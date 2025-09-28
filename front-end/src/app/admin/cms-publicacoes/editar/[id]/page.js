@@ -20,6 +20,26 @@ export default function EditarPostPage() {
   const [post, setPost] = useState(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [imageError, setImageError] = useState(false);
+
+  // Função para gerar URL da imagem com fallback
+  const getImageUrl = () => {
+    if (imageError || !post?.url_imagem) {
+      return "/404.png";
+    }
+    
+    let imageUrl = post.url_imagem;
+    if (!imageUrl.startsWith("/")) {
+      imageUrl = `/images/blogImages/${imageUrl}`;
+    }
+    const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+    const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
+    if (imageUrl.startsWith("/images/") && apiUrl) {
+      return `${apiUrl}${imageUrl}`;
+    }
+    return imageUrl;
+  };
+
   // Usaremos caminhos relativos para imagens (sem hostname) para evitar exigência de domains no Next/Image
 
   useEffect(() => {
@@ -117,15 +137,16 @@ export default function EditarPostPage() {
                     </div>
                   ) : (
                     <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5">
-                      {post?.url_imagem && (
-                        <Image
-                          src={post.url_imagem.startsWith('/') ? post.url_imagem : `/images/blogImages/${post.url_imagem}`}
-                          alt="Imagem atual"
-                          width={400}
-                          height={320}
-                          className="h-full w-full object-cover rounded-3xl"
-                        />
-                      )}
+                      <Image
+                        src={getImageUrl()}
+                        alt="Imagem atual"
+                        width={400}
+                        height={320}
+                        className="h-full w-full object-cover rounded-3xl"
+                        onError={() => {
+                          setImageError(true);
+                        }}
+                      />
                     </div>
                   )}
                 </div>
@@ -155,16 +176,17 @@ export default function EditarPostPage() {
                       height={400}
                       className="w-full h-auto rounded-3xl"
                     />
-                  ) : post?.url_imagem ? (
+                  ) : (
                     <Image
-                      src={post.url_imagem.startsWith('/') ? post.url_imagem : `/images/blogImages/${post.url_imagem}`}
+                      src={getImageUrl()}
                       alt="Imagem atual"
                       width={600}
                       height={400}
                       className="w-full h-auto rounded-3xl"
+                      onError={() => {
+                        setImageError(true);
+                      }}
                     />
-                  ) : (
-                    <div className="w-full h-80 bg-gray-200 rounded-3xl" />
                   )}
                 </div>
               </div>
@@ -179,16 +201,17 @@ export default function EditarPostPage() {
                       height={400}
                       className="w-full h-auto rounded-3xl"
                     />
-                  ) : post?.url_imagem ? (
+                  ) : (
                     <Image
-                      src={post.url_imagem.startsWith('/') ? post.url_imagem : `/images/blogImages/${post.url_imagem}`}
+                      src={getImageUrl()}
                       alt="Imagem atual"
                       width={600}
                       height={400}
                       className="w-full h-auto rounded-3xl"
+                      onError={() => {
+                        setImageError(true);
+                      }}
                     />
-                  ) : (
-                    <div className="w-full h-80 bg-gray-200 rounded-3xl" />
                   )}
                 </div>
                 <FormButton

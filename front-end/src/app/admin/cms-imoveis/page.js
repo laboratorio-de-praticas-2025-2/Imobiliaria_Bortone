@@ -12,6 +12,7 @@ import { IoMdPause } from "react-icons/io";
 import Link from "next/link";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import { createStyles } from "antd-style";
+import axios from "axios";
 
 const useStyle = createStyles(({ css, token }) => {
   const { antCls } = token;
@@ -35,27 +36,115 @@ export default function CmsUserPage() {
   const [imoveis, setImoveis] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
-  const [filterData, setFilterData] = useState({ order: null });
+  const [filterData, setFilterData] = useState({
+    order: null,
+    searchTerm: null,
+    advancedSearch: false, 
+    tipoNegocio: null,
+    tipo: null,
+    preco: null,
+    area: null,
+    quartos: null,
+    banheiros: null,
+    vagas: null,
+  });
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const [imovelToDelete, setImovelToDelete] = useState(null);
   const { styles } = useStyle();
 
-  const onDelete = () => {
+  const onDelete = (imovelId) => {
+    setImovelToDelete(imovelId);
     setIsConfirmModalVisible(true);
   };
 
-  const onConfirmDelete = () => {
-    console.log("Delete Confirmed");
-    setIsConfirmModalVisible(false);
+  const onConfirmDelete = async () => {
+    if (!imovelToDelete) return;
+    
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      await axios.delete(`${apiUrl}/imoveis/${imovelToDelete}`);
+      
+      setImoveis(prev => prev.filter(imovel => imovel.id !== imovelToDelete));
+      
+      console.log("Imóvel deletado com sucesso!");
+      setIsConfirmModalVisible(false);
+      setImovelToDelete(null);
+    } catch (error) {
+      console.error("Erro ao deletar imóvel:", error);
+      
+    }
   };
 
-  // toggle ativo / pausado
-  const handleToggleActive = (id) => {
-    setImoveis((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, ativo: !item.ativo } : item
-      )
-    );
+  
+  const handleToggleActive = async (id) => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const imovel = imoveis.find(item => item.id === id);
+      
+      if (!imovel) return;
+      
+      const newStatus = imovel.status === "indisponivel" ? "disponivel" : "indisponivel";
+      
+      await axios.patch(`${apiUrl}/imoveis/${id}/status`, { status: newStatus });
+      
+      setImoveis((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, status: newStatus } : item
+        )
+      );
+      
+      console.log(`Status do imóvel ${id} alterado para: ${newStatus}`);
+    } catch (error) {
+      console.error("Erro ao alterar status do imóvel:", error);
+    }
   };
+
+  const fetchImoveis = async () => {
+    try {
+      const queryParams = new URLSearchParams();
+      if (filterData.order) {
+        queryParams.append("order", filterData.order);
+      }
+      if (filterData.searchTerm) {
+        queryParams.append("searchTerm", filterData.searchTerm);
+      }
+      if (filterData.advancedSearch) {
+        if (filterData.tipoNegocio.toLowerCase() == "comprar") queryParams.append("tipo_negociacao", "venda");
+        else if (filterData.tipoNegocio.toLowerCase() == "alugar") queryParams.append("tipo_negociacao", "aluguel")
+        if (filterData.tipo) queryParams.append("tipo", filterData.tipo);
+        if (filterData.preco) {
+          queryParams.append("minPreco", filterData.preco[0]);
+          queryParams.append("maxPreco", filterData.preco[1]);
+        }
+        if (filterData.area) {
+          queryParams.append("minArea", filterData.area[0]);
+          queryParams.append("maxArea", filterData.area[1]);
+        }
+        if (filterData.quartos) queryParams.append("quartos", filterData.quartos);
+        if (filterData.banheiros) queryParams.append("banheiros", filterData.banheiros);
+        if (filterData.vagas) queryParams.append("vagas", filterData.vagas);
+      }
+
+      const requestUrl = `${process.env.NEXT_PUBLIC_API_URL}/imoveis?${queryParams.toString()}`;
+      console.log("Fetching data from endpoint:", requestUrl)
+      const response = await axios.get(
+        requestUrl
+      );
+      console.log("API Response Data:", response.data);
+      if (Array.isArray(response.data)) {
+        setImoveis(response.data);
+      } else {
+        console.warn("API did not return an array for imoveis, received:", response.data);
+        setImoveis([]); 
+      }
+    } catch (error) {
+      console.error("Error fetching imoveis:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchImoveis();
+  }, [filterData, currentPage]);
 
   const columns = [
     {
@@ -110,58 +199,58 @@ export default function CmsUserPage() {
     },
     {
       title: "Murado",
-      dataIndex: "possui_muro",
+      dataIndex:"murado",
       key: "murado",
       render: (value) => (value ? "Sim" : "-"),
     },
     {
       title: "Jardim",
-      dataIndex: "possui_jardim",
+      dataIndex: ['casa',"possui_jardim"],
       key: "jardim",
       render: (value) => (value ? "Sim" : "-"),
     },
     {
       title: "Quartos",
-      dataIndex: "quartos",
+      dataIndex: ['casa',"quartos"],
       key: "quartos",
     },
     {
       title: "Banheiros",
-      dataIndex: "banheiros",
+      dataIndex: ['casa',"banheiros"],
       key: "banheiros",
     },
     {
       title: "Vagas",
-      dataIndex: "vagas",
+      dataIndex: ['casa',"vagas"],
       key: "vagas",
     },
     {
       title: "Piscina",
-      dataIndex: "possui_piscina",
+      dataIndex: ['casa',"possui_piscina"],
       key: "piscina",
       render: (value) => (value ? "Sim" : "-"),
     },
-    // Coluna de Pause / Start
+    
     {
       title: "Ações",
       key: "acoes",
       fixed: "right",
-      width: 140, // ajuste conforme precisar
+      width: 140,
       render: (_, record) => (
         <div className="flex gap-4">
           {/* pause/play */}
           <button
             onClick={() => handleToggleActive(record.id)}
-            aria-label={record.ativo ? "Pausar" : "Iniciar"}
+            aria-label={record.status === "indisponivel" ? "Ativar" : "Pausar"}
             className="flex items-center"
           >
-            {record.ativo ? (
-              <IoMdPause
+            {record.status === "indisponivel" ? (
+              <FaPlay
                 size={22}
                 className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
               />
             ) : (
-              <FaPlay
+              <IoMdPause
                 size={22}
                 className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
               />
@@ -177,7 +266,7 @@ export default function CmsUserPage() {
           </Link>
 
           {/* excluir */}
-          <button onClick={onDelete}>
+          <button onClick={() => onDelete(record.id)}>
             <IoMdTrash
               size={22}
               className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
@@ -188,36 +277,54 @@ export default function CmsUserPage() {
     },
   ];
 
-  useEffect(() => {
-    setImoveis(mockImoveis);
-  }, []);
-
-  // fatia os imoveis conforme página, mantém o boolean 'ativo' e adiciona textos de exibição
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const paginatedMock = imoveis.slice(startIndex, endIndex).map((item) => ({
     ...item,
-    ativoText: item.ativo ? "Sim" : "-",
     verificadoText: item.verificado ? "Sim" : "-",
   }));
 
-  const onSearch = (value) => console.log("Search:", value);
+  const onSearch = (value) => {
+    setFilterData((prev) => ({
+      ...prev,
+      searchTerm: value || null,
+      advancedSearch: false,
+    }));
+  };
   const handleSelectOrder = (value) => {
-    setFilterData((prev) => ({ ...prev, order: value }));
-    console.log("Selected order:", value);
+    setFilterData((prev) => ({
+      ...prev,
+      order: value === "Ordenar por" ? null : value,
+      advancedSearch: false, 
+    }));
   };
   const updateFilterData = (newData) => {
-    setFilterData((prev) => ({ ...prev, ...newData }));
-    console.log("Update filter data:", newData);
+    setFilterData((prev) => {
+      const newState = { ...prev, ...newData };
+      console.log("FilterData after update:", newState);
+      return newState;
+    });
+  };
+
+  const handleAdvancedSearch = (filters) => {
+    setFilterData({
+      ...filters,
+      searchTerm: null, 
+      order: null,
+      advancedSearch: true, 
+    });
   };
 
   return (
     <>
       {isConfirmModalVisible && (
         <ConfirmModal
-          message="Você tem certeza que deseja excluir o registro definitivamente?"
+          message={`Você tem certeza que deseja excluir o imóvel ID ${imovelToDelete} definitivamente?`}
           onConfirm={onConfirmDelete}
-          onCancel={() => setIsConfirmModalVisible(false)}
+          onCancel={() => {
+            setIsConfirmModalVisible(false);
+            setImovelToDelete(null);
+          }}
         />
       )}
       <Sidebar />
@@ -233,6 +340,7 @@ export default function CmsUserPage() {
               filterData={filterData}
               updateFilterData={updateFilterData}
               type={"imovel"}
+              onAdvancedSearch={handleAdvancedSearch}
             />
             <CMS.TableBody table={true}>
               <Table
@@ -242,8 +350,7 @@ export default function CmsUserPage() {
                 pagination={false}
                 className={styles.customTable}
                 scroll={{ x: "max-content" }}
-                // aplica transparência na linha quando ativo === false
-                rowClassName={(record) => (record.ativo ? "" : "opacity-50")}
+                 rowClassName={(record) => (record.status === "indisponivel" ? "opacity-50" : "")}
               />
             </CMS.TableBody>
 

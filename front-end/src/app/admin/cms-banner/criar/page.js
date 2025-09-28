@@ -10,12 +10,50 @@ import Image from "next/image";
 import Sidebar from "@/components/cms/Sidebar";
 
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function CriarBannerPage() {
   const [fileList, setFileList] = useState([]);
+  const [titulo, setTitulo] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const router = useRouter();
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const onFinish = async (values) => {
+    try {
+      const formData = new FormData();
+      
+      if (values.titulo) {
+        formData.append("titulo", values.titulo);
+      }
+      if (values.descricao) {
+        formData.append("descricao", values.descricao);
+      }
+      formData.append("usuario_id", "1");
+      formData.append("ativo", "true");
+
+      if (fileList.length > 0 && fileList[0].originFileObj) {
+        formData.append("imagem", fileList[0].originFileObj);
+      } else {
+        alert("Por favor, selecione uma imagem para o banner!");
+        return;
+      }
+
+      const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+      const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
+
+      const response = await axios.post(`${apiUrl}/banner`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (response.status === 201) {
+        alert("Banner criado com sucesso!");
+        router.push("/admin/cms-banner");
+      }
+    } catch (error) {
+      console.error("Erro ao criar banner:", error);
+      alert("Não foi possível criar o banner.");
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -33,7 +71,14 @@ export default function CriarBannerPage() {
               {/* Coluna do Formulário */}
               <div className="sm:w-[60%] flex flex-col gap-3 items-end">
                 <div className="flex flex-col sm:flex-row w-full justify-between items-center gap-3">
-
+                  <TextField
+                    name="titulo"
+                    label="Título do banner (opcional)"
+                    placeholder="Título do banner"
+                    className="!w-[100%]"
+                    value={titulo}
+                    onChange={(e) => setTitulo(e.target.value)}
+                  />
                   <UploadField
                     name="imagem"
                     label="Imagem do Banner"
@@ -59,26 +104,36 @@ export default function CriarBannerPage() {
                 </div>
                 <TextAreaField
                   name="descricao"
-                  label="Descrição"
-                  placeholder="Corpo da descrição"
+                  label="Descrição (opcional)"
+                  placeholder="Descrição do banner"
                   rows={18}
                   className="!w-full !h-full"
+                  value={descricao}
+                  onChange={(e) => setDescricao(e.target.value)}
                 />
                 <FormButton
-                  text="Publicar"
+                  text="Criar Banner"
                   className="!hidden sm:!flex"
                   icon={<UploadOutlined />}
                 />
               </div>
 
               <div className="sm:w-[40%] hidden sm:flex">
-                <PreviaBanner fileList={fileList} />
+                <PreviaBanner 
+                  fileList={fileList} 
+                  titulo={titulo}
+                  descricao={descricao}
+                />
               </div>
 
               <div className="sm:hidden w-full flex flex-col gap-3.5 items-center">
-                <PreviaBanner fileList={fileList} />
+                <PreviaBanner 
+                  fileList={fileList} 
+                  titulo={titulo}
+                  descricao={descricao}
+                />
                 <FormButton
-                  text="Publicar"
+                  text="Criar Banner"
                   className="!flex !sm:hidden"
                   icon={<UploadOutlined />}
                 />

@@ -21,6 +21,7 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useSEO } from "@/hooks/useSEO";
 import { FaArrowRight } from "react-icons/fa6";
+import axios from "axios";
 
 const { Search } = Input;
 const onSearch = async (value) => {
@@ -74,7 +75,7 @@ const LeafletMap = dynamic(
 
         return () => {
           if (mapRef.current) {
-            mapRef.current.remove(); // 🔥 destroi o mapa ao desmontar
+            mapRef.current.remove();
             mapRef.current = null;
           }
         };
@@ -95,15 +96,62 @@ export default function Mapa() {
   const { id } = useParams();
 
   useEffect(() => {
-    setLoading(true);
-    setImoveis(mockImoveis);
-    setLoading(false);
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (!userInfo || !id) return;
+
+    const registrarVisita = async () => {
+      try {
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/recomendacao_imovel`,
+          {
+            usuario_id: userInfo.id,
+            imovel_id: Number(id),
+            data_visita: new Date().toISOString().slice(0, 10),
+          }
+        );
+      } catch (err) {
+        console.error("Erro ao registrar visita:", err);
+      }
+    };
+
+    registrarVisita();
   }, []);
+
+  useEffect(() => {
+    const fetchImovel = async () => {
+      try {
+        setLoading(true);
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        
+        // Buscar dados do imóvel
+        const imovelResponse = await axios.get(`${apiUrl}/imoveis/${id}`);
+        const imovelData = imovelResponse.data;
+        
+        // Buscar imagens do imóvel
+        const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
+        const imagesData = imagesResponse.data;
+        
+        // Combinar dados do imóvel com imagens
+        const imovelCompleto = {
+          ...imovelData,
+          imagens: imagesData
+        };
+        
+        setImoveis([imovelCompleto]);
+        setLoading(false);
+      } catch (error) {
+        console.error("Erro ao carregar imóvel:", error);
+        setLoading(false);
+      }
+    };
+    
+    fetchImovel();
+  }, [id]);
 
   useEffect(() => {
     if (descricaoRef.current) {
       const alturaTotal = descricaoRef.current.scrollHeight;
-      const alturaLimitada = 100; // altura máxima do .descricao-reduzida
+      const alturaLimitada = 100;
       setMostrarBotao(alturaTotal > alturaLimitada);
     }
   }, [imoveis]);
@@ -118,15 +166,15 @@ export default function Mapa() {
       ? `${imovelAtual.tipo} em ${imovelAtual.endereco}`
       : "Imóvel",
     description: imovelAtual
-      ? `${imovelAtual.tipo} com ${imovelAtual.quartos} quartos, ${
-          imovelAtual.banheiros
+      ? `${imovelAtual.tipo} com ${imovelAtual.casa?.quartos || 0} quartos, ${
+          imovelAtual.casa?.banheiros || 0
         } banheiros em ${imovelAtual.endereco}. ${
           imovelAtual.descricao?.substring(0, 120) ||
           "Imóvel de qualidade em excelente localização."
         }`
       : "Imóvel de qualidade em excelente localização.",
     keywords: imovelAtual
-      ? `${imovelAtual.tipo}, ${imovelAtual.endereco}, imóvel, ${imovelAtual.quartos} quartos, ${imovelAtual.banheiros} banheiros, ${imovelAtual.operacao}`
+      ? `${imovelAtual.tipo}, ${imovelAtual.endereco}, imóvel, ${imovelAtual.casa?.quartos || 0} quartos, ${imovelAtual.casa?.banheiros || 0} banheiros`
       : "imóvel, casa, apartamento",
     url: `https://imobiliaria-bortone.vercel.app/imoveis/${id}`,
     image: imovelAtual?.imagens?.[0]?.url_imagem,
@@ -174,7 +222,7 @@ export default function Mapa() {
                 <SwiperSlide key={idx} className="flex justify-center">
                   <div className="slide-card w-full">
                     <Image
-                      src={slide.url_imagem}
+                      src={`${process.env.NEXT_PUBLIC_API_URL}/images/imoveis/${slide.url_imagem}`}
                       alt={`Imóvel ${imovelAtual.id}`}
                       width={407}
                       height={195}
@@ -188,7 +236,7 @@ export default function Mapa() {
             slides.map((slide, idx) => (
               <div key={idx} className="slide-card w-full">
                 <Image
-                  src={slide.url_imagem}
+                  src={`${process.env.NEXT_PUBLIC_API_URL}/images/imoveis/${slide.url_imagem}`}
                   alt={`Imóvel ${imovelAtual.id}`}
                   width={407}
                   height={195}
@@ -214,14 +262,14 @@ export default function Mapa() {
           <div className="descricao">
             <div className="Dtexto">
               <div className="t1">
-                {imovelAtual.tipo === "Casa" ||
-                imovelAtual.tipo === "Apartamento" ? (
+                {imovelAtual.tipo.toLowerCase() === "casa" ||
+                imovelAtual.tipotoLowerCase() === "Apartamento" ? (
                   <>
                     <p>{imovelAtual.tipo}</p>
                     <p className="T1ponto"> • </p>
                     <p>{imovelAtual.area}m²</p>
                   </>
-                ) : imovelAtual.tipo === "Terreno" ? (
+                ) : imovelAtual.tipotoLowerCase() === "Terreno" ? (
                   <>
                     <p>{imovelAtual.tipo}</p>
                   </>
@@ -236,13 +284,13 @@ export default function Mapa() {
                       <BsDoorOpenFill />
                     </div>
                     <p className="!text-lg md:!text-2xl">
-                      {imovelAtual.quartos} quartos
+                      {imovelAtual.casa?.quartos || 0} quartos
                     </p>
                     <div className="h-auto flex items-center justify-center !text-lg md:!text-2xl">
                       <PiBathtub />
                     </div>
                     <p className="!text-lg md:!text-2xl">
-                      {imovelAtual.banheiros} banheiros
+                      {imovelAtual.casa?.banheiros || 0} banheiros
                     </p>
                   </>
                 ) : imovelAtual.tipo === "Terreno" ? (

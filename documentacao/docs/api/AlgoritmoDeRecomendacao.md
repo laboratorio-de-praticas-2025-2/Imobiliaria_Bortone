@@ -17,6 +17,7 @@ Recomendar imóveis relevantes para usuários com base em:
 
 A recomendação é baseada na tabela `RECOMENDACAO_IMOVEL`, que registra visitas de usuários a imóveis:
 
+
 - `id`: Identificador único da visita
 - `usuario_id`: Identificador do usuário
 - `imovel_id`: Identificador do imóvel

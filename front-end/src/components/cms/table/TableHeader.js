@@ -19,6 +19,7 @@ export default function TableHeader({
   updateFilterData,
   type = undefined,
   newButton = true,
+  onAdvancedFilter,
 }) {
   return (
     <div
@@ -36,7 +37,7 @@ export default function TableHeader({
         </Link>
       )}
       <div className="flex md:gap-4 gap-2 items-center">
-        {type === "user" && <PesquisaAvancadaUser />}
+        {type === "user" && <PesquisaAvancadaUser onAdvancedFilter={onAdvancedFilter} />}
         {type === "imovel" && <PesquisaAvancada />}
         <Search
           placeholder="Pesquisar"

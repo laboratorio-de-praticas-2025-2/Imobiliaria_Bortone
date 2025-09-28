@@ -28,9 +28,9 @@ export default function CriarPublicidadePage() {
           formData.append('url_imagem', fileList[0].originFileObj);
         }
 
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-        
-        const response = await axios.post(`${apiUrl}/publicidade`, formData, {
+        const apiBase = process.env.NEXT_PUBLIC_API_URL;
+        console.log('API Base URL (NEXT_PUBLIC_API_URL):', apiBase);
+        const response = await axios.post(`${apiBase}/publicidade`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -41,8 +41,18 @@ export default function CriarPublicidadePage() {
           router.push("/admin/cms-publicidades");
         }
       } catch (error) {
-        console.error("Erro ao cadastrar a publicidade:", error);
-        alert("Erro ao cadastrar publicidade.");
+        console.log("Erro ao cadastrar a publicidade", error);
+        if (error.response) {
+          console.log('Status:', error.response.status);
+            console.log('Data:', error.response.data);
+            alert(`Erro ao cadastrar (status ${error.response.status}): ${error.response.data?.error || 'Ver console'}`);
+        } else if (error.request) {
+            console.log('Nenhuma resposta recebida. Request:', error.request);
+            alert('Erro: servidor não respondeu. Ver console.');
+        } else {
+            console.log('Erro na configuração da requisição:', error.message);
+            alert('Erro ao preparar requisição. Ver console.');
+        }
       }
     } else {
       alert("Preencha todos os campos!");

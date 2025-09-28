@@ -13,6 +13,7 @@ export default function ContentBlog() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [apiImage, setApiImage] = useState("");
+  const [imageError, setImageError] = useState(false);
 
   // Busca real no backend
   useEffect(() => {
@@ -24,8 +25,26 @@ export default function ContentBlog() {
         const apiUrl = (rawApiUrl || "").replace(/\/api\/?$/, "");
         const resp = await axios.get(`${apiUrl}/publicacoes/${id}`);
         const data = resp.data;
-        const img = data?.url_imagem ? (data.url_imagem.startsWith("/") ? `${apiUrl}${data.url_imagem}` : data.url_imagem) : "";
-        setApiImage(img);
+        
+        // Normalizar URL da imagem com mesmo padrão do Cards.js
+        let img = "";
+        if (data?.url_imagem) {
+          let imageUrl = data.url_imagem;
+          
+          // Se não começar com /, adicionar prefixo padrão para imagens de blog
+          if (!imageUrl.startsWith("/")) {
+            imageUrl = `/images/blogImages/${imageUrl}`;
+          }
+          
+          // Se for caminho relativo /images/... e existir NEXT_PUBLIC_API_URL, monta URL absoluta
+          if (imageUrl.startsWith("/images/") && apiUrl) {
+            img = `${apiUrl}${imageUrl}`;
+          } else {
+            img = imageUrl;
+          }
+        }
+        
+        setApiImage(img || "/404.png");
         setPost(data);
       } catch (e) {
         console.error("Erro ao carregar artigo:", e);
@@ -72,14 +91,15 @@ export default function ContentBlog() {
         <hr className="border-t border-[#D7D7D7] py-5" />
 
         <div className="md:px-16">
-          {apiImage && (
-            <Image
-              src={apiImage}
-              alt="Imagem do artigo"
-              width="100%"
-              className="w-screen md:w-full max-h-[500px] object-cover rounded-none md:!rounded-[25px]"
-            />
-          )}
+          <Image
+            src={imageError ? "/404.png" : apiImage}
+            alt="Imagem do artigo"
+            width="100%"
+            className="w-screen md:w-full max-h-[500px] object-cover rounded-none md:!rounded-[25px]"
+            onError={() => {
+              setImageError(true);
+            }}
+          />
 
           {/* ShareButton só em desktop, abaixo da imagem */}
           <div className="hidden md:flex justify-end pt-2">

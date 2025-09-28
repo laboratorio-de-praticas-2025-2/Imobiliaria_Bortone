@@ -1,4 +1,4 @@
-import "dotenv/config";
+mport "dotenv/config";
 import express from "express";
 import cors from "cors";
 import publicidadeRoutes from "./routes/publicidadeRoutes.js";
@@ -11,6 +11,7 @@ import agendamentoRouter from "./routes/agendamentoRoute.js";
 import recomendacaoRouter from "./routes/recomendacaoImovelRoutes.js";
 import healthRouter from "./routes/healthRouter.js";
 import faqRoutes from "./routes/faqRoutes.js";
+import relatorioRouter from './routes/reportsRoute.js';
 import mapaRoutes from "./routes/mapaRoutes.js";
 import imoveisRouter from "./routes/ImoveisRouter.js";
 import imagemImovelRoutes from "./routes/imagemImovelRoutes.js";
@@ -33,18 +34,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Rotas
-app.use("/publicidade", publicidadeRoutes);
+
 app.use('/', recomendacaoRouter);
 app.use('/user', userRoutes );
 app.use("/search", searchRouter);
 app.use("/agendamentos", agendamentoRouter);
 app.use("/health", healthRouter);
 app.use("/faq", faqRoutes);
+app.use("/relatorio", relatorioRouter)
 app.use("/mapa", mapaRoutes);
 app.use('/dashboard', dashboardRouter);
 app.use("/publicacoes", blogRoutes);
 app.use('/imoveis', imoveisRouter);
-app.use('/imagensimoveis', imagemImovelRoutes);
+app.use('/imagemImovel', imagemImovelRoutes);
+app.use("/publicacoes", blogRoutes);
+app.use('/publicidade', publicidadeRoutes);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
@@ -72,3 +76,4 @@ server.listen(PORT, function (erro) {
     console.log(`Servidor iniciado com sucesso na porta ${PORT}! 🚀`);
   }
 });
+

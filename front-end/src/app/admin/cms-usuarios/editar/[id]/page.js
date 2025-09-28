@@ -4,7 +4,7 @@ import Form from "@/components/cms/form";
 import FormButton from "@/components/cms/form/fields/Button";
 import TextField from "@/components/cms/form/fields/TextField";
 import Sidebar from "@/components/cms/Sidebar";
-import { usersMock } from "@/mock/users";
+import axios from "axios";
 import RadioField from "@/components/cms/form/fields/RadioField";
 import { useEffect, useState } from "react";
 
@@ -12,11 +12,21 @@ export default function EditarUserPage({ params }) {
   const id = params?.id;
   const [user, setUser] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState(null);
 
   useEffect(() => {
-    const found = usersMock.find((b) => String(b.id) === String(id));
-    setUser(found);
+    async function fetchUser() {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        const res = await axios.get(`${apiUrl}/user/user/${id}`);
+        setUser(res.data);
+      } catch (err) {
+        console.error("Erro ao buscar usuário:", err);
+        setUser(null);
+      }
+    }
+    if (id) fetchUser();
   }, [id]);
 
   const onFinish = (values) => {
@@ -24,10 +34,28 @@ export default function EditarUserPage({ params }) {
     setIsConfirmModalVisible(true);
   };
 
-  const onConfirm = () => {
-    console.log("Edit Success:", formValues);
-    setIsConfirmModalVisible(false);
-    window.location.href = "/admin/cms-usuarios";
+  const onConfirm = async () => {
+    setIsLoading(true);
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const { senha, ...rest } = formValues;
+      const payload = {
+        ...rest,
+        nivel: formValues.nivel === "administrador" ? 0 : 1,
+        ativo: 1
+      };
+      if (senha) {
+        payload.senha = senha;
+      }
+      await axios.patch(`${apiUrl}/user/user/${id}`, payload);
+      setIsConfirmModalVisible(false);
+      window.location.href = "/admin/cms-usuarios";
+    } catch (err) {
+      console.error("Erro ao editar usuário:", err);
+      setIsConfirmModalVisible(false);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -43,6 +71,7 @@ export default function EditarUserPage({ params }) {
           message="Você tem certeza que deseja alterar o registro definitivamente?"
           onConfirm={onConfirm}
           onCancel={() => setIsConfirmModalVisible(false)}
+          confirmDisabled={isLoading}
         />
       )}
       <Sidebar />
@@ -55,7 +84,7 @@ export default function EditarUserPage({ params }) {
             initialValues={{
               nome: user.nome,
               email: user.email,
-              nivel: user.nivel,
+              nivel: user.nivel === 0 ? "administrador" : "usuario",
               celular: user.celular,
             }}
           >
@@ -84,7 +113,7 @@ export default function EditarUserPage({ params }) {
                     { label: "Usuário Padrão", value: "usuario" },
                   ]}
                   className="!w-[100%]"
-                  initialValue={user.nivel}
+                  initialValue={user.nivel === 0 ? "administrador" : "usuario"}
                 />
 
                 <TextField
@@ -99,6 +128,7 @@ export default function EditarUserPage({ params }) {
                   label="Senha"
                   placeholder="Senha do Usuário"
                   className="!w-[100%]"
+                  required={false}
                 />
                 <FormButton text="Salvar Alterações" />
               </div>
