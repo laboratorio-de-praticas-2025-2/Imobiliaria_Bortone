@@ -2,6 +2,7 @@
 import { Table } from "antd";
 import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
+import PesquisaAvancadaUser from "@/components/cms/table/pesquisaavancada/PesquisaAvancada";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { MdPersonAdd } from "react-icons/md";
@@ -28,9 +29,9 @@ const useStyle = createStyles(({ css, token }) => {
     `,
   };
 });
-
-export default function CmsUserPage() {
+export default function Page() {
   const [users, setUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
   const [filterData, setFilterData] = useState({ order: null });
@@ -113,20 +114,62 @@ export default function CmsUserPage() {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL;
         const res = await axios.get(`${apiUrl}/user/users`);
         setUsers(Array.isArray(res.data) ? res.data : []);
+        setAllUsers(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         console.error("Erro ao buscar usuários:", err);
         setUsers([]);
+        setAllUsers([]);
       }
     }
     fetchUsers();
   }, []);
 
+  let orderedUsers = [...users];
+  if (filterData.order === "Ordem alfabetica") {
+    orderedUsers.sort((a, b) => {
+      if (!a.nome) return 1;
+      if (!b.nome) return -1;
+      return a.nome.localeCompare(b.nome);
+    });
+  } else if (filterData.order === "Data de inclusão") {
+    orderedUsers.sort((a, b) => {
+      const aDate = new Date(a.createdAt || a.data_inclusao || 0);
+      const bDate = new Date(b.createdAt || b.data_inclusao || 0);
+      return bDate - aDate;
+    });
+  }
   // fatia os usuários conforme página
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedUsers = users.slice(startIndex, endIndex);
+  const paginatedUsers = orderedUsers.slice(startIndex, endIndex);
 
-  const onSearch = (value) => console.log("Search:", value);
+  const onSearch = (value) => {
+    if (!value) {
+      setUsers(allUsers);
+      setCurrentPage(1);
+      return;
+    }
+    const lower = value.toLowerCase();
+    const filtered = allUsers.filter(
+      (u) =>
+        (u.nome && u.nome.toLowerCase().includes(lower)) ||
+        (u.email && u.email.toLowerCase().includes(lower))
+    );
+    setUsers(filtered);
+    setCurrentPage(1);
+  };
+
+  // Filtro avançado por nível
+  const onAdvancedFilter = (nivel) => {
+    if (!nivel) {
+      setUsers(allUsers);
+      setCurrentPage(1);
+      return;
+    }
+    const nivelNum = nivel === "administrador" ? 0 : 1;
+    setUsers(allUsers.filter(u => u.nivel === nivelNum));
+    setCurrentPage(1);
+  };
   const handleSelectOrder = (value) => {
     setFilterData((prev) => ({ ...prev, order: value }));
     console.log("Selected order:", value);
@@ -158,6 +201,7 @@ export default function CmsUserPage() {
               filterData={filterData}
               updateFilterData={updateFilterData}
               type={"user"}
+              onAdvancedFilter={onAdvancedFilter}
             />
             <CMS.TableBody table={true}>
               <Table

@@ -2,13 +2,12 @@ import { Button, Flex } from "antd";
 import { useState } from "react";
 import BotaoPesquisar from "@/components/vitrine/PesquisaAvancada/BotaoPesquisar";
 
-export default function PesquisaAvancadaModal() {
+
+export default function PesquisaAvancadaModal({ onAdvancedFilter }) {
   const [nivel, setNivel] = useState(null);
 
   const handlePesquisar = () => {
-    const filtros = { nivel };
-    console.log("Filtros enviados:", filtros);
-    // Aqui você pode fazer a requisição com os filtros
+    if (onAdvancedFilter) onAdvancedFilter(nivel);
   };
 
   const baseClasses =
