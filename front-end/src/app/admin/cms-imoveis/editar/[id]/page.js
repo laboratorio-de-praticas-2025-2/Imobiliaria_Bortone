@@ -120,15 +120,26 @@ export default function EditarImovelPage({ params }) {
         const imagesData = imagesResponse.data;
 
         // Process and set the fileList
-        const formattedImages = imagesData.map(image => ({
-          uid: image.id, // Use image.id as unique identifier
-          name: image.url_imagem.split('/').pop(), // Extract filename from URL
-          status: 'done',
-          url: `${apiUrl}/images/imoveis/${image.url_imagem}`, // Full URL for display
-          originalId: image.id, // Store original ID for comparison
-          isOriginal: true, // Mark as original image
-          filename: image.url_imagem // Store just the filename for database
-        }));
+        console.log('DEBUG: imagesData from API:', imagesData);
+        console.log('DEBUG: apiUrl:', apiUrl);
+        
+        const formattedImages = imagesData.map(image => {
+          const fullUrl = `${apiUrl}${image.url_imagem}`;
+          console.log('DEBUG: Image URL construída:', fullUrl);
+          console.log('DEBUG: image.url_imagem original:', image.url_imagem);
+          
+          return {
+            uid: image.id, // Use image.id as unique identifier
+            name: image.url_imagem.split('/').pop(), // Extract filename from URL
+            status: 'done',
+            url: fullUrl, // Use URL as stored in database (already contains /images/imoveis/)
+            originalId: image.id, // Store original ID for comparison
+            isOriginal: true, // Mark as original image
+            filename: image.url_imagem // Store just the filename for database
+          };
+        });
+        
+        console.log('DEBUG: formattedImages:', formattedImages);
         setFileList(formattedImages);
         setOriginalImages(imagesData); // Store original images for comparison
 
