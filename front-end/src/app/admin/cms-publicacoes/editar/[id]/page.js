@@ -119,11 +119,25 @@ export default function EditarPostPage() {
                     <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5">
                       {post?.url_imagem && (
                         <Image
-                          src={post.url_imagem.startsWith('/') ? post.url_imagem : `/images/blogImages/${post.url_imagem}`}
+                          src={(() => {
+                            let imageUrl = post.url_imagem;
+                            if (!imageUrl.startsWith("/")) {
+                              imageUrl = `/images/blogImages/${imageUrl}`;
+                            }
+                            const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+                            const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
+                            if (imageUrl.startsWith("/images/") && apiUrl) {
+                              return `${apiUrl}${imageUrl}`;
+                            }
+                            return imageUrl;
+                          })()}
                           alt="Imagem atual"
                           width={400}
                           height={320}
                           className="h-full w-full object-cover rounded-3xl"
+                          onError={(e) => {
+                            e.target.src = "/404.png";
+                          }}
                         />
                       )}
                     </div>
@@ -157,11 +171,25 @@ export default function EditarPostPage() {
                     />
                   ) : post?.url_imagem ? (
                     <Image
-                      src={post.url_imagem.startsWith('/') ? post.url_imagem : `/images/blogImages/${post.url_imagem}`}
+                      src={(() => {
+                        let imageUrl = post.url_imagem;
+                        if (!imageUrl.startsWith("/")) {
+                          imageUrl = `/images/blogImages/${imageUrl}`;
+                        }
+                        const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+                        const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
+                        if (imageUrl.startsWith("/images/") && apiUrl) {
+                          return `${apiUrl}${imageUrl}`;
+                        }
+                        return imageUrl;
+                      })()}
                       alt="Imagem atual"
                       width={600}
                       height={400}
                       className="w-full h-auto rounded-3xl"
+                      onError={(e) => {
+                        e.target.src = "/404.png";
+                      }}
                     />
                   ) : (
                     <div className="w-full h-80 bg-gray-200 rounded-3xl" />
@@ -181,11 +209,25 @@ export default function EditarPostPage() {
                     />
                   ) : post?.url_imagem ? (
                     <Image
-                      src={post.url_imagem.startsWith('/') ? post.url_imagem : `/images/blogImages/${post.url_imagem}`}
+                      src={(() => {
+                        let imageUrl = post.url_imagem;
+                        if (!imageUrl.startsWith("/")) {
+                          imageUrl = `/images/blogImages/${imageUrl}`;
+                        }
+                        const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+                        const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
+                        if (imageUrl.startsWith("/images/") && apiUrl) {
+                          return `${apiUrl}${imageUrl}`;
+                        }
+                        return imageUrl;
+                      })()}
                       alt="Imagem atual"
                       width={600}
                       height={400}
                       className="w-full h-auto rounded-3xl"
+                      onError={(e) => {
+                        e.target.src = "/404.png";
+                      }}
                     />
                   ) : (
                     <div className="w-full h-80 bg-gray-200 rounded-3xl" />
