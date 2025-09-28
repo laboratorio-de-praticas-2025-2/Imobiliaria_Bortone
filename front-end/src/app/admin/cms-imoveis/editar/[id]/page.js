@@ -12,6 +12,7 @@ import { mockImoveis } from "@/mock/imoveis";
 import { Form as FormAntd } from "antd";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
@@ -23,6 +24,10 @@ export default function EditarImovelPage({ params }) {
   const [imovel, setImovel] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [formValues, setFormValues] = useState(null);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const [loading, setLoading] = useState(true);
+  const [fileList, setFileList] = useState([]);
+  const [originalImages, setOriginalImages] = useState([]);
 
   // estados / seleções (usados pelos DropdownField do layout)
   const [tipoSelecionado, setTipoSelecionado] = useState("Selecione o Tipo");
@@ -97,45 +102,89 @@ export default function EditarImovelPage({ params }) {
   const bathrooms = ["1", "2", "3", "4", "5+"];
 
   useEffect(() => {
-    const found = mockImoveis.find((m) => String(m.id) === String(id));
-    if (!found) {
-      setImovel(null);
-      return;
-    }
-    setImovel(found);
+    const fetchImovel = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`${apiUrl}/imoveis/${id}`);
+        const found = response.data;
 
-    // preencher seleções locais (para os DropdownField customizados)
-    setTipoSelecionado(found.tipo ?? "Selecione o Tipo");
-    setStatusSelecionado(found.status ?? "Selecione o status");
-    setCitiesSelecionado(found.cidade ?? "Selecione a cidade");
-    setSelectedState(found.estado ?? "Selecione o estado");
-    setSelectedBedrooms(found.quartos ? String(found.quartos) : "Quantidade");
+        if (!found) {
+          setImovel(null);
+          setLoading(false);
+          return;
+        }
+        setImovel(found);
 
-    setSelectedBathrooms(
-      found.banheiros ? String(found.banheiros) : "Quantidade"
-    );
-    setSelectedParking(found.vagas ? String(found.vagas) : "Quantidade");
+        // Fetch images for the imovel
+        const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
+        const imagesData = imagesResponse.data;
 
-    // setar valores do form Antd
-    form.setFieldsValue({
-      tipo: found.tipo ?? undefined,
-      status: found.status ?? undefined,
-      cidade: found.cidade ?? undefined,
-      estado: found.estado ?? undefined,
-      descricao: found.descricao ?? undefined,
-      area: found.area ?? undefined,
-      preco: found.preco ?? undefined,
-      endereco: found.endereco ?? undefined,
-      quartos: found.quartos ?? undefined,
-      banheiros: found.banheiros ?? undefined,
-      vagas: found.vagas ?? undefined,
-      possui_muro: found.possui_muro ? "sim" : "nao",
-      possui_piscina: found.possui_piscina ? "sim" : "nao",
-      possui_jardim: found.possui_jardim ? "sim" : "nao",
-      // imagens: found.imagens ?? [], // se UploadImovel aceitar
-      // latitude, longitude nulos no mock
-    });
-  }, [id, form]);
+        // Process and set the fileList
+        console.log('DEBUG: imagesData from API:', imagesData);
+        console.log('DEBUG: apiUrl:', apiUrl);
+        
+        const formattedImages = imagesData.map(image => {
+          const fullUrl = `${apiUrl}${image.url_imagem}`;
+          console.log('DEBUG: Image URL construída:', fullUrl);
+          console.log('DEBUG: image.url_imagem original:', image.url_imagem);
+          
+          return {
+            uid: image.id, // Use image.id as unique identifier
+            name: image.url_imagem.split('/').pop(), // Extract filename from URL
+            status: 'done',
+            url: fullUrl, // Use URL as stored in database (already contains /images/imoveis/)
+            originalId: image.id, // Store original ID for comparison
+            isOriginal: true, // Mark as original image
+            filename: image.url_imagem // Store just the filename for database
+          };
+        });
+        
+        console.log('DEBUG: formattedImages:', formattedImages);
+        setFileList(formattedImages);
+        setOriginalImages(imagesData); // Store original images for comparison
+
+        // preencher seleções locais (para os DropdownField customizados)
+        setTipoSelecionado(found.tipo ?? "Selecione o Tipo");
+        setStatusSelecionado(found.status ?? "Selecione o status");
+        setCitiesSelecionado(found.cidade ?? "Selecione a cidade");
+        setSelectedState(found.estado ?? "Selecione o estado");
+        setSelectedBedrooms(found.casa.quartos ? String(found.casa.quartos) : "Quantidade");
+
+        setSelectedBathrooms(
+          found.casa.banheiros ? String(found.casa.banheiros) : "Quantidade"
+        );
+        setSelectedParking(found.casa.vagas ? String(found.casa.vagas) : "Quantidade");
+
+        // setar valores do form Antd
+        form.setFieldsValue({
+          tipo: found.tipo ?? undefined,
+          status: found.status ?? undefined,
+          cidade: found.cidade ?? undefined,
+          estado: found.estado ?? undefined,
+          descricao: found.descricao ?? undefined,
+          area: found.area ?? undefined,
+          preco: found.preco ?? undefined,
+          endereco: found.endereco ?? undefined,
+          quartos: found.casa.quartos ?? undefined,
+          banheiros: found.casa.banheiros ?? undefined,
+          vagas: found.casa.vagas ?? undefined,
+          possui_muro: found.murado ? "sim" : "nao",
+          possui_piscina: found.casa.possui_piscina ? "sim" : "nao",
+          possui_jardim: found.casa.possui_jardim ? "sim" : "nao",
+          latitude: found.latitude ?? undefined,
+          longitude: found.longitude ?? undefined,
+          // imagens: found.imagens ?? [], // se UploadImovel aceitar
+          // latitude, longitude nulos no mock
+        });
+      } catch (error) {
+        console.error("Erro ao carregar imóvel:", error);
+        setImovel(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchImovel();
+  }, [id, form, apiUrl]);
 
   const onFinish = (values) => {
     setFormValues(values);
@@ -146,13 +195,97 @@ export default function EditarImovelPage({ params }) {
     console.log("Failed:", errorInfo);
   };
 
-  const onConfirm = () => {
-    console.log("Edit Imóvel:", { id, ...formValues });
-    setIsConfirmModalVisible(false);
-    window.location.href = "/admin/cms-imoveis";
+  const handleImageChanges = async () => {
+    try {
+      // Obter IDs das imagens originais
+      const originalImageIds = originalImages.map(img => img.id);
+      
+      // Obter IDs das imagens atuais (apenas as originais que ainda estão presentes)
+      const currentOriginalIds = fileList
+        .filter(file => file.isOriginal)
+        .map(file => file.originalId);
+      
+      // Encontrar imagens que foram removidas
+      const imagesToDelete = originalImageIds.filter(id => !currentOriginalIds.includes(id));
+      
+      // Encontrar imagens que foram adicionadas (não são originais)
+      const newImages = fileList.filter(file => !file.isOriginal && file.originFileObj);
+      
+      // Deletar imagens removidas
+      for (const imageId of imagesToDelete) {
+        try {
+          await axios.delete(`${apiUrl}/imagemimovel/${imageId}`);
+          console.log(`Imagem ${imageId} deletada com sucesso`);
+        } catch (error) {
+          console.error(`Erro ao deletar imagem ${imageId}:`, error);
+        }
+      }
+      
+      // Fazer upload de novas imagens
+      for (const newImage of newImages) {
+        try {
+          const formData = new FormData();
+          formData.append('imagem', newImage.originFileObj);
+          formData.append('imovel_id', id);
+          formData.append('descricao', newImage.name || 'Imagem do imóvel');
+          
+          const response = await axios.post(`${apiUrl}/imagemimovel/upload`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          
+          // The API should return the filename (not full URL) for database storage
+          console.log(`Imagem ${newImage.name} enviada com sucesso. Filename: ${response.data.url_imagem}`);
+        } catch (error) {
+          console.error(`Erro ao fazer upload da imagem ${newImage.name}:`, error);
+        }
+      }
+      
+      console.log('Gerenciamento de imagens concluído');
+    } catch (error) {
+      console.error('Erro no gerenciamento de imagens:', error);
+    }
   };
 
-  if (imovel === null) return <div>Carregando...</div>;
+  const onConfirm = async () => {
+    try {
+      // Atualizar dados do imóvel
+      const updateData = {
+        ...formValues,
+        tipo: tipoSelecionado !== "Selecione o Tipo" ? tipoSelecionado : undefined,
+        status: statusSelecionado !== "Selecione o status" ? statusSelecionado : undefined,
+        cidade: citiesSelecionado !== "Selecione a cidade" ? citiesSelecionado : undefined,
+        estado: selectedState !== "Selecione o estado" ? selectedState : undefined,
+        quartos: selectedBedrooms !== "Quantidade" ? parseInt(selectedBedrooms) : undefined,
+        banheiros: selectedBathrooms !== "Quantidade" ? parseInt(selectedBathrooms) : undefined,
+        vagas: selectedParking !== "Quantidade" ? parseInt(selectedParking) : undefined,
+        murado: formValues.possui_muro === "sim",
+        possui_piscina: formValues.possui_piscina === "sim",
+        possui_jardim: formValues.possui_jardim === "sim",
+        // Manter o usuario_id original do imóvel
+        usuario_id: imovel.usuario_id,
+      };
+
+      console.log('Dados sendo enviados para atualização:', updateData);
+      console.log('usuario_id do imóvel original:', imovel.usuario_id);
+      
+      await axios.put(`${apiUrl}/imoveis/${id}`, updateData);
+      
+      // Gerenciar imagens
+      await handleImageChanges();
+      
+      console.log("Imóvel atualizado com sucesso!");
+      setIsConfirmModalVisible(false);
+      window.location.href = "/admin/cms-imoveis";
+    } catch (error) {
+      console.error("Erro ao atualizar imóvel:", error);
+      // Aqui você pode adicionar uma notificação de erro para o usuário
+    }
+  };
+
+  if (loading) return <div>Carregando...</div>;
+  if (imovel === null) return <div>Imóvel não encontrado.</div>;
 
   return (
     <>
@@ -218,7 +351,7 @@ export default function EditarImovelPage({ params }) {
 
                 {/* Se o UploadImovel suportar inicialização por prop, poderia receber imovel.imagens.
                     Aqui apenas renderiza o componente; ajuste conforme sua implementação do UploadImovel. */}
-                <UploadImovel className={"!w-full"} />
+                <UploadImovel className={"!w-full"} fileList={fileList} setFileList={setFileList} />
 
                 <TextAreaField
                   name="descricao"

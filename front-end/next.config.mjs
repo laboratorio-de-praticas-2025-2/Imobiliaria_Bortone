@@ -11,6 +11,10 @@ const nextConfig = {
         hostname: '**.onrender.com'
       },
       {
+        protocol: 'https',
+        hostname: 'imobiliaria-bortone.onrender.com'
+      },
+      {
         protocol: 'http',
         hostname: 'localhost'
       },
@@ -57,7 +61,7 @@ const nextConfig = {
               "default-src 'self'",
               scriptSrc,
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: blob: https://*.tile.openstreetmap.org",
+              "img-src 'self' data: blob: https://*.tile.openstreetmap.org https://unpkg.com http://localhost:4000",
               "font-src 'self' data:",
               "connect-src *",
               "frame-ancestors 'none'",

@@ -111,6 +111,9 @@ export const getFilteredImoveis = async (req, res) => {
         maxPreco: req.query.maxPreco ? parseFloat(req.query.maxPreco) : undefined,
         minArea: req.query.minArea ? parseInt(req.query.minArea) : undefined,
         maxArea: req.query.maxArea ? parseInt(req.query.maxArea) : undefined,
+        quartos: req.query.quartos ? parseInt(req.query.quartos) : undefined,
+        banheiros: req.query.banheiros ? parseInt(req.query.banheiros) : undefined,
+        vagas: req.query.vagas ? parseInt(req.query.vagas) : undefined,
       };
 
       const filterMappings = {
@@ -118,6 +121,9 @@ export const getFilteredImoveis = async (req, res) => {
         tipo: { field: 'tipo', type: 'exact' },
         preco: { field: 'preco', type: 'range' },
         area: { field: 'area', type: 'range' },
+        quartos: { field: 'quartos', type: 'exact', model: 'casa' },
+        banheiros: { field: 'banheiros', type: 'exact', model: 'casa' },
+        vagas: { field: 'vagas', type: 'exact', model: 'casa' },
       };
 
       const imoveis = await ImoveisService.getFilteredEntities(filters, filterMappings, [{ model: Casa, as: 'casa' }, { model: Terreno, as: 'terreno' }, { model: ImagemImovel, as: 'imagem_imovel' }]);

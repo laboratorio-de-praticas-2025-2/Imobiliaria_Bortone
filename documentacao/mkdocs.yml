@@ -38,9 +38,10 @@ nav:
   - Implementação da API de Mapa: api/MapaImplementacao.md
   - Resumo da Integração: api/MapaResumo.md
   - Chat Suporte: api/ChatSuporte.md
+  - Contatos: frontend/Documentacao_Contatos.md
   - Como Rodar o WebSocket: WebSocket-Setup.md
   - Sistema de Níveis de Usuário : UserLevels.md
   - Relatório de Correção de Bugs do Chat: ChatSystemBugFixes.md
-
-
+  - Agendamento de Visitação: api/Agendamento.md
+  - Funcionalidade do envio de e-mail: api/AgendamentoSMTP.md
   

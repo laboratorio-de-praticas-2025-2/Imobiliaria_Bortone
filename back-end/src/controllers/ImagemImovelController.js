@@ -1,12 +1,21 @@
 import multer from 'multer';
 import path from 'path';
-import crypto from 'crypto'; // Importa o módulo crypto
+import crypto from 'crypto'; 
+import fs from 'fs';
 import * as ImagemImovelService from '../services/ImagemImovelService.js';
 
-// Configuração do Multer para armazenamento de arquivos
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '../front-end/public/images/imoveis/'); // Onde as imagens serão salvas
+    // Salvar diretamente no diretório public/images/imoveis do front-end
+    const uploadPath = path.join(process.cwd(), '../front-end/public/images/imoveis');
+    
+    // Criar diretório se não existir
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    
+    cb(null, uploadPath); 
   },
   filename: (req, file, cb) => {
     const extname = path.extname(file.originalname); // Obtém a extensão original do arquivo
@@ -21,30 +30,41 @@ export const uploadImage = (req, res) => {
   upload.single('imagem')(req, res, async (err) => {
     if (err) {
       console.error("Erro no upload da imagem:", err);
-      return res.status(500).json({ error: "Erro ao fazer upload da imagem." });
+      return res.status(500).json({ 
+        error: "Erro ao fazer upload da imagem.", 
+        details: err.message 
+      });
     }
 
     if (!req.file) {
+      console.error("Nenhum arquivo de imagem enviado. req.body:", req.body);
       return res.status(400).json({ error: "Nenhum arquivo de imagem enviado." });
     }
 
     const { imovel_id, descricao } = req.body;
+    console.log("Upload request body:", { imovel_id, descricao });
+    console.log("Upload file info:", req.file);
 
-    if (!imovel_id || !descricao) {
-      return res.status(400).json({ error: "Campos obrigatórios: imovel_id, descricao." });
+    if (!imovel_id) {
+      return res.status(400).json({ error: "Campo obrigatório: imovel_id." });
     }
 
     try {
-      const url_imagem = `/images/imoveis/${req.file.filename}`; // Caminho onde a imagem foi salva
+      // Armazenar URL relativa para o front-end acessar
+      const url_imagem = `/images/imoveis/${req.file.filename}`;
       const novaImagem = await ImagemImovelService.createImagem({
         imovel_id: parseInt(imovel_id),
         url_imagem,
-        descricao,
+        descricao: descricao || "Imagem do imóvel",
       });
+      console.log("Imagem salva com sucesso:", novaImagem);
       res.status(201).json(novaImagem);
     } catch (error) {
       console.error("Erro ao salvar informações da imagem no banco de dados:", error);
-      res.status(500).json({ error: "Erro interno do servidor ao salvar imagem." });
+      res.status(500).json({ 
+        error: "Erro interno do servidor ao salvar imagem.", 
+        details: error.message 
+      });
     }
   });
 };
@@ -52,10 +72,27 @@ export const uploadImage = (req, res) => {
 export const deleteImage = async (req, res) => {
   const { id } = req.params;
   try {
-    const deleted = await ImagemImovelService.deleteImagem(id);
-    if (!deleted) {
+    // Primeiro buscar a imagem para obter o caminho do arquivo
+    const imagem = await ImagemImovelService.getImageById(id);
+    if (!imagem) {
       return res.status(404).json({ error: "Imagem não encontrada." });
     }
+
+    // Extrair o nome do arquivo da URL
+    const filename = path.basename(imagem.url_imagem);
+    const filePath = path.join(process.cwd(), '../front-end/public/images/imoveis', filename);
+
+    // Deletar o arquivo físico se existir
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    // Deletar o registro do banco
+    const deleted = await ImagemImovelService.deleteImagem(id);
+    if (!deleted) {
+      return res.status(404).json({ error: "Erro ao excluir imagem do banco de dados." });
+    }
+    
     res.status(200).json({ message: "Imagem excluída com sucesso." });
   } catch (error) {
     console.error("Erro ao excluir imagem:", error);
@@ -88,5 +125,31 @@ export const getImagesByImovelId = async (req, res) => {
   } catch (error) {
     console.error("Erro ao buscar imagens por ID do imóvel:", error);
     res.status(500).json({ error: "Erro interno do servidor ao buscar imagens do imóvel." });
+  }
+};
+
+// Função alternativa para criar imagem apenas com URL (sem upload)
+export const createImageFromUrl = async (req, res) => {
+  try {
+    const { imovel_id, url_imagem, descricao } = req.body;
+
+    if (!imovel_id || !url_imagem) {
+      return res.status(400).json({ error: "Campos obrigatórios: imovel_id, url_imagem." });
+    }
+
+    const novaImagem = await ImagemImovelService.createImagem({
+      imovel_id: parseInt(imovel_id),
+      url_imagem,
+      descricao: descricao || "Imagem do imóvel",
+    });
+
+    console.log("Imagem criada com sucesso:", novaImagem);
+    res.status(201).json(novaImagem);
+  } catch (error) {
+    console.error("Erro ao criar imagem:", error);
+    res.status(500).json({ 
+      error: "Erro interno do servidor ao criar imagem.", 
+      details: error.message 
+    });
   }
 };
