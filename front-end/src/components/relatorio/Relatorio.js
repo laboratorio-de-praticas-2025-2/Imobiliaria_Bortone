@@ -33,6 +33,19 @@ export default function Relatorio({ data }) {
         ],
       } : { labels: [], datasets: [] };
 
+      const dataVendasPorTipo = data?.vendas?.vendasPorTipo
+    ? {
+        labels: data.vendas.vendasPorTipo.map((v) => v.tipoImovel),
+        datasets: [
+          {
+            data: data.vendas.vendasPorTipo.map((v) => v.quantidade),
+            backgroundColor: ["#243B7B", "#F39C12", "#E74C3C"],
+            borderWidth: 1,
+            cutout: "0%",
+          },
+        ],
+      } : { labels: [], datasets: [] };
+
   const distribuicaoImoveisPorPreco =   data?.imoveis?.imoveisPorPreco
   ? {
     labels: [
@@ -216,7 +229,7 @@ export default function Relatorio({ data }) {
                 <PizzaGraph
                   label={"Distribuição de imóveis vendidos por categoria"}
                   className={"h-[200px] w-[200px]"}
-                  data={dataLocacaoPorTipo}
+                  data={dataVendasPorTipo}
                 />
               </div>
             </div>
