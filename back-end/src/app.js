@@ -77,6 +77,11 @@ app.listen(PORT, () => {
   console.log(`Servidor iniciado com sucesso na porta ${PORT}! 🚀`);
 });
 
+
+
+
+
+
 // Se quiser habilitar WebSocket futuramente:
 // const server = http.createServer(app);
 // initWebSocket(server);

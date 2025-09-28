@@ -1,34 +1,19 @@
-//Teste Sequelize local - Não usar
-//import Sequelize from "sequelize"
+import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
 
-//const connection = new Sequelize({
-    //dialect: "mysql",
-    //host: "localhost",
-    //username: "root",
-    //password: "",
-    //database: "lp_imobiliaria",
-    //timezone: "-03:00",
-//})
+otenv.config();
 
-//export default connection
-
-
-//import { Sequelize } from "sequelize";
-//import dotenv from "dotenv";
-
-//otenv.config();
-
-//const sequelize = new Sequelize(
-  //process.env.DB_DATABASE,            // Nome do banco
-  //process.env.DB_USER,             // Usuário
-  //process.env.DB_PASS,     // Senha
-  //{
-    //host: process.env.DB_HOST,     // Servidor AlwaysData
-    //port: 3306,                 // Porta padrão MySQL
-    //dialect: "mysql",           // Dialeto
-    //logging: false,             // Oculta logs SQL no console
-  //}
-//);
+const sequelize = new Sequelize(
+  process.env.DB_DATABASE,            // Nome do banco
+  process.env.DB_USER,             // Usuário
+  process.env.DB_PASS,     // Senha
+  {
+    host: process.env.DB_HOST,     // Servidor AlwaysData
+    port: 3306,                 // Porta padrão MySQL
+    dialect: "mysql",           // Dialeto
+    logging: false,             // Oculta logs SQL no console
+  }
+);
 
 // Teste de conexão (opcional, mas recomendado)
 //(async () => {
