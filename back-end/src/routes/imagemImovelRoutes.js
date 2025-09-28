@@ -4,6 +4,7 @@ import * as ImagemImovelController from '../controllers/ImagemImovelController.j
 const router = express.Router();
 
 router.post('/upload', ImagemImovelController.uploadImage);
+router.post('/create', ImagemImovelController.createImageFromUrl);
 
 router.delete('/:id', ImagemImovelController.deleteImage);
 

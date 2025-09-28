@@ -70,14 +70,19 @@ export default function CriarImovelPage() {
         for (const file of fileList) {
           const formData = new FormData();
           formData.append("imovel_id", imovelId);
-          formData.append("imagem", file.originFileObj); // continua funcionando
-          formData.append("descricao", values.descricao || ""); 
+          formData.append("imagem", file.originFileObj);
+          formData.append("descricao", values.descricao || "Imagem do imóvel"); 
         
-          await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/imagemImovel/upload`,
-            formData,
-            { headers: { "Content-Type": "multipart/form-data" } }
-          );
+          try {
+            await axios.post(
+              `${process.env.NEXT_PUBLIC_API_URL}/imagemImovel/upload`,
+              formData,
+              { headers: { "Content-Type": "multipart/form-data" } }
+            );
+          } catch (uploadError) {
+            console.error("Erro no upload da imagem:", uploadError);
+            throw uploadError; // Re-throw para ser capturado no catch principal
+          }
         }
         
         alert("Imóvel cadastrado com sucesso!");
