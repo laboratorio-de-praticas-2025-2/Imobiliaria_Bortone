@@ -8,7 +8,7 @@ import PhoneField from "@/components/cms/form/fields/PhoneField";
 import FormButton from "@/components/cms/form/fields/Button";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import { useEffect, useState } from "react";
-import { buildImovelImage } from "@/utils/imageUrl";
+import { buildImovelImage } from "../../utils/imageUrl";
 import { useParams } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;

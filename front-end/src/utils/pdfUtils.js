@@ -1,9 +1,23 @@
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+// Imports dinâmicos serão usados dentro da função para evitar erros em SSR
+let _html2canvas = null;
+let _jsPDF = null;
 
 // Remove classes de escala/transform para evitar captura deformada e clona conteúdo off-screen
 export async function exportRelatorioToPdf(element, fileName = 'relatorio.pdf') {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    throw new Error('Geração de PDF só pode ocorrer no cliente (browser).');
+  }
   if (!element) throw new Error('Elemento não encontrado para gerar PDF');
+
+  // Carrega libs sob demanda (code-splitting) e evita problemas em SSR
+  if (!_html2canvas) {
+    const mod = await import('html2canvas');
+    _html2canvas = mod.default || mod;
+  }
+  if (!_jsPDF) {
+    const mod = await import('jspdf');
+    _jsPDF = mod.jsPDF || mod.default || mod;
+  }
 
   // Clonar conteúdo para não alterar layout visível
   const clone = element.cloneNode(true);
@@ -28,9 +42,9 @@ export async function exportRelatorioToPdf(element, fileName = 'relatorio.pdf') 
   document.body.appendChild(wrapper);
 
   // Use escala 2 para melhor nitidez
-  const canvas = await html2canvas(clone, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+  const canvas = await _html2canvas(clone, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
   const imgData = canvas.toDataURL('image/png');
-  const pdf = new jsPDF('p', 'mm', 'a4');
+  const pdf = new _jsPDF('p', 'mm', 'a4');
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
   const imgProps = pdf.getImageProperties(imgData);
