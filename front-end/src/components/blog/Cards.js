@@ -9,11 +9,19 @@ export default function Cards({ searchTerm = "" }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalItems, setTotalItems] = useState(0);
+  const [imageErrors, setImageErrors] = useState({});
 
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 7; // 7 cards por página
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedPosts = posts.slice(startIndex, startIndex + pageSize);
+
+  const handleImageError = (postId) => {
+    setImageErrors(prev => ({
+      ...prev,
+      [postId]: true
+    }));
+  };
 
   const buildImage = (apiUrl, url) => {
     if (!url) return "/404.png"; // Fallback image
@@ -98,13 +106,11 @@ export default function Cards({ searchTerm = "" }) {
                     {/* Imagem com filtro */}
                     <div className="absolute inset-0">
                       <Image
-                        src={paginatedPosts[0].url_imagem}
+                        src={imageErrors[paginatedPosts[0].id] ? "/404.png" : paginatedPosts[0].url_imagem}
                         alt={paginatedPosts[0].titulo}
                         fill
                         className="object-cover brightness-80 group-hover:brightness-60 group-hover:saturate-70 group-hover:blur-10 transition-all duration-300"
-                        onError={(e) => {
-                          e.target.src = "/404.png";
-                        }}
+                        onError={() => handleImageError(paginatedPosts[0].id)}
                       />
                     </div>
                     {/* Conteúdo sobreposto sem filtro */}
@@ -144,13 +150,11 @@ export default function Cards({ searchTerm = "" }) {
                     {/* Imagem com filtro */}
                     <div className="absolute inset-0">
                       <Image
-                        src={post.url_imagem}
+                        src={imageErrors[post.id] ? "/404.png" : post.url_imagem}
                         alt={post.titulo}
                         fill
                         className="object-cover brightness-80 group-hover:brightness-60 group-hover:saturate-70 transition-all duration-300"
-                        onError={(e) => {
-                          e.target.src = "/404.png";
-                        }}
+                        onError={() => handleImageError(post.id)}
                       />
                     </div>
                     {/* Conteúdo sobreposto sem filtro */}
