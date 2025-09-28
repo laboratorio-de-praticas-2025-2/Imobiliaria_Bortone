@@ -1,6 +1,7 @@
 import { AiOutlineClose } from "react-icons/ai";
 import Image from "next/image";
 import { useState } from "react";
+import { handleImgError } from "@/utils/imageFallback";
 
 export default function PreviaImovel({ fileList = [], onRemove }) {
   const [imageErrors, setImageErrors] = useState(new Set());
@@ -52,11 +53,12 @@ export default function PreviaImovel({ fileList = [], onRemove }) {
           <div key={file.uid} className="relative">
             {/* Sempre use img tag para máxima compatibilidade no modo de edição */}
             <img
-              src={src}
+              src={src || '/404.png'}
               alt={file.name || "Prévia da imagem"}
               className="w-[100px] h-full object-cover rounded-2xl border border-gray-200"
               onError={(e) => {
                 handleImageError(file.uid, src, e);
+                handleImgError(e);
               }}
               onLoad={() => {
                 console.log('SUCCESS PREVIA: Imagem carregada:', {

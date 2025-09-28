@@ -8,6 +8,7 @@ import PhoneField from "@/components/cms/form/fields/PhoneField";
 import FormButton from "@/components/cms/form/fields/Button";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import { useEffect, useState } from "react";
+import { buildImovelImage } from "@/utils/imageUrl";
 import { useParams } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -50,16 +51,6 @@ const validateField = {
     return null;
   },
 };
-
-function normalizeImageUrl(path) {
-  if (!path || typeof path !== "string") return "/imovel1.png";
-  path = path.trim();
-  if (/^https?:\/\//i.test(path)) return path;
-  if (/^(data:|blob:)/i.test(path)) return path;
-  if (path.startsWith("/images/")) return path;
-  if (path.startsWith("/")) return path;
-  return `/images/imoveis/${path}`;
-}
 
 const enviarAgendamento = async (appointment) => {
   if (!API_URL) throw new Error("NEXT_PUBLIC_API_URL não configurada");
@@ -148,8 +139,7 @@ export default function Agendamento() {
   if (loading) return <div>Carregando...</div>;
   if (!imovel) return <div>Imóvel não encontrado.</div>;
 
-  const imgRaw = imovel?.imagens?.[0]?.url_imagem || imovel?.imagem_imovel?.[0]?.url_imagem || null;
-  const src = normalizeImageUrl(imgRaw);
+  const src = buildImovelImage(imovel);
   const quartos = imovel?.quartos ?? imovel?.casa?.quartos ?? 0;
   const banheiros = imovel?.banheiros ?? imovel?.casa?.banheiros ?? 0;
 
@@ -164,10 +154,11 @@ export default function Agendamento() {
           <div className="w-full md:w-[30%] bg-gradient-to-b from-[#2E3F7C] pb-10 to-[#0C1121] text-white px-6 md:px-11 pt-10 md:pt-28 flex flex-col gap-5">
             <div>
               <img
-                src={src}
+                src={src || '/404.png'}
                 alt="Imóvel"
                 className="object-cover w-full rounded-lg aspect-[6/3]"
                 loading="lazy"
+                onError={(e)=>{ e.currentTarget.src='/404.png'; }}
               />
             </div>
 

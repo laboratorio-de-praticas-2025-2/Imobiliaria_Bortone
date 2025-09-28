@@ -1,4 +1,5 @@
 import { Button, Flex } from "antd";
+import { handleImgError } from "@/utils/imageFallback";
 import { PiBathtub } from "react-icons/pi";
 import { BsDoorOpenFill } from "react-icons/bs";
 import { AiOutlineMessage } from "react-icons/ai";
@@ -13,13 +14,11 @@ export default function ImovelCard({ imovel }) {
             src={
               (imovel.imagens && imovel.imagens.length > 0 && imovel.imagens[0].url_imagem) ||
               imovel.imagem ||
-              "/imovel1.png"
+              "/404.png"
             }
             alt={"Imagem do imóvel"}
             className="w-full h-full object-cover rounded-md aspect-[16/9]"
-            onError={(e) => {
-              e.currentTarget.src = "/imovel1.png";
-            }}
+            onError={handleImgError}
           />
         </div>
         <Flex justify="space-between" gap="middle" className="sm:!p-0 !px-3">

@@ -2,6 +2,7 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
+import { handleImgError } from "@/utils/imageFallback";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -25,6 +26,7 @@ export default function ImageCarroussel({ imovel }) {
                 src={`${apiUrl}/images/imoveis/${img.url_imagem}`}
                 alt={img.descricao || "Imagem do imóvel"}
                 className="w-full h-full object-cover"
+                onError={handleImgError}
               />
             </SwiperSlide>
           ))}
