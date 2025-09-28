@@ -33,7 +33,7 @@ export default function Contato() {
               <p className="text-xl lg:text-2xl font-light">
                 Ou{" "}
                 <Link
-                  href={`malito:${infoContato.telefoneWhats.whatsapp.url}`}
+                  href={`${infoContato.telefoneWhats.whatsapp.url}`}
                   target={infoContato.telefoneWhats.whatsapp.target}
                   rel={infoContato.telefoneWhats.whatsapp.rel}
                   className="underline hover:opacity-80"
