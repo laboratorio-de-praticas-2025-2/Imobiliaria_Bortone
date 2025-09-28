@@ -42,26 +42,58 @@ export default function CmsPublicidadePage() {
   const loadPublicidades = useCallback(async () => {
     try {
       setIsLoading(true);
-      const params = buildQueryParams();
-      const url = `${process.env.NEXT_PUBLIC_API_URL}/publicidade${params.toString() ? '?' + params.toString() : ''}`;
+      const params = new URLSearchParams();
+
+      if (filterData.order) {
+        if (filterData.order === "Ordem alfabetica") {
+          params.append("ordenarPor", "alfabetica");
+          params.append("direcao", "ASC");
+        } else if (filterData.order === "Data de inclusão") {
+          params.append("ordenarPor", "data");
+          params.append("direcao", "DESC");
+        }
+      }
+
+      params.append('page', String(currentPage));
+      params.append('limit', String(pagination.itemsPerPage));
+
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/publicidade${
+        params.toString() ? "?" + params.toString() : ""
+      }`;
+
       const response = await axios.get(url);
       if (response.status === 200) {
+
+        // Garantir que sempre temos um array
+        let publicidadesData = [];
+        
         if (response.data.data && response.data.pagination) {
-          setPublicidades(response.data.data);
-          setFilteredPublicidades(response.data.data);
+          publicidadesData = Array.isArray(response.data.data) ? response.data.data : [];
+          setPublicidades(publicidadesData);
+          setFilteredPublicidades(publicidadesData);
           setPagination(response.data.pagination);
         } else {
-          setPublicidades(response.data);
-          setFilteredPublicidades(response.data);
-          setPagination(prev => ({
+          publicidadesData = Array.isArray(response.data) ? response.data : [];
+          setPublicidades(publicidadesData);
+          setFilteredPublicidades(publicidadesData);
+          setPagination((prev) => ({
             ...prev,
-            totalItems: response.data.length,
-            totalPages: Math.ceil(response.data.length / prev.itemsPerPage)
+            totalItems: publicidadesData.length,
+            totalPages: Math.ceil(publicidadesData.length / prev.itemsPerPage),
           }));
         }
       }
     } catch (error) {
-      console.log("Erro ao carregar publicidades:", error);
+      console.error("Erro ao carregar publicidades:", error);
+      setPublicidades([]);
+      setFilteredPublicidades([]);
+      setPagination(prev => ({
+        ...prev,
+        totalItems: 0,
+        totalPages: 1,
+        hasNextPage: false,
+        hasPreviousPage: false
+      }));
     } finally {
       setIsLoading(false);
     }
@@ -158,12 +190,15 @@ export default function CmsPublicidadePage() {
   };
 
   const getCurrentPageItems = () => {
+    // Garantir que filteredPublicidades seja sempre um array
+    const publicidades = Array.isArray(filteredPublicidades) ? filteredPublicidades : [];
+    
     if (searchTerm.trim() !== "") {
       const startIndex = (currentPage - 1) * pagination.itemsPerPage;
       const endIndex = startIndex + pagination.itemsPerPage;
-      return filteredPublicidades.slice(startIndex, endIndex);
+      return publicidades.slice(startIndex, endIndex);
     }
-    return filteredPublicidades;
+    return publicidades;
   };
 
   return (

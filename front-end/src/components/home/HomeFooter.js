@@ -2,17 +2,14 @@ import { Flex } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import infoContato from "@/utils/infoContato.json";
+import PublicidadeCarousel from "@/components/home/PublicidadeCarousel";
 
 export default function HomeFooter() {
   return (
     <footer className="home-footer relative md:pt-20 ">
-      <Image
-        src="/images/dudaShop.svg"
-        alt="dudaShop"
-        width={1200}
-        height={100}
-        className="w-full h-auto md:px-16 md:py-7 px-4"
-      />
+      <div className="w-full md:px-16 md:py-7 px-4">
+        <PublicidadeCarousel />
+      </div>
       <div className="home-footer-content flex md:flex-row flex-col md:justify-between justify-end gap-14 px-16 py-7 text-white items-end md:pb-28">
         <Flex vertical gap="large">
           <p className="text-xl font-bold">Contate-nos</p>
