@@ -25,6 +25,28 @@ export default function PostCard({ item, onDelete }) {
     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
   };
 
+  // Função para normalizar URL da imagem
+  const buildImageUrl = (url) => {
+    if (!url) return "/404.png";
+    
+    let imageUrl = url;
+    
+    // Se não começar com /, adicionar prefixo padrão para imagens de blog
+    if (!imageUrl.startsWith("/")) {
+      imageUrl = `/images/blogImages/${imageUrl}`;
+    }
+    
+    // Se for caminho relativo /images/... e existir NEXT_PUBLIC_API_URL, monta URL absoluta
+    const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+    const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
+    
+    if (imageUrl.startsWith("/images/") && apiUrl) {
+      return `${apiUrl}${imageUrl}`;
+    }
+    
+    return imageUrl;
+  };
+
   return (
     <>
       {isConfirmModalVisible && (
@@ -41,11 +63,14 @@ export default function PostCard({ item, onDelete }) {
         {item.url_imagem ? (
           <div className="aspect-[4/2] w-full overflow-hidden">
             <Image
-              src={item.url_imagem}
+              src={buildImageUrl(item.url_imagem)}
               alt={"Imagem do item " + item.id}
               width={425}
               height={130}
               className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.src = "/404.png";
+              }}
             />
           </div>
         ) : (
