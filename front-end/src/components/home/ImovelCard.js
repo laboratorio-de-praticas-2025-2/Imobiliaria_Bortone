@@ -1,5 +1,5 @@
 import { Button, Flex } from "antd";
-import { handleImgError } from "../../utils/imageFallback";
+import { handleImgError } from "@/utils/imageFallback";
 import { PiBathtub } from "react-icons/pi";
 import { BsDoorOpenFill } from "react-icons/bs";
 import { AiOutlineMessage } from "react-icons/ai";

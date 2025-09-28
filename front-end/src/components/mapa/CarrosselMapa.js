@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { handleImgError } from "../../utils/imageFallback";
+import { handleImgError } from "@/utils/imageFallback";
 import Card from "./CardMapa";
 
 export default function CarrosselMapa({ imoveis }) {

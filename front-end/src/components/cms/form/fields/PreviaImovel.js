@@ -1,7 +1,7 @@
 import { AiOutlineClose } from "react-icons/ai";
 import Image from "next/image";
 import { useState } from "react";
-import { handleImgError } from "../../../utils/imageFallback";
+import { handleImgError } from "@/utils/imageFallback";
 
 export default function PreviaImovel({ fileList = [], onRemove }) {
   const [imageErrors, setImageErrors] = useState(new Set());
