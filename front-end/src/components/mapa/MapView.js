@@ -3,8 +3,9 @@
 
 import "leaflet/dist/leaflet.css";
 import React from "react";
-import { handleImgError } from "../../utils/imageFallback";
-import { useState } from "react";
+import { Suspense, useMemo, useRef, useState } from "react";
+import { handleImgError } from "@/utils/imageFallback";
+import Image from "next/image";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import ImovelMarker from "./ImovelMarker";
 import LocationButton from "./LocationButton";

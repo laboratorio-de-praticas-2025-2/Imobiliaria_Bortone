@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React from "react";
-import { handleImgError } from "../../utils/imageFallback";
+import { handleImgError } from "@/utils/imageFallback";
 import { FaShoppingCart } from "react-icons/fa";
 import { RiMessage2Fill } from "react-icons/ri";
 import { PiBathtub } from "react-icons/pi";
