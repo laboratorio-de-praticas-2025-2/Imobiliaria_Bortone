@@ -108,9 +108,16 @@ export default function MapView({ imoveis }) {
           }}
         >
           <img
-            src={hoverImovel.imagem}
+            src={
+              (hoverImovel.imagens && hoverImovel.imagens.length > 0 && hoverImovel.imagens[0].url_imagem) ||
+              hoverImovel.imagem ||
+              "/imovel1.png"
+            }
             alt="Imagem do imóvel"
             className="w-full h-32 object-cover mb-2 rounded"
+            onError={(e) => {
+              e.currentTarget.src = "/imovel1.png";
+            }}
           />
           <a className="card-preco">
             <p>R$ {hoverImovel.preco.toLocaleString()}</p>
