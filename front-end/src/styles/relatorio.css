@@ -29,6 +29,12 @@ body {
   position: relative;
   page-break-after: always;
   background: white;
+
+  background-image: url('/images/logo-background.svg'), url('/images/logo-background.svg');
+  background-size: 500px, 500px;
+  background-position: calc(0% - 250px) 20%, calc(100% + 250px) 80%;
+  background-repeat: no-repeat no-repeat;
+  
 }
  
 header {
@@ -45,10 +51,16 @@ header {
   font-weight: semibold;
   color: #000000;
 }
- 
+
+.main-title {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;  
+}
+
 .title {
   text-align: left;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: bold;
   margin: 40px 0;
 }
@@ -131,7 +143,7 @@ header {
 }
  
 .chart-container {
-  margin-top: 20px;
+  margin-top: 20px;  
 }
  
 .chart-large {
@@ -149,6 +161,6 @@ footer {
   right: 20mm;
   font-weight: 900;
   font-size: 20px;
-  color: #000000;
+  color: var(--primary);
   text-align: right;
 }
