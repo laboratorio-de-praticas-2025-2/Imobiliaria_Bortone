@@ -13,7 +13,7 @@ userRoutes.post("/login", userController.loginUser);
 userRoutes.post("/cms-register", userController.createCmsUser);
 userRoutes.get("/users", userController.getUsers);
 userRoutes.get("/user/:id", userController.getUserById);
-userRoutes.put("/user/:id", userController.updateUser);
+userRoutes.patch("/user/:id", userController.updateUser);
 userRoutes.delete("/user/:id", userController.deleteUser);
 
 
