@@ -26,7 +26,7 @@ export default function Cards({ searchTerm = "" }) {
       imageUrl = `/images/blogImages/${imageUrl}`;
     }
     
-    // Se for caminho relativo e tiver API URL, montar URL absoluta
+    // Se for caminho relativo /images/... e existir NEXT_PUBLIC_API_URL, monta URL absoluta
     if (imageUrl.startsWith("/images/") && apiUrl) {
       return `${apiUrl}${imageUrl}`;
     }

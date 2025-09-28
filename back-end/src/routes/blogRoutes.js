@@ -1,6 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import { 
   createArtigo, 
@@ -15,10 +16,19 @@ const __dirname = path.dirname(__filename);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadPath = path.join(
-      __dirname,
-      "../../../front-end/public/images/blogImages"
-    );
+    const uploadPath = path.join(__dirname, '../../../front-end/public/images/blogImages');
+    
+    // Garantir que o diretório existe
+    try {
+      if (!fs.existsSync(uploadPath)) {
+        fs.mkdirSync(uploadPath, { recursive: true });
+        console.log('Diretório blogImages criado:', uploadPath);
+      }
+    } catch (e) {
+      console.error('Erro ao garantir diretório blogImages:', e);
+      return cb(e);
+    }
+    
     console.log("Multer destination:", uploadPath);
     cb(null, uploadPath);
   },
