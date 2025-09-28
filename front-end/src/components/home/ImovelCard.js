@@ -10,9 +10,16 @@ export default function ImovelCard({ imovel }) {
       <div className="sm:p-3 bg-white sm:bg-[#DEE1F0] flex flex-col gap-2 align-middle rounded-xl sm:shadow-none shadow-lg">
         <div className="w-full aspect-[16/9]">
           <img
-            src={"images/casa-isolada-no-campo.jpg"}
+            src={
+              (imovel.imagens && imovel.imagens.length > 0 && imovel.imagens[0].url_imagem) ||
+              imovel.imagem ||
+              "/imovel1.png"
+            }
             alt={"Imagem do imóvel"}
             className="w-full h-full object-cover rounded-md aspect-[16/9]"
+            onError={(e) => {
+              e.currentTarget.src = "/imovel1.png";
+            }}
           />
         </div>
         <Flex justify="space-between" gap="middle" className="sm:!p-0 !px-3">
