@@ -30,7 +30,14 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
     if (!src.startsWith('/')) {
       // Se parece já ser um nome de arquivo salvo pelo multer
       if (!src.startsWith('http')) {
-        src = `/images/publicidadeImages/${src}`;
+        // Determinar a pasta baseada no href_cms
+        const folderMap = {
+          'publicidades': 'publicidadeImages',
+          'banner': 'bannerImages',
+          'publicacoes': 'blogImages'
+        };
+        const folder = folderMap[href_cms] || 'publicidadeImages';
+        src = `/images/${folder}/${src}`;
       }
     }
 
@@ -56,35 +63,62 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
 
   const onConfirmDelete = async () => {
     try {
-      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${item.id}`);
+      // Mapear href_cms para o endpoint correto
+      const endpointMap = {
+        'publicidades': 'publicidade',
+        'banner': 'banner',
+        'publicacoes': 'publicacoes'
+      };
+      
+      const endpoint = endpointMap[href_cms] || href_cms;
+      const itemType = href_cms === 'banner' ? 'Banner' : href_cms === 'publicacoes' ? 'Publicação' : 'Publicidade';
+      
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}/${item.id}`);
       if (response.status === 204) {
-        alert("Publicidade excluída com sucesso!");
+        alert(`${itemType} excluído(a) com sucesso!`);
         setIsConfirmModalVisible(false);
         if (onDeleteCallback) {
           onDeleteCallback();
         }
       } else {
-        alert("Erro inesperado ao excluir a publicidade");
+        alert(`Erro inesperado ao excluir ${itemType.toLowerCase()}`);
         setIsConfirmModalVisible(false);
       }
     } catch (error) {
-      console.log("Erro ao excluir a publicidade:", error);
-      alert("Erro ao excluir a publicidade");
+      console.log(`Erro ao excluir ${itemType.toLowerCase()}:`, error);
+      alert(`Erro ao excluir ${itemType.toLowerCase()}`);
       setIsConfirmModalVisible(false);
     }
   };
 
   const onChange = async (checked) => {
     try {
-      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${item.id}`, { ativo: checked });
+      // Mapear href_cms para o endpoint correto
+      const endpointMap = {
+        'publicidades': 'publicidade',
+        'banner': 'banner',
+        'publicacoes': 'publicacoes'
+      };
+      
+      const endpoint = endpointMap[href_cms] || href_cms;
+      
+      // Para banners, usar rota específica de toggle
+      let response;
+      if (href_cms === 'banner') {
+        response = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}/${item.id}/toggle`);
+      } else {
+        response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}/${item.id}`, { ativo: checked });
+      }
+      
       if (response.status === 200) {
         setChecked(checked);
         if (onToggleCallback) {
           onToggleCallback();
         }
       }
-    } catch {
-      console.log("Erro ao alterar status da publicidade");
+    } catch (error) {
+      const itemType = href_cms === 'banner' ? 'banner' : href_cms === 'publicacoes' ? 'publicação' : 'publicidade';
+      console.log(`Erro ao alterar status do ${itemType}:`, error);
     }
   };
 

@@ -11,6 +11,10 @@ const nextConfig = {
         hostname: '**.onrender.com'
       },
       {
+        protocol: 'https',
+        hostname: 'imobiliaria-bortone.onrender.com'
+      },
+      {
         protocol: 'http',
         hostname: 'localhost'
       },
