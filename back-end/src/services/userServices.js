@@ -1,11 +1,7 @@
 import User from "../models/Usuario.js";
 
 class UserService {
-<<<<<<< HEAD
- async create({ nome, email, senha, nivel = 1, celular = null }) {
-=======
   async create({ nome, email, senha, nivel = 1, celular = null }) {
->>>>>>> origin/develop
     try {
       const newUser = await User.create({ nome, email, senha, nivel, celular });
       return newUser;
@@ -15,8 +11,6 @@ class UserService {
     }
   }
 
-<<<<<<< HEAD
-=======
   // Cadastro específico para CMS, sem valores predefinidos
   async createCmsUser({ nome, email, senha, nivel, celular }) {
     try {
@@ -28,7 +22,6 @@ class UserService {
     }
   }
 
->>>>>>> origin/develop
   async getAll() {
     try {
       const users = await User.findAll({ where: { ativo: 1 } });

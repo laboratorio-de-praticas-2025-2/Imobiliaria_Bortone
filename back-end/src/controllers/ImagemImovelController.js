@@ -1,14 +1,5 @@
 import multer from 'multer';
 import path from 'path';
-<<<<<<< HEAD
-import crypto from 'crypto'; // Importa o módulo crypto
-import * as ImagemImovelService from '../services/ImagemImovelService.js';
-
-// Configuração do Multer para armazenamento de arquivos
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, '../front-end/public/images/imoveis/'); // Onde as imagens serão salvas
-=======
 import crypto from 'crypto'; 
 import fs from 'fs';
 import * as ImagemImovelService from '../services/ImagemImovelService.js';
@@ -25,7 +16,6 @@ const storage = multer.diskStorage({
     }
     
     cb(null, uploadPath); 
->>>>>>> origin/develop
   },
   filename: (req, file, cb) => {
     const extname = path.extname(file.originalname); // Obtém a extensão original do arquivo
@@ -40,12 +30,6 @@ export const uploadImage = (req, res) => {
   upload.single('imagem')(req, res, async (err) => {
     if (err) {
       console.error("Erro no upload da imagem:", err);
-<<<<<<< HEAD
-      return res.status(500).json({ error: "Erro ao fazer upload da imagem." });
-    }
-
-    if (!req.file) {
-=======
       return res.status(500).json({ 
         error: "Erro ao fazer upload da imagem.", 
         details: err.message 
@@ -54,29 +38,10 @@ export const uploadImage = (req, res) => {
 
     if (!req.file) {
       console.error("Nenhum arquivo de imagem enviado. req.body:", req.body);
->>>>>>> origin/develop
       return res.status(400).json({ error: "Nenhum arquivo de imagem enviado." });
     }
 
     const { imovel_id, descricao } = req.body;
-<<<<<<< HEAD
-
-    if (!imovel_id || !descricao) {
-      return res.status(400).json({ error: "Campos obrigatórios: imovel_id, descricao." });
-    }
-
-    try {
-      const url_imagem = `/images/imoveis/${req.file.filename}`; // Caminho onde a imagem foi salva
-      const novaImagem = await ImagemImovelService.createImagem({
-        imovel_id: parseInt(imovel_id),
-        url_imagem,
-        descricao,
-      });
-      res.status(201).json(novaImagem);
-    } catch (error) {
-      console.error("Erro ao salvar informações da imagem no banco de dados:", error);
-      res.status(500).json({ error: "Erro interno do servidor ao salvar imagem." });
-=======
     console.log("Upload request body:", { imovel_id, descricao });
     console.log("Upload file info:", req.file);
 
@@ -100,7 +65,6 @@ export const uploadImage = (req, res) => {
         error: "Erro interno do servidor ao salvar imagem.", 
         details: error.message 
       });
->>>>>>> origin/develop
     }
   });
 };
@@ -108,12 +72,6 @@ export const uploadImage = (req, res) => {
 export const deleteImage = async (req, res) => {
   const { id } = req.params;
   try {
-<<<<<<< HEAD
-    const deleted = await ImagemImovelService.deleteImagem(id);
-    if (!deleted) {
-      return res.status(404).json({ error: "Imagem não encontrada." });
-    }
-=======
     // Primeiro buscar a imagem para obter o caminho do arquivo
     const imagem = await ImagemImovelService.getImageById(id);
     if (!imagem) {
@@ -135,7 +93,6 @@ export const deleteImage = async (req, res) => {
       return res.status(404).json({ error: "Erro ao excluir imagem do banco de dados." });
     }
     
->>>>>>> origin/develop
     res.status(200).json({ message: "Imagem excluída com sucesso." });
   } catch (error) {
     console.error("Erro ao excluir imagem:", error);
@@ -169,8 +126,6 @@ export const getImagesByImovelId = async (req, res) => {
     console.error("Erro ao buscar imagens por ID do imóvel:", error);
     res.status(500).json({ error: "Erro interno do servidor ao buscar imagens do imóvel." });
   }
-<<<<<<< HEAD
-=======
 };
 
 // Função alternativa para criar imagem apenas com URL (sem upload)
@@ -197,5 +152,4 @@ export const createImageFromUrl = async (req, res) => {
       details: error.message 
     });
   }
->>>>>>> origin/develop
 };

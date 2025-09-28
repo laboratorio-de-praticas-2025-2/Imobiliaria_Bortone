@@ -11,11 +11,7 @@ export const create = async (imovelData, casaData) => {
   try {
     const newImovel = await Imovel.create(imovelData, { transaction });
 
-<<<<<<< HEAD
-    if (imovelData.tipo === 'casa' || imovelData.tipo === 'apartamento') {
-=======
     if (imovelData.tipo.toLowerCase() === 'casa' || imovelData.tipo.toLowerCase() === 'apartamento') {
->>>>>>> origin/develop
       await Casa.create({
         ...casaData,
         imovel_id: newImovel.id
@@ -86,11 +82,7 @@ export const update = async (id, imovelData, casaData) => {
 
     await imovel.update(imovelData, { transaction });
 
-<<<<<<< HEAD
-    if (imovelData.tipo === 'casa') {
-=======
     if (imovelData.tipo.toLowerCase() === 'casa') {
->>>>>>> origin/develop
       const casa = await Casa.findOne({ where: { imovel_id: id }, transaction });
       if (casa) {
         await casa.update(casaData, { transaction });
@@ -149,30 +141,6 @@ export const deleteImovel = async (id) => {
 export const getFilteredEntities = async (filters, filterMappings, include = []) => {
   try {
     const where = {};
-<<<<<<< HEAD
-
-    for (const key in filters) {
-      if (filters[key] !== undefined) {
-        const mapping = filterMappings[key];
-        if (mapping) {
-          if (mapping.type === 'exact') {
-            where[mapping.field] = filters[key];
-          } else if (mapping.type === 'range') {
-            const minKey = `min${key.charAt(0).toUpperCase() + key.slice(1)}`;
-            const maxKey = `max${key.charAt(0).toUpperCase() + key.slice(1)}`;
-            const minValue = filters[minKey];
-            const maxValue = filters[maxKey];
-
-            if (minValue !== undefined && maxValue !== undefined) {
-              where[mapping.field] = { [Op.between]: [minValue, maxValue] };
-            } else if (minValue !== undefined) {
-              where[mapping.field] = { [Op.gte]: minValue };
-            } else if (maxValue !== undefined) {
-              where[mapping.field] = { [Op.lte]: maxValue };
-            }
-          }
-        }
-=======
     const casaWhere = {};
 
     for (const key in filterMappings) {
@@ -209,7 +177,6 @@ export const getFilteredEntities = async (filters, filterMappings, include = [])
         casaInclude.where = { ...casaInclude.where, ...casaWhere };
       } else {
         include.push({ model: Casa, as: 'casa', where: casaWhere });
->>>>>>> origin/develop
       }
     }
 

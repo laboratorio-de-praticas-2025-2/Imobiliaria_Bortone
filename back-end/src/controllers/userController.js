@@ -27,8 +27,6 @@ const createUser = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
-=======
 // Cadastro específico para CMS
 const createCmsUser = async (req, res) => {
   try {
@@ -55,7 +53,6 @@ const createCmsUser = async (req, res) => {
   }
 };
 
->>>>>>> origin/develop
 const getUsers = async (req, res) => {
   try {
     const users = await userService.getAll();
@@ -181,8 +178,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
-export default { createUser, getUsers, getUserById, updateUser, deleteUser, loginUser, JWTSecret };
-=======
 export default { createUser, createCmsUser, getUsers, getUserById, updateUser, deleteUser, loginUser, JWTSecret };
->>>>>>> origin/develop

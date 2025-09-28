@@ -1,10 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 import path from "path";
-<<<<<<< HEAD
-=======
 import fs from "fs";
->>>>>>> origin/develop
 import { fileURLToPath } from "url";
 
 import {
@@ -21,9 +18,6 @@ const __dirname = path.dirname(__filename);
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const uploadPath = path.join(__dirname, '../../../front-end/public/images/publicidadeImages');
-<<<<<<< HEAD
-
-=======
     try {
       if (!fs.existsSync(uploadPath)) {
         fs.mkdirSync(uploadPath, { recursive: true });
@@ -33,7 +27,6 @@ const storage = multer.diskStorage({
       console.error('Erro ao garantir pasta de upload de publicidade:', e);
       return cb(e);
     }
->>>>>>> origin/develop
     console.log('Multer destination:', uploadPath);
     cb(null, uploadPath);
   },
