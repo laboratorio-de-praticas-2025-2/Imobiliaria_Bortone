@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 
-otenv.config();
+dotenv.config();
 
 const sequelize = new Sequelize(
   process.env.DB_DATABASE,            // Nome do banco
@@ -25,4 +25,4 @@ const sequelize = new Sequelize(
   //}
 //})();
 
-//export default sequelize;
+export default sequelize;
