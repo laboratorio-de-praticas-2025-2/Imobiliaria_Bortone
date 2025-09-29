@@ -41,7 +41,9 @@
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.4.7",
+    "form-data": "^4.0.0",
     "multiparty": "^4.2.3",
+    "node-fetch": "^2.7.0",
     "tailwindcss": "^4"
   }
 }

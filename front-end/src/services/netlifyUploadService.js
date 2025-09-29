@@ -1,18 +1,25 @@
 // Serviço para upload de imagens via Netlify Functions
 
 /**
- * Upload de imagem para Netlify
+ * Upload de imagem para Netlify (via proxy para backend)
  * @param {File} file - Arquivo de imagem
- * @param {string} folder - Pasta de destino (default: 'imoveis')
+ * @param {string} imovelId - ID do imóvel
+ * @param {string} descricao - Descrição da imagem
  * @returns {Promise<string>} URL da imagem
  */
-export const uploadToNetlify = async (file, folder = 'imoveis') => {
+export const uploadToNetlify = async (file, imovelId = '1', descricao = 'Imagem do imóvel') => {
   const formData = new FormData();
   formData.append('image', file);
-  formData.append('folder', folder);
+  formData.append('imovel_id', imovelId);
+  formData.append('descricao', descricao);
 
   try {
-    console.log('Uploading to Netlify:', { fileName: file.name, folder });
+    console.log('🚀 Uploading via Netlify Function:', { 
+      fileName: file.name, 
+      size: file.size,
+      imovelId,
+      descricao 
+    });
     
     const response = await fetch('/.netlify/functions/upload-image', {
       method: 'POST',
@@ -21,16 +28,26 @@ export const uploadToNetlify = async (file, folder = 'imoveis') => {
     
     if (!response.ok) {
       const errorData = await response.text();
-      console.error('Upload failed:', response.status, errorData);
-      throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
+      console.error('❌ Upload failed:', response.status, errorData);
+      
+      // Tentar parsear erro JSON
+      let errorDetails;
+      try {
+        errorDetails = JSON.parse(errorData);
+      } catch {
+        errorDetails = { error: errorData };
+      }
+      
+      throw new Error(errorDetails.error || `Upload failed: ${response.status}`);
     }
 
     const result = await response.json();
-    console.log('Upload successful:', result);
+    console.log('✅ Upload successful:', result);
     
+    // Retornar URL da imagem
     return result.url;
   } catch (error) {
-    console.error('Upload error:', error);
+    console.error('💥 Upload error:', error);
     throw new Error(`Falha no upload: ${error.message}`);
   }
 };
