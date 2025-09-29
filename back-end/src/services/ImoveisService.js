@@ -3,7 +3,7 @@ import Casa from '../models/Casa.js';
 import Terreno from '../models/Terreno.js';
 import ImagemImovel from '../models/ImagemImovel.js';
 import connection from '../config/sequelize-config.js'; 
-import { Sequelize, Op } from 'sequelize';import RecomendacaoImovel from '../models/recomendacaoImovelModal.js';
+import { Sequelize, Op } from 'sequelize';import RecomendacaoImovel from '../models/recomendacaoImovelModel.js';
 
 
 export const create = async (imovelData, casaData) => {
