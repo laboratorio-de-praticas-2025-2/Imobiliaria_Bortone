@@ -17,23 +17,38 @@ Execute no terminal do front-end:
 npm install --save-dev @netlify/plugin-nextjs multiparty
 ```
 
-### ⚠️ **CORREÇÕES APLICADAS** (Após primeiro deploy com erro):
+### ⚠️ **CORREÇÕES APLICADAS** (Após erros de deploy):
 
+**Primeiro erro - Propriedade target depreciada:**
 - ✅ Removida propriedade `target` do `next.config.mjs` (depreciada)
 - ✅ Configuração simplificada do `netlify.toml`
-- ✅ Plugin `@netlify/plugin-nextjs` gerencia automaticamente o diretório de publicação
-- ✅ Compatibilidade com Next.js 15.4.7 e App Router
+
+**Segundo erro - Diretório de publicação:**
+- ✅ Adicionado `publish = ".next"` no `netlify.toml`
+- ✅ Correção do erro: "publish directory cannot be the same as base directory"
+
+**Compatibilidade:**
+- ✅ Next.js 15.4.7 e App Router totalmente suportados
+- ✅ Plugin `@netlify/plugin-nextjs` v5.13.3 funcionando
 
 ### 2. Configurar Variáveis de Ambiente no Netlify
 
-No painel do Netlify (Site settings > Environment variables):
+**📋 Consulte o arquivo `NETLIFY_ENV_CONFIG.md` para guia completo**
+
+**Resumo rápido:**
+1. Acesse [app.netlify.com](https://app.netlify.com)
+2. Seu site → **Site settings** → **Environment variables**
+3. Adicione as variáveis:
 
 ```bash
 NEXT_PUBLIC_API_URL=https://seu-backend.onrender.com
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=sua_chave_aqui
 NODE_ENV=production
 NEXT_TELEMETRY_DISABLED=1
+NODE_VERSION=18
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=sua_chave_aqui
 ```
+
+**⚠️ IMPORTANTE:** Após adicionar as variáveis, faça um **Trigger deploy** manual.
 
 ### 3. Deploy Steps
 
