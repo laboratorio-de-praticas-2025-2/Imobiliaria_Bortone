@@ -1,0 +1,1356 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Análise Técnica: Sistema de Imagens Atual vs Vercel - Imobiliaria Bortone - Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#analise-tecnica-sistema-de-imagens-atual-vs-vercel" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Imobiliaria Bortone - Documentação" class="md-header__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imobiliaria Bortone - Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Análise Técnica: Sistema de Imagens Atual vs Vercel
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Imobiliaria Bortone - Documentação" class="md-nav__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    Imobiliaria Bortone - Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RegrasGerais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EstruturaDePastas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estrutura de Pastas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/NextConfig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/middlwareIndexacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Middleware
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/ManualdeTags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual de Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/AlgoritmoDeRecomendacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/BancoDeDados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dashboard
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaAPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaImplementacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Implementação da API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaResumo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resumo da Integração
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/ChatSuporte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chat Suporte
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/Documentacao_Contatos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contatos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WebSocket-Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Rodar o WebSocket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UserLevels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Níveis de Usuário
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ChatSystemBugFixes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relatório de Correção de Bugs do Chat
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Agendamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agendamento de Visitação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/AgendamentoSMTP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidade do envio de e-mail
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral-da-arquitetura-atual" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visão Geral da Arquitetura Atual
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visão Geral da Arquitetura Atual">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-fluxo-de-upload-de-imagens" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Fluxo de Upload de Imagens
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-estrutura-de-pastas-problematica" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Estrutura de Pastas Problemática
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problemas-especificos-por-componente" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problemas Específicos por Componente
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Problemas Específicos por Componente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-imagemimovelcontrollerjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. ImagemImovelController.js
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. ImagemImovelController.js">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problema-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problema Principal:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#por-que-falha-no-vercel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Por que falha no Vercel:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-do-problema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evidência do Problema:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-appjs-static-file-serving" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. app.js - Static File Serving
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. app.js - Static File Serving">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problema-principal_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problema Principal:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#por-que-falha-no-vercel_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Por que falha no Vercel:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-imagecarrousseljs" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. ImageCarroussel.js
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. ImageCarroussel.js">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problema-principal_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problema Principal:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cenarios-de-falha" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cenários de Falha:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-variaveis-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Variáveis de Ambiente
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Variáveis de Ambiente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-atual" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuração Atual:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problemas:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#casos-de-teste-que-falham" class="md-nav__link">
+    <span class="md-ellipsis">
+      Casos de Teste que Falham
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Casos de Teste que Falham">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#teste-1-upload-local-vs-producao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Teste 1: Upload Local vs Produção
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-2-variavel-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      Teste 2: Variável de Ambiente
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-3-cross-origin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Teste 3: Cross-Origin
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#componentes-mais-afetados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Componentes Mais Afetados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Componentes Mais Afetados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-carrossel-de-imoveis-critico" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Carrossel de Imóveis ⚠️ CRÍTICO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-cms-de-edicao-critico" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. CMS de Edição ⚠️ CRÍTICO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cards-de-blog-medio" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cards de Blog ⚠️ MÉDIO
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#impacto-no-usuario-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      Impacto no Usuário Final
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Impacto no Usuário Final">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sintomas-visiveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sintomas Visíveis:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logs-de-erro-tipicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logs de Erro Típicos:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workarounds-temporarios-vs-solucoes-definitivas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workarounds Temporários vs Soluções Definitivas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Workarounds Temporários vs Soluções Definitivas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#workarounds-que-nao-funcionam" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workarounds que NÃO Funcionam:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solucoes-que-funcionariam" class="md-nav__link">
+    <span class="md-ellipsis">
+      Soluções que Funcionariam:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metricas-de-impacto" class="md-nav__link">
+    <span class="md-ellipsis">
+      Métricas de Impacto
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Métricas de Impacto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcionalidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      Funcionalidade:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seo-impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      SEO Impact:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proximos-passos-tecnicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Próximos Passos Técnicos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Próximos Passos Técnicos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagnostico-rapido" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagnóstico Rápido:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fix-emergencial-1-2-horas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fix Emergencial (1-2 horas):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solucao-definitiva-1-2-semanas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solução Definitiva (1-2 semanas):
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="analise-tecnica-sistema-de-imagens-atual-vs-vercel">Análise Técnica: Sistema de Imagens Atual vs Vercel</h1>
+<h2 id="visao-geral-da-arquitetura-atual">Visão Geral da Arquitetura Atual</h2>
+<h3 id="1-fluxo-de-upload-de-imagens"><strong>1. Fluxo de Upload de Imagens</strong></h3>
+<div class="highlight"><pre><span></span><code>graph TD
+    A[Frontend: Upload de Imagem] --&gt; B[Backend: ImagemImovelController]
+    B --&gt; C[Multer: Salva em ../front-end/public/images/imoveis/]
+    C --&gt; D[Banco: Salva URL relativa /images/imoveis/arquivo.jpg]
+    D --&gt; E[Frontend: Tenta carregar via NEXT_PUBLIC_API_URL]
+</code></pre></div>
+<h3 id="2-estrutura-de-pastas-problematica"><strong>2. Estrutura de Pastas Problemática</strong></h3>
+<div class="highlight"><pre><span></span><code>Imobiliaria_Bortone/
+├── back-end/
+│   ├── src/
+│   │   ├── controllers/
+│   │   │   └── ImagemImovelController.js ❌ Salva em ../front-end/public/
+│   │   └── app.js ❌ Serve static files de outro diretório
+│   └── uploads/ ❌ Pasta vazia, não utilizada
+├── front-end/
+│   ├── public/
+│   │   └── images/
+│   │       ├── imoveis/ ❌ Imagens salvas pelo backend
+│   │       └── blogImages/ ❌ Imagens salvas pelo backend
+│   └── src/
+│       ├── components/
+│       │   └── vitrine/
+│       │       └── ImageCarroussel.js ❌ URL mal formada
+│       └── utils/
+│           └── imageUrl.js ❌ Lógica complexa e falha
+</code></pre></div>
+<h2 id="problemas-especificos-por-componente">Problemas Específicos por Componente</h2>
+<h3 id="1-imagemimovelcontrollerjs"><strong>1. ImagemImovelController.js</strong></h3>
+<h4 id="problema-principal"><strong>Problema Principal:</strong></h4>
+<div class="highlight"><pre><span></span><code><span class="c1">// Linha 11: Tenta salvar em diretório do front-end</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">uploadPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;../front-end/public/images/imoveis&#39;</span><span class="p">);</span>
+
+<span class="c1">// Linha 54: Salva URL relativa no banco</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">url_imagem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`/images/imoveis/</span><span class="si">${</span><span class="nx">req</span><span class="p">.</span><span class="nx">file</span><span class="p">.</span><span class="nx">filename</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</code></pre></div>
+<h4 id="por-que-falha-no-vercel"><strong>Por que falha no Vercel:</strong></h4>
+<ul>
+<li>✗ Backend e frontend são deployados separadamente</li>
+<li>✗ Sistema de arquivos readonly no Vercel</li>
+<li>✗ Path relativos não funcionam em containers diferentes</li>
+</ul>
+<h4 id="evidencia-do-problema"><strong>Evidência do Problema:</strong></h4>
+<div class="highlight"><pre><span></span><code><span class="c1">// DEBUG logs mostram:</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Upload file info:&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">file</span><span class="p">);</span>
+<span class="c1">// req.file.path será inexistente ou inacessível no Vercel</span>
+</code></pre></div>
+<h3 id="2-appjs-static-file-serving"><strong>2. app.js - Static File Serving</strong></h3>
+<h4 id="problema-principal_1"><strong>Problema Principal:</strong></h4>
+<div class="highlight"><pre><span></span><code><span class="c1">// Linha 54: Serve arquivos de outro diretório</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;/images&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">express</span><span class="p">.</span><span class="k">static</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;../../front-end/public/images&#39;</span><span class="p">)));</span>
+</code></pre></div>
+<h4 id="por-que-falha-no-vercel_1"><strong>Por que falha no Vercel:</strong></h4>
+<ul>
+<li>✗ Frontend está em domínio diferente</li>
+<li>✗ Pasta não existe no container do backend</li>
+<li>✗ CORS pode bloquear requisições cross-origin</li>
+</ul>
+<h3 id="3-imagecarrousseljs"><strong>3. ImageCarroussel.js</strong></h3>
+<h4 id="problema-principal_2"><strong>Problema Principal:</strong></h4>
+<div class="highlight"><pre><span></span><code><span class="c1">// Linha 24: Concatenação incorreta de URLs</span>
+<span class="nx">src</span><span class="o">=</span><span class="p">{</span><span class="sb">`</span><span class="si">${</span><span class="nx">apiUrl</span><span class="si">}</span><span class="sb">/images/imoveis/</span><span class="si">${</span><span class="nx">img</span><span class="p">.</span><span class="nx">url_imagem</span><span class="si">}</span><span class="sb">`</span><span class="p">}</span>
+</code></pre></div>
+<h4 id="cenarios-de-falha"><strong>Cenários de Falha:</strong></h4>
+<div class="highlight"><pre><span></span><code><span class="c1">// Se img.url_imagem já tem /images/imoveis/arquivo.jpg</span>
+<span class="c1">// Resultado: https://api.com/images/imoveis//images/imoveis/arquivo.jpg</span>
+
+<span class="c1">// Se apiUrl é undefined</span>
+<span class="c1">// Resultado: undefined/images/imoveis/arquivo.jpg</span>
+</code></pre></div>
+<h3 id="4-variaveis-de-ambiente"><strong>4. Variáveis de Ambiente</strong></h3>
+<h4 id="configuracao-atual"><strong>Configuração Atual:</strong></h4>
+<div class="highlight"><pre><span></span><code><span class="c1">// Múltiplos padrões inconsistentes:</span>
+
+<span class="c1">// Opção 1:</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">apiUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NEXT_PUBLIC_API_URL</span><span class="p">;</span>
+
+<span class="c1">// Opção 2:</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">rawApiUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NEXT_PUBLIC_API_URL</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>
+<span class="w">  </span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s2">&quot;production&quot;</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s2">&quot;http://localhost:4000&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">);</span>
+
+<span class="c1">// Opção 3:</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">apiBase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NEXT_PUBLIC_API_URL</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;http://localhost:4000&#39;</span><span class="p">;</span>
+</code></pre></div>
+<h4 id="problemas"><strong>Problemas:</strong></h4>
+<ul>
+<li>✗ Inconsistência entre componentes</li>
+<li>✗ Fallbacks diferentes</li>
+<li>✗ Não configurado no Vercel</li>
+</ul>
+<h2 id="casos-de-teste-que-falham">Casos de Teste que Falham</h2>
+<h3 id="teste-1-upload-local-vs-producao"><strong>Teste 1: Upload Local vs Produção</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Local (Funciona)</span>
+<span class="nx">localhost</span><span class="o">:</span><span class="mf">4000</span><span class="o">/</span><span class="nx">images</span><span class="o">/</span><span class="nx">imoveis</span><span class="o">/</span><span class="nx">abc123</span><span class="p">.</span><span class="nx">jpg</span><span class="w"> </span><span class="err">✓</span>
+
+<span class="c1">// Vercel Frontend tentando acessar Backend</span>
+<span class="nx">https</span><span class="o">:</span><span class="c1">//app.vercel.app/api-backend.onrender.com/images/imoveis/abc123.jpg ✗</span>
+</code></pre></div>
+<h3 id="teste-2-variavel-de-ambiente"><strong>Teste 2: Variável de Ambiente</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Local</span>
+<span class="nx">NEXT_PUBLIC_API_URL</span><span class="o">=</span><span class="nx">http</span><span class="o">:</span><span class="c1">//localhost:4000 ✓</span>
+
+<span class="c1">// Vercel (não configurado)</span>
+<span class="nx">NEXT_PUBLIC_API_URL</span><span class="o">=</span><span class="kc">undefined</span><span class="w"> </span><span class="err">✗</span>
+<span class="c1">// Resultado: undefined/images/imoveis/arquivo.jpg</span>
+</code></pre></div>
+<h3 id="teste-3-cross-origin"><strong>Teste 3: Cross-Origin</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Frontend Vercel tentando carregar do Backend Render</span>
+<span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;https://backend.onrender.com/images/imoveis/abc123.jpg&#39;</span><span class="p">)</span>
+<span class="c1">// CORS Error ✗</span>
+</code></pre></div>
+<h2 id="componentes-mais-afetados">Componentes Mais Afetados</h2>
+<h3 id="1-carrossel-de-imoveis-critico"><strong>1. Carrossel de Imóveis</strong> ⚠️ <strong>CRÍTICO</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// ImageCarroussel.js</span>
+<span class="p">{(</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">imagem_imovel</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="p">[]).</span><span class="nx">map</span><span class="p">((</span><span class="nx">img</span><span class="p">,</span><span class="w"> </span><span class="nx">index</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="nx">img</span><span class="w"> </span><span class="nx">src</span><span class="o">=</span><span class="p">{</span><span class="sb">`</span><span class="si">${</span><span class="nx">apiUrl</span><span class="si">}</span><span class="sb">/images/imoveis/</span><span class="si">${</span><span class="nx">img</span><span class="p">.</span><span class="nx">url_imagem</span><span class="si">}</span><span class="sb">`</span><span class="p">}</span><span class="w"> </span><span class="o">/&gt;</span><span class="w"> </span><span class="c1">// FALHA</span>
+<span class="p">))}</span>
+</code></pre></div>
+<h3 id="2-cms-de-edicao-critico"><strong>2. CMS de Edição</strong> ⚠️ <strong>CRÍTICO</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// EditarImovelPage.js</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">fullUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`</span><span class="si">${</span><span class="nx">cleanApiUrl</span><span class="si">}${</span><span class="nx">cleanImageUrl</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span><span class="w"> </span><span class="c1">// URLs malformadas</span>
+</code></pre></div>
+<h3 id="3-cards-de-blog-medio"><strong>3. Cards de Blog</strong> ⚠️ <strong>MÉDIO</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Cards.js - Tem fallback parcial</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">rawApiUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NEXT_PUBLIC_API_URL</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>
+<span class="w">  </span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s2">&quot;production&quot;</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s2">&quot;http://localhost:4000&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">);</span>
+</code></pre></div>
+<h2 id="impacto-no-usuario-final">Impacto no Usuário Final</h2>
+<h3 id="sintomas-visiveis"><strong>Sintomas Visíveis:</strong></h3>
+<ol>
+<li><strong>Imagens não carregam</strong> - Ícones de imagem quebrada</li>
+<li><strong>Imagens de fallback</strong> - Sempre mostra 404.png</li>
+<li><strong>Upload falha silenciosamente</strong> - Aparenta sucesso mas não salva</li>
+<li><strong>Inconsistência visual</strong> - Algumas telas funcionam, outras não</li>
+</ol>
+<h3 id="logs-de-erro-tipicos"><strong>Logs de Erro Típicos:</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Console do navegador</span>
+<span class="nx">GET</span><span class="w"> </span><span class="nx">https</span><span class="o">:</span><span class="c1">//undefined/images/imoveis/abc123.jpg net::ERR_NAME_NOT_RESOLVED</span>
+
+<span class="c1">// Network tab</span>
+<span class="nx">Failed</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">load</span><span class="w"> </span><span class="nx">resource</span><span class="o">:</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">server</span><span class="w"> </span><span class="nx">responded</span><span class="w"> </span><span class="kd">with</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">status</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="mf">404</span>
+
+<span class="c1">// Backend logs</span>
+<span class="ne">Error</span><span class="o">:</span><span class="w"> </span><span class="nx">ENOENT</span><span class="o">:</span><span class="w"> </span><span class="nx">no</span><span class="w"> </span><span class="nx">such</span><span class="w"> </span><span class="nx">file</span><span class="w"> </span><span class="nx">or</span><span class="w"> </span><span class="nx">directory</span><span class="p">,</span><span class="w"> </span><span class="nx">open</span><span class="w"> </span><span class="s1">&#39;../front-end/public/images/imoveis/&#39;</span>
+</code></pre></div>
+<h2 id="workarounds-temporarios-vs-solucoes-definitivas">Workarounds Temporários vs Soluções Definitivas</h2>
+<h3 id="workarounds-que-nao-funcionam"><strong>Workarounds que NÃO Funcionam:</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// ❌ Tentar corrigir URL no frontend</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">fixedUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;undefined&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;https://backend.com&#39;</span><span class="p">);</span>
+
+<span class="c1">// ❌ Salvar imagens no backend/public</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;/images&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">express</span><span class="p">.</span><span class="k">static</span><span class="p">(</span><span class="s1">&#39;public/images&#39;</span><span class="p">));</span>
+
+<span class="c1">// ❌ Usar BASE64 no banco de dados (performance terrível)</span>
+</code></pre></div>
+<h3 id="solucoes-que-funcionariam"><strong>Soluções que Funcionariam:</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// ✅ Cloud storage com URLs absolutas</span>
+<span class="nx">url_imagem</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;https://s3.amazonaws.com/bucket/abc123.jpg&#39;</span>
+
+<span class="c1">// ✅ Configurar CORS e variáveis corretas</span>
+<span class="nx">NEXT_PUBLIC_API_URL</span><span class="o">=</span><span class="nx">https</span><span class="o">:</span><span class="c1">//backend.onrender.com</span>
+
+<span class="c1">// ✅ Middleware de proxy no frontend</span>
+<span class="s1">&#39;/api/images&#39;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">target</span><span class="o">:</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">API_URL</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">changeOrigin</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="metricas-de-impacto">Métricas de Impacto</h2>
+<h3 id="performance"><strong>Performance:</strong></h3>
+<ul>
+<li>🔴 <strong>100% das imagens de imóveis falham no Vercel</strong></li>
+<li>🟡 <strong>~60% das imagens de blog usam fallback</strong></li>
+<li>🟢 <strong>Imagens estáticas (public/) funcionam normalmente</strong></li>
+</ul>
+<h3 id="funcionalidade"><strong>Funcionalidade:</strong></h3>
+<ul>
+<li>🔴 <strong>Upload de novas imagens não funciona</strong></li>
+<li>🔴 <strong>Edição de imóveis quebra</strong></li>
+<li>🟡 <strong>Blog funciona com limitações</strong></li>
+<li>🟢 <strong>Login e navegação funcionam</strong></li>
+</ul>
+<h3 id="seo-impact"><strong>SEO Impact:</strong></h3>
+<ul>
+<li>🔴 <strong>Imagens sem alt text por causa de fallbacks</strong></li>
+<li>🔴 <strong>Slow LCP por tentativas de load falhadas</strong></li>
+<li>🔴 <strong>404s impactam crawling</strong></li>
+</ul>
+<h2 id="proximos-passos-tecnicos">Próximos Passos Técnicos</h2>
+<h3 id="diagnostico-rapido"><strong>Diagnóstico Rápido:</strong></h3>
+<ol>
+<li>Verificar logs do Vercel para 404s em /images/</li>
+<li>Testar NEXT_PUBLIC_API_URL no console do browser</li>
+<li>Verificar CORS headers no Network tab</li>
+</ol>
+<h3 id="fix-emergencial-1-2-horas"><strong>Fix Emergencial (1-2 horas):</strong></h3>
+<ol>
+<li>Configurar NEXT_PUBLIC_API_URL no Vercel dashboard</li>
+<li>Implementar componente de imagem unificado com fallback</li>
+<li>Atualizar ImageCarroussel para usar lógica robusta</li>
+</ol>
+<h3 id="solucao-definitiva-1-2-semanas"><strong>Solução Definitiva (1-2 semanas):</strong></h3>
+<ol>
+<li>Migrar para cloud storage (AWS S3/Cloudinary)</li>
+<li>Atualizar todos os componentes para usar URLs absolutas</li>
+<li>Implementar sistema de cache e otimização</li>
+</ol>
+<p>Este documento técnico evidencia que o problema não é específico do Vercel, mas sim uma arquitetura fundamentalmente incompatível com deployments distribuídos modernos.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
