@@ -17,6 +17,13 @@ Execute no terminal do front-end:
 npm install --save-dev @netlify/plugin-nextjs multiparty
 ```
 
+### ⚠️ **CORREÇÕES APLICADAS** (Após primeiro deploy com erro):
+
+- ✅ Removida propriedade `target` do `next.config.mjs` (depreciada)
+- ✅ Configuração simplificada do `netlify.toml`
+- ✅ Plugin `@netlify/plugin-nextjs` gerencia automaticamente o diretório de publicação
+- ✅ Compatibilidade com Next.js 15.4.7 e App Router
+
 ### 2. Configurar Variáveis de Ambiente no Netlify
 
 No painel do Netlify (Site settings > Environment variables):
