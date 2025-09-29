@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p 3000",
-    "lint": "next lint"
+    "lint": "next lint",
+    "netlify:dev": "netlify dev",
+    "netlify:build": "next build",
+    "netlify:deploy": "netlify deploy --prod"
   },
   "dependencies": {
     "@ant-design/compatible": "^5.1.4",
@@ -34,9 +37,11 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@netlify/plugin-nextjs": "^5.7.2",
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.4.7",
+    "multiparty": "^4.2.3",
     "tailwindcss": "^4"
   }
 }

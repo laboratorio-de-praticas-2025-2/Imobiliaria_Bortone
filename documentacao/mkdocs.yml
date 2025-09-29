@@ -44,4 +44,5 @@ nav:
   - Relatório de Correção de Bugs do Chat: ChatSystemBugFixes.md
   - Agendamento de Visitação: api/Agendamento.md
   - Funcionalidade do envio de e-mail: api/AgendamentoSMTP.md
-  
+  - Problemas com Imagens no Vercel: ProblemasImagensVercel.md
+  - Analise de Arquitetura Imagens: AnaliseArquiteturaImagens.md
