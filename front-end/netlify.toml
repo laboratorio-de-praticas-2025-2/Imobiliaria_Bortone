@@ -1,6 +1,7 @@
 # Configuração simplificada do Netlify para Next.js
 [build]
   command = "npm run build"
+  publish = ".next"
   functions = "netlify/functions"
 
 [build.environment]
