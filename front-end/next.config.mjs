@@ -3,11 +3,7 @@ const isDev = process.env.NODE_ENV !== "production";
 const isNetlify = process.env.NETLIFY === "true";
 
 const nextConfig = {
-  // Configurações específicas para Netlify
-  ...(isNetlify && {
-    target: 'serverless',
-    distDir: '.next',
-  }),
+  // Remover output export para usar com Netlify Functions
   
   images: {
     formats: ["image/avif", "image/webp"],
