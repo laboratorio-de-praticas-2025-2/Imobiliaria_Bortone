@@ -1,7 +1,14 @@
 /** @type {import('next').NextConfig} */
 const isDev = process.env.NODE_ENV !== "production";
+const isNetlify = process.env.NETLIFY === "true";
 
 const nextConfig = {
+  // Configurações específicas para Netlify
+  ...(isNetlify && {
+    target: 'serverless',
+    distDir: '.next',
+  }),
+  
   images: {
     formats: ["image/avif", "image/webp"],
     domains: [],
@@ -13,6 +20,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'imobiliaria-bortone.onrender.com'
+      },
+      {
+        protocol: 'https',
+        hostname: '**.netlify.app'
       },
       {
         protocol: 'http',
