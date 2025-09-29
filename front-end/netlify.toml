@@ -1,0 +1,83 @@
+# Configuração do Netlify para Next.js
+[build]
+  # Comando para build da aplicação
+  command = "npm run build"
+  
+  # Diretório onde ficam os arquivos buildados
+  publish = ".next"
+  
+  # Diretório das funções serverless
+  functions = "netlify/functions"
+
+[build.environment]
+  # Versão do Node.js
+  NODE_VERSION = "18"
+  
+  # Variáveis de ambiente para build
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# Plugin do Next.js para Netlify
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Configuração de headers para otimização
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    Access-Control-Allow-Origin = "*"
+
+# Redirecionamentos para API
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Redirecionamento para SPA (Single Page Application)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  conditions = {Role = ["admin"], Country = ["US"]}
+
+# Redirecionamento padrão para todas as rotas não encontradas
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
+  force = false
+
+# Configurações de Edge Functions (se necessário)
+[[edge_functions]]
+  function = "geolocation"
+  path = "/api/location/*"
+
+# Configuração de Forms (para contato, se houver)
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+# Configuração de segurança
+[context.production.environment]
+  NODE_ENV = "production"
+
+[context.deploy-preview.environment]
+  NODE_ENV = "development"
+
+[context.branch-deploy.environment]
+  NODE_ENV = "development"
