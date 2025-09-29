@@ -7,7 +7,7 @@ exports.handler = async (event, context) => {
   // Headers CORS
   const headers = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
   };
 
@@ -30,6 +30,30 @@ exports.handler = async (event, context) => {
   }
 
   try {
+    console.log('🔍 NETLIFY FUNCTION DEBUG:');
+    console.log('Event headers:', event.headers);
+    console.log('Event httpMethod:', event.httpMethod);
+    console.log('Event isBase64Encoded:', event.isBase64Encoded);
+
+    // ⚠️ PROBLEMA: Netlify Functions não pode salvar arquivos no public/
+    // ✅ SOLUÇÃO: Proxy para backend que pode salvar arquivos
+    
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+    
+    if (!backendUrl || backendUrl === 'undefined') {
+      console.error('❌ NEXT_PUBLIC_API_URL não configurada!');
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ 
+          error: 'Variável de ambiente NEXT_PUBLIC_API_URL não configurada',
+          debug: 'Configure no painel do Netlify: Site settings > Environment variables'
+        })
+      };
+    }
+
+    console.log('🌐 Fazendo proxy para backend:', backendUrl);
+
     // Parse do multipart form data
     const form = new multiparty.Form();
     
@@ -44,8 +68,8 @@ exports.handler = async (event, context) => {
       });
     });
 
-    console.log('Fields:', fields);
-    console.log('Files:', Object.keys(files));
+    console.log('📂 Fields recebidos:', Object.keys(fields));
+    console.log('📁 Files recebidos:', Object.keys(files));
 
     const uploadedFile = files.image?.[0] || files.imagem?.[0];
     if (!uploadedFile) {
@@ -56,33 +80,59 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Gerar nome único
-    const fileExtension = path.extname(uploadedFile.originalFilename);
-    const fileName = `${crypto.randomBytes(16).toString('hex')}${fileExtension}`;
+    console.log('📎 Arquivo recebido:', {
+      name: uploadedFile.originalFilename,
+      size: uploadedFile.size,
+      type: uploadedFile.headers['content-type']
+    });
+
+    // Criar FormData para enviar ao backend
+    const FormData = require('form-data');
+    const formData = new FormData();
     
-    // Definir pasta de destino
-    const folder = fields.folder?.[0] || 'imoveis';
-    const publicDir = path.join(process.cwd(), 'public', 'images', folder);
+    // Ler arquivo e adicionar ao FormData
+    const fileBuffer = await fs.readFile(uploadedFile.path);
+    formData.append('imagem', fileBuffer, {
+      filename: uploadedFile.originalFilename,
+      contentType: uploadedFile.headers['content-type']
+    });
+
+    // Adicionar campos adicionais
+    const imovelId = fields.imovel_id?.[0] || '1'; // ID padrão para teste
+    const descricao = fields.descricao?.[0] || 'Imagem do imóvel';
     
-    // Criar diretório se não existir
-    await fs.mkdir(publicDir, { recursive: true });
+    formData.append('imovel_id', imovelId);
+    formData.append('descricao', descricao);
+
+    // Fazer request para o backend
+    const fetch = require('node-fetch');
+    console.log('🚀 Enviando para backend...');
     
-    // Caminho final do arquivo
-    const destinationPath = path.join(publicDir, fileName);
-    
-    // Copiar arquivo do temp para destino
-    await fs.copyFile(uploadedFile.path, destinationPath);
-    
+    const response = await fetch(`${backendUrl}/imagemImovel/upload`, {
+      method: 'POST',
+      body: formData,
+      headers: formData.getHeaders()
+    });
+
+    console.log('📡 Resposta do backend:', response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Erro do backend:', errorText);
+      throw new Error(`Backend error: ${response.status} ${errorText}`);
+    }
+
+    const result = await response.json();
+    console.log('✅ Upload bem-sucedido:', result);
+
     // Limpar arquivo temporário
     try {
       await fs.unlink(uploadedFile.path);
     } catch (cleanupError) {
-      console.warn('Erro ao limpar arquivo temporário:', cleanupError);
+      console.warn('⚠️ Erro ao limpar arquivo temporário:', cleanupError);
     }
 
-    console.log('Upload successful:', fileName);
-
-    // Resposta de sucesso
+    // Retornar resultado
     return {
       statusCode: 200,
       headers: {
@@ -91,21 +141,23 @@ exports.handler = async (event, context) => {
       },
       body: JSON.stringify({
         success: true,
-        url: `/images/${folder}/${fileName}`,
-        fileName: fileName,
+        url: result.url_imagem,
+        fileName: result.url_imagem.split('/').pop(),
         originalName: uploadedFile.originalFilename,
-        size: uploadedFile.size
+        size: uploadedFile.size,
+        backendResponse: result
       })
     };
 
   } catch (error) {
-    console.error('Upload error:', error);
+    console.error('💥 Upload error:', error);
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
         error: 'Erro interno do servidor',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        message: error.message,
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
       })
     };
   }
