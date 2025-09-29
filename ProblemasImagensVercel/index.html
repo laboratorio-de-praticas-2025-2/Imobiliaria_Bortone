@@ -9,6 +9,10 @@
       
       
       
+        <link rel="prev" href="../api/AgendamentoSMTP/">
+      
+      
+        <link rel="next" href="../AnaliseArquiteturaImagens/">
       
       
       <link rel="icon" href="../assets/favicon.ico">
@@ -16,7 +20,7 @@
     
     
       
-        <title>Problemas com Imagens no Vercel: Análise e Soluções - Imobiliaria Bortone - Documentação</title>
+        <title>Problemas com Imagens no Vercel - Imobiliaria Bortone - Documentação</title>
       
     
     
@@ -105,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Problemas com Imagens no Vercel: Análise e Soluções
+              Problemas com Imagens no Vercel
             
           </span>
         </div>
@@ -614,6 +618,674 @@
   
   <span class="md-ellipsis">
     Funcionalidade do envio de e-mail
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Problemas com Imagens no Vercel
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Problemas com Imagens no Vercel
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-executivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resumo Executivo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problemas-identificados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problemas Identificados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Problemas Identificados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-arquitetura-de-armazenamento-atual" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Arquitetura de Armazenamento Atual
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-problemas-no-vercel" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Problemas no Vercel
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Problemas no Vercel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-sistema-de-arquivos-readonly" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Sistema de Arquivos Readonly
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-separacao-de-servicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Separação de Serviços
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-configuracao-de-variaveis-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 Configuração de Variáveis de Ambiente
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-inconsistencias-no-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Inconsistências no Frontend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Inconsistências no Frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-multiple-padroes-de-url" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Multiple Padrões de URL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-tratamento-de-erro-inadequado" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Tratamento de Erro Inadequado
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solucoes-recomendadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Soluções Recomendadas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Soluções Recomendadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#solucao-1-aws-s3-bucket-mais-robusta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solução 1: AWS S3 Bucket (Mais Robusta)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solução 1: AWS S3 Bucket (Mais Robusta)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-configuracao-do-aws-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Configuração do AWS S3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-configuracao-de-variaveis-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Configuração de Variáveis de Ambiente
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solucao-2-netlify-deploy-alternativa-gratuita" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solução 2: Netlify Deploy (Alternativa Gratuita)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solução 2: Netlify Deploy (Alternativa Gratuita)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-migrar-frontend-para-netlify" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Migrar Frontend para Netlify
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-configuracao-do-netlify" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Configuração do Netlify
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solucao-3-cloudinary-alternativa-premium-gratuita" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solução 3: Cloudinary (Alternativa Premium Gratuita)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solução 3: Cloudinary (Alternativa Premium Gratuita)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-implementacao-cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Implementação Cloudinary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adaptacoes-para-cada-solucao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adaptações para Cada Solução
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adaptações para Cada Solução">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementacao-aws-s3-modificacoes-no-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementação AWS S3 - Modificações no Backend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementação AWS S3 - Modificações no Backend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#atualizar-imagemimovelcontrollerjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Atualizar ImagemImovelController.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-do-multer-para-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuração do Multer para S3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementacao-netlify-modificacoes-no-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementação Netlify - Modificações no Frontend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementação Netlify - Modificações no Frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estrutura-de-pastas-para-netlify" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura de Pastas para Netlify
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#servico-de-upload-para-netlify" class="md-nav__link">
+    <span class="md-ellipsis">
+      Serviço de Upload para Netlify
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-para-deletar-imagens-no-netlify" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function para Deletar Imagens no Netlify
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adaptacao-dos-componentes-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adaptação dos Componentes Frontend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adaptação dos Componentes Frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#componente-unificado-para-ambas-solucoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Componente Unificado para Ambas Soluções
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adaptacao-do-imagecarroussel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adaptação do ImageCarroussel
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparacao-das-solucoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparação das Soluções
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparação das Soluções">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#migracao-de-dados-existentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migração de Dados Existentes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migração de Dados Existentes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#script-para-migrar-imagens-atuais" class="md-nav__link">
+    <span class="md-ellipsis">
+      Script para Migrar Imagens Atuais
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-de-ambiente-por-solucao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuração de Ambiente por Solução
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuração de Ambiente por Solução">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#para-aws-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Para AWS S3:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#para-netlify" class="md-nav__link">
+    <span class="md-ellipsis">
+      Para Netlify:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementacao-das-solucoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementação das Soluções
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementação das Soluções">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fase-1-correcoes-imediatas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fase 1: Correções Imediatas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-2-migracao-para-cloud-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fase 2: Migração para Cloud Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-3-otimizacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fase 3: Otimizações
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoramento-e-metricas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoramento e Métricas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoramento e Métricas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kpis-para-acompanhar" class="md-nav__link">
+    <span class="md-ellipsis">
+      KPIs para Acompanhar:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ferramentas-de-monitoramento" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ferramentas de Monitoramento:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusão
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conclusão">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cronograma-sugerido" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cronograma Sugerido:
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cronograma Sugerido:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opcao-a-aws-s3-recomendado-para-producao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Opção A: AWS S3 (Recomendado para Produção)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcao-b-netlify-recomendado-para-mvpteste" class="md-nav__link">
+    <span class="md-ellipsis">
+      Opção B: Netlify (Recomendado para MVP/Teste)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cronograma-hibrido-mais-seguro" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cronograma Híbrido (Mais Seguro):
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custos-estimados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custos Estimados:
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custos Estimados:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custos-operacionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custos Operacionais:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custos-de-desenvolvimento" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custos de Desenvolvimento:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recomendacao-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recomendação Final:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AnaliseArquiteturaImagens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Analise de Arquitetura Imagens
     
   </span>
   

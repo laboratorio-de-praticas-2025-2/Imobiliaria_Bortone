@@ -9,6 +9,8 @@
       
       
       
+        <link rel="prev" href="../ProblemasImagensVercel/">
+      
       
       
       <link rel="icon" href="../assets/favicon.ico">
@@ -16,7 +18,7 @@
     
     
       
-        <title>Análise Técnica: Sistema de Imagens Atual vs Vercel - Imobiliaria Bortone - Documentação</title>
+        <title>Analise de Arquitetura Imagens - Imobiliaria Bortone - Documentação</title>
       
     
     
@@ -105,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Análise Técnica: Sistema de Imagens Atual vs Vercel
+              Analise de Arquitetura Imagens
             
           </span>
         </div>
@@ -619,6 +621,515 @@
   
 
       </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ProblemasImagensVercel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Problemas com Imagens no Vercel
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Analise de Arquitetura Imagens
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Analise de Arquitetura Imagens
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral-da-arquitetura-atual" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visão Geral da Arquitetura Atual
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visão Geral da Arquitetura Atual">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-fluxo-de-upload-de-imagens" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Fluxo de Upload de Imagens
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-estrutura-de-pastas-problematica" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Estrutura de Pastas Problemática
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problemas-especificos-por-componente" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problemas Específicos por Componente
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Problemas Específicos por Componente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-imagemimovelcontrollerjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. ImagemImovelController.js
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. ImagemImovelController.js">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problema-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problema Principal:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#por-que-falha-no-vercel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Por que falha no Vercel:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-do-problema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evidência do Problema:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-appjs-static-file-serving" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. app.js - Static File Serving
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. app.js - Static File Serving">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problema-principal_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problema Principal:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#por-que-falha-no-vercel_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Por que falha no Vercel:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-imagecarrousseljs" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. ImageCarroussel.js
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. ImageCarroussel.js">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problema-principal_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problema Principal:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cenarios-de-falha" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cenários de Falha:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-variaveis-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Variáveis de Ambiente
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Variáveis de Ambiente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-atual" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuração Atual:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problemas:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#casos-de-teste-que-falham" class="md-nav__link">
+    <span class="md-ellipsis">
+      Casos de Teste que Falham
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Casos de Teste que Falham">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#teste-1-upload-local-vs-producao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Teste 1: Upload Local vs Produção
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-2-variavel-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      Teste 2: Variável de Ambiente
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-3-cross-origin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Teste 3: Cross-Origin
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#componentes-mais-afetados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Componentes Mais Afetados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Componentes Mais Afetados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-carrossel-de-imoveis-critico" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Carrossel de Imóveis ⚠️ CRÍTICO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-cms-de-edicao-critico" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. CMS de Edição ⚠️ CRÍTICO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cards-de-blog-medio" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cards de Blog ⚠️ MÉDIO
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#impacto-no-usuario-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      Impacto no Usuário Final
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Impacto no Usuário Final">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sintomas-visiveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sintomas Visíveis:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logs-de-erro-tipicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logs de Erro Típicos:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workarounds-temporarios-vs-solucoes-definitivas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workarounds Temporários vs Soluções Definitivas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Workarounds Temporários vs Soluções Definitivas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#workarounds-que-nao-funcionam" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workarounds que NÃO Funcionam:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solucoes-que-funcionariam" class="md-nav__link">
+    <span class="md-ellipsis">
+      Soluções que Funcionariam:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metricas-de-impacto" class="md-nav__link">
+    <span class="md-ellipsis">
+      Métricas de Impacto
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Métricas de Impacto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcionalidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      Funcionalidade:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seo-impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      SEO Impact:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proximos-passos-tecnicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Próximos Passos Técnicos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Próximos Passos Técnicos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagnostico-rapido" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagnóstico Rápido:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fix-emergencial-1-2-horas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fix Emergencial (1-2 horas):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solucao-definitiva-1-2-semanas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solução Definitiva (1-2 semanas):
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
