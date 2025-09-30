@@ -14,7 +14,7 @@ export default function TestUploadPage() {
             <h2 className="font-bold text-yellow-800 mb-2">ℹ️ Instruções:</h2>
             <ol className="list-decimal list-inside text-sm text-yellow-700 space-y-1">
               <li>Selecione uma imagem (JPG, PNG, etc.)</li>
-              <li>Clique em "Upload Imagem"</li>
+              <li>Clique em &quot;Upload Imagem&quot;</li>
               <li>Verifique os logs no console do browser (F12)</li>
               <li>Se funcionar, você verá a imagem abaixo</li>
               <li>Se falhar, verifique as variáveis de ambiente</li>
