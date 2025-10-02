@@ -87,6 +87,13 @@ export default function EditarBannerPage() {
 
   return (
     <>
+      {isConfirmModalVisible && (
+        <ConfirmModal
+          message="Você tem certeza que deseja alterar o registro definitivamente?"
+          onConfirm={onConfirm}
+          onCancel={() => setIsConfirmModalVisible(false)}
+        />
+      )}
       <Sidebar />
       <div className="md:ml-20">
         <Form.Body title="Banners | Edição">
@@ -108,12 +115,10 @@ export default function EditarBannerPage() {
 
                 <TextAreaField
                   name="descricao"
-                  label="Descrição (opcional)"
-                  placeholder="Descrição do banner"
+                  label="Descrição"
+                  placeholder="Corpo da descrição"
                   rows={18}
                   className="!w-full !h-full"
-                  value={descricao}
-                  onChange={(e) => setDescricao(e.target.value)}
                 />
 
                 <FormButton
