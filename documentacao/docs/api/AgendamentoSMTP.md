@@ -118,15 +118,21 @@ Recebe dados de agendamento, aplica rate limit, busca dados do imóvel (se id) e
   "phone": "11999999999",
   "propertyId": "123",
   "propertyAddress": "Rua das Flores, 100",
-  "cityState": "São Paulo - SP",
-  "notes": "Prefiro horário da manhã"
+  "notes": "Prefiro horário da manhã",
+  "visitPeriod": "Manhã"
 }
 ```
 
 ###### Resposta sucesso (200)
 
 ```
-{ "success": true, "message": "Agendamento confirmado e e-mails enviados com sucesso", "data": { "success": true, "message": "Agendamento confirmado e e-mails enviados" } }
+{ "success": true, "message": "Agendamento confirmado e e-mails enviados com sucesso" }
+```
+
+###### Resposta erro (400)
+
+```
+{ "error": "Erro ao processar agendamento"}
 ```
 
 #### Rota POST /send
