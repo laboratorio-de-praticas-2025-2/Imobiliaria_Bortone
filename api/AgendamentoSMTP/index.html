@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -760,6 +760,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#resposta-erro-400" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resposta erro (400)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1021,6 +1030,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#resposta-erro-400" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resposta erro (400)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1230,12 +1248,15 @@ A implementação usa net/tls para abrir sockets TCP/TLS e implementa manualment
   &quot;phone&quot;: &quot;11999999999&quot;,
   &quot;propertyId&quot;: &quot;123&quot;,
   &quot;propertyAddress&quot;: &quot;Rua das Flores, 100&quot;,
-  &quot;cityState&quot;: &quot;São Paulo - SP&quot;,
-  &quot;notes&quot;: &quot;Prefiro horário da manhã&quot;
+  &quot;notes&quot;: &quot;Prefiro horário da manhã&quot;,
+  &quot;visitPeriod&quot;: &quot;Manhã&quot;
 }
 </code></pre></div>
 <h6 id="resposta-sucesso-200">Resposta sucesso (200)</h6>
-<div class="highlight"><pre><span></span><code>{ &quot;success&quot;: true, &quot;message&quot;: &quot;Agendamento confirmado e e-mails enviados com sucesso&quot;, &quot;data&quot;: { &quot;success&quot;: true, &quot;message&quot;: &quot;Agendamento confirmado e e-mails enviados&quot; } }
+<div class="highlight"><pre><span></span><code>{ &quot;success&quot;: true, &quot;message&quot;: &quot;Agendamento confirmado e e-mails enviados com sucesso&quot; }
+</code></pre></div>
+<h6 id="resposta-erro-400">Resposta erro (400)</h6>
+<div class="highlight"><pre><span></span><code>{ &quot;error&quot;: &quot;Erro ao processar agendamento&quot;}
 </code></pre></div>
 <h4 id="rota-post-send">Rota POST /send</h4>
 <p>Envio direto de e-mail (teste).</p>
