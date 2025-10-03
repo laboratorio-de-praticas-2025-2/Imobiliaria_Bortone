@@ -129,7 +129,7 @@ Recebe dados de agendamento, aplica rate limit, busca dados do imóvel (se id) e
 { "success": true, "message": "Agendamento confirmado e e-mails enviados com sucesso" }
 ```
 
-###### Resposta sucesso (400)
+###### Resposta erro (400)
 
 ```
 { "error": "Erro ao processar agendamento"}
