@@ -119,7 +119,7 @@ Recebe dados de agendamento, aplica rate limit, busca dados do imóvel (se id) e
   "propertyId": "123",
   "propertyAddress": "Rua das Flores, 100",
   "notes": "Prefiro horário da manhã",
-  "visitPeriod": "Tarde"
+  "visitPeriod": "Manhã"
 }
 ```
 
