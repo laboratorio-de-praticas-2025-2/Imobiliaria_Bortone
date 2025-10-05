@@ -1,0 +1,2003 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../MIGRATION_SUMMARY/">
+      
+      
+        <link rel="next" href="../api/imagens/">
+      
+      
+      <link rel="icon" href="../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>🏗️ Arquitetura Cloudinary - Imobiliaria Bortone - Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#arquitetura-de-imagens-com-cloudinary" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Imobiliaria Bortone - Documentação" class="md-header__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imobiliaria Bortone - Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              🏗️ Arquitetura Cloudinary
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Imobiliaria Bortone - Documentação" class="md-nav__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    Imobiliaria Bortone - Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RegrasGerais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EstruturaDePastas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estrutura de Pastas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Frontend
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Frontend
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/NextConfig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/middlwareIndexacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Middleware
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/ManualdeTags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual de Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/NETLIFY_SETUP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Setup Netlify
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/Documentacao_Contatos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contatos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Imagens
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Imagens
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MIGRATION_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ⭐ Migração Cloudinary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    🏗️ Arquitetura Cloudinary
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    🏗️ Arquitetura Cloudinary
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Visão Geral
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura-do-sistema" class="md-nav__link">
+    <span class="md-ellipsis">
+      🏗️ Arquitetura do Sistema
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-detalhado" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 Fluxo Detalhado
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Fluxo Detalhado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fase-1-upload-frontend-cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fase 1: Upload (Frontend → Cloudinary)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-2-registro-frontend-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fase 2: Registro (Frontend → Backend)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-3-exibicao-frontend-cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fase 3: Exibição (Frontend ← Cloudinary)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#organizacao-de-pastas" class="md-nav__link">
+    <span class="md-ellipsis">
+      📁 Organização de Pastas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📁 Organização de Pastas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      No Cloudinary:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-banco-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      No Banco de Dados:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracoes-tecnicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚙️ Configurações Técnicas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚙️ Configurações Técnicas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upload-preset-cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload Preset (Cloudinary):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variaveis-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variáveis de Ambiente:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#headers-e-cors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Headers e CORS:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#servicos-implementados" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Serviços Implementados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Serviços Implementados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upload-service-netlifyuploadservicejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload Service (netlifyUploadService.js):
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metricas-e-monitoramento" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Métricas e Monitoramento
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Métricas e Monitoramento">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cloudinary-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloudinary Dashboard:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custos-free-tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custos (Free Tier):
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔒 Segurança
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔒 Segurança">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upload-preset-unsigned" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload Preset Unsigned:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#urls-seguras" class="md-nav__link">
+    <span class="md-ellipsis">
+      URLs Seguras:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migracao-vs-sistema-anterior" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 Migração vs Sistema Anterior
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🛠️ Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upload-falha" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload falha:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imagem-nao-carrega" class="md-nav__link">
+    <span class="md-ellipsis">
+      Imagem não carrega:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-lenta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance lenta:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/imagens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Imagens
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AnaliseArquiteturaImagens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise de Problemas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ProblemasImagensVercel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Problemas Vercel (Histórico)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    APIs Core
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            APIs Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/AlgoritmoDeRecomendacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/BancoDeDados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dashboard
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Agendamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agendamento de Visitação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/AgendamentoSMTP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidade do envio de e-mail
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Mapa
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Mapa
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaAPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaImplementacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Implementação da API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaResumo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resumo da Integração
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Chat
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Chat
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/ChatSuporte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chat Suporte
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WebSocket-Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Rodar o WebSocket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UserLevels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Níveis de Usuário
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ChatSystemBugFixes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relatório de Correção de Bugs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Visão Geral
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura-do-sistema" class="md-nav__link">
+    <span class="md-ellipsis">
+      🏗️ Arquitetura do Sistema
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-detalhado" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 Fluxo Detalhado
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Fluxo Detalhado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fase-1-upload-frontend-cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fase 1: Upload (Frontend → Cloudinary)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-2-registro-frontend-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fase 2: Registro (Frontend → Backend)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-3-exibicao-frontend-cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fase 3: Exibição (Frontend ← Cloudinary)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#organizacao-de-pastas" class="md-nav__link">
+    <span class="md-ellipsis">
+      📁 Organização de Pastas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📁 Organização de Pastas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      No Cloudinary:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-banco-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      No Banco de Dados:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracoes-tecnicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚙️ Configurações Técnicas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚙️ Configurações Técnicas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upload-preset-cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload Preset (Cloudinary):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variaveis-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variáveis de Ambiente:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#headers-e-cors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Headers e CORS:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#servicos-implementados" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Serviços Implementados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Serviços Implementados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upload-service-netlifyuploadservicejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload Service (netlifyUploadService.js):
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metricas-e-monitoramento" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Métricas e Monitoramento
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Métricas e Monitoramento">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cloudinary-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloudinary Dashboard:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custos-free-tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custos (Free Tier):
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔒 Segurança
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔒 Segurança">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upload-preset-unsigned" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload Preset Unsigned:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#urls-seguras" class="md-nav__link">
+    <span class="md-ellipsis">
+      URLs Seguras:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migracao-vs-sistema-anterior" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 Migração vs Sistema Anterior
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🛠️ Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upload-falha" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload falha:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imagem-nao-carrega" class="md-nav__link">
+    <span class="md-ellipsis">
+      Imagem não carrega:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-lenta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance lenta:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="arquitetura-de-imagens-com-cloudinary">Arquitetura de Imagens com Cloudinary</h1>
+<h2 id="visao-geral">📋 Visão Geral</h2>
+<p>Este documento descreve a arquitetura atual do sistema de imagens, após migração para Cloudinary, explicando o fluxo completo desde upload até exibição.</p>
+<h2 id="arquitetura-do-sistema">🏗️ Arquitetura do Sistema</h2>
+<div class="highlight"><pre><span></span><code>┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│                 │    │                 │    │                 │
+│   FRONTEND      │    │   CLOUDINARY    │    │   BACKEND       │
+│   (Netlify)     │    │   (CDN/Storage) │    │   (Render)      │
+│                 │    │                 │    │                 │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         │ 1. Upload File        │                       │
+         ├──────────────────────►│                       │
+         │                       │                       │
+         │ 2. Return URL         │                       │
+         │◄──────────────────────┤                       │
+         │                       │                       │
+         │ 3. Send URL + Data                            │
+         ├───────────────────────────────────────────────►│
+         │                       │                       │
+         │ 4. Success Response   │                       │
+         │◄───────────────────────────────────────────────┤
+         │                       │                       │
+         │ 5. Display Image      │                       │
+         ├──────────────────────►│                       │
+         │                       │                       │
+</code></pre></div>
+<h2 id="fluxo-detalhado">🔄 Fluxo Detalhado</h2>
+<h3 id="fase-1-upload-frontend-cloudinary"><strong>Fase 1: Upload (Frontend → Cloudinary)</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1. Usuário seleciona arquivo</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">input</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="mf">0</span><span class="p">];</span>
+
+<span class="c1">// 2. Frontend faz upload direto para Cloudinary</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">formData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">FormData</span><span class="p">();</span>
+<span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">file</span><span class="p">);</span>
+<span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;upload_preset&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;imobiliaria-bortone-upload&#39;</span><span class="p">);</span>
+<span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;folder&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;imobiliaria/imoveis&#39;</span><span class="p">);</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="sb">`https://api.cloudinary.com/v1_1/dajy4w5wi/image/upload`</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="nx">formData</span>
+<span class="p">});</span>
+
+<span class="c1">// 3. Cloudinary retorna dados da imagem</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+<span class="c1">// data.secure_url = &quot;https://res.cloudinary.com/dajy4w5wi/image/upload/v123/imobiliaria/imoveis/abc.jpg&quot;</span>
+</code></pre></div>
+<h3 id="fase-2-registro-frontend-backend"><strong>Fase 2: Registro (Frontend → Backend)</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 4. Frontend envia dados para backend (apenas URL)</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">backendResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/imagens&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">url_imagem</span><span class="o">:</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">secure_url</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">imovel_id</span><span class="o">:</span><span class="w"> </span><span class="nx">imovelId</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">descricao</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Descrição da imagem&quot;</span>
+<span class="p">},</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;application/json&#39;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">});</span>
+
+<span class="c1">// 5. Backend salva referência no banco de dados</span>
+<span class="c1">// Tabela: ImagemImovel</span>
+<span class="c1">// Campos: id, imovel_id, url_imagem, descricao, createdAt, updatedAt</span>
+</code></pre></div>
+<h3 id="fase-3-exibicao-frontend-cloudinary"><strong>Fase 3: Exibição (Frontend ← Cloudinary)</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 6. Frontend busca dados do backend</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">imagens</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="sb">`/api/imagens/imovel/</span><span class="si">${</span><span class="nx">imovelId</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+
+<span class="c1">// 7. Frontend exibe imagens diretamente do Cloudinary</span>
+<span class="nx">imagens</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">imagem</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// imagem.url_imagem já é uma URL completa do Cloudinary</span>
+<span class="w">  </span><span class="c1">// Exemplo: &quot;https://res.cloudinary.com/dajy4w5wi/image/upload/v123/imobiliaria/imoveis/abc.jpg&quot;</span>
+<span class="p">});</span>
+</code></pre></div>
+<h2 id="organizacao-de-pastas">📁 Organização de Pastas</h2>
+<h3 id="no-cloudinary"><strong>No Cloudinary:</strong></h3>
+<div class="highlight"><pre><span></span><code>dajy4w5wi (Cloud Name)
+└── imobiliaria/
+    ├── banners/           # Banners do carrossel
+    │   ├── banner_1759123456.jpg
+    │   └── banner_1759123457.png
+    ├── blog/              # Imagens de artigos
+    │   ├── blog_1759123456.jpg
+    │   └── blog_1759123457.webp
+    ├── publicidade/       # Imagens de campanhas
+    │   ├── publicidade_1759123456.jpg
+    │   └── publicidade_1759123457.png
+    └── imoveis/           # Imagens de imóveis
+        ├── imovel_123_1759123456.jpg
+        ├── imovel_123_1759123457.png
+        └── imovel_124_1759123458.jpg
+</code></pre></div>
+<h3 id="no-banco-de-dados"><strong>No Banco de Dados:</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Tabela: ImagemImovel</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ImagemImovel</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+<span class="w">  </span><span class="n">imovel_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="n">url_imagem</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">  </span><span class="c1">-- URL completa do Cloudinary</span>
+<span class="w">  </span><span class="n">descricao</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">  </span><span class="n">createdAt</span><span class="w"> </span><span class="n">DATETIME</span><span class="p">,</span>
+<span class="w">  </span><span class="n">updatedAt</span><span class="w"> </span><span class="n">DATETIME</span><span class="p">,</span>
+<span class="w">  </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">imovel_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">Imovel</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- Exemplo de dados:</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">ImagemImovel</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span>
+<span class="w">  </span><span class="mi">123</span><span class="p">,</span><span class="w"> </span>
+<span class="w">  </span><span class="s1">&#39;https://res.cloudinary.com/dajy4w5wi/image/upload/v1759123456/imobiliaria/imoveis/imovel_123_abc.jpg&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">&#39;Vista frontal do imóvel&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">NOW</span><span class="p">(),</span>
+<span class="w">  </span><span class="n">NOW</span><span class="p">()</span>
+<span class="p">);</span>
+</code></pre></div>
+<h2 id="configuracoes-tecnicas">⚙️ Configurações Técnicas</h2>
+<h3 id="upload-preset-cloudinary"><strong>Upload Preset (Cloudinary):</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imobiliaria-bortone-upload</span>
+<span class="nt">Signing Mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unsigned</span>
+<span class="nt">Asset Folder</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imobiliaria</span>
+<span class="nt">Overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="nt">Return Delete Token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">Invalidate CDN Cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">Quality</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auto</span>
+<span class="nt">Format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auto</span>
+<span class="nt">Max File Size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10MB</span>
+<span class="nt">Allowed Formats</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jpg,png,jpeg,webp,gif</span>
+</code></pre></div>
+<h3 id="variaveis-de-ambiente"><strong>Variáveis de Ambiente:</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Frontend (.env.local)</span>
+<span class="nv">NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME</span><span class="o">=</span>dajy4w5wi
+<span class="nv">NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET</span><span class="o">=</span>imobiliaria-bortone-upload
+
+<span class="c1"># Backend (.env)</span>
+<span class="c1"># Não precisa de configuração Cloudinary</span>
+</code></pre></div>
+<h3 id="headers-e-cors"><strong>Headers e CORS:</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Next.js (next.config.mjs)</span>
+<span class="c1">// CSP configurado para permitir Cloudinary</span>
+<span class="s2">&quot;img-src &#39;self&#39; data: blob: https: http:&quot;</span><span class="p">,</span>
+<span class="s2">&quot;connect-src &#39;self&#39; https:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="nx">isDev</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s2">&quot; http://localhost:*&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">),</span>
+</code></pre></div>
+<h2 id="servicos-implementados">🚀 Serviços Implementados</h2>
+<h3 id="upload-service-netlifyuploadservicejs"><strong>Upload Service (<code>netlifyUploadService.js</code>):</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Função universal</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">uploadToNetlify</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;imoveis&#39;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">options</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">folderMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;banners&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;imobiliaria/banners&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;blog&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;imobiliaria/blog&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;publicidade&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;imobiliaria/publicidade&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;imoveis&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;imobiliaria/imoveis&#39;</span>
+<span class="w">  </span><span class="p">};</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">formData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">FormData</span><span class="p">();</span>
+<span class="w">  </span><span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">file</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;upload_preset&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;folder&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">folderMap</span><span class="p">[</span><span class="nx">type</span><span class="p">]);</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span>
+<span class="w">    </span><span class="sb">`https://api.cloudinary.com/v1_1/</span><span class="si">${</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME</span><span class="si">}</span><span class="sb">/image/upload`</span><span class="p">,</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="nx">formData</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">);</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">secure_url</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Funções específicas</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">uploadImovelImage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="nx">imovelId</span><span class="p">,</span><span class="w"> </span><span class="nx">descricao</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nx">uploadToNetlify</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;imoveis&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">imovelId</span><span class="p">,</span><span class="w"> </span><span class="nx">descricao</span><span class="w"> </span><span class="p">});</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">uploadBannerImage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="nx">descricao</span><span class="p">,</span><span class="w"> </span><span class="nx">usuarioId</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nx">uploadToNetlify</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;banners&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">descricao</span><span class="p">,</span><span class="w"> </span><span class="nx">usuarioId</span><span class="w"> </span><span class="p">});</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">uploadBlogImage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="nx">titulo</span><span class="p">,</span><span class="w"> </span><span class="nx">conteudo</span><span class="p">,</span><span class="w"> </span><span class="nx">usuarioId</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nx">uploadToNetlify</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;blog&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">titulo</span><span class="p">,</span><span class="w"> </span><span class="nx">conteudo</span><span class="p">,</span><span class="w"> </span><span class="nx">usuarioId</span><span class="w"> </span><span class="p">});</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">uploadPublicidadeImage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="nx">titulo</span><span class="p">,</span><span class="w"> </span><span class="nx">conteudo</span><span class="p">,</span><span class="w"> </span><span class="nx">usuarioId</span><span class="p">,</span><span class="w"> </span><span class="nx">ativo</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nx">uploadToNetlify</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;publicidade&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">titulo</span><span class="p">,</span><span class="w"> </span><span class="nx">conteudo</span><span class="p">,</span><span class="w"> </span><span class="nx">usuarioId</span><span class="p">,</span><span class="w"> </span><span class="nx">ativo</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+<h2 id="metricas-e-monitoramento">📊 Métricas e Monitoramento</h2>
+<h3 id="cloudinary-dashboard"><strong>Cloudinary Dashboard:</strong></h3>
+<ul>
+<li><strong>Storage usado:</strong> Visível no dashboard</li>
+<li><strong>Bandwidth:</strong> Transferência mensal</li>
+<li><strong>Transformações:</strong> Otimizações aplicadas</li>
+<li><strong>Requests:</strong> Número de uploads/downloads</li>
+</ul>
+<h3 id="performance"><strong>Performance:</strong></h3>
+<ul>
+<li><strong>CDN Global:</strong> ~100ms de latência média</li>
+<li><strong>Cache:</strong> 31536000s (1 ano) para imagens</li>
+<li><strong>Compressão:</strong> Automática (quality: auto)</li>
+<li><strong>Formatos:</strong> WebP/AVIF automáticos quando suportados</li>
+</ul>
+<h3 id="custos-free-tier"><strong>Custos (Free Tier):</strong></h3>
+<ul>
+<li><strong>Storage:</strong> 25GB gratuitos</li>
+<li><strong>Bandwidth:</strong> 25GB/mês gratuito</li>
+<li><strong>Transformações:</strong> 25,000/mês gratuitas</li>
+</ul>
+<h2 id="seguranca">🔒 Segurança</h2>
+<h3 id="upload-preset-unsigned"><strong>Upload Preset Unsigned:</strong></h3>
+<ul>
+<li>✅ <strong>Vantagem:</strong> Upload direto do frontend</li>
+<li>✅ <strong>Validação:</strong> Formatos e tamanhos controlados</li>
+<li>✅ <strong>Pasta restrita:</strong> Apenas <code>imobiliaria/*</code></li>
+</ul>
+<h3 id="urls-seguras"><strong>URLs Seguras:</strong></h3>
+<ul>
+<li>✅ <strong>HTTPS obrigatório:</strong> Todas as URLs são seguras</li>
+<li>✅ <strong>CDN protegido:</strong> Anti-hotlinking configurável</li>
+<li>✅ <strong>Versionamento:</strong> URLs únicas previnem cache issues</li>
+</ul>
+<h2 id="migracao-vs-sistema-anterior">🔄 Migração vs Sistema Anterior</h2>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>Sistema Anterior</th>
+<th>Sistema Cloudinary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Storage</strong></td>
+<td>Local (efêmero)</td>
+<td>CDN (permanente)</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>Servidor único</td>
+<td>CDN global</td>
+</tr>
+<tr>
+<td><strong>Backup</strong></td>
+<td>Manual</td>
+<td>Automático</td>
+</tr>
+<tr>
+<td><strong>Escalabilidade</strong></td>
+<td>Limitada</td>
+<td>Ilimitada</td>
+</tr>
+<tr>
+<td><strong>Custos</strong></td>
+<td>Storage do servidor</td>
+<td>Free tier generoso</td>
+</tr>
+<tr>
+<td><strong>Manutenção</strong></td>
+<td>Alta</td>
+<td>Baixa</td>
+</tr>
+<tr>
+<td><strong>Deploy</strong></td>
+<td>❌ Perde arquivos</td>
+<td>✅ Preserva tudo</td>
+</tr>
+</tbody>
+</table>
+<h2 id="troubleshooting">🛠️ Troubleshooting</h2>
+<h3 id="upload-falha"><strong>Upload falha:</strong></h3>
+<ol>
+<li>Verificar variáveis de ambiente</li>
+<li>Confirmar upload preset exists</li>
+<li>Checar formato/tamanho do arquivo</li>
+<li>Verificar CSP no browser</li>
+</ol>
+<h3 id="imagem-nao-carrega"><strong>Imagem não carrega:</strong></h3>
+<ol>
+<li>Verificar URL completa no banco</li>
+<li>Testar URL diretamente no browser</li>
+<li>Verificar headers CSP</li>
+<li>Confirmar status da imagem no Cloudinary</li>
+</ol>
+<h3 id="performance-lenta"><strong>Performance lenta:</strong></h3>
+<ol>
+<li>Verificar transformações automáticas</li>
+<li>Confirmar cache headers</li>
+<li>Testar de diferentes localizações</li>
+<li>Verificar quality/format settings</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
