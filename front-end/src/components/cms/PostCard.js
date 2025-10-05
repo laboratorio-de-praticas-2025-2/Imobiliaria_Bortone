@@ -5,6 +5,7 @@ import { BiPencil } from "react-icons/bi";
 import { IoMdTrash } from "react-icons/io";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import Link from "next/link";
+import { buildImageUrl } from "@/utils/imageUtils";
 
 export default function PostCard({ item, onDelete }) {
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
@@ -26,26 +27,10 @@ export default function PostCard({ item, onDelete }) {
     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
   };
 
-  // Função para normalizar URL da imagem
-  const buildImageUrl = (url) => {
-    if (!url) return "/404.png";
-    
-    let imageUrl = url;
-    
-    // Se não começar com /, adicionar prefixo padrão para imagens de blog
-    if (!imageUrl.startsWith("/")) {
-      imageUrl = `/images/blogImages/${imageUrl}`;
-    }
-    
-    // Se for caminho relativo /images/... e existir NEXT_PUBLIC_API_URL, monta URL absoluta
-    const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
-    const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
-    
-    if (imageUrl.startsWith("/images/") && apiUrl) {
-      return `${apiUrl}${imageUrl}`;
-    }
-    
-    return imageUrl;
+  // Usar utilitário unificado para construir URL da imagem
+  const getImageSrc = () => {
+    if (imageError) return "/404.png";
+    return buildImageUrl(item.url_imagem, 'publicacao', '/404.png');
   };
 
   return (
@@ -64,7 +49,7 @@ export default function PostCard({ item, onDelete }) {
         {item.url_imagem && !imageError ? (
           <div className="aspect-[4/2] w-full overflow-hidden">
             <Image
-              src={buildImageUrl(item.url_imagem)}
+              src={getImageSrc()}
               alt={"Imagem do item " + item.id}
               width={425}
               height={130}

@@ -7,11 +7,23 @@ import { BiPencil } from "react-icons/bi";
 import { IoMdTrash } from "react-icons/io";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import Link from "next/link";
+import { buildImageUrlWithProxy } from "@/utils/imageUtils";
 
 export default function Card({ item, href_cms = "banner", header = false, onDelete, onToggle }) {
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  // Determinar o tipo de CMS baseado na URL href_cms
+  const getImageType = () => {
+    const typeMap = {
+      'banner': 'banner',
+      'publicidades': 'publicidade', 
+      'publicacoes': 'publicacao',
+      'imoveis': 'imovel'
+    };
+    return typeMap[href_cms] || 'default';
+  };
 
   // Determinar a URL da imagem baseada no tipo de CMS
   const getImageSrc = () => {
@@ -23,12 +35,8 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
     
     if (!imageUrl) return "/images/casa.png";
     
-    // Se contém "publicidade" e é do Cloudinary, usar proxy para evitar ad blockers
-    if (imageUrl.includes('publicidade') && imageUrl.includes('res.cloudinary.com')) {
-      return `/api/proxy-image?url=${encodeURIComponent(imageUrl)}`;
-    }
-    
-    return imageUrl;
+    // Usar utilitário unificado para construir URL
+    return buildImageUrlWithProxy(imageUrl, getImageType());
   };
   
   const imageSrc = getImageSrc();
