@@ -1,33 +1,39 @@
-# Deploy no Netlify - Guia Completo
+# Deploy no Netlify - Sistema Cloudinary
 
-## 🚀 Configuração Automática Criada
+## 🚀 Configuração Atualizada Pós-Migração
 
-### Arquivos Adicionados:
-- ✅ `netlify.toml` - Configuração principal
-- ✅ `netlify/functions/upload-image.js` - Upload de imagens
-- ✅ `netlify/functions/delete-image.js` - Deletar imagens
+### ⚡ **MUDANÇA IMPORTANTE - Sistema Cloudinary:**
+- ❌ ~~Netlify Functions para upload~~ (deprecated)
+- ✅ **Upload direto para Cloudinary** (ativo)
+- ✅ **Backend recebe apenas URLs** (otimizado)
 
-## 📋 Próximos Passos
+### Arquivos Configurados:
+- ✅ `netlify.toml` - Configuração de build
+- ✅ `next.config.mjs` - CSP e webpack configurados
+- ✅ `.env.local` - Variáveis Cloudinary
+- ⚠️ `netlify/functions/*` - Mantidos apenas para referência
 
-### 1. Instalar Dependências Adicionais
+## 📋 Deploy Steps - Sistema Atual
+
+### 1. Verificar Dependências
 
 Execute no terminal do front-end:
 
 ```bash
-npm install --save-dev @netlify/plugin-nextjs multiparty
+npm install --save-dev @netlify/plugin-nextjs
+# Não precisa mais: multiparty (removido com Cloudinary)
 ```
 
-### ⚠️ **CORREÇÕES APLICADAS** (Após erros de deploy):
+### ⚡ **CONFIGURAÇÃO CLOUDINARY** (Obrigatório):
 
-**Primeiro erro - Propriedade target depreciada:**
-- ✅ Removida propriedade `target` do `next.config.mjs` (depreciada)
-- ✅ Configuração simplificada do `netlify.toml`
+**Variáveis de Ambiente - Netlify Dashboard:**
+```bash
+NEXT_PUBLIC_API_URL = https://imobiliaria-bortone.onrender.com
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME = dajy4w5wi
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET = imobiliaria-bortone-upload
+```
 
-**Segundo erro - Diretório de publicação:**
-- ✅ Adicionado `publish = ".next"` no `netlify.toml`
-- ✅ Correção do erro: "publish directory cannot be the same as base directory"
-
-**Compatibilidade:**
+### ✅ **CORREÇÕES APLICADAS** (Sistema Atual):
 - ✅ Next.js 15.4.7 e App Router totalmente suportados
 - ✅ Plugin `@netlify/plugin-nextjs` v5.13.3 funcionando
 

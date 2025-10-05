@@ -11,8 +11,38 @@ import Link from "next/link";
 export default function Card({ item, href_cms = "banner", header = false, onDelete, onToggle }) {
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
-  const imageSrc = item.imagem || "/images/casa.png";
+  // Determinar a URL da imagem baseada no tipo de CMS
+  const getImageSrc = () => {
+    // Se houve erro de carregamento, mostrar imagem 404
+    if (imageError) return "/404.png";
+    
+    // Para publicidades, usar url_imagem; para outros, usar imagem
+    const imageUrl = item.url_imagem || item.imagem;
+    
+    if (!imageUrl) return "/images/casa.png";
+    
+    // Se contém "publicidade" e é do Cloudinary, usar proxy para evitar ad blockers
+    if (imageUrl.includes('publicidade') && imageUrl.includes('res.cloudinary.com')) {
+      return `/api/proxy-image?url=${encodeURIComponent(imageUrl)}`;
+    }
+    
+    return imageUrl;
+  };
+  
+  const imageSrc = getImageSrc();
+
+  // Handler para erro de carregamento de imagem
+  const handleImageError = () => {
+    console.warn(`Erro ao carregar imagem: ${item.url_imagem || item.imagem}`);
+    setImageError(true);
+  };
+
+  // Reset do erro quando o item muda
+  useEffect(() => {
+    setImageError(false);
+  }, [item.id, item.url_imagem, item.imagem]);
 
   const onConfirmDelete = async () => {
     if (!onDelete) return;
@@ -63,6 +93,13 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
           width={425}
           height={130}
           className={`aspect-[4/2] object-cover ${header ? "" : "rounded-t-2xl"}`}
+          priority={imageSrc === "/images/casa.png" || imageSrc === "/404.png"} // Priority para placeholders
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          style={{ 
+            width: (imageSrc === "/images/casa.png" || imageSrc === "/404.png") ? 'auto' : undefined,
+            height: (imageSrc === "/images/casa.png" || imageSrc === "/404.png") ? 'auto' : undefined
+          }}
+          onError={handleImageError}
           unoptimized={true}
         />
 

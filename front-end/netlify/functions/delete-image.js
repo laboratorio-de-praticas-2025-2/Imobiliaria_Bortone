@@ -28,7 +28,7 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const { fileName, folder = 'imoveis' } = JSON.parse(event.body || '{}');
+    const { fileName, folder = 'imoveis', imageType } = JSON.parse(event.body || '{}');
     
     if (!fileName) {
       return {
@@ -38,14 +38,31 @@ exports.handler = async (event, context) => {
       };
     }
 
-    const filePath = path.join(process.cwd(), 'public', 'images', folder, fileName);
+    // Mapear tipos para pastas (mesmo que no upload)
+    const folderMap = {
+      'banners': 'bannerImages',
+      'banner': 'bannerImages', 
+      'blog': 'blogImages',
+      'publicidade': 'publicidadeImages',
+      'imoveis': 'imoveis',
+      'imovel': 'imoveis'
+    };
+    
+    const finalFolder = imageType ? folderMap[imageType] || folder : folder;
+    const filePath = path.join(process.cwd(), 'public', 'images', finalFolder, fileName);
+    
+    console.log('🗑️ Tentando deletar arquivo:', {
+      fileName,
+      folder: finalFolder,
+      filePath
+    });
     
     // Verificar se arquivo existe e deletar
     try {
       await fs.access(filePath);
       await fs.unlink(filePath);
       
-      console.log('File deleted successfully:', fileName);
+      console.log('✅ Arquivo deletado com sucesso:', fileName);
       
       return {
         statusCode: 200,

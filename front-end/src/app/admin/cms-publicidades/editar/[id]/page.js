@@ -12,11 +12,14 @@ import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import { uploadPublicidadeImage } from "@/services/netlifyUploadService";
+import { apiClient } from "@/utils/apiClient";
 
 export default function EditarPublicidadePage() {
   const params = useParams(); 
   const id = params?.id;
   const router = useRouter();
+  const [form] = FormAntd.useForm();
   const [fileList, setFileList] = useState([]);
   const [publicidade, setPublicidade] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
@@ -24,16 +27,22 @@ export default function EditarPublicidadePage() {
 
   const loadPublicidade = useCallback(async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`);
+      const response = await apiClient.get(`/publicidade/${id}`);
       if (response.status === 200) {
         setPublicidade(response.data);
         setFileList([]);
         console.log('Publicidade carregada:', response.data);
+        
+        // Preencher o formulário com os dados carregados
+        form.setFieldsValue({
+          titulo: response.data.titulo,
+          conteudo: response.data.conteudo,
+        });
       }
     } catch {
       console.log("Erro ao carregar publicidade");
     }
-  }, [id]);
+  }, [id, form]);
 
   useEffect(() => {
     if (id) {
@@ -60,29 +69,34 @@ export default function EditarPublicidadePage() {
         console.log('publicidade:', publicidade);
         console.log('=======================');
         
-        const formData = new FormData();
-        formData.append('titulo', formValues.titulo);
-        formData.append('conteudo', formValues.conteudo);
-        formData.append('usuario_id', publicidade.usuario_id.toString());
-        formData.append('ativo', publicidade.ativo.toString());
-        
+        let url_imagem = publicidade.url_imagem; // Manter imagem atual
+
+        // Upload da nova imagem via Cloudinary se houver arquivo
         if (fileList.length > 0 && fileList[0].originFileObj) {
-          formData.append('url_imagem', fileList[0].originFileObj);
-          console.log('Arquivo adicionado ao FormData:', fileList[0].originFileObj.name);
+          url_imagem = await uploadPublicidadeImage(
+            fileList[0].originFileObj,
+            formValues.titulo,
+            formValues.conteudo,
+            publicidade.usuario_id.toString(),
+            publicidade.ativo
+          );
+          console.log('Nova imagem uploaded:', url_imagem);
         } else {
-          console.log('Nenhum arquivo novo selecionado');
+          console.log('Nenhum arquivo novo selecionado, mantendo imagem atual');
         }
 
-        console.log('FormData entries:');
-        for (let [key, value] of formData.entries()) {
-          console.log(key, value);
-        }
+        // Enviar dados para o backend sem arquivo
+        const publicidadeData = {
+          titulo: formValues.titulo,
+          conteudo: formValues.conteudo,
+          usuario_id: publicidade.usuario_id,
+          ativo: publicidade.ativo,
+          url_imagem
+        };
 
-        const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        console.log('Enviando dados para backend:', publicidadeData);
+
+        const response = await apiClient.put(`/publicidade/${id}`, publicidadeData);
         
         if (response.status === 200) {
           alert("Publicidade atualizada com sucesso!");
@@ -117,12 +131,9 @@ export default function EditarPublicidadePage() {
         <Form.Body title="Publicidades | Edição">
           <Form.FormHeader href="/admin/cms-publicidades" />
           <Form.FormBody
+            form={form}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            initialValues={{
-              titulo: publicidade.titulo,
-              conteudo: publicidade.conteudo,
-            }}
           >
             <div className="flex flex-col w-full gap-2 ">
               <p className="!text-[#0d1b3e] !font-semibold text-[16px]">
@@ -156,7 +167,7 @@ export default function EditarPublicidadePage() {
                     width={400}
                     height={320}
                     className="h-full w-full object-cover rounded-3xl"
-                    onError={(e) => { try { e.target.src = '/images/casa.png'; } catch {} }}
+                    onError={(e) => { try { e.target.src = '/404.png'; } catch {} }}
                   />
                 </div>
               ) : (

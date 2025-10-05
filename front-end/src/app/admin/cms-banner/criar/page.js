@@ -9,6 +9,7 @@ import FormButton from "@/components/cms/form/fields/Button";
 import Image from "next/image";
 import Sidebar from "@/components/cms/Sidebar";
 import { useState, useEffect } from "react";
+import { uploadBannerImage } from "@/services/netlifyUploadService";
 
 export default function CriarBannerPage() {
   const [fileList, setFileList] = useState([]);
@@ -21,19 +22,32 @@ export default function CriarBannerPage() {
 
   const onFinish = async (values) => {
     try {
-      const formData = new FormData();
+      let url_imagem = null;
 
+      // Upload da imagem via Netlify se houver arquivo
       if (fileList.length > 0) {
-        formData.append("imagem", fileList[0].originFileObj);
+        url_imagem = await uploadBannerImage(
+          fileList[0].originFileObj,
+          values.descricao,
+          "1" // usuario_id
+        );
       }
 
-      formData.append("descricao", values.descricao);
-      formData.append("usuario_id", 1);
-      formData.append("ativo", true);
+      // Enviar dados para o backend sem arquivo
+      const bannerData = {
+        descricao: values.descricao,
+        usuario_id: 1,
+        ativo: true,
+        url_imagem
+      };
 
-      const res = await fetch("http://localhost:4000/banner", {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+      const res = await fetch(`${apiUrl}/banner`, {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bannerData),
       });
 
       if (res.ok) {
@@ -45,7 +59,7 @@ export default function CriarBannerPage() {
       }
     } catch (error) {
       console.error(error);
-      alert("Erro ao enviar o formulário.");
+      alert("Erro ao enviar o formulário: " + error.message);
     }
   };
 

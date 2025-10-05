@@ -10,6 +10,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { uploadPublicidadeImage } from "@/services/netlifyUploadService";
 
 export default function CriarPublicidadePage() {
   const [fileList, setFileList] = useState([]);
@@ -18,21 +19,33 @@ export default function CriarPublicidadePage() {
   const onFinish = async (values) => {
     if (values.titulo && values.conteudo) {
       try {
-        const formData = new FormData();
-        formData.append('titulo', values.titulo);
-        formData.append('conteudo', values.conteudo);
-        formData.append('usuario_id', '1'); 
-        formData.append('ativo', 'true');
-        
+        let url_imagem = null;
+
+        // Upload da imagem via Netlify se houver arquivo
         if (fileList.length > 0 && fileList[0].originFileObj) {
-          formData.append('url_imagem', fileList[0].originFileObj);
+          url_imagem = await uploadPublicidadeImage(
+            fileList[0].originFileObj,
+            values.titulo,
+            values.conteudo,
+            "1", // usuario_id
+            true // ativo
+          );
         }
+
+        // Enviar dados para o backend sem arquivo
+        const publicidadeData = {
+          titulo: values.titulo,
+          conteudo: values.conteudo,
+          usuario_id: 1,
+          ativo: true,
+          url_imagem
+        };
 
         const apiBase = process.env.NEXT_PUBLIC_API_URL;
         console.log('API Base URL (NEXT_PUBLIC_API_URL):', apiBase);
-        const response = await axios.post(`${apiBase}/publicidade`, formData, {
+        const response = await axios.post(`${apiBase}/publicidade`, publicidadeData, {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
           },
         });
         

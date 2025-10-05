@@ -13,46 +13,46 @@ export default function PublicidadeImage({
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Função para determinar a URL correta da imagem
+  // Se não há URL de imagem, não renderizar o componente
+  if (!url_imagem) {
+    console.warn('PublicidadeImage: url_imagem não fornecida');
+    return null;
+  }
+
+    // Função para determinar a URL correta da imagem
   const getValidImageSrc = () => {
-    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+    // Se houve erro de carregamento, mostrar imagem 404
+    if (error) return '/404.png';
+    
     const placeholder = '/images/casa.png';
-    if (!url_imagem || typeof url_imagem !== 'string') return placeholder;
-
-    let src = url_imagem.trim();
-    // Normalizar caso backend salve sem barra inicial
-    if (!src.startsWith('/')) {
-      // Se parece já ser um nome de arquivo salvo pelo multer
-      if (!src.startsWith('http')) {
-        // Determinar a pasta baseada no href_cms
-        const folderMap = {
-          'publicidades': 'publicidadeImages',
-          'banner': 'bannerImages',
-          'publicacoes': 'blogImages'
-        };
-        const folder = folderMap[href_cms] || 'publicidadeImages';
-        src = `/images/${folder}/${src}`;
-      }
+    
+    if (!url_imagem || typeof url_imagem !== 'string' || !url_imagem.trim()) {
+      return placeholder;
     }
 
-    // Se for caminho relativo local (/images/...) precisamos usar direto em produção do Next.
-    // Porém o erro 400 do _next/image pode ocorrer se a imagem não existir no momento do build ou se houver CSP bloqueando.
-    // Para evitar transformação errada pelo loader, podemos usar a URL absoluta do backend se disponível.
-    if (src.startsWith('/images/')) {
-      // Se apiBase contém domínio (http) e não é o mesmo host do frontend (deploy vercel), usar absoluto.
-      if (apiBase.startsWith('http')) {
-        // Evitar dupla barra
-        const normalizedBase = apiBase.replace(/\/$/, '');
-        return `${normalizedBase}${src}`;
-      }
-      return src; // fallback
+    const src = url_imagem.trim();
+    
+    // Se a URL contém "publicidade" e é do Cloudinary, usar proxy para evitar ad blockers
+    if (src.includes('publicidade') && src.includes('res.cloudinary.com')) {
+      return `/api/proxy-image?url=${encodeURIComponent(src)}`;
     }
-
-    return src;
+    
+    // Se já é uma URL completa do Cloudinary, usar diretamente
+    if (src.startsWith('https://res.cloudinary.com/')) {
+      return src;
+    }
+    
+    // Para qualquer outra URL HTTPS, usar diretamente
+    if (src.startsWith('https://')) {
+      return src;
+    }
+    
+    // Se chegou até aqui, algo está errado
+    return placeholder;
   };
 
   const handleError = () => {
-    console.log('Erro ao carregar imagem da publicidade:', url_imagem);
+    console.warn(`Erro ao carregar imagem: ${url_imagem}`);
     setError(true);
     setLoading(false);
   };
@@ -61,9 +61,12 @@ export default function PublicidadeImage({
     setLoading(false);
   };
 
+  const imageSrc = getValidImageSrc();
+  const isPlaceholder = imageSrc === '/images/casa.png' || imageSrc === '/404.png';
+
   return (
     <div className="relative">
-      <Image
+            <Image
         src={getValidImageSrc()}
         alt={alt}
         width={width}
@@ -73,6 +76,12 @@ export default function PublicidadeImage({
         onLoad={handleLoad}
         placeholder="blur"
         blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+8"
+        priority={isPlaceholder} // Priority para placeholders
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        style={{ 
+          width: isPlaceholder ? 'auto' : undefined,
+          height: isPlaceholder ? 'auto' : undefined
+        }}
         {...props}
       />
       

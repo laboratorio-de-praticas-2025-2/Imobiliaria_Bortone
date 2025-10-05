@@ -12,6 +12,7 @@ import Sidebar from "@/components/cms/Sidebar";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { uploadBlogImage } from "@/services/netlifyUploadService";
 
 export default function CriarPostPage() {
   const [fileList, setFileList] = useState([]);
@@ -22,20 +23,31 @@ export default function CriarPostPage() {
   const onFinish = async (values) => {
     if (values.titulo && values.conteudo) {
       try {
-        const formData = new FormData();
-        formData.append("titulo", values.titulo);
-        formData.append("conteudo", values.conteudo);
-        formData.append("usuario_id", "1");
+        let url_imagem = null;
 
+        // Upload da imagem via Netlify se houver arquivo
         if (fileList.length > 0 && fileList[0].originFileObj) {
-          formData.append("url_imagem", fileList[0].originFileObj);
+          url_imagem = await uploadBlogImage(
+            fileList[0].originFileObj,
+            values.titulo,
+            values.conteudo,
+            "1" // usuario_id
+          );
         }
+
+        // Enviar dados para o backend sem arquivo
+        const blogData = {
+          titulo: values.titulo,
+          conteudo: values.conteudo,
+          usuario_id: 1,
+          url_imagem
+        };
 
         const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
         const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
 
-        const response = await axios.post(`${apiUrl}/publicacoes`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
+        const response = await axios.post(`${apiUrl}/publicacoes`, blogData, {
+          headers: { "Content-Type": "application/json" },
         });
 
         if (response.status === 201) {
@@ -44,7 +56,7 @@ export default function CriarPostPage() {
         }
       } catch (error) {
         console.error("Erro ao criar publicação:", error);
-        alert("Não foi possível criar a publicação.");
+        alert("Não foi possível criar a publicação: " + error.message);
       }
     } else {
       alert("Preencha todos os campos!");

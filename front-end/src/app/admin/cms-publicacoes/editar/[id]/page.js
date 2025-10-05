@@ -11,11 +11,14 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { uploadBlogImage } from "@/services/netlifyUploadService";
+import { Form as FormAntd } from "antd";
 
 export default function EditarPostPage() {
   const params = useParams();
   const id = params?.id;
   const router = useRouter();
+  const [form] = FormAntd.useForm();
   const [fileList, setFileList] = useState([]);
   const [post, setPost] = useState(null);
   const [title, setTitle] = useState("");
@@ -51,27 +54,46 @@ export default function EditarPostPage() {
         setPost(response.data);
         setTitle(response.data?.titulo || "");
         setContent(response.data?.conteudo || "");
+        
+        // Preencher o formulário com os dados carregados
+        form.setFieldsValue({
+          titulo: response.data?.titulo || "",
+          conteudo: response.data?.conteudo || "",
+        });
       } catch (error) {
         console.error("Erro ao carregar publicação:", error);
       }
     };
     if (id) fetchPost();
-  }, [id]);
+  }, [id, form]);
 
   const onFinish = async (values) => {
     try {
-      const formData = new FormData();
-      if (values.titulo) formData.append("titulo", values.titulo);
-      if (values.conteudo) formData.append("conteudo", values.conteudo);
+      let url_imagem = post?.url_imagem; // Manter imagem atual
+
+      // Upload da nova imagem via Cloudinary se houver arquivo
       if (fileList.length > 0 && fileList[0].originFileObj) {
-        formData.append("url_imagem", fileList[0].originFileObj);
+        url_imagem = await uploadBlogImage(
+          fileList[0].originFileObj,
+          values.titulo,
+          values.conteudo,
+          "1" // usuario_id
+        );
+        console.log('Nova imagem uploaded:', url_imagem);
       }
+
+      // Enviar dados para o backend sem arquivo
+      const blogData = {
+        titulo: values.titulo,
+        conteudo: values.conteudo,
+        url_imagem
+      };
 
       const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
       const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
 
-      const response = await axios.put(`${apiUrl}/publicacoes/${id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      const response = await axios.put(`${apiUrl}/publicacoes/${id}`, blogData, {
+        headers: { "Content-Type": "application/json" },
       });
 
       if (response.status === 200) {
@@ -97,12 +119,9 @@ export default function EditarPostPage() {
         <Form.Body title="Publicações | Edição">
           <Form.FormHeader href="/admin/cms-publicacoes" />
           <Form.FormBody
+            form={form}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            initialValues={{
-              titulo: post.titulo,
-              conteudo: post.conteudo,
-            }}
           >
             <div className="flex flex-col sm:flex-row w-full gap-6">
               {/* Coluna do Formulário */}

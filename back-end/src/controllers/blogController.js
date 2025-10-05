@@ -4,17 +4,11 @@ export const createArtigo = async (req, res) => {
   try {
     console.log("=== BACK-END DEBUG BLOG ===");
     console.log("req.body:", req.body);
-    console.log("req.file:", req.file);
-    console.log("req.files:", req.files);
-    console.log("req.headers:", req.headers);
-    console.log("Content-Type:", req.headers["content-type"]);
     console.log("===========================");
 
-    const { titulo, conteudo, usuario_id } = req.body;
+    const { titulo, conteudo, usuario_id, url_imagem } = req.body;
 
-    const url_imagem = req.file ? `/images/blogImages/${req.file.filename}` : null;
-
-    console.log("url_imagem calculada:", url_imagem);
+    console.log("url_imagem recebida:", url_imagem);
 
     const usuarioIdNumber = parseInt(usuario_id, 10);
 
@@ -88,12 +82,11 @@ export const updateArtigo = async (req, res) => {
   try {
     console.log("=== UPDATE DEBUG BLOG ===");
     console.log("req.body:", req.body);
-    console.log("req.file:", req.file);
     console.log("req.params:", req.params);
     console.log("=========================");
 
     const { id } = req.params;
-    const { titulo, conteudo, usuario_id } = req.body;
+    const { titulo, conteudo, usuario_id, url_imagem } = req.body;
 
     if (!/^\d+$/.test(id)) {
       return res.status(400).json({ error: "ID inválido. O ID deve ser numérico." });
@@ -113,9 +106,9 @@ export const updateArtigo = async (req, res) => {
       updateData.usuario_id = usuarioIdNumber;
     }
 
-    // Se há arquivo enviado, usar o caminho completo
-    if (req.file) {
-      updateData.url_imagem = `/images/blogImages/${req.file.filename}`;
+    // Se há URL de imagem fornecida, usar ela
+    if (url_imagem !== undefined) {
+      updateData.url_imagem = url_imagem;
     }
 
     console.log("updateData (BLOG):", updateData);

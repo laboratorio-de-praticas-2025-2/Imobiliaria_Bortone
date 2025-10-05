@@ -29,9 +29,8 @@ const getBannerById = async (req, res) => {
 
 // Criar banner
 const createBanner = async (req, res) => {
-  const { descricao, usuario_id } = req.body;
+  const { descricao, usuario_id, url_imagem } = req.body;
   const ativo = 1; // status ativo por padrão
-  const url_imagem = req.file ? `/uploads/banners/${req.file.filename}` : null;
 
   try {
     await BannerService.create(
@@ -50,8 +49,7 @@ const createBanner = async (req, res) => {
 // Atualizar banner
 const updateBanner = async (req, res) => {
   const { id } = req.params;
-  const { descricao, usuario_id } = req.body;
-  const url_imagem = req.file ? `/uploads/banners/${req.file.filename}` : undefined;
+  const { descricao, usuario_id, url_imagem } = req.body;
 
   try {
     await BannerService.update(

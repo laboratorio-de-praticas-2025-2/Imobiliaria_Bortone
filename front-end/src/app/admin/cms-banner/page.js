@@ -20,8 +20,18 @@ const normalizeAtivo = (value) => {
 // Constrói URL da imagem
 const getImageUrl = (urlImagem) => {
   if (!urlImagem) return "/images/casa.png";
-  if (urlImagem.startsWith("http://") || urlImagem.startsWith("https://")) return urlImagem;
-  if (urlImagem.startsWith("/")) return `${BACKEND_BASE_URL}${urlImagem}`;
+  
+  // URLs absolutas (http/https) - retorna diretamente
+  if (urlImagem.startsWith("http://") || urlImagem.startsWith("https://")) {
+    return urlImagem;
+  }
+  
+  // URLs que começam com / - adiciona base URL
+  if (urlImagem.startsWith("/")) {
+    return `${BACKEND_BASE_URL}${urlImagem}`;
+  }
+  
+  // URLs relativas - assume pasta uploads/banners
   return `${BACKEND_BASE_URL}/uploads/banners/${urlImagem}`;
 };
 

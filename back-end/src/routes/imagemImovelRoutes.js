@@ -3,8 +3,11 @@ import * as ImagemImovelController from '../controllers/ImagemImovelController.j
 
 const router = express.Router();
 
-router.post('/upload', ImagemImovelController.uploadImage);
-router.post('/create', ImagemImovelController.createImageFromUrl);
+// Nova rota para criar referência de imagem (sem upload)
+router.post('/', ImagemImovelController.createImageReference);
+
+// Manter compatibilidade com o upload antigo (agora deprecado)
+router.post('/upload', ImagemImovelController.createImageReference);
 
 router.delete('/:id', ImagemImovelController.deleteImage);
 
