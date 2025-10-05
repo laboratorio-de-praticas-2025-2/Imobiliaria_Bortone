@@ -12,6 +12,12 @@ const createUser = async (req, res) => {
       return res.status(400).json({ error: "Nome, email e senha são obrigatórios." });
     }
 
+    const existingUser = await userService.getOne(email);
+
+    if (existingUser) {
+      return res.status(400).json({ error: "Email já está em uso." });
+    }
+
     const hashedPassword = await bcrypt.hash(senha, 10);
 
     await userService.create({
@@ -34,6 +40,12 @@ const createCmsUser = async (req, res) => {
 
     if (!nome || !email || !senha || nivel === undefined || celular === undefined) {
       return res.status(400).json({ error: "Todos os campos são obrigatórios." });
+    }
+
+    const existingUser = await userService.getOne(email);
+
+    if (existingUser) {
+      return res.status(400).json({ error: "Email já está em uso." });
     }
 
     const hashedPassword = await bcrypt.hash(senha, 10);
@@ -83,10 +95,6 @@ const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { nome, email, senha, nivel, celular } = req.body;
-
-    if (nivel && nivel !== 0 && nivel !== 1) {
-      return res.status(400).json({ error: "O nível deve ser 0 ou 1." });
-    }
 
     if (email) {
       const existingUser = await userService.getOne(email);
