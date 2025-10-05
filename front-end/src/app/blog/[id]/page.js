@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { useSEO } from "@/hooks/useSEO";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { buildImageUrl } from "@/utils/imageUtils";
 
 export default function ContentBlog() {
   const { id } = useParams(); // pega o id da URL
@@ -26,25 +27,9 @@ export default function ContentBlog() {
         const resp = await axios.get(`${apiUrl}/publicacoes/${id}`);
         const data = resp.data;
         
-        // Normalizar URL da imagem com mesmo padrão do Cards.js
-        let img = "";
-        if (data?.url_imagem) {
-          let imageUrl = data.url_imagem;
-          
-          // Se não começar com /, adicionar prefixo padrão para imagens de blog
-          if (!imageUrl.startsWith("/")) {
-            imageUrl = `/images/blogImages/${imageUrl}`;
-          }
-          
-          // Se for caminho relativo /images/... e existir NEXT_PUBLIC_API_URL, monta URL absoluta
-          if (imageUrl.startsWith("/images/") && apiUrl) {
-            img = `${apiUrl}${imageUrl}`;
-          } else {
-            img = imageUrl;
-          }
-        }
-        
-        setApiImage(img || "/404.png");
+        // Usar utilitário unificado para construir URL da imagem
+        const img = buildImageUrl(data?.url_imagem, 'publicacao', '/404.png');
+        setApiImage(img);
         setPost(data);
       } catch (e) {
         console.error("Erro ao carregar artigo:", e);

@@ -5,6 +5,7 @@ import HomeFooter from "@/components/home/HomeFooter";
 import HomeNavbar from "@/components/home/HomeNavbar";
 import { mockImoveis } from "@/mock/imoveis";
 import "@/styles/imoveis.css";
+import { buildImageUrl } from "@/utils/imageUtils";
 import { Input, Divider } from "antd";
 import "leaflet/dist/leaflet.css";
 import dynamic from "next/dynamic";
@@ -222,7 +223,7 @@ export default function Mapa() {
                 <SwiperSlide key={idx} className="flex justify-center">
                   <div className="slide-card w-full">
                     <Image
-                      src={`${process.env.NEXT_PUBLIC_API_URL}/images/imoveis/${slide.url_imagem}`}
+                      src={buildImageUrl(slide.url_imagem, 'imovel', '/imovel1.png')}
                       alt={`Imóvel ${imovelAtual.id}`}
                       width={407}
                       height={195}
@@ -236,7 +237,7 @@ export default function Mapa() {
             slides.map((slide, idx) => (
               <div key={idx} className="slide-card w-full">
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_API_URL}/images/imoveis/${slide.url_imagem}`}
+                  src={buildImageUrl(slide.url_imagem, 'imovel', '/imovel1.png')}
                   alt={`Imóvel ${imovelAtual.id}`}
                   width={407}
                   height={195}

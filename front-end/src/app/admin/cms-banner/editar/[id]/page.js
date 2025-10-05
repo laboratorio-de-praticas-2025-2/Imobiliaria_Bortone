@@ -12,8 +12,7 @@ import UploadField from "@/components/cms/form/fields/UploadField";
 import Sidebar from "@/components/cms/Sidebar";
 import { uploadBannerImage } from "@/services/netlifyUploadService";
 import { Form as FormAntd } from "antd";
-
-const BACKEND_BASE_URL = "http://localhost:4000";
+import { apiClient } from "@/utils/apiClient";
 
 export default function EditarBannerPage() {
   const { id } = useParams();
@@ -27,8 +26,8 @@ export default function EditarBannerPage() {
     if (!id) return;
     const fetchBanner = async () => {
       try {
-        const res = await fetch(`${BACKEND_BASE_URL}/banner/${id}`);
-        const data = await res.json();
+        const res = await apiClient.get(`/banner/${id}`);
+        const data = res.data;
         setBanner(data);
         
         // Preencher o formulário com os dados carregados
@@ -37,13 +36,13 @@ export default function EditarBannerPage() {
         });
         
         if (data.url_imagem) {
-          // Inicializa fileList com a imagem existente para que o UploadField a reconheça
+          // Para Vercel/Cloudinary, não adicionar base URL na inicialização do fileList
           setFileList([
             {
               uid: "-1",
               name: data.url_imagem.split("/").pop(),
               status: "done",
-              url: `${BACKEND_BASE_URL}${data.url_imagem}`,
+              url: data.url_imagem, // URL completa do Cloudinary
             },
           ]);
         }
@@ -81,22 +80,14 @@ export default function EditarBannerPage() {
         url_imagem
       };
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || BACKEND_BASE_URL;
-      const res = await fetch(`${apiUrl}/banner/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bannerData),
-      });
+      const res = await apiClient.put(`/banner/${id}`, bannerData);
 
-      if (res.ok) {
+      if (res.status === 200) {
         alert("Banner atualizado com sucesso!");
         setIsConfirmModalVisible(false);
         window.location.href = "/admin/cms-banner";
       } else {
-        const data = await res.json();
-        alert("Erro ao atualizar banner: " + (data.error || "Desconhecido"));
+        alert("Erro ao atualizar banner: " + (res.data?.error || "Desconhecido"));
       }
     } catch (err) {
       console.error(err);

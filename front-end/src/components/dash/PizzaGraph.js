@@ -1,20 +1,42 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend,  } from "chart.js";
+import dynamic from "next/dynamic";
 import { Row, Col } from "antd";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+// Import dinâmico para evitar problemas de SSR no Vercel
+const Doughnut = dynamic(
+  () => import("react-chartjs-2").then((mod) => mod.Doughnut),
+  { ssr: false }
+);
+
+// Import dinâmico do Chart.js para evitar problemas no Vercel
+const ChartJS = dynamic(
+  () => import("chart.js").then((mod) => {
+    const { Chart, ArcElement, Tooltip, Legend } = mod;
+    Chart.register(ArcElement, Tooltip, Legend);
+    return Chart;
+  }),
+  { ssr: false }
+);
 
 export default function RentalByRegion({ data, label, options, className }) {
   const [chartData, setChartData] = useState(null);
   const [isReady, setIsReady] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const chartRef = useRef(null);
   const containerRef = useRef(null);
 
+  // Garantir que o componente está montado (importante para Vercel)
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
   // Aguarda o container estar pronto e dados válidos
   useEffect(() => {
+    if (!isMounted) return;
+
     const checkReadiness = () => {
       if (containerRef.current && data && data.labels && data.datasets) {
         const containerRect = containerRef.current.getBoundingClientRect();
@@ -27,17 +49,18 @@ export default function RentalByRegion({ data, label, options, className }) {
           
           if (hasValidData) {
             setIsReady(true);
+            setChartData(data);
           }
         }
       }
     };
 
-    // Aguarda um pouco para garantir que o DOM esteja totalmente renderizado
-    const timer = setTimeout(checkReadiness, 100);
+    // Aguarda mais tempo no Vercel para garantir hidratação completa
+    const timer = setTimeout(checkReadiness, 500);
     
     // Também verifica quando há resize
     const handleResize = () => {
-      setTimeout(checkReadiness, 50);
+      setTimeout(checkReadiness, 100);
     };
     
     window.addEventListener('resize', handleResize);
@@ -46,7 +69,7 @@ export default function RentalByRegion({ data, label, options, className }) {
       clearTimeout(timer);
       window.removeEventListener('resize', handleResize);
     };
-  }, [data]);
+  }, [data, isMounted]);
 
   // Reset quando data mudar
   useEffect(() => {

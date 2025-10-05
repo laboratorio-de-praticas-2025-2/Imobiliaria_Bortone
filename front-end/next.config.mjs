@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const isDev = process.env.NODE_ENV === "development" || process.env.NODE_ENV !== "production";
-const isNetlify = process.env.NETLIFY === "true";
+const isVercel = process.env.VERCEL === "1";
 
 console.log("Next.js Config - NODE_ENV:", process.env.NODE_ENV);
 console.log("Next.js Config - isDev:", isDev);
+console.log("Next.js Config - isVercel:", isVercel);
 
 const nextConfig = {
   // Configuração simplificada para resolver problemas de 404 e loops
@@ -29,12 +30,12 @@ const nextConfig = {
   },
   
   images: {
-    // CHAVE: Desabilitar otimização no Netlify para evitar loops infinitos
-    unoptimized: true, // Força desabilitação para evitar problemas
+    // Otimização de imagens habilitada no Vercel (funciona melhor que no Netlify)
+    unoptimized: isDev, // Só desabilita em desenvolvimento
     
     formats: ["image/avif", "image/webp"],
     
-    // Usar domains (método mais simples e compatível)
+    // Usar domains para Cloudinary e outros CDNs
     domains: [
       'imobiliaria-bortone.onrender.com',
       'localhost',
