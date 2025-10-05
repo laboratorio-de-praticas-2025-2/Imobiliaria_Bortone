@@ -96,85 +96,126 @@ const validateAppointmentInput = (input) => {
   if (!input || typeof input !== 'object') {
     throw new Error('Dados de agendamento inválidos');
   }
-  
+
   const { appointment } = input;
-  
+
   if (!appointment || typeof appointment !== 'object') {
     throw new Error('appointment é obrigatório');
   }
-  
-  const { name, email, phone, propertyAddress, propertyId, notes } = appointment;
-  
+
+  const { name, email, phone, propertyAddress, propertyId, notes, visitPeriod } = appointment;
+
   // Validação de campos obrigatórios
-  if (!name || !email) {
-    throw new Error('name e email são obrigatórios');
+  if (!name || !email || !visitPeriod) {
+    throw new Error('name, email e visitPeriod são obrigatórios');
   }
-  
+
   // Validação de tipos
-  if (typeof name !== 'string' || typeof email !== 'string') {
-    throw new Error('name e email devem ser strings');
+  if (typeof name !== 'string' || typeof email !== 'string' || typeof visitPeriod !== 'string') {
+    throw new Error('name, email e visitPeriod devem ser strings');
   }
-  
+
   // Validação de email
   const emailRegex = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/;
   if (!emailRegex.test(email)) {
     throw new Error('Email inválido');
   }
-  
+
   // Validação de tamanho
   if (name.length > 120) {
     throw new Error('Nome muito longo (máximo 120 caracteres)');
   }
-  
   if (email.length > 254) {
     throw new Error('Email muito longo (máximo 254 caracteres)');
   }
-  
   if (phone && phone.length > 20) {
     throw new Error('Telefone muito longo (máximo 20 caracteres)');
   }
-  
   if (propertyAddress && propertyAddress.length > 200) {
     throw new Error('Endereço do imóvel muito longo (máximo 200 caracteres)');
   }
-  
   if (notes && notes.length > 2000) {
     throw new Error('Observações muito longas (máximo 2000 caracteres)');
   }
-  
-  return { appointment: { name, email, phone, propertyAddress, propertyId, notes } };
+  if (visitPeriod.length > 100) {
+    throw new Error('Período de visitação muito longo (máximo 100 caracteres)');
+  }
+
+  return { appointment: { name, email, phone, propertyAddress, propertyId, notes, visitPeriod } };
 };
+
+
 
 export const sendScheduleConfirmation = async (req, res) => {
   try {
     const validatedData = validateAppointmentInput(req.body);
     const { appointment } = validatedData;
+    const {
+      name,
+      email,
+      phone,
+      propertyAddress,
+      propertyId,
+      notes,
+      visitPeriod
+    } = appointment;
+
+    // Corpo do e-mail melhorado
+    const subject = `Confirmação de Solicitação de Agendamento - Imobiliária Bortone`;
+    const text = `Olá ${name},\n\nRecebemos sua solicitação de agendamento de visita.\n\nDados do agendamento:\n- Nome: ${name}\n- E-mail: ${email}\n- Telefone: ${phone || 'Não informado'}\n- Endereço do imóvel: ${propertyAddress || 'Não informado'}\n- ID do imóvel: ${propertyId || 'Não informado'}\n- Período de interesse: ${visitPeriod}\n- Observações: ${notes || 'Nenhuma'}\n\nNossa equipe entrará em contato para confirmar a visita.\n\nObrigado por escolher a Imobiliária Bortone!`;
+    const html = `
+      <div style="font-family: Arial, sans-serif; color: #222; max-width: 600px; margin: 0 auto;">
+        <div style="background-color: #2c5aa0; color: white; padding: 20px; text-align: center;">
+          <h1 style="margin: 0;">Imobiliária Bortone</h1>
+          <h2 style="margin: 10px 0 0 0;">Confirmação de Solicitação de Agendamento</h2>
+        </div>
+        <div style="padding: 20px;">
+          <p>Olá <strong>${name}</strong>,</p>
+          <p>Recebemos sua solicitação de agendamento de visita. Confira os dados:</p>
+          <ul style="list-style: none; padding: 0;">
+            <li><strong>Nome:</strong> ${name}</li>
+            <li><strong>E-mail:</strong> ${email}</li>
+            <li><strong>Telefone:</strong> ${phone || 'Não informado'}</li>
+            <li><strong>Endereço do imóvel:</strong> ${propertyAddress || 'Não informado'}</li>
+            <li><strong>ID do imóvel:</strong> ${propertyId || 'Não informado'}</li>
+            <li><strong>Período de interesse:</strong> ${visitPeriod}</li>
+            <li><strong>Observações:</strong> ${notes || 'Nenhuma'}</li>
+          </ul>
+          <p>Nossa equipe entrará em contato para confirmar a visita.</p>
+          <p>Obrigado por escolher a Imobiliária Bortone!</p>
+        </div>
+        <div style="background-color: #f5f5f5; padding: 15px; text-align: center; font-size: 12px; color: #666;">
+          <p>Imobiliária Bortone - Seu sonho de casa própria começa aqui</p>
+        </div>
+      </div>
+    `;
 
     // Rate limiting
     const clientIP = req.ip || req.connection?.remoteAddress || "unknown";
     const route = req.originalUrl || req.url || "";
-    
     if (!agendamentoService.checkRateLimit(clientIP, route)) {
-      return res.status(429).json({ 
-        error: "Too Many Requests - Limite de 5 agendamentos por minuto" 
+      return res.status(429).json({
+        error: "Too Many Requests - Limite de 5 agendamentos por minuto"
       });
     }
 
     const result = await agendamentoService.sendScheduleConfirmation({
-      appointment
+      appointment,
+      subject,
+      text,
+      html
     });
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: "Agendamento confirmado e e-mails enviados com sucesso",
-      data: result 
+      data: result
     });
   } catch (error) {
     console.error('Erro ao enviar confirmação de agendamento:', error);
-    
     // Não expor detalhes internos em produção
     const isDevelopment = process.env.NODE_ENV !== 'production';
-    res.status(400).json({ 
+    res.status(400).json({
       error: "Erro ao processar agendamento",
       details: isDevelopment ? error.message : undefined
     });
