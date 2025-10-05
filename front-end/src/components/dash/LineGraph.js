@@ -1,26 +1,39 @@
 "use client";
 import { Row, Col } from "antd";
-import { Line } from "react-chartjs-2";
 import { useState, useEffect, useRef } from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import dynamic from "next/dynamic";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
+// Import dinâmico para evitar problemas de SSR no Vercel
+const Line = dynamic(
+  () => import("react-chartjs-2").then((mod) => mod.Line),
+  { ssr: false }
+);
+
+// Import dinâmico do Chart.js para evitar problemas no Vercel
+const ChartJS = dynamic(
+  () => import("chart.js").then((mod) => {
+    const {
+      Chart,
+      CategoryScale,
+      LinearScale,
+      PointElement,
+      LineElement,
+      Title,
+      Tooltip,
+      Legend,
+    } = mod;
+    Chart.register(
+      CategoryScale,
+      LinearScale,
+      PointElement,
+      LineElement,
+      Title,
+      Tooltip,
+      Legend
+    );
+    return Chart;
+  }),
+  { ssr: false }
 );
 
 // agora com parametro dos dados

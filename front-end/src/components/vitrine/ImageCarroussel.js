@@ -3,15 +3,12 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { handleImgError } from "@/utils/imageFallback";
+import { buildImageUrl } from "@/utils/imageUtils";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "dotenv/config";
 
 export default function ImageCarroussel({ imovel }) {
-
-  
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   return (
     <div className="w-full">
       {/* Box fixo p/ o carrossel */}
@@ -23,7 +20,7 @@ export default function ImageCarroussel({ imovel }) {
           {(imovel.imagem_imovel ?? []).map((img, index) => (
             <SwiperSlide key={index}>
               <img
-                src={`${apiUrl}/images/imoveis/${img.url_imagem}`}
+                src={buildImageUrl(img.url_imagem, 'imovel', '/imovel1.png')}
                 alt={img.descricao || "Imagem do imóvel"}
                 className="w-full h-full object-cover"
                 onError={handleImgError}

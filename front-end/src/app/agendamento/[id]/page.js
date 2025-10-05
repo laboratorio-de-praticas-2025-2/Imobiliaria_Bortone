@@ -8,7 +8,7 @@ import PhoneField from "@/components/cms/form/fields/PhoneField";
 import FormButton from "@/components/cms/form/fields/Button";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import { useEffect, useState } from "react";
-import { buildImovelImage } from "@/utils/imageUrl";
+import { buildImageUrl } from "@/utils/imageUtils";
 import { useParams } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -139,7 +139,9 @@ export default function Agendamento() {
   if (loading) return <div>Carregando...</div>;
   if (!imovel) return <div>Imóvel não encontrado.</div>;
 
-  const src = buildImovelImage(imovel);
+  // Busca a primeira imagem disponível do imóvel
+  const imagemUrl = imovel?.imagens?.[0]?.url_imagem || imovel?.imagem_imovel?.[0]?.url_imagem || imovel?.imagem || null;
+  const src = buildImageUrl(imagemUrl, 'imovel', '/imovel1.png');
   const quartos = imovel?.quartos ?? imovel?.casa?.quartos ?? 0;
   const banheiros = imovel?.banheiros ?? imovel?.casa?.banheiros ?? 0;
 
