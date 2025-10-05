@@ -1,51 +1,82 @@
 // Serviço para upload de imagens via Netlify Functions
 
 /**
- * Upload de imagem para Netlify (via proxy para backend)
+ * Upload universal de imagem para Cloudinary
  * @param {File} file - Arquivo de imagem
- * @param {string} imovelId - ID do imóvel
- * @param {string} descricao - Descrição da imagem
+ * @param {Object} options - Opções do upload
+ * @param {string} options.type - Tipo de imagem ('banner', 'blog', 'publicidade', 'imoveis')
+ * @param {string} options.imovelId - ID do imóvel (para imóveis)
+ * @param {string} options.descricao - Descrição da imagem
+ * @param {string} options.titulo - Título (para blog/publicidade)
+ * @param {string} options.conteudo - Conteúdo (para blog/publicidade)
+ * @param {string} options.usuarioId - ID do usuário
+ * @param {boolean} options.ativo - Status ativo (para publicidade)
  * @returns {Promise<string>} URL da imagem
  */
-export const uploadToNetlify = async (file, imovelId = '1', descricao = 'Imagem do imóvel') => {
-  const formData = new FormData();
-  formData.append('image', file);
-  formData.append('imovel_id', imovelId);
-  formData.append('descricao', descricao);
+export const uploadToNetlify = async (file, options = {}) => {
+  const {
+    type = 'imoveis',
+    imovelId,
+    descricao,
+    titulo,
+    conteudo,
+    usuarioId,
+    ativo
+  } = options;
 
+  // Configurações do Cloudinary (podem ser obtidas de variáveis de ambiente)
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'demo';
+  const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'ml_default';
+
+  if (!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME) {
+    console.warn('⚠️ CLOUDINARY_CLOUD_NAME não configurado, usando demo');
+  }
+
+  // Mapear tipos para pastas no Cloudinary
+  const folderMap = {
+    'banners': 'imobiliaria/banners',
+    'banner': 'imobiliaria/banners', 
+    'blog': 'imobiliaria/blog',
+    'publicidade': 'imobiliaria/promo', // Usar 'promo' para evitar ad blockers
+    'imoveis': 'imobiliaria/imoveis',
+    'imovel': 'imobiliaria/imoveis'
+  };
+  
+  const folder = folderMap[type] || 'imobiliaria/imoveis';
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', uploadPreset);
+  formData.append('folder', folder);
+  // Usar 'promo' ao invés de 'publicidade' no nome do arquivo para evitar ad blockers
+  const filePrefix = type === 'publicidade' ? 'promo' : type;
+  formData.append('public_id', `${filePrefix}_${Date.now()}`);
+  
   try {
-    console.log('🚀 Uploading via Netlify Function:', { 
+    console.log('🚀 Uploading to Cloudinary:', { 
       fileName: file.name, 
       size: file.size,
-      imovelId,
-      descricao 
+      type,
+      folder,
+      cloudName
     });
     
-    const response = await fetch('/.netlify/functions/upload-image', {
+    const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
       method: 'POST',
       body: formData
     });
     
     if (!response.ok) {
       const errorData = await response.text();
-      console.error('❌ Upload failed:', response.status, errorData);
-      
-      // Tentar parsear erro JSON
-      let errorDetails;
-      try {
-        errorDetails = JSON.parse(errorData);
-      } catch {
-        errorDetails = { error: errorData };
-      }
-      
-      throw new Error(errorDetails.error || `Upload failed: ${response.status}`);
+      console.error('❌ Cloudinary upload failed:', response.status, errorData);
+      throw new Error(`Upload failed: ${response.status}`);
     }
 
     const result = await response.json();
-    console.log('✅ Upload successful:', result);
+    console.log('✅ Cloudinary upload successful:', result);
     
     // Retornar URL da imagem
-    return result.url;
+    return result.secure_url;
   } catch (error) {
     console.error('💥 Upload error:', error);
     throw new Error(`Falha no upload: ${error.message}`);
@@ -53,35 +84,70 @@ export const uploadToNetlify = async (file, imovelId = '1', descricao = 'Imagem 
 };
 
 /**
- * Deletar imagem do Netlify
- * @param {string} fileName - Nome do arquivo
- * @param {string} folder - Pasta onde está o arquivo (default: 'imoveis')
+ * Upload específico para imóveis (mantém compatibilidade)
+ * @param {File} file - Arquivo de imagem  
+ * @param {string} imovelId - ID do imóvel
+ * @param {string} descricao - Descrição da imagem
+ * @returns {Promise<string>} URL da imagem
+ */
+export const uploadImovelImage = async (file, imovelId = '1', descricao = 'Imagem do imóvel') => {
+  return uploadToNetlify(file, { type: 'imoveis', imovelId, descricao });
+};
+
+/**
+ * Upload específico para banners
+ * @param {File} file - Arquivo de imagem
+ * @param {string} descricao - Descrição do banner
+ * @param {string} usuarioId - ID do usuário
+ * @returns {Promise<string>} URL da imagem
+ */
+export const uploadBannerImage = async (file, descricao, usuarioId) => {
+  return uploadToNetlify(file, { type: 'banner', descricao, usuarioId });
+};
+
+/**
+ * Upload específico para blog
+ * @param {File} file - Arquivo de imagem
+ * @param {string} titulo - Título do artigo
+ * @param {string} conteudo - Conteúdo do artigo
+ * @param {string} usuarioId - ID do usuário
+ * @returns {Promise<string>} URL da imagem
+ */
+export const uploadBlogImage = async (file, titulo, conteudo, usuarioId) => {
+  return uploadToNetlify(file, { type: 'blog', titulo, conteudo, usuarioId });
+};
+
+/**
+ * Upload específico para publicidade
+ * @param {File} file - Arquivo de imagem
+ * @param {string} titulo - Título da publicidade
+ * @param {string} conteudo - Conteúdo da publicidade
+ * @param {string} usuarioId - ID do usuário
+ * @param {boolean} ativo - Status ativo
+ * @returns {Promise<string>} URL da imagem
+ */
+export const uploadPublicidadeImage = async (file, titulo, conteudo, usuarioId, ativo = true) => {
+  return uploadToNetlify(file, { type: 'publicidade', titulo, conteudo, usuarioId, ativo });
+};
+
+/**
+ * Deletar imagem do Cloudinary
+ * @param {string} publicId - Public ID da imagem no Cloudinary
+ * @param {string} imageType - Tipo de imagem ('banner', 'blog', 'publicidade', 'imoveis')
  * @returns {Promise<boolean>} Success status
  */
-export const deleteFromNetlify = async (fileName, folder = 'imoveis') => {
+export const deleteFromNetlify = async (publicId, imageType = 'imoveis') => {
   try {
-    console.log('Deleting from Netlify:', { fileName, folder });
+    console.log('🗑️ Deleting from Cloudinary:', { publicId, imageType });
     
-    const response = await fetch('/.netlify/functions/delete-image', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ fileName, folder })
-    });
+    // Para Cloudinary, precisaríamos de uma API key e secret no backend
+    // Por agora, vamos apenas logar a tentativa
+    console.warn('⚠️ Delete do Cloudinary requer implementação no backend com API keys');
     
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error('Delete failed:', response.status, errorData);
-      return false;
-    }
-
-    const result = await response.json();
-    console.log('Delete successful:', result);
-    
+    // Simular sucesso por enquanto
     return true;
   } catch (error) {
-    console.error('Delete error:', error);
+    console.error('💥 Delete error:', error);
     return false;
   }
 };

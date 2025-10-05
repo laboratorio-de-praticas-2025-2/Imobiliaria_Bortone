@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import PublicidadeImage from '@/components/PublicidadeImage';
-import axios from 'axios';
+import { apiClient } from '@/utils/apiClient';
 
 export default function PublicidadeCarousel() {
   const [publicidades, setPublicidades] = useState([]);
@@ -11,13 +11,14 @@ export default function PublicidadeCarousel() {
   useEffect(() => {
     const fetchPublicidadesAtivas = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/publicidade`);
+        const response = await apiClient.get('/publicidade');
 
         const publicidadesAtivas = response.data.data.filter(pub => pub.ativo === true);
         setPublicidades(publicidadesAtivas);
         setLoading(false);
       } catch (error) {
-        console.error('Erro ao buscar publicidades:', error);
+        // Silenciar logs de erro para publicidades
+        // console.error('Erro ao buscar publicidades:', error);
         setLoading(false);
       }
     };

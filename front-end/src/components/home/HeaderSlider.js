@@ -144,9 +144,10 @@ export default function HeaderSlider() {
                 height={195}
                 className="w-full h-auto object-cover"
                 onError={(e) => {
-                  console.error("❌ Erro ao carregar imagem:", slide.url);
+                  // Silenciar logs de erro para banners antigos (localhost:4000)
+                  // console.error("❌ Erro ao carregar imagem:", slide.url);
                   // Fallback para imagem padrão se houver erro
-                  e.target.src = "/images/slide1.png";
+                  e.target.src = "/404.png";
                 }}
               />
             </div>

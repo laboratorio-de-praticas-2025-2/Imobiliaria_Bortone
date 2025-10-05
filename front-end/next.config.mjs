@@ -1,9 +1,32 @@
 /** @type {import('next').NextConfig} */
-const isDev = process.env.NODE_ENV !== "production";
+const isDev = process.env.NODE_ENV === "development" || process.env.NODE_ENV !== "production";
 const isNetlify = process.env.NETLIFY === "true";
+
+console.log("Next.js Config - NODE_ENV:", process.env.NODE_ENV);
+console.log("Next.js Config - isDev:", isDev);
 
 const nextConfig = {
   // Configuração simplificada para resolver problemas de 404 e loops
+  
+  // Resolver problemas com Ant Design no Next.js 15
+  transpilePackages: ['antd', '@ant-design/icons', '@ant-design/icons-svg'],
+  
+  // Configuração webpack para corrigir problemas de importação do Ant Design
+  webpack: (config, { isServer }) => {
+    // Resolver aliases para evitar problemas de módulos não encontrados
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@ant-design/icons-svg/es/asn': '@ant-design/icons-svg/lib/asn',
+    };
+    
+    // Excluir imagens do Leaflet do processamento do Next.js Image
+    config.module.rules.push({
+      test: /node_modules\/leaflet\/dist\/images\/.+\.(png|jpg|jpeg|gif|svg)$/,
+      type: 'asset/resource',
+    });
+    
+    return config;
+  },
   
   images: {
     // CHAVE: Desabilitar otimização no Netlify para evitar loops infinitos
@@ -15,7 +38,8 @@ const nextConfig = {
     domains: [
       'imobiliaria-bortone.onrender.com',
       'localhost',
-      '127.0.0.1'
+      '127.0.0.1',
+      'res.cloudinary.com'
     ],
     
     // Padrões remotos simplificados
@@ -31,6 +55,10 @@ const nextConfig = {
       {
         protocol: 'http',
         hostname: 'localhost'
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com'
       }
     ],
     
@@ -48,17 +76,16 @@ const nextConfig = {
           { key: "X-Frame-Options", value: "DENY" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          // CSP mais permissivo para imagens
+          // CSP temporariamente mais permissivo para desenvolvimento
           {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline'" + (isDev ? " 'unsafe-eval'" : ""),
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
               "style-src 'self' 'unsafe-inline'",
-              // Permitir todas as origens HTTPS para imagens (resolve 404s)
-              "img-src 'self' data: blob: https: http:",
+              "img-src 'self' data: blob: https: http: res.cloudinary.com *.cloudinary.com",
               "font-src 'self' data:",
-              "connect-src 'self' https:",
+              "connect-src 'self' https: http: ws: wss: http://localhost:* http://127.0.0.1:*",
               "frame-ancestors 'none'",
             ].join("; "),
           },

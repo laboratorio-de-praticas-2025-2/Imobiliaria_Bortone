@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export default function PriceRange({ children, type }) {
   const { updateFilters } = useFilters();
-  const [values, setValues] = useState([25000, 200000]);
+  const [values, setValues] = useState([25000, 1000000]);
 
   const handlePriceChange = (newValues) => {
     setValues(newValues);

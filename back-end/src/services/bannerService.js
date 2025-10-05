@@ -1,4 +1,4 @@
-import BannerIndex from "../models/bannerindex.js";
+import BannerIndex from "../models/BannerIndex.js";
 
 const BannerService = {
   // listar todos

@@ -74,6 +74,7 @@ export default function HomeNavbar({ className }) {
             alt="Logo Bortone"
             width={113}
             height={43}
+            style={{ width: 'auto', height: 'auto' }}
           />
         </Link>
 
@@ -208,6 +209,7 @@ export default function HomeNavbar({ className }) {
               alt="Logo Bortone"
               width={113}
               height={43}
+              style={{ width: 'auto', height: 'auto' }}
             />
           </Link>
         </Flex>
@@ -306,6 +308,7 @@ export default function HomeNavbar({ className }) {
                 alt="Logo Bortone"
                 width={113}
                 height={43}
+                style={{ width: 'auto', height: 'auto' }}
               />
             </Link>
           </Flex>

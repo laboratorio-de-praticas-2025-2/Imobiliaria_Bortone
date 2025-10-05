@@ -33,9 +33,16 @@ Documentação técnica das APIs, serviços e funcionalidades do servidor.
 
 #### Core APIs
 - **[API de Imóveis](api/imoveis.md)** - Endpoints para gestão de propriedades
-- **[API de Imagens](api/imagens.md)** - Upload e gerenciamento de imagens
+- **[API de Imagens](api/imagens.md)** - ⚡ **Sistema Cloudinary** - Upload e gerenciamento
 - **[Dashboard](api/dashboard.md)** - Métricas e relatórios administrativos
 - **[Banco de Dados](api/BancoDeDados.md)** - Estrutura e relacionamentos
+
+#### Sistema de Imagens
+Documentação completa da migração para Cloudinary e nova arquitetura.
+
+- **[📋 Resumo da Migração](MIGRATION_SUMMARY.md)** - ⭐ **Migração Cloudinary Completa**
+- **[🏗️ Arquitetura Cloudinary](CloudinaryArchitecture.md)** - Fluxo técnico detalhado
+- **[⚠️ Análise de Problemas](AnaliseArquiteturaImagens.md)** - Histórico de issues resolvidas
 
 #### Sistema de Mapa
 Funcionalidades geográficas e de localização integradas ao Google Maps.

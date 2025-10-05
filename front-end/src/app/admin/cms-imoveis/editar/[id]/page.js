@@ -11,16 +11,18 @@ import Sidebar from "@/components/cms/Sidebar";
 import { mockImoveis } from "@/mock/imoveis";
 import { Form as FormAntd } from "antd";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import axios from "axios";
+import { uploadImovelImage, deleteFromNetlify } from "@/services/netlifyUploadService";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
 });
 
 export default function EditarImovelPage({ params }) {
-  const id = params?.id;
+  const { id } = use(params);
   const [form] = FormAntd.useForm();
+  const [formReady, setFormReady] = useState(false);
   const [imovel, setImovel] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [formValues, setFormValues] = useState(null);
@@ -269,18 +271,23 @@ export default function EditarImovelPage({ params }) {
       // Fazer upload de novas imagens
       for (const newImage of newImages) {
         try {
-          const formData = new FormData();
-          formData.append('imagem', newImage.originFileObj);
-          formData.append('imovel_id', id);
-          formData.append('descricao', newImage.name || 'Imagem do imóvel');
-          
-          const response = await axios.post(`${apiUrl}/imagemimovel/upload`, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-          
-          // The API should return the filename (not full URL) for database storage
+        // Upload via Netlify
+        const imageUrl = await uploadImovelImage(
+          newImage.originFileObj,
+          id,
+          newImage.name || 'Imagem do imóvel'
+        );
+
+        // Salvar referência da imagem no backend
+        const response = await axios.post(`${apiUrl}/imagemimovel`, {
+          imovel_id: id,
+          url_imagem: imageUrl,
+          descricao: newImage.name || 'Imagem do imóvel'
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });          // The API should return the filename (not full URL) for database storage
           console.log(`Imagem ${newImage.name} enviada com sucesso. Filename: ${response.data.url_imagem}`);
         } catch (error) {
           console.error(`Erro ao fazer upload da imagem ${newImage.name}:`, error);
@@ -331,6 +338,7 @@ export default function EditarImovelPage({ params }) {
 
   if (loading) return <div>Carregando...</div>;
   if (imovel === null) return <div>Imóvel não encontrado.</div>;
+  if (!form) return <div>Inicializando formulário...</div>;
 
   return (
     <>

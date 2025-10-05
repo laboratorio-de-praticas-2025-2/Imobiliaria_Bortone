@@ -14,6 +14,7 @@ import { useState } from "react";
 import { LuHousePlus } from "react-icons/lu";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { uploadImovelImage } from "@/services/netlifyUploadService";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
@@ -55,7 +56,7 @@ export default function CriarImovelPage() {
         };
       }
 
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/imoveis`, {
+      const response = await apiClient.post('/imoveis', {
         ...imovelData,
         ...(tipoSelecionado === "Casa" ? specificData : {}),
         ...(tipoSelecionado === "Terreno" ? specificData : {}),
@@ -68,16 +69,23 @@ export default function CriarImovelPage() {
         console.log("Arquivos selecionados:", fileList);
 
         for (const file of fileList) {
-          const formData = new FormData();
-          formData.append("imovel_id", imovelId);
-          formData.append("imagem", file.originFileObj);
-          formData.append("descricao", values.descricao || "Imagem do imóvel"); 
-        
           try {
+            // Upload via Netlify
+            const imageUrl = await uploadImovelImage(
+              file.originFileObj,
+              imovelId,
+              values.descricao || "Imagem do imóvel"
+            );
+
+            // Salvar referência da imagem no backend
             await axios.post(
-              `${process.env.NEXT_PUBLIC_API_URL}/imagemImovel/upload`,
-              formData,
-              { headers: { "Content-Type": "multipart/form-data" } }
+              `${process.env.NEXT_PUBLIC_API_URL}/imagemimovel`,
+              {
+                imovel_id: imovelId,
+                url_imagem: imageUrl,
+                descricao: values.descricao || "Imagem do imóvel"
+              },
+              { headers: { "Content-Type": "application/json" } }
             );
           } catch (uploadError) {
             console.error("Erro no upload da imagem:", uploadError);
@@ -182,6 +190,9 @@ export default function CriarImovelPage() {
   const parkingSpots = ["1", "2", "3", "4", "5+"];
   const bedrooms = ["1", "2", "3", "4", "5+"];
   const bathrooms = ["1", "2", "3", "4", "5+"];
+
+  // Verificação de segurança para evitar warning do useForm
+  if (!form) return <div>Inicializando formulário...</div>;
 
   return (
     <>
