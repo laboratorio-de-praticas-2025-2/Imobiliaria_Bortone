@@ -13,6 +13,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { uploadBlogImage } from "@/services/netlifyUploadService";
 import { Form as FormAntd } from "antd";
+import { buildImageUrl } from "@/utils/imageUtils";
 
 export default function EditarPostPage() {
   const params = useParams();
@@ -25,22 +26,12 @@ export default function EditarPostPage() {
   const [content, setContent] = useState("");
   const [imageError, setImageError] = useState(false);
 
-  // Função para gerar URL da imagem com fallback
+  // Função para gerar URL da imagem com fallback usando utilitário unificado
   const getImageUrl = () => {
-    if (imageError || !post?.url_imagem) {
+    if (imageError) {
       return "/404.png";
     }
-    
-    let imageUrl = post.url_imagem;
-    if (!imageUrl.startsWith("/")) {
-      imageUrl = `/images/blogImages/${imageUrl}`;
-    }
-    const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
-    const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
-    if (imageUrl.startsWith("/images/") && apiUrl) {
-      return `${apiUrl}${imageUrl}`;
-    }
-    return imageUrl;
+    return buildImageUrl(post?.url_imagem, 'publicacao', '/404.png');
   };
 
   // Usaremos caminhos relativos para imagens (sem hostname) para evitar exigência de domains no Next/Image
@@ -162,8 +153,16 @@ export default function EditarPostPage() {
                         width={400}
                         height={320}
                         className="h-full w-full object-cover rounded-3xl"
-                        onError={() => {
+                        onError={(e) => {
+                          console.error('❌ Erro ao carregar imagem da publicação:', {
+                            original: post?.url_imagem,
+                            constructed: getImageUrl(),
+                            error: e
+                          });
                           setImageError(true);
+                        }}
+                        onLoad={() => {
+                          console.log('✅ Imagem da publicação carregada com sucesso:', getImageUrl());
                         }}
                       />
                     </div>

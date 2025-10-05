@@ -14,6 +14,7 @@ import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { uploadPublicidadeImage } from "@/services/netlifyUploadService";
 import { apiClient } from "@/utils/apiClient";
+import { buildImageUrl } from "@/utils/imageUtils";
 
 export default function EditarPublicidadePage() {
   const params = useParams(); 
@@ -152,22 +153,22 @@ export default function EditarPublicidadePage() {
               ) : publicidade?.url_imagem ? (
                 <div className="w-[100%] md:h-[25vh] h-[13vh] bg-gray-200 rounded-3xl ">
                   <Image
-                    src={(function() {
-                      const apiBase = process.env.NEXT_PUBLIC_API_URL || '';
-                      let src = publicidade.url_imagem || '';
-                      if (!src) return '/images/casa.png';
-                      if (!src.startsWith('/')) src = `/images/publicidadeImages/${src}`;
-                      if (src.startsWith('/images/') && apiBase.startsWith('http')) {
-                        const normalizedBase = apiBase.replace(/\/$/, '');
-                        return `${normalizedBase}${src}`;
-                      }
-                      return src;
-                    })()}
+                    src={buildImageUrl(publicidade.url_imagem, 'publicidade', '/images/casa.png')}
                     alt="Imagem atual"
                     width={400}
                     height={320}
                     className="h-full w-full object-cover rounded-3xl"
-                    onError={(e) => { try { e.target.src = '/404.png'; } catch {} }}
+                    onError={(e) => { 
+                      console.error('❌ Erro ao carregar imagem da publicidade:', {
+                        original: publicidade.url_imagem,
+                        constructed: buildImageUrl(publicidade.url_imagem, 'publicidade', '/images/casa.png'),
+                        error: e
+                      });
+                      try { e.target.src = '/404.png'; } catch {} 
+                    }}
+                    onLoad={() => {
+                      console.log('✅ Imagem da publicidade carregada com sucesso:', buildImageUrl(publicidade.url_imagem, 'publicidade', '/images/casa.png'));
+                    }}
                   />
                 </div>
               ) : (

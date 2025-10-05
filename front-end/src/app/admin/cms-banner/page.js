@@ -5,6 +5,7 @@ import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
 import { useEffect, useState } from "react";
 import { FaImage } from "react-icons/fa6";
+import { buildImageUrl } from "@/utils/imageUtils";
 
 // URL base do backend
 const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
@@ -17,22 +18,9 @@ const normalizeAtivo = (value) => {
   return 0;
 };
 
-// Constrói URL da imagem
+// Usar utilitário unificado para construir URL da imagem
 const getImageUrl = (urlImagem) => {
-  if (!urlImagem) return "/images/casa.png";
-  
-  // URLs absolutas (http/https) - retorna diretamente
-  if (urlImagem.startsWith("http://") || urlImagem.startsWith("https://")) {
-    return urlImagem;
-  }
-  
-  // URLs que começam com / - adiciona base URL
-  if (urlImagem.startsWith("/")) {
-    return `${BACKEND_BASE_URL}${urlImagem}`;
-  }
-  
-  // URLs relativas - assume pasta uploads/banners
-  return `${BACKEND_BASE_URL}/uploads/banners/${urlImagem}`;
+  return buildImageUrl(urlImagem, 'banner', '/images/casa.png');
 };
 
 // Chama backend para alternar status do banner
