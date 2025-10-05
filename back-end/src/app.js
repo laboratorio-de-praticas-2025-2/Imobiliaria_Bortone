@@ -18,6 +18,7 @@ import imagemImovelRoutes from "./routes/imagemImovelRoutes.js";
 import dashboardRouter from "./routes/dashboardRoutes.js";
 import initWebSocket from "./config/websocket.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
+import bannerRoutes from './routes/bannerRoutes.js';
 import path from "path";
 import { fileURLToPath } from "url";
 import http from "http";
@@ -27,12 +28,15 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
+// ----------------------
 // Middlewares
-app.use(cors()); // Habilita o CORS para todas as origens
+// ----------------------
+app.use(cors()); // Habilita CORS para todas as origens
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Servir arquivos estáticos da pasta 'uploads' (para imagens)
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 // Rotas
 
 app.use('/', recomendacaoRouter);
@@ -57,7 +61,29 @@ app.use(errorHandler);
 const server = http.createServer(app);
 initWebSocket(server);
 
+// Servir arquivos públicos
+app.use(express.static(path.join(__dirname, "../public")));
+app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
+
+// ----------------------
+// Rotas
+// ----------------------
+app.use('/banner', bannerRoutes);
+app.use('/', recomendacaoRouter);
+app.use('/user', userRoutes );
+app.use("/search", searchRouter);
+app.use("/agendamentos", agendamentoRouter);
+app.use("/health", healthRouter);
+app.use("/faq", faqRoutes);
+app.use("/mapa", mapaRoutes);
+app.use('/dashboard', dashboardRouter);
+
+// Middleware de tratamento de erros
+app.use(errorHandler);
+
+// ----------------------
 // Banco de dados
+// ----------------------
 connection
   .authenticate()
   .then(() => {
@@ -67,7 +93,9 @@ connection
     console.log("Erro ao conectar com banco de dados:", error);
   });
 
-// Porta
+// ----------------------
+// Inicializar servidor
+// ----------------------
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, function (erro) {
   if (erro) {

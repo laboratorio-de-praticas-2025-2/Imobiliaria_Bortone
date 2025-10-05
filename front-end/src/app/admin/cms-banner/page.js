@@ -1,168 +1,122 @@
 "use client";
+
 import Card from "@/components/cms/Card";
 import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { FaImage } from "react-icons/fa6";
-import axios from "axios";
+
+// URL base do backend
+const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+
+// Normaliza valor ativo (0 ou 1)
+const normalizeAtivo = (value) => {
+  if (typeof value === "boolean") return value ? 1 : 0;
+  if (typeof value === "number") return value === 1 ? 1 : 0;
+  if (typeof value === "string") return value === "1" || value.toLowerCase() === "true" ? 1 : 0;
+  return 0;
+};
+
+// Constrói URL da imagem
+const getImageUrl = (urlImagem) => {
+  if (!urlImagem) return "/images/casa.png";
+  if (urlImagem.startsWith("http://") || urlImagem.startsWith("https://")) return urlImagem;
+  if (urlImagem.startsWith("/")) return `${BACKEND_BASE_URL}${urlImagem}`;
+  return `${BACKEND_BASE_URL}/uploads/banners/${urlImagem}`;
+};
+
+// Chama backend para alternar status do banner
+const toggleStatus = async (id) => {
+  try {
+    const res = await fetch(`${BACKEND_BASE_URL}/banner/toggle/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!res.ok) throw new Error("Erro ao atualizar status no servidor.");
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Erro ao alterar status no backend:", error);
+    throw error;
+  }
+};
 
 export default function CmsBannerPage() {
   const [banners, setBanners] = useState([]);
-  const [filteredBanners, setFilteredBanners] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterData, setFilterData] = useState({});
-
   const [currentPage, setCurrentPage] = useState(1);
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    totalPages: 1,
-    totalItems: 0,
-    itemsPerPage: 12,
-    hasNextPage: false,
-    hasPreviousPage: false,
-  });
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const pageSize = 8;
+  const [filterData, setFilterData] = useState({ order: null });
 
-  const buildQueryParams = useCallback(() => {
-    const params = new URLSearchParams();
-    if (filterData.order) {
-      if (filterData.order === "Ordem alfabetica") {
-        params.append('ordenarPor', 'alfabetica');
-        params.append('direcao', 'ASC');
-      } else if (filterData.order === "Data de inclusão") {
-        params.append('ordenarPor', 'data');
-        params.append('direcao', 'DESC');
-      }
-    }
-    params.append('page', currentPage.toString());
-    params.append('limit', '12');
-    return params;
-  }, [filterData.order, currentPage]);
+  useEffect(() => {
+    fetchBanners();
+  }, []);
 
-  const loadBanners = useCallback(async () => {
+  const fetchBanners = async () => {
     try {
-      setIsLoading(true);
-      const params = buildQueryParams();
-      const url = `${process.env.NEXT_PUBLIC_API_URL}/banner${params.toString() ? '?' + params.toString() : ''}`;
-      const response = await axios.get(url);
-      if (response.status === 200) {
-        if (response.data.data && response.data.pagination) {
-          setBanners(response.data.data);
-          setFilteredBanners(response.data.data);
-          setPagination(response.data.pagination);
-        } else {
-          setBanners(response.data);
-          setFilteredBanners(response.data);
-          setPagination(prev => ({
-            ...prev,
-            totalItems: response.data.length,
-            totalPages: Math.ceil(response.data.length / prev.itemsPerPage)
-          }));
-        }
-      }
-    } catch (error) {
-      console.log("Erro ao carregar banners:", error);
+      setLoading(true);
+      setError(null);
+      const res = await fetch(`${BACKEND_BASE_URL}/banner`);
+      if (!res.ok) throw new Error(`Erro ${res.status}: ${res.statusText}`);
+      const data = await res.json();
+      const bannersProcessados = data.map(b => ({
+        ...b,
+        ativo: normalizeAtivo(b.ativo),
+        imagem: getImageUrl(b.url_imagem),
+      }));
+      setBanners(bannersProcessados);
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
-  }, [buildQueryParams]);
+  };
 
-  useEffect(() => {
-    loadBanners();
-  }, [loadBanners]);
-
-  useEffect(() => {
-    if (searchTerm.trim() === "") {
-      setFilteredBanners(banners);
-      if (banners.length > 0) {
-        const isApiPaginated = pagination.totalItems > banners.length;
-        if (!isApiPaginated) {
-          setPagination(prev => ({
-            ...prev,
-            currentPage,
-            totalItems: banners.length,
-            totalPages: Math.ceil(banners.length / prev.itemsPerPage),
-            hasNextPage: currentPage < Math.ceil(banners.length / prev.itemsPerPage),
-            hasPreviousPage: currentPage > 1
-          }));
-        }
-      } else {
-        setPagination(prev => ({
-          ...prev,
-          totalItems: 0,
-          totalPages: 1,
-          hasNextPage: false,
-          hasPreviousPage: false
-        }));
+  const handleDeleteBanner = async (bannerId) => {
+    try {
+      const res = await fetch(`${BACKEND_BASE_URL}/banner/${bannerId}`, { method: "DELETE" });
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({ message: "Erro desconhecido" }));
+        throw new Error(errorData.message);
       }
-    } else {
-      const term = searchTerm.toLowerCase();
-      const filtered = banners.filter(banner =>
-        (banner.titulo || "").toLowerCase().includes(term) ||
-        (banner.descricao || "").toLowerCase().includes(term)
+      setBanners(prev => prev.filter(b => b.id !== bannerId));
+    } catch (err) {
+      console.error(err);
+      alert(`Erro ao deletar banner: ${err.message}`);
+      throw err;
+    }
+  };
+
+  const handleToggleBanner = async (bannerId) => {
+    try {
+      const data = await toggleStatus(bannerId);
+      setBanners(prev =>
+        prev.map(b => (b.id === bannerId ? { ...b, ativo: normalizeAtivo(data.ativo) } : b))
       );
-      setFilteredBanners(filtered);
-      setCurrentPage(1);
-      setPagination(prev => {
-        const totalPages = Math.max(1, Math.ceil(filtered.length / prev.itemsPerPage));
-        return {
-          ...prev,
-          currentPage: 1,
-          totalItems: filtered.length,
-          totalPages,
-          hasNextPage: totalPages > 1,
-          hasPreviousPage: false
-        };
-      });
-    }
-  }, [searchTerm, banners, pagination.totalItems, currentPage]);
-
-  useEffect(() => {
-    if (searchTerm.trim() === "") {
-      loadBanners();
-    }
-  }, [filterData.order, currentPage, searchTerm, loadBanners]);
-
-  const onSearch = (value) => {
-    setSearchTerm(value);
-    if (value.trim() === "" && searchTerm.trim() !== "") {
-      setCurrentPage(1);
-      loadBanners();
-    } else if (value.trim() !== "") {
-      setCurrentPage(1);
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao alterar status do banner.");
     }
   };
 
-  const handleSelectOrder = (value) => {
-    console.log("=== ORDENAÇÃO SELECIONADA ===");
-    console.log("Valor selecionado:", value);
-    console.log("filterData antes:", filterData);
-    setFilterData((prev) => {
-      const newFilterData = { ...prev, order: value };
-      console.log("filterData depois:", newFilterData);
-      return newFilterData;
-    });
-    setCurrentPage(1);
-    console.log("=============================");
-  };
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedBanners = banners.slice(startIndex, endIndex);
 
-  const updateFilterData = (newData) => {
-    setFilterData((prev) => ({ ...prev, ...newData }));
-  };
+  const onSearch = (value) => console.log("Search:", value);
+  const handleSelectOrder = (value) => setFilterData(prev => ({ ...prev, order: value }));
+  const updateFilterData = (newData) => setFilterData(prev => ({ ...prev, ...newData }));
+  const handleRetry = () => fetchBanners();
 
-  const handlePageChange = (newPage) => {
-    console.log("Mudando para página:", newPage);
-    setCurrentPage(newPage);
-  };
-
-  const getCurrentPageItems = () => {
-    if (searchTerm.trim() !== "") {
-      const startIndex = (currentPage - 1) * pagination.itemsPerPage;
-      const endIndex = startIndex + pagination.itemsPerPage;
-      return filteredBanners.slice(startIndex, endIndex);
-    }
-    return filteredBanners;
-  };
+  if (loading) return <div>Carregando banners...</div>;
+  if (error)
+    return (
+      <div>
+        Erro: {error} <button onClick={handleRetry}>Tentar Novamente</button>
+      </div>
+    );
 
   return (
     <>
@@ -175,40 +129,31 @@ export default function CmsBannerPage() {
               buttonIcon={<FaImage />}
               onSearch={onSearch}
               href={"/admin/cms-banner/criar"}
-              filterData={filterData}
               handleSelectOrder={handleSelectOrder}
+              filterData={filterData}
               updateFilterData={updateFilterData}
             />
             <CMS.TableBody>
-              {isLoading ? (
-                <div className="flex justify-center items-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                  <span className="ml-2">Carregando...</span>
-                </div>
-              ) : getCurrentPageItems().length > 0 ? (
+              {paginatedBanners.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-center">
-                  {getCurrentPageItems().map((banner) => (
+                  {paginatedBanners.map(banner => (
                     <Card
                       key={banner.id}
                       item={banner}
-                      href_cms="banner"
-                      header={false}
-                      onDelete={loadBanners}
-                      onToggle={loadBanners}
+                      header
+                      onDelete={() => handleDeleteBanner(banner.id)}
+                      onToggle={() => handleToggleBanner(banner.id)} // ✅ toggle funcional
                     />
                   ))}
                 </div>
               ) : (
-                <p className="text-center py-8">Nenhum banner encontrado.</p>
+                <p>Nenhum banner encontrado.</p>
               )}
             </CMS.TableBody>
-
-            {/* Paginador controlado */}
             <CMS.TableFooter
-              postsData={pagination}
-              pageSize={pagination.itemsPerPage}
-              onPageChange={handlePageChange}
-              currentPage={currentPage}
+              postsData={banners}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
             />
           </CMS.Table>
         </CMS.Body>
