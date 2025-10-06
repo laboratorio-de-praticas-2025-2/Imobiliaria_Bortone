@@ -1,21 +1,69 @@
 import { Sequelize } from "sequelize";
-import Imovel from "../models/Imovel";
-import RecomendacaoImovel from "../models/recomendacaoImovelModal";
-import { 
-  sendPropertyRecommendation, 
-  sendToMultipleUsers, 
-  notifyNewProperty,
-  broadcastNotification 
+import Imovel from "../models/model.js";
+import RecomendacaoImovel from "../models/recomendacaoImovelModel.js";
+// Importar apenas funções essenciais - SEM REDUNDÂNCIA
+import {
+  sendToMultipleUsers,
+  broadcastNotification,
+  sendToUser,
+  isSocketManagerAvailable
 } from '../utils/socketHelper.js';
 
 class NotificationService {
+  // Constantes de configuração para tolerâncias de recomendação
+  static PRICE_TOLERANCE = 0.3; // 30% de variação no preço
+  static AREA_TOLERANCE = 0.3; // 30% de variação na área
+  static GEO_TOLERANCE = 0.05; // ~5km de raio geográfico
+  static DAYS_LOOKBACK = 30; // Considerar visitas dos últimos 30 dias
+  static TOP_PROPERTIES_LIMIT = 10; // Top 10 imóveis mais populares
+  static CACHE_DURATION = 30 * 60 * 1000; // Cache de 30 minutos
+
+  constructor() {
+    this.popularPropertyCache = null;
+    this.cacheExpiry = null;
+  }
 
   // Função com a finalidade é acionar o SocketManager para o envio das notificações.
   async dispararAlertaNovoImovel(novoImovel) {
+    const startTime = Date.now();
+    console.log(`[NotificationService] Iniciando processamento para imóvel ID: ${novoImovel?.id}`);
+
+    // Validação de entrada - previne erros e garante integridade
+    if (!novoImovel || typeof novoImovel !== 'object') {
+      throw new Error('Dados do imóvel são obrigatórios e devem ser um objeto válido');
+    }
+
+    if (!novoImovel.id) {
+      throw new Error('ID do imóvel é obrigatório');
+    }
+
+    // Validar campos obrigatórios para o algoritmo de recomendação
+    const requiredFields = ['latitude', 'longitude', 'preco', 'area', 'tipo_negociacao', 'status'];
+    for (const field of requiredFields) {
+      if (novoImovel[field] === undefined || novoImovel[field] === null) {
+        throw new Error(`Campo obrigatório ausente: ${field}`);
+      }
+    }
+
+    // Validar tipos de dados críticos
+    if (typeof novoImovel.preco !== 'number' || novoImovel.preco <= 0) {
+      throw new Error('Preço deve ser um número positivo');
+    }
+
+    if (typeof novoImovel.area !== 'number' || novoImovel.area <= 0) {
+      throw new Error('Área deve ser um número positivo');
+    }
+
+    if (typeof novoImovel.latitude !== 'number' || typeof novoImovel.longitude !== 'number') {
+      throw new Error('Coordenadas geográficas devem ser números válidos');
+    }
+
+    console.log(`[NotificationService] Parâmetros: Preço: R$${novoImovel.preco}, Área: ${novoImovel.area}m², Tipo: ${novoImovel.tipo_negociacao}`);
+
     const { latitude, longitude, preco, area, tipo_negociacao, status } = novoImovel;
 
     const umMesAtras = new Date();
-    umMesAtras.setMonth(umMesAtras.getMonth() - 1);
+    umMesAtras.setDate(umMesAtras.getDate() - NotificationService.DAYS_LOOKBACK);
 
     try {
       const recomendacoes = await RecomendacaoImovel.findAll({
@@ -26,10 +74,30 @@ class NotificationService {
             where: {
               tipo_negociacao,
               status,
-              preco: { [Sequelize.Op.between]: [preco * 0.9, preco * 1.1] },
-              area: { [Sequelize.Op.between]: [area * 0.9, area * 1.1] },
-              latitude: { [Sequelize.Op.between]: [latitude - 0.05, latitude + 0.05] },
-              longitude: { [Sequelize.Op.between]: [longitude - 0.05, longitude + 0.05] },
+              preco: {
+                [Sequelize.Op.between]: [
+                  preco * (1 - NotificationService.PRICE_TOLERANCE),
+                  preco * (1 + NotificationService.PRICE_TOLERANCE)
+                ]
+              },
+              area: {
+                [Sequelize.Op.between]: [
+                  area * (1 - NotificationService.AREA_TOLERANCE),
+                  area * (1 + NotificationService.AREA_TOLERANCE)
+                ]
+              },
+              latitude: {
+                [Sequelize.Op.between]: [
+                  latitude - NotificationService.GEO_TOLERANCE,
+                  latitude + NotificationService.GEO_TOLERANCE
+                ]
+              },
+              longitude: {
+                [Sequelize.Op.between]: [
+                  longitude - NotificationService.GEO_TOLERANCE,
+                  longitude + NotificationService.GEO_TOLERANCE
+                ]
+              },
             },
           },
         ],
@@ -38,24 +106,47 @@ class NotificationService {
         },
       });
 
+      console.log(`[NotificationService] Encontradas ${recomendacoes.length} recomendações baseadas em histórico`);
+
       const imovelSorteado = await this._buscarImovelPopular();
+
+      if (imovelSorteado) {
+        console.log(`[NotificationService] Imóvel popular selecionado: ID ${imovelSorteado.id}`);
+      } else {
+        console.log(`[NotificationService] Nenhum imóvel popular encontrado para broadcast`);
+      }
 
       // Enviar notificações via Socket.IO
       const notificacoesSent = await this._enviarNotificacoes(recomendacoes, novoImovel, imovelSorteado);
 
-      return { 
-        recomendacoes, 
+      const executionTime = Date.now() - startTime;
+      console.log(`[NotificationService] Processamento concluído em ${executionTime}ms`);
+      console.log(`[NotificationService] Resultados: ${recomendacoes.length} usuários identificados, ${notificacoesSent.recomendacoes} notificações personalizadas enviadas`);
+
+      return {
+        recomendacoes,
         imovelSorteado,
-        notificacoesSent
+        notificacoesSent,
+        executionTime
       }
     } catch (error) {
-      console.error("Erro ao buscar recomendações:", error);
-      throw new Error("Erro ao buscar recomendações.");
+      const executionTime = Date.now() - startTime;
+      console.error(`[NotificationService] ERRO após ${executionTime}ms:`, error.message);
+      console.error(`[NotificationService] Stack trace:`, error.stack);
+      throw new Error(`Erro ao processar notificações: ${error.message}`);
     }
   }
 
   // Função que notifica imóveis populares para usuários que não visitaram nenhum imóvel
   async _buscarImovelPopular() {
+    // Verificar cache para manter consistência do imóvel popular
+    if (this.popularPropertyCache && this.cacheExpiry && Date.now() < this.cacheExpiry) {
+      console.log('[NotificationService] Usando imóvel popular do cache');
+      return this.popularPropertyCache;
+    }
+
+    console.log(`[NotificationService] Buscando imóvel popular entre os top ${NotificationService.TOP_PROPERTIES_LIMIT}`);
+
     try {
       // 1) pegar os 10 imoveis mais populares
       const imoveisPopulares = await RecomendacaoImovel.findAll({
@@ -65,10 +156,15 @@ class NotificationService {
         ],
         group: ["imovel_id"],
         order: [[Sequelize.literal("total"), "DESC"]],
-        limit: 10,
+        limit: NotificationService.TOP_PROPERTIES_LIMIT,
       });
 
-      if (imoveisPopulares.length === 0) return null;
+      if (imoveisPopulares.length === 0) {
+        console.log(`[NotificationService] Nenhum imóvel popular encontrado`);
+        return null;
+      }
+
+      console.log(`[NotificationService] ${imoveisPopulares.length} imóveis populares encontrados`);
 
       // 2) sortear 1 desses 10
       const sorteado = imoveisPopulares[
@@ -78,75 +174,76 @@ class NotificationService {
       // 3) buscar dados completos
       const imovelSorteado = await Imovel.findByPk(sorteado.imovel_id);
 
+      console.log(`[NotificationService] Imóvel sorteado: ID ${imovelSorteado.id} com ${sorteado.dataValues.total} visitas`);
+
+      // Atualizar cache para manter consistência
+      this.popularPropertyCache = imovelSorteado;
+      this.cacheExpiry = Date.now() + NotificationService.CACHE_DURATION;
+      console.log(`[NotificationService] Cache do imóvel popular atualizado (válido por ${NotificationService.CACHE_DURATION / 60000} minutos)`);
+
       return imovelSorteado;
     } catch (error) {
-      console.error("Erro ao buscar imóvel popular:", error);
+      console.error("[NotificationService] Erro ao buscar imóvel popular:", error.message);
       throw new Error("Erro ao buscar imóvel popular.");
     }
   }
 
-  // Função para enviar notificações via Socket.IO
+  // Função para enviar notificações via Socket.IO - SEM REDUNDÂNCIAS
   async _enviarNotificacoes(recomendacoes, novoImovel, imovelSorteado) {
     const notificacoesSent = {
       recomendacoes: 0,
-      imovelPopular: 0,
       broadcast: false
     };
 
     try {
-      // 1. Enviar recomendações personalizadas para usuários com histórico
+      // 1. NOTIFICAÇÕES PERSONALIZADAS (baseadas em recomendações) - UMA SÓ VEZ
       if (recomendacoes && recomendacoes.length > 0) {
-        const userIds = [...new Set(recomendacoes.map(rec => rec.usuario_id))];
-        
-        const results = notifyNewProperty(userIds, {
-          id: novoImovel.id,
-          preco: novoImovel.preco,
-          area: novoImovel.area,
-          tipo_negociacao: novoImovel.tipo_negociacao,
-          endereco: novoImovel.endereco,
-          titulo: `Novo ${novoImovel.tipo_negociacao} disponível!`,
-          descricao: `Encontramos um imóvel que pode interessar você com base no seu histórico de buscas.`
+        const usuariosIds = [...new Set(recomendacoes.map(r => r.usuario_id))];
+        console.log(`[NotificationService] Enviando recomendações personalizadas para ${usuariosIds.length} usuários: ${usuariosIds.join(', ')}`);
+
+        const resultados = sendToMultipleUsers(usuariosIds, 'property_recommendation', {
+          type: 'personalized_recommendation',
+          title: 'Nova Recomendação Personalizada',
+          message: 'Encontramos um imóvel que combina com seu perfil!',
+          property: {
+            id: novoImovel.id,
+            tipo_negociacao: novoImovel.tipo_negociacao,
+            preco: novoImovel.preco,
+            area: novoImovel.area,
+            endereco: novoImovel.endereco,
+            imagens: novoImovel.imagens
+          }
         });
 
-        notificacoesSent.recomendacoes = results.filter(r => r.sent).length;
-        console.log(`Notificações de recomendação enviadas para ${notificacoesSent.recomendacoes} usuários`);
+        notificacoesSent.recomendacoes = resultados.filter(r => r.sent).length;
+        console.log(`[NotificationService] ${notificacoesSent.recomendacoes} notificações personalizadas enviadas com sucesso`);
       }
 
-      // 2. Enviar imóvel popular para usuários sem histórico (broadcast limitado)
+      // 2. BROADCAST DE IMÓVEL POPULAR (para usuários sem histórico) - UMA SÓ VEZ
       if (imovelSorteado) {
+        console.log(`[NotificationService] Enviando broadcast de imóvel popular: ${imovelSorteado.id}`);
+
         const broadcastResult = broadcastNotification('popular_property', {
           type: 'popular_property',
           title: 'Imóvel Popular em Destaque',
           message: 'Confira este imóvel que está chamando atenção!',
           property: {
             id: imovelSorteado.id,
+            tipo_negociacao: imovelSorteado.tipo_negociacao,
             preco: imovelSorteado.preco,
             area: imovelSorteado.area,
-            tipo_negociacao: imovelSorteado.tipo_negociacao,
-            endereco: imovelSorteado.endereco
+            endereco: imovelSorteado.endereco,
+            imagens: imovelSorteado.imagens
           }
         });
 
         notificacoesSent.broadcast = broadcastResult;
-        console.log(`Broadcast de imóvel popular ${broadcastResult ? 'enviado' : 'falhou'}`);
+        console.log(`[NotificationService] Broadcast de imóvel popular ${broadcastResult ? 'enviado' : 'falhou'}`);
       }
 
-      // 3. Broadcast geral sobre novo imóvel no sistema
-      const generalBroadcast = broadcastNotification('new_property_available', {
-        type: 'system_notification',
-        title: 'Novo Imóvel Disponível',
-        message: 'Um novo imóvel foi adicionado ao nosso catálogo!',
-        property: {
-          id: novoImovel.id,
-          tipo_negociacao: novoImovel.tipo_negociacao,
-          preco: novoImovel.preco
-        }
-      });
-
-      notificacoesSent.generalBroadcast = generalBroadcast;
-
     } catch (error) {
-      console.error('Erro ao enviar notificações via Socket.IO:', error);
+      console.error("[NotificationService] Erro ao enviar notificações via Socket.IO:", error.message);
+      throw new Error("Erro ao enviar notificações em tempo real.");
     }
 
     return notificacoesSent;
@@ -163,7 +260,7 @@ class NotificationService {
 
       if (interessados.length > 0) {
         const userIds = [...new Set(interessados.map(i => i.usuario_id))];
-        
+
         const results = sendToMultipleUsers(userIds, 'price_change', {
           type: 'price_change',
           title: 'Alteração de Preço',
@@ -188,17 +285,17 @@ class NotificationService {
   // Função para notificar agendamento de visita
   async notificarAgendamento(userId, dadosAgendamento) {
     try {
-      const result = sendPropertyRecommendation(userId, {
+      const result = sendToUser(userId, 'appointment_notification', {
         type: 'appointment',
         title: 'Agendamento Confirmado',
         message: 'Sua visita foi agendada com sucesso!',
         data: dadosAgendamento
       });
 
-      console.log(`Notificação de agendamento ${result ? 'enviada' : 'falhou'} para usuário ${userId}`);
+      console.log(`[NotificationService] Notificação de agendamento ${result ? 'enviada' : 'falhou'} para usuário ${userId}`);
       return result;
     } catch (error) {
-      console.error('Erro ao notificar agendamento:', error);
+      console.error('[NotificationService] Erro ao notificar agendamento:', error.message);
       throw new Error('Erro ao notificar agendamento.');
     }
   }
