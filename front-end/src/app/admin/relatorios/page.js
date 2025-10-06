@@ -8,8 +8,26 @@ import { getRelatorioData, getAllRelatorios } from "@/services/RelatorioService"
 import { message } from "antd";
 import { useRef, useState, useEffect } from "react";
 import { exportRelatorioToPdf } from "@/utils/pdfUtils";
+import { exportRelatorioToPdfV2 } from "@/utils/pdfUtilsV2";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { useReactToPrint } from "react-to-print";
+
+// Funções auxiliares para compartilhamento
+const generatePdfAsBlob = async (element, fileName, reportType) => {
+  const { exportRelatorioToPdfAsBlob } = await import("@/utils/pdfUtilsV2");
+  return await exportRelatorioToPdfAsBlob(element, fileName, reportType);
+};
+
+const downloadPdfBlob = (blob, fileName) => {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
 
 export default function TableRelatorio() {
   const [toast, setToast] = useState(null);
@@ -99,7 +117,8 @@ export default function TableRelatorio() {
     try {
       if (!componentToPrintRef.current) throw new Error("Ref não encontrado");
       const fileName = record ? `${record.pdfNome}.pdf` : "Relatorio.pdf";
-      await exportRelatorioToPdf(componentToPrintRef.current, fileName);
+      const reportType = record ? record.tipo : 'geral';
+      await exportRelatorioToPdfV2(componentToPrintRef.current, fileName, reportType);
       showToast(fileName, "Download concluído");
     } catch (e) {
       console.error(e);
@@ -108,24 +127,42 @@ export default function TableRelatorio() {
   };
 
   const handleShare = async () => {
-    const fileUrl = "/relatorios/Relatorio-Exemplo.pdf";
-    const fileName = "Relatorio-Exemplo.pdf";
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Compartilhar PDF",
-          text: `Confira o relatório: ${fileName}`,
-          url: fileUrl,
-        });
-        message.success("PDF compartilhado com sucesso!");
-      } catch (err) {
-        message.error("Falha ao compartilhar o PDF");
+    try {
+      if (!componentToPrintRef.current) throw new Error("Ref não encontrado");
+      
+      const fileName = record ? `${record.pdfNome}.pdf` : "Relatorio.pdf";
+      const reportType = record ? record.tipo : 'geral';
+      
+      // Gerar PDF como blob
+      const pdfBlob = await generatePdfAsBlob(componentToPrintRef.current, fileName, reportType);
+      
+      if (navigator.share && navigator.canShare) {
+        // Usar Web Share API se disponível
+        const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
+        
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: "Relatório - Imobiliária Bortone",
+            text: `Confira o relatório: ${fileName}`,
+            files: [file]
+          });
+          message.success("PDF compartilhado com sucesso!");
+        } else {
+          // Fallback: baixar o arquivo
+          downloadPdfBlob(pdfBlob, fileName);
+          message.info("PDF baixado para compartilhamento!");
+        }
+      } else {
+        // Fallback: baixar o arquivo
+        downloadPdfBlob(pdfBlob, fileName);
+        message.info("PDF baixado para compartilhamento!");
       }
-    } else {
-      navigator.clipboard.writeText(window.location.origin + fileUrl);
-      message.info("Link copiado para a área de transferência!");
+      
+      showToast(fileName, "Compartilhamento concluído");
+    } catch (error) {
+      console.error('Erro ao compartilhar PDF:', error);
+      message.error("Falha ao compartilhar o PDF");
     }
-    showToast("Relatorio-Exemplo.pdf", "Compartilhamento concluído");
   };
 
   const handlePrint = useReactToPrint({

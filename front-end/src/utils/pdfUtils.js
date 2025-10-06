@@ -41,8 +41,33 @@ export async function exportRelatorioToPdf(element, fileName = 'relatorio.pdf') 
   wrapper.appendChild(clone);
   document.body.appendChild(wrapper);
 
+  // Aguarda que todos os gráficos sejam convertidos em imagens
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  
+  // Força conversão de todos os Canvas em imagens
+  const canvases = clone.querySelectorAll('canvas');
+  canvases.forEach(canvas => {
+    if (canvas.parentNode) {
+      const img = new Image();
+      img.src = canvas.toDataURL('image/png');
+      img.style.width = canvas.style.width || '100%';
+      img.style.height = canvas.style.height || 'auto';
+      img.style.display = 'block';
+      canvas.parentNode.replaceChild(img, canvas);
+    }
+  });
+  
+  // Aguarda mais um pouco para as imagens carregarem
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
   // Use escala 2 para melhor nitidez
-  const canvas = await _html2canvas(clone, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+  const canvas = await _html2canvas(clone, { 
+    scale: 2, 
+    useCORS: true, 
+    backgroundColor: '#ffffff',
+    allowTaint: true,
+    logging: false
+  });
   const imgData = canvas.toDataURL('image/png');
   const pdf = new _jsPDF('p', 'mm', 'a4');
   const pageWidth = pdf.internal.pageSize.getWidth();
