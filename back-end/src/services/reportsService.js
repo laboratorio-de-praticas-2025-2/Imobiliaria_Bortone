@@ -124,7 +124,13 @@ class ReportService {
           { mes: "2024-03", Casa: 1, Apartamento: 2, Terreno: 1 },
           { mes: "2024-04", Casa: 3, Apartamento: 2, Terreno: 1 },
           { mes: "2024-05", Casa: 1, Apartamento: 2, Terreno: 0 },
-          { mes: "2024-06", Casa: 2, Apartamento: 2, Terreno: 0 }
+          { mes: "2024-06", Casa: 2, Apartamento: 2, Terreno: 0 },
+          { mes: "2024-07", Casa: 2, Apartamento: 2, Terreno: 0 },
+          { mes: "2024-08", Casa: 2, Apartamento: 2, Terreno: 0 },
+          { mes: "2024-09", Casa: 2, Apartamento: 2, Terreno: 0 },
+          { mes: "2024-10", Casa: 2, Apartamento: 2, Terreno: 0 },
+          { mes: "2024-11", Casa: 2, Apartamento: 2, Terreno: 0 },
+          { mes: "2024-12", Casa: 2, Apartamento: 2, Terreno: 0 },
         ],
         vendasPorTipo: {
           apartamentos: 12,
@@ -148,7 +154,13 @@ class ReportService {
           { mes: "2024-03", Casa: 1, Apartamento: 2, Terreno: 0 },
           { mes: "2024-04", Casa: 1, Apartamento: 2, Terreno: 0 },
           { mes: "2024-05", Casa: 1, Apartamento: 1, Terreno: 0 },
-          { mes: "2024-06", Casa: 2, Apartamento: 2, Terreno: 0 }
+          { mes: "2024-06", Casa: 2, Apartamento: 2, Terreno: 0 },
+          { mes: "2024-07", Casa: 2, Apartamento: 2, Terreno: 0 },
+          { mes: "2024-08", Casa: 2, Apartamento: 2, Terreno: 0 },
+          { mes: "2024-09", Casa: 2, Apartamento: 2, Terreno: 0 },
+          { mes: "2024-10", Casa: 2, Apartamento: 2, Terreno: 0 },
+          { mes: "2024-11", Casa: 2, Apartamento: 2, Terreno: 0 },
+          { mes: "2024-12", Casa: 2, Apartamento: 2, Terreno: 0 },
         ],
         locacoesPorTipo: {
           apartamentos: 12,

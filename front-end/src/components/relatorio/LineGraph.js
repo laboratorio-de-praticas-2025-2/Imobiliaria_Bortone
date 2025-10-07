@@ -131,7 +131,7 @@ export default function LineGraph({graphData, label} ) {
   }, [graphData]);
   
   return (
-    <div className="group h-[350px] !w-full flex items-center rounded-xl  px-10 md:px-3 2xl:px-10 !bg-[#EEF0F9] !shadow-md">
+    <div className="group h-[350px] !w-full flex items-center rounded-xl  px-10 md:px-3 2xl:px-10 !bg-[#EEF0F9] shadow-none">
       <div className="grid grid-col content-evenly w-full h-full">
         <span className="text-lg ms-4 font-semibold text-[var(--primary)]">
           {label}

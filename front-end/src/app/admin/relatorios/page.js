@@ -8,14 +8,13 @@ import { getRelatorioData, getAllRelatorios } from "@/services/RelatorioService"
 import { message } from "antd";
 import { useRef, useState, useEffect } from "react";
 import { exportRelatorioToPdf } from "@/utils/pdfUtils";
-import { exportRelatorioToPdfV2 } from "@/utils/pdfUtilsV2";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { useReactToPrint } from "react-to-print";
 
 // Funções auxiliares para compartilhamento
-const generatePdfAsBlob = async (element, fileName, reportType) => {
-  const { exportRelatorioToPdfAsBlob } = await import("@/utils/pdfUtilsV2");
-  return await exportRelatorioToPdfAsBlob(element, fileName, reportType);
+const generatePdfAsBlob = async (element) => {
+  const { exportRelatorioToPdfAsBlobDOM } = await import("@/utils/pdfUtils");
+  return await exportRelatorioToPdfAsBlobDOM(element);
 };
 
 const downloadPdfBlob = (blob, fileName) => {
@@ -33,7 +32,7 @@ export default function TableRelatorio() {
   const [toast, setToast] = useState(null);
   const showToast = (fileName, action) => {
     setToast({ fileName, action });
-    setTimeout(() => setToast(null), 3000);
+    setTimeout(() => setToast(null), 2000);
   };
 
   const [loading, setLoading] = useState(false); // Para PDF
@@ -117,8 +116,7 @@ export default function TableRelatorio() {
     try {
       if (!componentToPrintRef.current) throw new Error("Ref não encontrado");
       const fileName = record ? `${record.pdfNome}.pdf` : "Relatorio.pdf";
-      const reportType = record ? record.tipo : 'geral';
-      await exportRelatorioToPdfV2(componentToPrintRef.current, fileName, reportType);
+      await exportRelatorioToPdf(componentToPrintRef.current, fileName);
       showToast(fileName, "Download concluído");
     } catch (e) {
       console.error(e);
@@ -131,34 +129,32 @@ export default function TableRelatorio() {
       if (!componentToPrintRef.current) throw new Error("Ref não encontrado");
       
       const fileName = record ? `${record.pdfNome}.pdf` : "Relatorio.pdf";
-      const reportType = record ? record.tipo : 'geral';
-      
-      // Gerar PDF como blob
-      const pdfBlob = await generatePdfAsBlob(componentToPrintRef.current, fileName, reportType);
-      
+
+      // Gera o PDF como blob (snapshot idêntico ao preview)
+      const pdfBlob = await generatePdfAsBlob(componentToPrintRef.current);
+
+      // Preferir compartilhar ARQUIVO via Web Share API
       if (navigator.share && navigator.canShare) {
-        // Usar Web Share API se disponível
-        const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
-        
-        if (navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            title: "Relatório - Imobiliária Bortone",
-            text: `Confira o relatório: ${fileName}`,
-            files: [file]
-          });
-          message.success("PDF compartilhado com sucesso!");
-        } else {
-          // Fallback: baixar o arquivo
-          downloadPdfBlob(pdfBlob, fileName);
-          message.info("PDF baixado para compartilhamento!");
+        try {
+          const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title: "Relatório - Imobiliária Bortone",
+              text: `Confira o relatório: ${fileName}`,
+              files: [file]
+            });
+            showToast(fileName, "Compartilhamento concluído");
+            return;
+          }
+        } catch (shareErr) {
+          console.warn('Falha ao compartilhar arquivo, aplicando fallback:', shareErr);
         }
-      } else {
-        // Fallback: baixar o arquivo
-        downloadPdfBlob(pdfBlob, fileName);
-        message.info("PDF baixado para compartilhamento!");
       }
-      
-      showToast(fileName, "Compartilhamento concluído");
+
+      // Fallback definitivo: baixar o arquivo quando não houver suporte a compartilhar arquivos
+      downloadPdfBlob(pdfBlob, fileName);
+      message.info("Dispositivo não suporta compartilhar arquivos. PDF baixado.");
+      showToast(fileName, "PDF baixado para compartilhar");
     } catch (error) {
       console.error('Erro ao compartilhar PDF:', error);
       message.error("Falha ao compartilhar o PDF");

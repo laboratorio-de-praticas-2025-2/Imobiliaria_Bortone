@@ -66,7 +66,7 @@ export default function RentalByRegion({ data, label, className }) {
   }, [data]);
   return (
     <div
-      className={`group h-full !w-full flex items-center rounded-xl px-4 pt-4 !bg-[#eef0f9] !shadow-md`}
+      className={`group h-full !w-full flex items-center rounded-xl px-4 pt-4 !bg-[#eef0f9] shadow-none`}
     >
       <div className="grid grid-col content-evenly w-full h-full">
         <span className="text-lg font-bold lg:text-center text-[#273668] ">
