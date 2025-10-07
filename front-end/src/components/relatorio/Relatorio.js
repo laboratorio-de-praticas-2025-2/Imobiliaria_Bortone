@@ -8,7 +8,6 @@ import { MdOutlineBedroomParent, MdTerrain } from "react-icons/md";
 import { PiCoinsFill } from "react-icons/pi";
 import LineGraph from "./LineGraph";
 import PizzaGraph from "./PizzaGraph";
-import { useRef } from "react";
 
 export default function Relatorio({ data }) {
   let pageNumber = 1;
