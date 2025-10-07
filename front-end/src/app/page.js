@@ -36,7 +36,7 @@ export default function Home() {
     <>
       <Header />
       <Divider size="large" />
-      {isLoggedIn ? <PropriedadesSelecionadas /> : <PropriedadesPerto />}
+      <PropriedadesSelecionadas></PropriedadesSelecionadas>
       <Divider size="large" />
       <HomeFooter />
     </>
