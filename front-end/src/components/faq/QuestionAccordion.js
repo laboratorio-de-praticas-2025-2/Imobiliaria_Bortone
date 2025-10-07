@@ -8,9 +8,9 @@ export default function QuestionAccordion({faqData}) {
   const getItems = (panelStyle) => {
     return faqData.map((faq, index) => ({
       key: String(index + 1),
-      label: `${index + 1}. ${faq.question}`,
+      label: `${index + 1}. ${faq.pergunta}`,
       children: (
-        <div dangerouslySetInnerHTML={{ __html: faq.answer }}></div>
+        <div dangerouslySetInnerHTML={{ __html: faq.resposta }}></div>
       ),
       style: panelStyle,
       showArrow: false,

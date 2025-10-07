@@ -1,0 +1,62 @@
+site_name: Imobiliaria Bortone - Documentação
+
+markdown_extensions:
+  - pymdownx.details
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+
+
+theme:
+  name: material
+  language: pt
+  favicon: assets/favicon.ico
+  logo: assets/logo.svg
+  palette:
+    - scheme: default
+      primary: custom
+      accent: indigo
+  feature:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+extra_css:
+  - stylesheets/custom.css
+
+nav:
+  - Início: index.md
+  - Regras Gerais do Repositório: RegrasGerais.md
+  - Estrutura de Pastas: EstruturaDePastas.md
+  
+  - Frontend:
+    - Configurações do Next: frontend/NextConfig.md
+    - Middleware: frontend/middlwareIndexacao.md
+    - Manual de Tags: frontend/ManualdeTags.md
+    - Setup Netlify: frontend/NETLIFY_SETUP.md
+    - Contatos: frontend/Documentacao_Contatos.md
+
+  - Sistema de Imagens:
+    - "⭐ Migração Cloudinary": MIGRATION_SUMMARY.md
+    - "🏗️ Arquitetura Cloudinary": CloudinaryArchitecture.md
+    - API de Imagens: api/imagens.md
+    - Análise de Problemas: AnaliseArquiteturaImagens.md
+    - Problemas Vercel (Histórico): ProblemasImagensVercel.md
+
+  - APIs Core:
+    - Algoritmo de Recomendação: api/AlgoritmoDeRecomendacao.md
+    - Banco de Dados: api/BancoDeDados.md
+    - Dashboard: api/dashboard.md
+    - Agendamento de Visitação: api/Agendamento.md
+    - Funcionalidade do envio de e-mail: api/AgendamentoSMTP.md
+
+  - Sistema de Mapa:
+    - API de Mapa: api/MapaAPI.md
+    - Implementação da API de Mapa: api/MapaImplementacao.md
+    - Resumo da Integração: api/MapaResumo.md
+
+  - Sistema de Chat:
+    - Chat Suporte: api/ChatSuporte.md
+    - Como Rodar o WebSocket: WebSocket-Setup.md
+    - Sistema de Níveis de Usuário: UserLevels.md
+    - Relatório de Correção de Bugs: ChatSystemBugFixes.md

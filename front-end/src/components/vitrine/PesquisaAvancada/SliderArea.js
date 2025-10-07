@@ -1,17 +1,25 @@
 import { Flex, Slider, ConfigProvider } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InputNumerico from "./InputNumerico";
 
-export default function SliderArea() {
-  const [minValue, setMinValue] = useState(100);
-  const [maxValue, setMaxValue] = useState(10000);
+export default function SliderArea({ value = [200, 20000], onChange}) {
+  const [minValue, setMinValue] = useState(value[0]);
+  const [maxValue, setMaxValue] = useState(value[1]);
 
-  const onChange = (value) => {
-    if (Array.isArray(value)) {
-      setMinValue(value[0]);
-      setMaxValue(value[1]);
+  useEffect(() => {
+    setMinValue(value[0]);
+    setMaxValue(value[1]);
+  }, [value]);
+
+  
+  const handleChange = (val) => {
+    if (Array.isArray(val)) {
+      setMinValue(val[0]);
+      setMaxValue(val[1]);
+      onChange?.(val); // 🔥 Notify parent
     }
   };
+
 
   return (
     <div className="w-full slider-preco-container">
@@ -44,10 +52,12 @@ export default function SliderArea() {
             max={40000}
             step={10}
             tooltip={{ open: false }}
-            onChange={onChange}
+            onChange={handleChange}
           />
         </ConfigProvider>
         <Flex gap={24}>
+
+          
           <InputNumerico
             label="De:"
             value={minValue}

@@ -2,8 +2,17 @@
 import { Button, Flex } from "antd";
 import SplashScreen from "@/components/SplashScreen";
 import { useEffect, useState } from "react";
+import { useSEO } from "@/hooks/useSEO";
+import { getSEOConfig } from "@/config/seo";
 
 export default function BoasVindasPage() {
+  // SEO para página de boas-vindas
+  useSEO({
+    title: "Bem-vindo",
+    description: "Bem-vindo à Imobiliária Bortone. Crie sua conta ou faça login para acessar nossos serviços exclusivos.",
+    keywords: "bem-vindo, imobiliária, cadastro, login, conta",
+    url: "https://imobiliaria-bortone.vercel.app/bem-vindo"
+  });
   const [showSplash, setShowSplash] = useState(true);
   const [animateOut, setAnimateOut] = useState(false);
 

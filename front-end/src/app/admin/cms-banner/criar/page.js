@@ -8,14 +8,59 @@ import { UploadOutlined } from "@ant-design/icons";
 import FormButton from "@/components/cms/form/fields/Button";
 import Image from "next/image";
 import Sidebar from "@/components/cms/Sidebar";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { uploadBannerImage } from "@/services/netlifyUploadService";
 
 export default function CriarBannerPage() {
   const [fileList, setFileList] = useState([]);
+  const [isClient, setIsClient] = useState(false);
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  // Garante que certas partes só rodem no cliente
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const onFinish = async (values) => {
+    try {
+      let url_imagem = null;
+
+      // Upload da imagem via Netlify se houver arquivo
+      if (fileList.length > 0) {
+        url_imagem = await uploadBannerImage(
+          fileList[0].originFileObj,
+          values.descricao,
+          "1" // usuario_id
+        );
+      }
+
+      // Enviar dados para o backend sem arquivo
+      const bannerData = {
+        descricao: values.descricao,
+        usuario_id: 1,
+        ativo: true,
+        url_imagem
+      };
+
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+      const res = await fetch(`${apiUrl}/banner`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bannerData),
+      });
+
+      if (res.ok) {
+        alert("Banner criado com sucesso!");
+        setFileList([]);
+      } else {
+        const data = await res.json();
+        alert("Erro ao criar banner: " + (data.error || "Desconhecido"));
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao enviar o formulário: " + error.message);
+    }
   };
 
   const onFinishFailed = (errorInfo) => {

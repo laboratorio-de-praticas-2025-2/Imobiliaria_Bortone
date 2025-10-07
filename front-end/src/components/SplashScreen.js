@@ -18,6 +18,7 @@ export default function SplashScreen({ animateOut }) {
                 alt="Logo"
                 width={150}
                 height={139}
+                priority
             />
         </div>
     );

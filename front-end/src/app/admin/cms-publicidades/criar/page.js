@@ -8,17 +8,75 @@ import UploadField from "@/components/cms/form/fields/UploadField";
 import Sidebar from "@/components/cms/Sidebar";
 import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { uploadPublicidadeImage } from "@/services/netlifyUploadService";
 
 export default function CriarPublicidadePage() {
   const [fileList, setFileList] = useState([]);
+  const router = useRouter();
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const onFinish = async (values) => {
+    if (values.titulo && values.conteudo) {
+      try {
+        let url_imagem = null;
+
+        // Upload da imagem via Netlify se houver arquivo
+        if (fileList.length > 0 && fileList[0].originFileObj) {
+          url_imagem = await uploadPublicidadeImage(
+            fileList[0].originFileObj,
+            values.titulo,
+            values.conteudo,
+            "1", // usuario_id
+            true // ativo
+          );
+        }
+
+        // Enviar dados para o backend sem arquivo
+        const publicidadeData = {
+          titulo: values.titulo,
+          conteudo: values.conteudo,
+          usuario_id: 1,
+          ativo: true,
+          url_imagem
+        };
+
+        const apiBase = process.env.NEXT_PUBLIC_API_URL;
+        console.log('API Base URL (NEXT_PUBLIC_API_URL):', apiBase);
+        const response = await axios.post(`${apiBase}/publicidade`, publicidadeData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        if (response.status === 201) {
+          alert("Publicidade cadastrada com sucesso!");
+          router.push("/admin/cms-publicidades");
+        }
+      } catch (error) {
+        console.log("Erro ao cadastrar a publicidade", error);
+        if (error.response) {
+          console.log('Status:', error.response.status);
+            console.log('Data:', error.response.data);
+            alert(`Erro ao cadastrar (status ${error.response.status}): ${error.response.data?.error || 'Ver console'}`);
+        } else if (error.request) {
+            console.log('Nenhuma resposta recebida. Request:', error.request);
+            alert('Erro: servidor não respondeu. Ver console.');
+        } else {
+            console.log('Erro na configuração da requisição:', error.message);
+            alert('Erro ao preparar requisição. Ver console.');
+        }
+      }
+    } else {
+      alert("Preencha todos os campos!");
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    // Handle form validation errors if needed
   };
+
+
 
   return (
     <>

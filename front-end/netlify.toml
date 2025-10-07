@@ -1,0 +1,31 @@
+# Configuração simplificada do Netlify para Next.js
+[build]
+  command = "npm run build"
+  publish = ".next"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# Plugin do Next.js para Netlify (gerencia automaticamente publish dir)
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Headers para otimização
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    Access-Control-Allow-Origin = "*"
+
+# Redirecionamentos essenciais
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200

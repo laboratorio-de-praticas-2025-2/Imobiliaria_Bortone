@@ -4,7 +4,7 @@ import { useState } from "react";
 import MenuCasa from "./MenuCasa";
 import MenuTerreno from "./MenuTerreno";
 
-export default function SidebarDesk() {
+export default function SidebarDesk({setImoveisMapa, setImoveisCarrossel}) {
   const [propertyType, setPropertyType] = useState("Casa");
 
   return (
@@ -22,10 +22,10 @@ export default function SidebarDesk() {
       "
     >
       {propertyType === "Casa" && (
-        <MenuCasa activeType={propertyType} setActiveType={setPropertyType} />
+        <MenuCasa activeType={propertyType} setActiveType={setPropertyType} setImoveisMapa={setImoveisMapa} setImoveisCarrossel={setImoveisCarrossel} />
       )}
       {propertyType === "Terreno" && (
-        <MenuTerreno activeType={propertyType} setActiveType={setPropertyType} />
+        <MenuTerreno activeType={propertyType} setActiveType={setPropertyType} setImoveisMapa={setImoveisMapa} setImoveisCarrossel={setImoveisCarrossel} />
       )}
     </div>
   );
