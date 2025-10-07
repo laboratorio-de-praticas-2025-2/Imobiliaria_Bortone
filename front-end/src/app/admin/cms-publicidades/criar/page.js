@@ -10,50 +10,62 @@ import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { uploadPublicidadeImage } from "@/services/netlifyUploadService";
 
 export default function CriarPublicidadePage() {
   const [fileList, setFileList] = useState([]);
   const router = useRouter();
 
-  console.log('fileList atual:', fileList);
-
   const onFinish = async (values) => {
     if (values.titulo && values.conteudo) {
       try {
-        console.log('=== FRONT-END DEBUG ===');
-        console.log('values:', values);
-        console.log('fileList:', fileList);
-        console.log('fileList.length:', fileList.length);
-        if (fileList.length > 0) {
-          console.log('fileList[0]:', fileList[0]);
-          console.log('fileList[0].originFileObj:', fileList[0].originFileObj);
-        }
-        console.log('========================');
+        let url_imagem = null;
 
-        const formData = new FormData();
-        formData.append('titulo', values.titulo);
-        formData.append('conteudo', values.conteudo);
-        formData.append('usuario_id', '1'); 
-        formData.append('ativo', 'true');
-        
+        // Upload da imagem via Netlify se houver arquivo
         if (fileList.length > 0 && fileList[0].originFileObj) {
-          formData.append('url_imagem', fileList[0].originFileObj);
-          console.log('Arquivo adicionado ao FormData:', fileList[0].originFileObj);
-        } else {
-          console.log('Nenhum arquivo selecionado');
+          url_imagem = await uploadPublicidadeImage(
+            fileList[0].originFileObj,
+            values.titulo,
+            values.conteudo,
+            "1", // usuario_id
+            true // ativo
+          );
         }
 
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/publicidade`, formData, {
+        // Enviar dados para o backend sem arquivo
+        const publicidadeData = {
+          titulo: values.titulo,
+          conteudo: values.conteudo,
+          usuario_id: 1,
+          ativo: true,
+          url_imagem
+        };
+
+        const apiBase = process.env.NEXT_PUBLIC_API_URL;
+        console.log('API Base URL (NEXT_PUBLIC_API_URL):', apiBase);
+        const response = await axios.post(`${apiBase}/publicidade`, publicidadeData, {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
           },
         });
+        
         if (response.status === 201) {
           alert("Publicidade cadastrada com sucesso!");
           router.push("/admin/cms-publicidades");
         }
-      } catch {
-        console.log("Erro ao cadastrar a publicidade");
+      } catch (error) {
+        console.log("Erro ao cadastrar a publicidade", error);
+        if (error.response) {
+          console.log('Status:', error.response.status);
+            console.log('Data:', error.response.data);
+            alert(`Erro ao cadastrar (status ${error.response.status}): ${error.response.data?.error || 'Ver console'}`);
+        } else if (error.request) {
+            console.log('Nenhuma resposta recebida. Request:', error.request);
+            alert('Erro: servidor não respondeu. Ver console.');
+        } else {
+            console.log('Erro na configuração da requisição:', error.message);
+            alert('Erro ao preparar requisição. Ver console.');
+        }
       }
     } else {
       alert("Preencha todos os campos!");
@@ -61,7 +73,7 @@ export default function CriarPublicidadePage() {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    // Handle form validation errors if needed
   };
 
 

@@ -11,8 +11,6 @@ import "antd/dist/reset.css";
 import "@/styles/cms.css";
 import "leaflet/dist/leaflet.css";
 import Script from "next/script";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import ChatWrapper from "@/components/chat/chatWrapper";
 
 export default function RootLayout({ children }) {
@@ -42,7 +40,7 @@ export default function RootLayout({ children }) {
         <meta property="og:description" content="A sua imobiliária de confiança" />
         <meta property="og:site_name" content="Imobiliária Bortone" />
         <meta property="og:locale" content="pt_BR" />
-        <meta property="og:url" content="https://imobiliaria-bortone.vercel.app" />
+        <meta property="og:url" content="https://imobiliaria-bortone.netlify.app" />
         
         {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
@@ -50,6 +48,7 @@ export default function RootLayout({ children }) {
         <meta name="twitter:description" content="A sua imobiliária de confiança" />
         
         {/* Apple Web App Meta Tags */}
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Imobiliária Bortone" />
@@ -63,28 +62,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://maps.googleapis.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://maps.gstatic.com" crossOrigin="anonymous" />
 
-        {/* Preload de fontes críticas (local) */}
-        <link
-          rel="preload"
-          as="font"
-          type="font/otf"
-          href="/fonts/GlacialIndifference-Regular.otf"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          as="font"
-          type="font/otf"
-          href="/fonts/GlacialIndifference-Bold.otf"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          as="font"
-          type="font/otf"
-          href="/fonts/LEMONMILK-Medium.otf"
-          crossOrigin="anonymous"
-        />
+        {/* Font preloading removed to avoid unused resource warnings */}
 
         {/* Structured Data (JSON-LD) básico para organização */}
         <Script id="ld-json-org" type="application/ld+json" strategy="afterInteractive">{`
@@ -92,16 +70,13 @@ export default function RootLayout({ children }) {
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "Imobiliária Bortone",
-            "url": "https://imobiliaria-bortone.vercel.app",
-            "logo": "https://imobiliaria-bortone.vercel.app/favicon.ico"
+            "url": "https://imobiliaria-bortone.netlify.app",
+            "logo": "https://imobiliaria-bortone.netlify.app/favicon.ico"
           }
         `}</Script>
       </head>
       <body className="antialiased">
         {children}
-        {/* Analytics Vercel */}
-        <Analytics />
-        <SpeedInsights />
         <ChatWrapper />
       </body>
     </html>

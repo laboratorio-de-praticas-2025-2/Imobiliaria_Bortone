@@ -8,6 +8,7 @@ import { Divider } from "antd";
 import { useEffect, useState } from "react";
 import { useSEO } from "@/hooks/useSEO";
 import { getSEOConfig } from "@/config/seo";
+import { apiClient } from "@/utils/apiClient";
 import "dotenv/config"
 
 export default function FaqPage() {
@@ -18,12 +19,8 @@ export default function FaqPage() {
 
 const fetchFaq = async () => {
    try{
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/faq`);
-    if(!response.ok){
-      throw new Error(`Erro na requisição: ${response.status}`);
-    }
-    const data = await response.json();
-    setFaqData(data);
+    const response = await apiClient.get('/faq');
+    setFaqData(response.data);
    }catch(error){
     console.log("Erro ao buscar FAQ:", error);
     setFaqData([])

@@ -13,33 +13,46 @@ export default function PublicidadeImage({
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Função para determinar a URL correta da imagem
-  const getImageSrc = () => {
-    // Se houve erro, usar imagem padrão
-    if (error) {
-      return "/images/placeholder.jpg";
+  // Se não há URL de imagem, não renderizar o componente
+  if (!url_imagem) {
+    console.warn('PublicidadeImage: url_imagem não fornecida');
+    return null;
+  }
+
+    // Função para determinar a URL correta da imagem
+  const getValidImageSrc = () => {
+    // Se houve erro de carregamento, mostrar imagem 404
+    if (error) return '/404.png';
+    
+    const placeholder = '/images/casa.png';
+    
+    if (!url_imagem || typeof url_imagem !== 'string' || !url_imagem.trim()) {
+      return placeholder;
     }
 
-    // Se não há URL válida, usar imagem padrão
-    if (!url_imagem || 
-        url_imagem === null || 
-        url_imagem === "" || 
-        url_imagem === "null" ||
-        typeof url_imagem !== 'string') {
-      return "/images/placeholder.jpg";
+    const src = url_imagem.trim();
+    
+    // Se a URL contém "publicidade" e é do Cloudinary, usar proxy para evitar ad blockers
+    if (src.includes('publicidade') && src.includes('res.cloudinary.com')) {
+      return `/api/proxy-image?url=${encodeURIComponent(src)}`;
     }
     
-    // Se já começa com /, usar diretamente
-    if (url_imagem.startsWith('/')) {
-      return url_imagem;
+    // Se já é uma URL completa do Cloudinary, usar diretamente
+    if (src.startsWith('https://res.cloudinary.com/')) {
+      return src;
     }
     
-    // Se não começa com /, adicionar o prefixo
-    return `/images/publicidadeImages/${url_imagem}`;
+    // Para qualquer outra URL HTTPS, usar diretamente
+    if (src.startsWith('https://')) {
+      return src;
+    }
+    
+    // Se chegou até aqui, algo está errado
+    return placeholder;
   };
 
   const handleError = () => {
-    console.log('Erro ao carregar imagem da publicidade:', url_imagem);
+    console.warn(`Erro ao carregar imagem: ${url_imagem}`);
     setError(true);
     setLoading(false);
   };
@@ -48,10 +61,13 @@ export default function PublicidadeImage({
     setLoading(false);
   };
 
+  const imageSrc = getValidImageSrc();
+  const isPlaceholder = imageSrc === '/images/casa.png' || imageSrc === '/404.png';
+
   return (
     <div className="relative">
-      <Image
-        src={getImageSrc()}
+            <Image
+        src={getValidImageSrc()}
         alt={alt}
         width={width}
         height={height}
@@ -60,6 +76,12 @@ export default function PublicidadeImage({
         onLoad={handleLoad}
         placeholder="blur"
         blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+8"
+        priority={isPlaceholder} // Priority para placeholders
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        style={{ 
+          width: isPlaceholder ? 'auto' : undefined,
+          height: isPlaceholder ? 'auto' : undefined
+        }}
         {...props}
       />
       

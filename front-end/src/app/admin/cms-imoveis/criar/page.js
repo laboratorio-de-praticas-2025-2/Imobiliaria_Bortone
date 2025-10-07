@@ -12,6 +12,9 @@ import { Form as FormAntd } from "antd";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { LuHousePlus } from "react-icons/lu";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { uploadImovelImage } from "@/services/netlifyUploadService";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
@@ -19,9 +22,84 @@ const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
 
 export default function CriarImovelPage() {
   const [form] = FormAntd.useForm();
+  const [fileList, setFileList] = useState([]);
+  const router = useRouter();
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const onFinish = async (values) => {
+    try {
+      const imovelData = {
+        usuario_id: 1,
+        tipo: tipoSelecionado,
+        status: statusSelecionado.toLowerCase(),
+        cidade: citiesSelecionado,
+        estado: selectedState,
+        endereco: values.endereco,
+        area: values.area,
+        preco: values.preco,
+        descricao: values.descricao,
+        possui_muro: values.possui_muro === "sim" ? true : false,
+        latitude: values.latitude,
+        longitude: values.longitude,
+      };
+
+      console.log(tipoSelecionado)
+
+      let specificData = {};
+
+      if (tipoSelecionado === "Casa") {
+        specificData = {
+          quartos: selectedBedrooms === "Quantidade" ? 0 : parseInt(selectedBedrooms),
+          banheiros: selectedBathrooms === "Quantidade" ? 0 : parseInt(selectedBathrooms),
+          vagas: selectedParking === "Quantidade" ? 0 : parseInt(selectedParking),
+          possui_piscina: values.possui_piscina === "sim" ? true : false,
+          possui_jardim: values.possui_jardim === "sim" ? true : false,
+        };
+      }
+
+      const response = await apiClient.post('/imoveis', {
+        ...imovelData,
+        ...(tipoSelecionado === "Casa" ? specificData : {}),
+        ...(tipoSelecionado === "Terreno" ? specificData : {}),
+      });
+      
+
+      if (response.status === 201) {
+        const imovelId = response.data.id;
+
+        console.log("Arquivos selecionados:", fileList);
+
+        for (const file of fileList) {
+          try {
+            // Upload via Netlify
+            const imageUrl = await uploadImovelImage(
+              file.originFileObj,
+              imovelId,
+              values.descricao || "Imagem do imóvel"
+            );
+
+            // Salvar referência da imagem no backend
+            await axios.post(
+              `${process.env.NEXT_PUBLIC_API_URL}/imagemimovel`,
+              {
+                imovel_id: imovelId,
+                url_imagem: imageUrl,
+                descricao: values.descricao || "Imagem do imóvel"
+              },
+              { headers: { "Content-Type": "application/json" } }
+            );
+          } catch (uploadError) {
+            console.error("Erro no upload da imagem:", uploadError);
+            throw uploadError; // Re-throw para ser capturado no catch principal
+          }
+        }
+        
+        alert("Imóvel cadastrado com sucesso!");
+        router.push("/admin/cms-imoveis");
+      }
+    } catch (error) {
+      console.error("Erro ao cadastrar imóvel:", error);
+      alert("Erro ao cadastrar imóvel. Tente novamente.");
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -30,7 +108,7 @@ export default function CriarImovelPage() {
   // adicione próximo aos useState (no topo do componente)
   const handleTipoSelect = (option) => {
     setTipoSelecionado(option);
-    if (option && option.toLowerCase() === "terreno") {
+    if (option && option === "Terreno") {
       setSelectedBedrooms("Quantidade");
       setSelectedBathrooms("Quantidade");
       setSelectedParking("Quantidade");
@@ -113,6 +191,9 @@ export default function CriarImovelPage() {
   const bedrooms = ["1", "2", "3", "4", "5+"];
   const bathrooms = ["1", "2", "3", "4", "5+"];
 
+  // Verificação de segurança para evitar warning do useForm
+  if (!form) return <div>Inicializando formulário...</div>;
+
   return (
     <>
       <Sidebar />
@@ -169,8 +250,14 @@ export default function CriarImovelPage() {
                     />
                   </FormAntd.Item>
                 </div>
-                <UploadImovel className={"!w-full"} />
-                <TextAreaField
+                <UploadImovel
+                  className={"!w-full"}
+                  fileList={fileList}
+                  setFileList={setFileList}
+                  multiple = {true}
+                />
+
+                  <TextAreaField
                   name="descricao"
                   label="Descrição"
                   placeholder="Corpo da descrição"
@@ -239,7 +326,7 @@ export default function CriarImovelPage() {
                   </FormAntd.Item>
 
                   {tipoSelecionado &&
-                    tipoSelecionado.toLowerCase() !== "terreno" && (
+                    tipoSelecionado !== "Terreno" && (
                       <FormAntd.Item
                         label={"Possui Piscina?"}
                         name="possui_piscina"
@@ -262,7 +349,7 @@ export default function CriarImovelPage() {
                     )}
                 </div>
                 {tipoSelecionado &&
-                  tipoSelecionado.toLowerCase() !== "terreno" && (
+                  tipoSelecionado !== "Terreno" && (
                     <>
                       <div className=" flex flex-row gap-2 !w-full">
                         <FormAntd.Item
@@ -379,7 +466,7 @@ export default function CriarImovelPage() {
                 </div>
                 {/* MOVA latitude/longitude para cá quando for Terreno */}
                 {tipoSelecionado &&
-                  tipoSelecionado.toLowerCase() === "terreno" && (
+                  tipoSelecionado === "Terreno" && (
                     <>
                       <div className=" flex flex-row gap-2 !w-full">
                         <TextField
@@ -412,7 +499,7 @@ export default function CriarImovelPage() {
                   className="!w-full"
                 />
                 {tipoSelecionado &&
-                  tipoSelecionado.toLowerCase() != "terreno" && (
+                  tipoSelecionado != "Terreno" && (
                     <div className=" flex flex-row gap-2 !w-full">
                       {/* inputs somente leitura; serão preenchidos pelo mapa */}
 
@@ -436,7 +523,7 @@ export default function CriarImovelPage() {
                   )}
                 <div
                   className={`map-cms ${
-                    tipoSelecionado?.toLowerCase() === "terreno"
+                    tipoSelecionado === "Terreno"
                       ? "h-[38vh]"
                       : "h-[30vh]"
                   }`}

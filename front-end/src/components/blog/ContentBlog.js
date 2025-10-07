@@ -1,7 +1,7 @@
 "use client";
 import Cards from "./Cards";
 
-export default function ContentBlog() {
+export default function ContentBlog({ searchTerm }) {
   return (
     <div className="px-4 md:px-16 py-8">
       {/* Títulos principais */}
@@ -14,7 +14,7 @@ export default function ContentBlog() {
         </span>
       </div>
       {/* Cards */}
-      <Cards />
+      <Cards searchTerm={searchTerm} />
     </div>
   );
 }

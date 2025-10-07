@@ -21,17 +21,19 @@ export default function ImoveisPage() {
 function ImoveisPageContent() {
   const [imoveis, setImoveis] = useState([]);
   const { filterData } = useFilterData();
-
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  
   const handleGetImoveis = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const response = await fetch(`${apiUrl}/search/avancada`, {
-        method: "POST",
+      const queryParams = new URLSearchParams(filterData).toString();
+      const url = `${apiUrl}/imoveis${queryParams ? `?${queryParams}` : ""}`; 
+      const response = await fetch(url, {
+        method: "GET",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(filterData),
       });
       const data = await response.json();
-      setImoveis(Array.isArray(data.propriedades) ? data.propriedades : []);
+      console.log(data)
+      setImoveis(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Erro ao carregar imóveis:", error);
     }
@@ -43,3 +45,5 @@ function ImoveisPageContent() {
 
   return <InnerImoveisPage imoveis={imoveis} />;
 }
+
+
