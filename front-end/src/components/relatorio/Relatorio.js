@@ -11,6 +11,12 @@ import PizzaGraph from "./PizzaGraph";
 
 export default function Relatorio({ data }) {
   let pageNumber = 1;
+  
+  // Debug: verificar dados recebidos
+  console.log('Dados recebidos no Relatorio:', data);
+  
+  // Inclui os dados como atributo para captura no PDF
+  const dataAttribute = JSON.stringify(data);
 
   const currDate = new Date().toLocaleDateString("pt-BR", {
     timeZone: "America/Sao_Paulo",
@@ -19,12 +25,12 @@ export default function Relatorio({ data }) {
     year: "numeric",
   });
 
-  const dataLocacaoPorTipo = data?.alugueis?.alugueisPorTipo
+  const dataLocacaoPorTipo = data?.alugueis?.locacoesPorTipo
     ? {
-        labels: data.alugueis.alugueisPorTipo.map((v) => v.tipoImovel),
+        labels: Object.keys(data.alugueis.locacoesPorTipo),
         datasets: [
           {
-            data: data.alugueis.alugueisPorTipo.map((v) => v.quantidade),
+            data: Object.values(data.alugueis.locacoesPorTipo),
             backgroundColor: ["#243B7B", "#F39C12", "#E74C3C"],
             borderWidth: 1,
             cutout: "0%",
@@ -34,10 +40,10 @@ export default function Relatorio({ data }) {
 
       const dataVendasPorTipo = data?.vendas?.vendasPorTipo
     ? {
-        labels: data.vendas.vendasPorTipo.map((v) => v.tipoImovel),
+        labels: Object.keys(data.vendas.vendasPorTipo),
         datasets: [
           {
-            data: data.vendas.vendasPorTipo.map((v) => v.quantidade),
+            data: Object.values(data.vendas.vendasPorTipo),
             backgroundColor: ["#243B7B", "#F39C12", "#E74C3C"],
             borderWidth: 1,
             cutout: "0%",
@@ -45,16 +51,16 @@ export default function Relatorio({ data }) {
         ],
       } : { labels: [], datasets: [] };
 
-  const distribuicaoImoveisPorPreco =   data?.imoveis?.imoveisPorPreco
+  const distribuicaoImoveisPorPreco =   data?.imoveis?.porFaixaDePreco
   ? {
     labels: [
-      "até R$300.00",
+      "até R$300.000",
       "entre R$300.000 e R$600.000",
       "maior que R$600.000",
     ],
     datasets: [
       {
-        data: data.imoveis?.imoveisPorPreco.map((v) => v.quantidade),
+        data: Object.values(data.imoveis.porFaixaDePreco),
         backgroundColor: ["#118C4F", "#F1EB9C", "#FF7276"],
         borderWidth: 1,
         cutout: "0%",
@@ -68,7 +74,7 @@ export default function Relatorio({ data }) {
   }
 
   return (
-    <>
+    <div data-report-data={dataAttribute}>
       {/* Página Imóveis */}
       {data?.imoveis && (
         <div className="page">
@@ -188,7 +194,7 @@ export default function Relatorio({ data }) {
           <div className="chart-container">
             <LineGraph
               label="Evolução das locações nos últimos 12 meses"
-              graphData={data.alugueis?.alugueisPorMes}
+              graphData={data.alugueis?.locacoesPorMes}
             />
           </div>
 
@@ -237,7 +243,7 @@ export default function Relatorio({ data }) {
           <div className="chart-container">
             <LineGraph
               label="Evolução das vendas nos últimos 12 meses"
-              graphData={data.vendas?.vendasPorTipoMes}
+              graphData={data.vendas?.vendasPorMes}
             />
           </div>
 
@@ -298,6 +304,6 @@ export default function Relatorio({ data }) {
           <footer>{pageNumber++}</footer>
         </div>
       )}
-    </>
+    </div>
   );
 }
