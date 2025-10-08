@@ -11,30 +11,69 @@ export default function SettingsButtons({
   const { getFiltersForApi, removeFilters } = useFilters();
 
   const handleApply = async () => {
-    // adicionar a requisição para a API aqui
-    const filters = getFiltersForApi(type);
-    console.log("Filtros aplicados:", filters);
     try {
+      // Obter filtros do contexto
+      const filters = getFiltersForApi(type);
+      console.log("Filtros aplicados:", filters);
+      
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      
+      if (!apiUrl) {
+        console.error("NEXT_PUBLIC_API_URL não configurada");
+        return;
+      }
       
       // Converte os filtros em query parameters
       const queryParams = new URLSearchParams();
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== null && value !== undefined && value !== '') {
-          // Trata arrays (como preco e area) convertendo para formato da API
+      
+      // Processar cada filtro adequadamente
+      if (filters && typeof filters === 'object') {
+        Object.entries(filters).forEach(([key, value]) => {
+          console.log(`Processando filtro ${key}:`, value);
+          
+          // Tratamento especial para arrays (preco, area, localizacao)
           if (Array.isArray(value)) {
             if (key === 'preco' && value.length === 2) {
-              queryParams.append('precoMin', value[0]);
-              queryParams.append('precoMax', value[1]);
+              // Para preço, sempre envia os valores se forem números válidos
+              if (typeof value[0] === 'number' && typeof value[1] === 'number') {
+                queryParams.append('precoMin', value[0]);
+                queryParams.append('precoMax', value[1]);
+                console.log(`Filtro de preço aplicado: ${value[0]} - ${value[1]}`);
+              }
             } else if (key === 'area' && value.length === 2) {
-              queryParams.append('areaMin', value[0]);
-              queryParams.append('areaMax', value[1]);
+              if (typeof value[0] === 'number' && typeof value[1] === 'number') {
+                if (value[0] >= 0) queryParams.append('areaMin', value[0]);
+                if (value[1] > 0) queryParams.append('areaMax', value[1]);
+                console.log(`Filtro de área aplicado: ${value[0]} - ${value[1]}`);
+              }
+            } else if (key === 'localizacao' && value.length > 0) {
+              // Para localização (array de cidades), envia todas as cidades selecionadas
+              queryParams.append('cidades', value.join(','));
+              console.log(`Filtro de cidades aplicado: ${value.join(', ')}`);
             }
-          } else {
-            queryParams.append(key, value);
+          } 
+          // Tratamento para valores não-nulos, não-undefined e não-vazios
+          else if (value !== null && value !== undefined && value !== '') {
+            if (typeof value === 'boolean') {
+              // Para valores booleanos, só adiciona se for true
+              if (value) {
+                // Mapear nomes de campos do front-end para a API
+                const apiFieldMap = {
+                  'possui_piscina': 'possuiPiscina',
+                  'possui_jardim': 'possuiJardim'
+                };
+                const apiKey = apiFieldMap[key] || key;
+                queryParams.append(apiKey, 'true');
+              }
+            } else {
+              // Para outros valores, adiciona diretamente
+              queryParams.append(key, String(value));
+            }
           }
-        }
-      });
+        });
+      }
+      
+      console.log("Query params:", queryParams.toString());
       
       const response = await fetch(`${apiUrl}/mapa/busca?${queryParams.toString()}`, {
         method: "GET",
@@ -43,15 +82,29 @@ export default function SettingsButtons({
         },
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
       console.log("Dados filtrados:", data);
+      
       if (data.success && data.data) {
         // Atualiza a lista de imóveis com os dados retornados do backend
+        console.log(`Atualizando imóveis com ${data.data.length} resultados:`, data.data.map(i => ({ id: i.id, tipo: i.tipo, cidade: i.cidade })));
+        console.log('Cidades encontradas nos resultados:', [...new Set(data.data.map(i => i.cidade))]);
         setImoveisMapa(data.data);
         setImoveisCarrossel(data.data);
+        console.log(`${data.data.length} imóveis encontrados com os filtros aplicados`);
+      } else {
+        console.warn("Nenhum imóvel encontrado com os filtros aplicados");
+        // Limpa a lista se não houver resultados
+        setImoveisMapa([]);
+        setImoveisCarrossel([]);
       }
     } catch (error) {
       console.error("Erro ao aplicar filtros:", error);
+      // Em caso de erro, não limpa os imóveis para manter a UX
     }
   };
 
@@ -59,7 +112,35 @@ export default function SettingsButtons({
     <div className="flex gap-3 pt-7 pb-6">
       {/* Botão Desfazer */}
       <button
-        onClick={removeFilters}
+        onClick={async () => {
+          removeFilters();
+          // Recarregar todos os imóveis quando desfizer filtros
+          try {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+            if (!apiUrl) {
+              console.error("NEXT_PUBLIC_API_URL não configurada");
+              return;
+            }
+            
+            const response = await fetch(`${apiUrl}/mapa/busca`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              if (data.success && data.data) {
+                setImoveisMapa(data.data);
+                setImoveisCarrossel(data.data);
+                console.log("Filtros removidos, carregados todos os imóveis");
+              }
+            }
+          } catch (error) {
+            console.error("Erro ao desfazer filtros:", error);
+          }
+        }}
         className=" w-full rounded-lg border-3 border-[#374A8C54] font-semibold bg-transparent hover:bg-[#1b2235] transition"
         style={{ color: "#767A8B " }}
       >

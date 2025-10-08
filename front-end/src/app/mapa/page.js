@@ -37,6 +37,13 @@ export default function Mapa() {
   const carregarTodosImoveis = async () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      
+      if (!apiUrl) {
+        console.error("NEXT_PUBLIC_API_URL não configurada");
+        return;
+      }
+      
+      console.log("Carregando imóveis iniciais...");
       const response = await fetch(`${apiUrl}/mapa/busca`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -48,9 +55,12 @@ export default function Mapa() {
         if (data.success && data.data) {
           setImoveisCarrossel(data.data);
           setImoveisMapa(data.data);
+          console.log(`${data.data.length} imóveis carregados inicialmente`);
+        } else {
+          console.warn("API retornou sucesso mas sem dados");
         }
       } else {
-        console.error("Erro ao carregar imóveis:", response.statusText);
+        console.error("Erro HTTP ao carregar imóveis:", response.status, response.statusText);
       }
     } catch (error) {
       console.error("Erro na requisição inicial:", error);
@@ -126,11 +136,11 @@ export default function Mapa() {
         />
       </div>
       <div className="absolute z-900 sm:bottom-0 sm:right-0 flex justify-center w-full md:justify-end h-fit">
-        <CarrosselMapa imoveis={imoveisCarrossel} />
+        <CarrosselMapa imoveis={imoveisCarrossel || []} />
       </div>
       <div className="map-container">
         <MapView
-          imoveis={imoveisMapa}
+          imoveis={imoveisMapa || []}
           hoverImovel={hoverImovel}
           setHoverImovel={setHoverImovel}
         />
