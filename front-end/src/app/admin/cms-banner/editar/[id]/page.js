@@ -1,19 +1,21 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { DatePicker as AntdDatePicker, Form as FormAntd } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
-import ConfirmModal from "@/components/cms/ConfirmModal";
-import Form from "@/components/cms/form";
-import FormButton from "@/components/cms/form/fields/Button";
+import Header from "@/components/cms/Header";
+import Form from "@/components/cms/form/index";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
-import UploadField from "@/components/cms/form/fields/UploadField";
-import Sidebar from "@/components/cms/Sidebar";
-import { uploadBannerImage } from "@/services/netlifyUploadService";
-import { Form as FormAntd } from "antd";
+import FormButton from "@/components/cms/form/fields/Button";
+
+import { CloudinaryImage } from "@/components/ui/CloudinaryImage";
+import UploadImageField from "@/components/cms/form/fields/UploadImageField";
+import { uploadBannerImage } from "@/services/imageUpload";
 import { apiClient } from "@/utils/apiClient";
 import SplashScreen from "@/components/SplashScreen";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
 
 export default function EditarBannerPage() {
   const { id } = useParams();
@@ -23,6 +25,7 @@ export default function EditarBannerPage() {
   const [formValues, setFormValues] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { submitForm, isLoading } = useFormSubmit();
 
   useEffect(() => {
     if (!id) return;
@@ -64,40 +67,41 @@ export default function EditarBannerPage() {
   };
 
   const onConfirm = async () => {
-    try {
-      let url_imagem = banner?.url_imagem; // Manter imagem atual
+    await submitForm(
+      () => form.validateFields(),
+      ['descricao'],
+      async (values) => {
+        let url_imagem = banner.url_imagem;
 
-      // Upload da nova imagem via Cloudinary se houver arquivo
-      if (fileList.length > 0 && fileList[0].originFileObj) {
-        url_imagem = await uploadBannerImage(
-          fileList[0].originFileObj,
-          formValues.descricao,
-          "1" // usuario_id
-        );
-        console.log('Nova imagem uploaded:', url_imagem);
+        // Upload da nova imagem via Cloudinary se houver arquivo
+        if (fileList.length > 0 && fileList[0].originFileObj) {
+          url_imagem = await uploadBannerImage(
+            fileList[0].originFileObj,
+            values.descricao,
+            "1" // usuario_id
+          );
+          console.log('Nova imagem uploaded:', url_imagem);
+        }
+
+        // Enviar dados para o backend sem arquivo
+        const bannerData = {
+          descricao: values.descricao,
+          usuario_id: 1,
+          ativo: true,
+          url_imagem
+        };
+
+        const res = await apiClient.put(`/banner/${id}`, bannerData);
+
+        if (res.status === 200) {
+          alert("Banner atualizado com sucesso!");
+          setIsConfirmModalVisible(false);
+          window.location.href = "/admin/cms-banner";
+        } else {
+          alert("Erro ao atualizar banner: " + (res.data?.error || "Desconhecido"));
+        }
       }
-
-      // Enviar dados para o backend sem arquivo
-      const bannerData = {
-        descricao: formValues.descricao,
-        usuario_id: 1,
-        ativo: true,
-        url_imagem
-      };
-
-      const res = await apiClient.put(`/banner/${id}`, bannerData);
-
-      if (res.status === 200) {
-        alert("Banner atualizado com sucesso!");
-        setIsConfirmModalVisible(false);
-        window.location.href = "/admin/cms-banner";
-      } else {
-        alert("Erro ao atualizar banner: " + (res.data?.error || "Desconhecido"));
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao enviar o formulário.");
-    }
+    );
   };
 
   const onFinishFailed = (errorInfo) => console.log("Edit Failed:", errorInfo);
@@ -144,6 +148,7 @@ export default function EditarBannerPage() {
                   text="Salvar"
                   onClick={() => setIsConfirmModalVisible(true)}
                   icon={<UploadOutlined />}
+                  loading={isLoading}
                 />
               </div>
             </div>
