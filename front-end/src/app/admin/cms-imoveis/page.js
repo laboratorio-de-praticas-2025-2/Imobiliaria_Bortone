@@ -103,9 +103,26 @@ export default function CmsUserPage() {
   const fetchImoveis = async () => {
     try {
       const queryParams = new URLSearchParams();
+      
+      // Handle ordering parameters
       if (filterData.order) {
-        queryParams.append("order", filterData.order);
+        const orderMapping = {
+          "Ordem alfabética": { orderBy: "descricao", orderDirection: "ASC" },
+          "Data de inclusão (mais recente)": { orderBy: "data_cadastro", orderDirection: "DESC" },
+          "Data de inclusão (mais antigo)": { orderBy: "data_cadastro", orderDirection: "ASC" },
+          "Preço (menor para maior)": { orderBy: "preco", orderDirection: "ASC" },
+          "Preço (maior para menor)": { orderBy: "preco", orderDirection: "DESC" },
+          "Área (menor para maior)": { orderBy: "area", orderDirection: "ASC" },
+          "Área (maior para menor)": { orderBy: "area", orderDirection: "DESC" }
+        };
+        
+        const orderConfig = orderMapping[filterData.order];
+        if (orderConfig) {
+          queryParams.append("orderBy", orderConfig.orderBy);
+          queryParams.append("orderDirection", orderConfig.orderDirection);
+        }
       }
+      
       if (filterData.searchTerm) {
         queryParams.append("searchTerm", filterData.searchTerm);
       }

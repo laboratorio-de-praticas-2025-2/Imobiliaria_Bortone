@@ -136,9 +136,10 @@ export const deleteImovel = async (id) => {
  * @param {Object} filters 
  * @param {Object} filterMappings
  * @param {Array<Object>} include 
+ * @param {Object} ordering - Object with orderBy and orderDirection properties
  * @returns {Array<Object>} 
  */
-export const getFilteredEntities = async (filters, filterMappings, include = []) => {
+export const getFilteredEntities = async (filters, filterMappings, include = [], ordering = {}) => {
   try {
     const where = {};
     const casaWhere = {};
@@ -179,10 +180,28 @@ export const getFilteredEntities = async (filters, filterMappings, include = [])
         include.push({ model: Casa, as: 'casa', where: casaWhere });
       }
     }
+    
+    const order = [];
+    if (ordering.orderBy && ordering.orderDirection) {
+      const validOrderBy = ['data_cadastro', 'descricao', 'preco', 'area'];
+      const validOrderDirection = ['ASC', 'DESC'];
+      
+      console.log("Service - Ordering received:", ordering);
+      console.log("Service - Valid orderBy:", validOrderBy.includes(ordering.orderBy));
+      console.log("Service - Valid orderDirection:", validOrderDirection.includes(ordering.orderDirection.toUpperCase()));
+      
+      if (validOrderBy.includes(ordering.orderBy) && validOrderDirection.includes(ordering.orderDirection.toUpperCase())) {
+        order.push([ordering.orderBy, ordering.orderDirection.toUpperCase()]);
+        console.log("Service - Order applied:", order);
+      }
+    }
+
+    console.log("Service - Final order configuration:", order);
 
     const entities = await Imovel.findAll({
       where: where,
       include: include,
+      order: order.length > 0 ? order : undefined,
     });
     return entities;
   } catch (error) {

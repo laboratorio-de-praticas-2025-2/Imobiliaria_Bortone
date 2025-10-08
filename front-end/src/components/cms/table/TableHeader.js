@@ -7,7 +7,15 @@ import PesquisaAvancadaUser from "./pesquisaavancada/PesquisaAvancada";
 import PesquisaAvancada from "@/components/cms/form/PesquisaAvancada";
 const { Search } = Input;
 
-const optionsOrder = ["Ordem alfabetica", "Data de inclusão"];
+const optionsOrder = [
+  "Ordem alfabética", 
+  "Data de inclusão (mais recente)", 
+  "Data de inclusão (mais antigo)",
+  "Preço (menor para maior)",
+  "Preço (maior para menor)",
+  "Área (menor para maior)",
+  "Área (maior para menor)"
+];
 
 export default function TableHeader({
   onSearch,

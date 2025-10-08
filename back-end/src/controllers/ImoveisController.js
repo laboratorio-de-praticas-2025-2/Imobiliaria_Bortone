@@ -126,7 +126,20 @@ export const getFilteredImoveis = async (req, res) => {
         vagas: { field: 'vagas', type: 'exact', model: 'casa' },
       };
 
-      const imoveis = await ImoveisService.getFilteredEntities(filters, filterMappings, [{ model: Casa, as: 'casa' }, { model: Terreno, as: 'terreno' }, { model: ImagemImovel, as: 'imagem_imovel' }]);
+      // Handle ordering parameters
+      const ordering = {};
+      if (req.query.orderBy) {
+        ordering.orderBy = req.query.orderBy;
+      }
+      if (req.query.orderDirection) {
+        ordering.orderDirection = req.query.orderDirection;
+      }
+      
+      // Debug logging
+      console.log("Ordering parameters received:", ordering);
+      console.log("Query parameters:", req.query);
+
+      const imoveis = await ImoveisService.getFilteredEntities(filters, filterMappings, [{ model: Casa, as: 'casa' }, { model: Terreno, as: 'terreno' }, { model: ImagemImovel, as: 'imagem_imovel' }], ordering);
       res.status(200).json(imoveis);
     } catch (error) {
       console.error("Erro ao buscar imóveis com filtros:", error);
