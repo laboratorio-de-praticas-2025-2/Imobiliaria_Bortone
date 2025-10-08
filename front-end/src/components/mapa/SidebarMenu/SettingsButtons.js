@@ -16,21 +16,39 @@ export default function SettingsButtons({
     console.log("Filtros aplicados:", filters);
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const response = await fetch(`${apiUrl}/search/mapa`, {
-        method: "POST",
+      
+      // Converte os filtros em query parameters
+      const queryParams = new URLSearchParams();
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== '') {
+          // Trata arrays (como preco e area) convertendo para formato da API
+          if (Array.isArray(value)) {
+            if (key === 'preco' && value.length === 2) {
+              queryParams.append('precoMin', value[0]);
+              queryParams.append('precoMax', value[1]);
+            } else if (key === 'area' && value.length === 2) {
+              queryParams.append('areaMin', value[0]);
+              queryParams.append('areaMax', value[1]);
+            }
+          } else {
+            queryParams.append(key, value);
+          }
+        }
+      });
+      
+      const response = await fetch(`${apiUrl}/mapa/busca?${queryParams.toString()}`, {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(filters), // Envia os filtros para o backend
       });
 
       const data = await response.json();
-      console.log(data);
-      if (data) {
+      console.log("Dados filtrados:", data);
+      if (data.success && data.data) {
         // Atualiza a lista de imóveis com os dados retornados do backend
-        setImoveisMapa(data.propriedades.mapa);
-        setImoveisCarrossel(data.propriedades.carrossel);
-        // Exemplo: setImoveis(data.propriedades);
+        setImoveisMapa(data.data);
+        setImoveisCarrossel(data.data);
       }
     } catch (error) {
       console.error("Erro ao aplicar filtros:", error);

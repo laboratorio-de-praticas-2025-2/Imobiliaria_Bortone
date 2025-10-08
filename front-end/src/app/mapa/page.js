@@ -33,6 +33,30 @@ export default function Mapa() {
   const [showSplash, setShowSplash] = useState(true);
   const [animateOut, setAnimateOut] = useState(false);
 
+  // Função para carregar todos os imóveis iniciais
+  const carregarTodosImoveis = async () => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const response = await fetch(`${apiUrl}/mapa/busca`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Imóveis carregados:", data);
+        if (data.success && data.data) {
+          setImoveisCarrossel(data.data);
+          setImoveisMapa(data.data);
+        }
+      } else {
+        console.error("Erro ao carregar imóveis:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Erro na requisição inicial:", error);
+    }
+  };
+
   const onSearch = async (value) => {
     console.log("Buscando imóveis para:", value);
     const endereco = {
@@ -62,9 +86,10 @@ export default function Mapa() {
     }
   };
 
-  // useEffect(() => {
-  //   setImoveis(getImoveis());
-  // }, []);
+  // Carregar todos os imóveis na inicialização
+  useEffect(() => {
+    carregarTodosImoveis();
+  }, []);
 
   useEffect(() => {
     if (showSplash) {
