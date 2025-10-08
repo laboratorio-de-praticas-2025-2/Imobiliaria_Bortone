@@ -86,7 +86,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https: http: res.cloudinary.com *.cloudinary.com",
               "font-src 'self' data:",
-              "connect-src 'self' https: http: ws: wss: http://localhost:* http://127.0.0.1:* https://vercel.live https://*.vercel.live wss://vercel.live wss://*.vercel.live",
+              "connect-src 'self' https: http: ws: wss: http://localhost:* http://127.0.0.1:* https://vercel.live https://*.vercel.live wss://vercel.live wss://*.vercel.live https://imobiliaria-bortone.onrender.com https://*.onrender.com",
               "frame-src 'self' https://vercel.live https://*.vercel.live",
               "frame-ancestors 'self' https://vercel.live https://*.vercel.live",
             ].join("; "),

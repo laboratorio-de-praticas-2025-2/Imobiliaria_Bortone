@@ -6,6 +6,7 @@ import { DatePicker as AntdDatePicker, Form as FormAntd } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
 import Sidebar from "@/components/cms/Sidebar";
+import ConfirmModal from "@/components/cms/ConfirmModal";
 import Form from "@/components/cms/form/index";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import FormButton from "@/components/cms/form/fields/Button";
