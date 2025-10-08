@@ -163,12 +163,12 @@ export default function Mapa() {
     image: imovelAtual?.imagens?.[0]?.url_imagem,
   });
 
-  if (loading) return <SplashScreen />;
+  if (loading || !imovelAtual) return <SplashScreen />;
   const slides = imovelAtual?.imagens || [];
   const toggleVerMais = () => setVerMais(!verMais);
 
   const preco =
-    imovelAtual.preco === null || imovelAtual.preco === undefined
+    imovelAtual?.preco === null || imovelAtual?.preco === undefined
       ? "Valor Oculto"
       : Number(imovelAtual.preco).toLocaleString("pt-BR", {
           style: "currency",
@@ -251,14 +251,14 @@ export default function Mapa() {
           <div className="descricao">
             <div className="Dtexto">
               <div className="t1">
-                {imovelAtual.tipo.toLowerCase() === "casa" ||
-                imovelAtual.tipotoLowerCase() === "Apartamento" ? (
+                {imovelAtual?.tipo?.toLowerCase() === "casa" ||
+                imovelAtual?.tipo?.toLowerCase() === "apartamento" ? (
                   <>
                     <p>{imovelAtual.tipo}</p>
                     <p className="T1ponto"> • </p>
                     <p>{imovelAtual.area}m²</p>
                   </>
-                ) : imovelAtual.tipotoLowerCase() === "Terreno" ? (
+                ) : imovelAtual?.tipo?.toLowerCase() === "terreno" ? (
                   <>
                     <p>{imovelAtual.tipo}</p>
                   </>
@@ -266,8 +266,8 @@ export default function Mapa() {
               </div>
 
               <div className="t2">
-                {imovelAtual.tipo === "Casa" ||
-                imovelAtual.tipo === "Apartamento" ? (
+                {imovelAtual?.tipo === "Casa" ||
+                imovelAtual?.tipo === "Apartamento" ? (
                   <>
                     <div className="h-auto flex items-center justify-center !text-lg md:!text-2xl">
                       <BsDoorOpenFill />
@@ -282,7 +282,7 @@ export default function Mapa() {
                       {imovelAtual.casa?.banheiros || 0} banheiros
                     </p>
                   </>
-                ) : imovelAtual.tipo === "Terreno" ? (
+                ) : imovelAtual?.tipo === "Terreno" ? (
                   <>
                     <Image
                       src="/images/icon_metroq.png"
@@ -299,7 +299,7 @@ export default function Mapa() {
               <p className="Gimovel">Gostou do imóvel?</p>
             </div>
             <div className="Dbotoes">
-              <Link href={`/agendamento/${imovelAtual.id}`}>
+              <Link href={`/agendamento/${imovelAtual?.id || ''}`}>
                 <button className="btn1">Agendar visita</button>
               </Link>
               <button className="btn2">Propor valor</button>
@@ -335,16 +335,16 @@ export default function Mapa() {
             <Link className="ir_loc" href="/mapa">
               <div>
                 <p className="text-[var(--primary)] text-xl">
-                  {imovelAtual.endereco}
+                  {imovelAtual?.endereco}
                 </p>
-                <p className="text-[var(--primary)]">{imovelAtual.cidade}</p>
+                <p className="text-[var(--primary)]">{imovelAtual?.cidade}</p>
               </div>
               <FaArrowRight color="#304383" />
             </Link>
 
             <LeafletMap
-              latitude={imovelAtual.latitude || -23.5505}
-              longitude={imovelAtual.longitude || -46.6333}
+              latitude={imovelAtual?.latitude || -23.5505}
+              longitude={imovelAtual?.longitude || -46.6333}
             />
           </div>
 
@@ -355,7 +355,7 @@ export default function Mapa() {
               ref={descricaoRef}
               className={verMais ? "descricao-expandida" : "descricao-reduzida"}
             >
-              {imovelAtual.descricao}
+              {imovelAtual?.descricao}
             </p>
 
             {mostrarBotao && (

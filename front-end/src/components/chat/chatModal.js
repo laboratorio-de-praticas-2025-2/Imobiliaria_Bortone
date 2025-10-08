@@ -5,6 +5,8 @@ import { IoIosCloseCircle } from "react-icons/io";
 import { IoSend } from "react-icons/io5";
 import { RxAvatar } from "react-icons/rx";
 import { BsEmojiSmileFill } from "react-icons/bs";
+import infoContato from "@/utils/infoContato.json";
+
 
 // Helper movido para fora do componente para evitar recriação a cada renderização
 const getUserData = () => {
@@ -415,8 +417,8 @@ export default function ChatModal({ onClose, isLoggedIn }) {
 
           <div className="mt-6 text-xs text-gray-500">
             <p>Ou entre em contato por:</p>
-            <p className="mt-1">📞 (11) 1234-5678</p>
-            <p>📧 contato@imobiliariabortone.com</p>
+            <p className="mt-1">📞 {infoContato.telefoneWhats.telefone}</p>
+            <p>📧 {infoContato.contato.email}</p>
           </div>
         </div>
       </div>
