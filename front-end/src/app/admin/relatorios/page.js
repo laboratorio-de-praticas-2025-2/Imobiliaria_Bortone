@@ -4,64 +4,64 @@ import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
 import PdfModal from "@/components/cms/table/PdfModal";
 import RelatorioTable from "@/components/cms/table/RelatorioTable";
-import { getRelatorioData } from "@/services/RelatorioService";
+import { getRelatorioData, getAllRelatorios } from "@/services/RelatorioService"; // API para listagem
 import { message } from "antd";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { exportRelatorioToPdf } from "@/utils/pdfUtils";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { useReactToPrint } from "react-to-print";
+
+// Funções auxiliares para compartilhamento
+const generatePdfAsBlob = async (element) => {
+  const { exportRelatorioToPdfAsBlobDOM } = await import("@/utils/pdfUtils");
+  return await exportRelatorioToPdfAsBlobDOM(element);
+};
+
+const downloadPdfBlob = (blob, fileName) => {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
 
 export default function TableRelatorio() {
   const [toast, setToast] = useState(null);
   const showToast = (fileName, action) => {
     setToast({ fileName, action });
-    setTimeout(() => setToast(null), 3000);
+    setTimeout(() => setToast(null), 2000);
   };
 
-  const [loading, setLoading] = useState(false);
-  const [loadingTable, setLoadingTable] = useState(false);
+  const [loading, setLoading] = useState(false); // Para PDF
+  const [loadingTable, setLoadingTable] = useState(true); // Para listagem
   const [pdfReady, setPdfReady] = useState(false);
-  const [filterData, setFilterData] = useState({ order: null, search: "" });
+  const [filterData, setFilterData] = useState({ search: "" });
   const [currentPage, setCurrentPage] = useState(1);
   const [reportData, setReportData] = useState(null);
   const [record, setRecord] = useState();
+  const [reportList, setReportList] = useState([]);
   const pageSize = 5;
 
   const componentToPrintRef = useRef();
 
-  const reportsLines = [
-    {
-      key: 1,
-      nome: `Relatório Geral`,
-      pdfNome: "Imobiliaria-Bortone",
-      tipo: "geral",
-    },
-    {
-      key: 2,
-      nome: `Relatório Imóveis`,
-      pdfNome: "Imobiliaria-Bortone-Imoveis",
-      tipo: "imoveis",
-    },
-    {
-      key: 3,
-      nome: `Relatório Vendas`,
-      pdfNome: "Imobiliaria-Bortone-Vendas",
-      tipo: "vendas",
-    },
-    {
-      key: 4,
-      nome: `Relatório Locações`,
-      pdfNome: "Imobiliaria-Bortone-Locacoes",
-      tipo: "locacoes",
-    },
-    {
-      key: 5,
-      nome: `Relatório Usuários`,
-      pdfNome: "Imobiliaria-Bortone-Usuarios",
-      tipo: "usuarios",
-    },
-  ];
+  // Busca os relatórios da API
+  useEffect(() => {
+    setLoadingTable(true);
+    getAllRelatorios()
+      .then((res) => {
+        // Adiciona a chave necessária para o Table
+        const dataComKey = res.map((r, idx) => ({ ...r, key: idx + 1 }));
+        setReportList(dataComKey);
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setLoadingTable(false));
+  }, []);
 
+
+  // Colunas da tabela
   const columns = [
     {
       title: "Nome do Relatório",
@@ -83,17 +83,18 @@ export default function TableRelatorio() {
     },
   ];
 
-  const filteredData = reportsLines.filter((item) =>
+
+  // Filtragem e paginação
+  const filteredData = reportList.filter((item) =>
     item.nome.toLowerCase().includes(filterData.search?.toLowerCase() || "")
   );
+
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedData = filteredData.slice(startIndex, startIndex + pageSize);
 
-  const onSearch = (value) => setFilterData({ ...filterData, search: value });
-  const handleSelectOrder = (order) => setFilterData({ ...filterData, order });
-  const updateFilterData = (newData) =>
-    setFilterData((prev) => ({ ...prev, ...newData }));
+  const onSearch = (value) => setFilterData({ search: value });
 
+  // Função para gerar PDF
   const gerarPDF = (record) => {
     setLoading(true);
     setPdfReady(false);
@@ -110,52 +111,67 @@ export default function TableRelatorio() {
       });
   };
 
-  // PDF Modal handlers
+  // Handlers do PDF Modal
   const handleDownload = async () => {
     try {
-      if (!componentToPrintRef.current) throw new Error('Ref não encontrado');
-      const fileName = record ? `${record.pdfNome}.pdf` : 'Relatorio-Imobiliaria-Bortone.pdf';
+      if (!componentToPrintRef.current) throw new Error("Ref não encontrado");
+      const fileName = record ? `${record.pdfNome}.pdf` : "Relatorio.pdf";
       await exportRelatorioToPdf(componentToPrintRef.current, fileName);
-      showToast(fileName, 'Download concluído');
+      showToast(fileName, "Download concluído");
     } catch (e) {
       console.error(e);
-      message.error('Falha ao gerar PDF');
+      message.error("Falha ao gerar PDF");
     }
   };
+
   const handleShare = async () => {
-    const fileUrl = "/relatorios/Relatorio-Exemplo.pdf";
-    const fileName = "Relatorio-Exemplo.pdf";
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Compartilhar PDF",
-          text: `Confira o relatório: ${fileName}`,
-          url: fileUrl,
-        });
-        message.success("PDF compartilhado com sucesso!");
-      } catch (err) {
-        message.error("Falha ao compartilhar o PDF");
+    try {
+      if (!componentToPrintRef.current) throw new Error("Ref não encontrado");
+      
+      const fileName = record ? `${record.pdfNome}.pdf` : "Relatorio.pdf";
+
+      // Gera o PDF como blob (snapshot idêntico ao preview)
+      const pdfBlob = await generatePdfAsBlob(componentToPrintRef.current);
+
+      // Preferir compartilhar ARQUIVO via Web Share API
+      if (navigator.share && navigator.canShare) {
+        try {
+          const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title: "Relatório - Imobiliária Bortone",
+              text: `Confira o relatório: ${fileName}`,
+              files: [file]
+            });
+            showToast(fileName, "Compartilhamento concluído");
+            return;
+          }
+        } catch (shareErr) {
+          console.warn('Falha ao compartilhar arquivo, aplicando fallback:', shareErr);
+        }
       }
-    } else {
-      navigator.clipboard.writeText(window.location.origin + fileUrl);
-      message.info("Link copiado para a área de transferência!");
+
+      // Fallback definitivo: baixar o arquivo quando não houver suporte a compartilhar arquivos
+      downloadPdfBlob(pdfBlob, fileName);
+      message.info("Dispositivo não suporta compartilhar arquivos. PDF baixado.");
+      showToast(fileName, "PDF baixado para compartilhar");
+    } catch (error) {
+      console.error('Erro ao compartilhar PDF:', error);
+      message.error("Falha ao compartilhar o PDF");
     }
-    showToast("Relatorio-Exemplo.pdf", "Compartilhamento concluído");
   };
 
   const handlePrint = useReactToPrint({
     contentRef: componentToPrintRef,
-    documentTitle: record ? record.pdfNome : "Relatorio-Imobiliaria-Bortone",
+    documentTitle: record ? record.pdfNome : "Relatorio",
     onAfterPrint: () => {
-      showToast(
-        record ? `${record.pdfNome}.pdf` : "Relatorio-Imobiliaria-Bortone.pdf",
-        "Impressão concluída!"
-      );
+      showToast(record ? `${record.pdfNome}.pdf` : "Relatorio.pdf", "Impressão concluída!");
     },
   });
 
   const handleClose = () => setPdfReady(false);
 
+  // Render
   return (
     <>
       <Sidebar />
@@ -177,9 +193,7 @@ export default function TableRelatorio() {
             <div className="fixed top-5 right-0 w-120 bg-white shadow-lg rounded-xl p-4 flex items-start gap-3 z-50 animate-slide-in">
               <IoCheckmarkCircle className="text-green-500 text-2xl mt-1" />
               <div className="flex flex-col">
-                <span className="font-bold text-gray-800">
-                  {toast.fileName}
-                </span>
+                <span className="font-bold text-gray-800">{toast.fileName}</span>
                 <span className="text-gray-500 text-sm">{toast.action}</span>
               </div>
             </div>
@@ -187,10 +201,9 @@ export default function TableRelatorio() {
           <CMS.Table>
             <CMS.TableHeader
               onSearch={onSearch}
-              handleSelectOrder={handleSelectOrder}
               filterData={filterData}
-              updateFilterData={updateFilterData}
-              newButton={false}
+              updateFilterData={(data) => setFilterData(data)}
+              newButton={false} // Não há botão "Novo Relatório"
             />
             <CMS.TableBody table={true}>
               <RelatorioTable

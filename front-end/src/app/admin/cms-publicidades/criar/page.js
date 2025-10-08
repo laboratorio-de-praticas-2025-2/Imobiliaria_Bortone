@@ -10,53 +10,58 @@ import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { uploadPublicidadeImage } from "@/services/netlifyUploadService";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
+import { apiClient } from "@/utils/apiClient";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function CriarPublicidadePage() {
   const [fileList, setFileList] = useState([]);
   const router = useRouter();
+  const { submitForm, isLoading } = useFormSubmit();
+  const { user } = useAuth();
 
   const onFinish = async (values) => {
-    if (values.titulo && values.conteudo) {
-      try {
-        const formData = new FormData();
-        formData.append('titulo', values.titulo);
-        formData.append('conteudo', values.conteudo);
-        formData.append('usuario_id', '1'); 
-        formData.append('ativo', 'true');
-        
+    await submitForm(
+      values,
+      async (validatedValues) => {
+        let url_imagem = null;
+
+        // Upload da imagem via Netlify se houver arquivo
         if (fileList.length > 0 && fileList[0].originFileObj) {
-          formData.append('url_imagem', fileList[0].originFileObj);
+          url_imagem = await uploadPublicidadeImage(
+            fileList[0].originFileObj,
+            validatedValues.titulo,
+            validatedValues.conteudo,
+            user?.id?.toString() || "1", // usuario_id do usuário logado
+            true // ativo
+          );
         }
 
-        const apiBase = process.env.NEXT_PUBLIC_API_URL;
-        console.log('API Base URL (NEXT_PUBLIC_API_URL):', apiBase);
-        const response = await axios.post(`${apiBase}/publicidade`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        // Enviar dados para o backend sem arquivo
+        const publicidadeData = {
+          titulo: validatedValues.titulo,
+          conteudo: validatedValues.conteudo,
+          usuario_id: user?.id || 1,
+          ativo: true,
+          url_imagem
+        };
+
+        const response = await apiClient.post("/publicidade", publicidadeData);
         
         if (response.status === 201) {
-          alert("Publicidade cadastrada com sucesso!");
+          router.push("/admin/cms-publicidades");
+          return response.data;
+        }
+      },
+      {
+        requiredFields: ['titulo', 'conteudo'],
+        successMessage: "Publicidade cadastrada com sucesso!",
+        onSuccess: () => {
           router.push("/admin/cms-publicidades");
         }
-      } catch (error) {
-        console.log("Erro ao cadastrar a publicidade", error);
-        if (error.response) {
-          console.log('Status:', error.response.status);
-            console.log('Data:', error.response.data);
-            alert(`Erro ao cadastrar (status ${error.response.status}): ${error.response.data?.error || 'Ver console'}`);
-        } else if (error.request) {
-            console.log('Nenhuma resposta recebida. Request:', error.request);
-            alert('Erro: servidor não respondeu. Ver console.');
-        } else {
-            console.log('Erro na configuração da requisição:', error.message);
-            alert('Erro ao preparar requisição. Ver console.');
-        }
       }
-    } else {
-      alert("Preencha todos os campos!");
-    }
+    );
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -118,7 +123,7 @@ export default function CriarPublicidadePage() {
               />
 
               <div className="flex justify-end mt-4">
-                <FormButton text="Publicar" icon={<UploadOutlined />} />
+                <FormButton text="Publicar" icon={<UploadOutlined />} loading={isLoading} />
               </div>
             </div>
           </Form.FormBody>

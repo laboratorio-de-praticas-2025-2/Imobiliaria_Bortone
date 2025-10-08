@@ -11,33 +11,32 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { uploadBlogImage } from "@/services/netlifyUploadService";
+import { Form as FormAntd } from "antd";
+import { buildImageUrl } from "@/utils/imageUtils";
+import SplashScreen from "@/components/SplashScreen";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
+import { apiClient } from "@/utils/apiClient";
 
 export default function EditarPostPage() {
   const params = useParams();
   const id = params?.id;
   const router = useRouter();
+  const [form] = FormAntd.useForm();
   const [fileList, setFileList] = useState([]);
   const [post, setPost] = useState(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [imageError, setImageError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { submitForm, isLoading } = useFormSubmit();
 
-  // Função para gerar URL da imagem com fallback
+  // Função para gerar URL da imagem com fallback usando utilitário unificado
   const getImageUrl = () => {
-    if (imageError || !post?.url_imagem) {
+    if (imageError) {
       return "/404.png";
     }
-    
-    let imageUrl = post.url_imagem;
-    if (!imageUrl.startsWith("/")) {
-      imageUrl = `/images/blogImages/${imageUrl}`;
-    }
-    const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
-    const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
-    if (imageUrl.startsWith("/images/") && apiUrl) {
-      return `${apiUrl}${imageUrl}`;
-    }
-    return imageUrl;
+    return buildImageUrl(post?.url_imagem, 'publicacao', '/404.png');
   };
 
   // Usaremos caminhos relativos para imagens (sem hostname) para evitar exigência de domains no Next/Image
@@ -45,50 +44,72 @@ export default function EditarPostPage() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
-        const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
-        const response = await axios.get(`${apiUrl}/publicacoes/${id}`);
+        setLoading(true);
+        const response = await apiClient.get(`/publicacoes/${id}`);
         setPost(response.data);
         setTitle(response.data?.titulo || "");
         setContent(response.data?.conteudo || "");
+        
+        // Preencher o formulário com os dados carregados
+        form.setFieldsValue({
+          titulo: response.data?.titulo || "",
+          conteudo: response.data?.conteudo || "",
+        });
+        setLoading(false);
       } catch (error) {
         console.error("Erro ao carregar publicação:", error);
+        setLoading(false);
       }
     };
     if (id) fetchPost();
-  }, [id]);
+  }, [id, form]);
 
   const onFinish = async (values) => {
-    try {
-      const formData = new FormData();
-      if (values.titulo) formData.append("titulo", values.titulo);
-      if (values.conteudo) formData.append("conteudo", values.conteudo);
-      if (fileList.length > 0 && fileList[0].originFileObj) {
-        formData.append("url_imagem", fileList[0].originFileObj);
+    await submitForm(
+      values,
+      async (validatedValues) => {
+        let url_imagem = post?.url_imagem; // Manter imagem atual
+
+        // Upload da nova imagem via Cloudinary se houver arquivo
+        if (fileList.length > 0 && fileList[0].originFileObj) {
+          url_imagem = await uploadBlogImage(
+            fileList[0].originFileObj,
+            validatedValues.titulo,
+            validatedValues.conteudo,
+            "1" // usuario_id
+          );
+          console.log('Nova imagem uploaded:', url_imagem);
+        }
+
+        // Enviar dados para o backend sem arquivo
+        const blogData = {
+          titulo: validatedValues.titulo,
+          conteudo: validatedValues.conteudo,
+          url_imagem
+        };
+
+        const response = await apiClient.put(`/publicacoes/${id}`, blogData);
+
+        if (response.status === 200) {
+          router.push("/admin/cms-publicacoes");
+          return response.data;
+        }
+      },
+      {
+        requiredFields: ['titulo', 'conteudo'],
+        successMessage: "Publicação atualizada com sucesso!",
+        onSuccess: () => {
+          router.push("/admin/cms-publicacoes");
+        }
       }
-
-      const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
-      const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
-
-      const response = await axios.put(`${apiUrl}/publicacoes/${id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      if (response.status === 200) {
-        alert("Publicação atualizada com sucesso!");
-        router.push("/admin/cms-publicacoes");
-      }
-    } catch (error) {
-      console.error("Erro ao atualizar publicação:", error);
-      alert("Não foi possível atualizar a publicação.");
-    }
+    );
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Edit Failed:", errorInfo);
   };
 
-  if (!post) return <div>Carregando...</div>;
+  if (loading) return <SplashScreen />;
 
   return (
     <>
@@ -97,12 +118,9 @@ export default function EditarPostPage() {
         <Form.Body title="Publicações | Edição">
           <Form.FormHeader href="/admin/cms-publicacoes" />
           <Form.FormBody
+            form={form}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            initialValues={{
-              titulo: post.titulo,
-              conteudo: post.conteudo,
-            }}
           >
             <div className="flex flex-col sm:flex-row w-full gap-6">
               {/* Coluna do Formulário */}
@@ -143,8 +161,16 @@ export default function EditarPostPage() {
                         width={400}
                         height={320}
                         className="h-full w-full object-cover rounded-3xl"
-                        onError={() => {
+                        onError={(e) => {
+                          console.error('❌ Erro ao carregar imagem da publicação:', {
+                            original: post?.url_imagem,
+                            constructed: getImageUrl(),
+                            error: e
+                          });
                           setImageError(true);
+                        }}
+                        onLoad={() => {
+                          console.log('✅ Imagem da publicação carregada com sucesso:', getImageUrl());
                         }}
                       />
                     </div>
@@ -163,6 +189,7 @@ export default function EditarPostPage() {
                   text="Publicar"
                   className="!hidden sm:!flex"
                   icon={<UploadOutlined />}
+                  loading={isLoading}
                 />
               </div>
 
@@ -218,6 +245,7 @@ export default function EditarPostPage() {
                   text="Publicar"
                   className="!flex !sm:hidden"
                   icon={<UploadOutlined />}
+                  loading={isLoading}
                 />
               </div>
             </div>

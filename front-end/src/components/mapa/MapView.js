@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import React from "react";
 import { Suspense, useMemo, useRef, useState } from "react";
 import { handleImgError } from "@/utils/imageFallback";
+import { buildImageUrl } from "@/utils/imageUtils";
 import Image from "next/image";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import ImovelMarker from "./ImovelMarker";
@@ -110,11 +111,12 @@ export default function MapView({ imoveis }) {
           }}
         >
           <img
-            src={
+            src={buildImageUrl(
               (hoverImovel.imagens && hoverImovel.imagens.length > 0 && hoverImovel.imagens[0].url_imagem) ||
-              hoverImovel.imagem ||
-              "/404.png"
-            }
+              hoverImovel.imagem,
+              'imovel',
+              '/imovel1.png'
+            )}
             alt="Imagem do imóvel"
             className="w-full h-32 object-cover mb-2 rounded"
             onError={handleImgError}

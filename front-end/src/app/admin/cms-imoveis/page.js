@@ -13,6 +13,7 @@ import Link from "next/link";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import { createStyles } from "antd-style";
 import axios from "axios";
+import { apiClient } from "@/utils/apiClient";
 
 const useStyle = createStyles(({ css, token }) => {
   const { antCls } = token;
@@ -125,14 +126,16 @@ export default function CmsUserPage() {
         if (filterData.vagas) queryParams.append("vagas", filterData.vagas);
       }
 
-      const requestUrl = `${process.env.NEXT_PUBLIC_API_URL}/imoveis?${queryParams.toString()}`;
-      console.log("Fetching data from endpoint:", requestUrl)
-      const response = await axios.get(
-        requestUrl
-      );
+      const endpoint = `/imoveis?${queryParams.toString()}`;
+      console.log("Fetching data from endpoint:", `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`);
+      const response = await apiClient.get(endpoint);
       console.log("API Response Data:", response.data);
-      if (Array.isArray(response.data)) {
-        setImoveis(response.data);
+      
+      // A API retorna {data: [imóveis]} então precisamos acessar response.data.data
+      const imoveisData = response.data.data || response.data;
+      
+      if (Array.isArray(imoveisData)) {
+        setImoveis(imoveisData);
       } else {
         console.warn("API did not return an array for imoveis, received:", response.data);
         setImoveis([]); 

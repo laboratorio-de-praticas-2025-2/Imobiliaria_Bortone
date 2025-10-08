@@ -30,7 +30,7 @@ export default function Header() {
               shape="round"
               className="btn-marcar-visita"
             >
-              MARQUE UMA VISITA
+              Agende uma visita
             </Button>
           </Flex>
         </Flex>

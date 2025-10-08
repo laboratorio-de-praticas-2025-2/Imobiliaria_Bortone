@@ -4,12 +4,15 @@ import Form from "@/components/cms/form";
 import FormButton from "@/components/cms/form/fields/Button";
 import TextField from "@/components/cms/form/fields/TextField";
 import Sidebar from "@/components/cms/Sidebar";
-import axios from "axios";
+import SplashScreen from "@/components/SplashScreen";
 import RadioField from "@/components/cms/form/fields/RadioField";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
+import { Form as FormAntd } from "antd";
+import { apiClient } from "@/utils/apiClient";
 
 export default function EditarUserPage({ params }) {
-  const id = params?.id;
+  const { id } = use(params);
+  const [form] = FormAntd.useForm();
   const [user, setUser] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,15 +22,23 @@ export default function EditarUserPage({ params }) {
     async function fetchUser() {
       try {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-        const res = await axios.get(`${apiUrl}/user/user/${id}`);
+        const res = await apiClient.get(`/user/user/${id}`);
         setUser(res.data);
+        
+        // Preencher o formulário com os dados carregados
+        form.setFieldsValue({
+          nome: res.data?.nome || "",
+          email: res.data?.email || "",
+          telefone: res.data?.telefone || "",
+          nivel: res.data?.nivel || "",
+        });
       } catch (err) {
         console.error("Erro ao buscar usuário:", err);
         setUser(null);
       }
     }
     if (id) fetchUser();
-  }, [id]);
+  }, [id, form]);
 
   const onFinish = (values) => {
     setFormValues(values);
@@ -47,7 +58,7 @@ export default function EditarUserPage({ params }) {
       if (senha) {
         payload.senha = senha;
       }
-      await axios.patch(`${apiUrl}/user/user/${id}`, payload);
+      await apiClient.patch(`/user/user/${id}`, payload);
       setIsConfirmModalVisible(false);
       window.location.href = "/admin/cms-usuarios";
     } catch (err) {
@@ -62,7 +73,7 @@ export default function EditarUserPage({ params }) {
     console.log("Edit Failed:", errorInfo);
   };
 
-  if (!user) return <div>Carregando...</div>;
+  if (!user || !form) return <SplashScreen />;
 
   return (
     <>
@@ -79,14 +90,9 @@ export default function EditarUserPage({ params }) {
         <Form.Body title="Usuários | Edição">
           <Form.FormHeader href="/admin/cms-usuarios" />
           <Form.FormBody
+            form={form}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            initialValues={{
-              nome: user.nome,
-              email: user.email,
-              nivel: user.nivel === 0 ? "administrador" : "usuario",
-              celular: user.celular,
-            }}
           >
             <div className="flex flex-col sm:flex-row w-full justify-center">
               {/* Coluna do Formulário */}

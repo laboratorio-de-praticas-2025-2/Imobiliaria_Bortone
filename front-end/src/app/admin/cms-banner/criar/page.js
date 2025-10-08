@@ -8,52 +8,63 @@ import { UploadOutlined } from "@ant-design/icons";
 import FormButton from "@/components/cms/form/fields/Button";
 import Image from "next/image";
 import Sidebar from "@/components/cms/Sidebar";
-
-import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { uploadBannerImage } from "@/services/netlifyUploadService";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
+import { apiClient } from "@/utils/apiClient";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function CriarBannerPage() {
   const [fileList, setFileList] = useState([]);
-  const [titulo, setTitulo] = useState("");
-  const [descricao, setDescricao] = useState("");
-  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+  const { loading, submitForm } = useFormSubmit();
+  const { user } = useAuth();
+
+  // Garante que certas partes só rodem no cliente
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const onFinish = async (values) => {
-    try {
-      const formData = new FormData();
-      
-      if (values.titulo) {
-        formData.append("titulo", values.titulo);
-      }
-      if (values.descricao) {
-        formData.append("descricao", values.descricao);
-      }
-      formData.append("usuario_id", "1");
-      formData.append("ativo", "true");
+    const formData = { ...values, fileList };
+    
+    await submitForm(
+      formData,
+      async (data) => {
+        let url_imagem = null;
 
-      if (fileList.length > 0 && fileList[0].originFileObj) {
-        formData.append("imagem", fileList[0].originFileObj);
-      } else {
-        alert("Por favor, selecione uma imagem para o banner!");
-        return;
+        // Upload da imagem via Netlify se houver arquivo
+        if (data.fileList.length > 0) {
+          url_imagem = await uploadBannerImage(
+            data.fileList[0].originFileObj,
+            data.descricao,
+            user?.id?.toString() || "1" // usuario_id do usuário logado
+          );
+        }
+
+        // Enviar dados para o backend sem arquivo
+        const bannerData = {
+          descricao: data.descricao,
+          usuario_id: user?.id || 1,
+          url_imagem
+        };
+
+        const res = await apiClient.post("/banner", bannerData);
+
+        if (res.status !== 201) {
+          throw new Error(res.data?.error || "Erro ao criar banner");
+        }
+
+        return res.data;
+      },
+      {
+        successMessage: "Banner criado com sucesso!",
+        onSuccess: () => {
+          setFileList([]);
+        },
+        requiredFields: ['descricao']
       }
-
-      const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
-      const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
-
-      const response = await axios.post(`${apiUrl}/banner`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      if (response.status === 201) {
-        alert("Banner criado com sucesso!");
-        router.push("/admin/cms-banner");
-      }
-    } catch (error) {
-      console.error("Erro ao criar banner:", error);
-      alert("Não foi possível criar o banner.");
-    }
+    );
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -71,14 +82,7 @@ export default function CriarBannerPage() {
               {/* Coluna do Formulário */}
               <div className="sm:w-[60%] flex flex-col gap-3 items-end">
                 <div className="flex flex-col sm:flex-row w-full justify-between items-center gap-3">
-                  <TextField
-                    name="titulo"
-                    label="Título do banner (opcional)"
-                    placeholder="Título do banner"
-                    className="!w-[100%]"
-                    value={titulo}
-                    onChange={(e) => setTitulo(e.target.value)}
-                  />
+
                   <UploadField
                     name="imagem"
                     label="Imagem do Banner"
@@ -89,53 +93,48 @@ export default function CriarBannerPage() {
                   />
 
                   {fileList.length > 0 ? (
-                    <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5">
+                    <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5 overflow-hidden">
                       <Image
                         src={URL.createObjectURL(fileList[0].originFileObj)}
                         alt="Prévia do banner"
                         width={400}
                         height={320}
                         className="h-full w-full object-cover rounded-3xl"
+                        unoptimized
                       />
                     </div>
                   ) : (
-                    <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5" />
+                    <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5 flex items-center justify-center">
+                      <p className="text-gray-500">Selecione uma imagem</p>
+                    </div>
                   )}
                 </div>
                 <TextAreaField
                   name="descricao"
-                  label="Descrição (opcional)"
-                  placeholder="Descrição do banner"
+                  label="Descrição"
+                  placeholder="Corpo da descrição"
                   rows={18}
                   className="!w-full !h-full"
-                  value={descricao}
-                  onChange={(e) => setDescricao(e.target.value)}
                 />
                 <FormButton
-                  text="Criar Banner"
+                  text="Publicar"
                   className="!hidden sm:!flex"
                   icon={<UploadOutlined />}
+                  loading={loading}
                 />
               </div>
 
               <div className="sm:w-[40%] hidden sm:flex">
-                <PreviaBanner 
-                  fileList={fileList} 
-                  titulo={titulo}
-                  descricao={descricao}
-                />
+                <PreviaBanner fileList={fileList} />
               </div>
 
               <div className="sm:hidden w-full flex flex-col gap-3.5 items-center">
-                <PreviaBanner 
-                  fileList={fileList} 
-                  titulo={titulo}
-                  descricao={descricao}
-                />
+                <PreviaBanner fileList={fileList} />
                 <FormButton
-                  text="Criar Banner"
+                  text="Publicar"
                   className="!flex !sm:hidden"
                   icon={<UploadOutlined />}
+                  loading={loading}
                 />
               </div>
             </div>

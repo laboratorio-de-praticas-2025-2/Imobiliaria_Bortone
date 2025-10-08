@@ -1,6 +1,6 @@
 "use client";
 import HomeNavbar from "@/components/home/HomeNavbar";
-import { Form, message } from "antd";
+import { Form, message, Button } from "antd";
 import { BsDoorOpenFill } from "react-icons/bs";
 import { MdBathtub } from "react-icons/md";
 import TextField from "@/components/cms/form/fields/TextField";
@@ -8,8 +8,10 @@ import PhoneField from "@/components/cms/form/fields/PhoneField";
 import FormButton from "@/components/cms/form/fields/Button";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import { useEffect, useState } from "react";
-import { buildImovelImage } from "@/utils/imageUrl";
-import { useParams } from "next/navigation";
+import { buildImageUrl } from "@/utils/imageUtils";
+import { useParams, useRouter } from "next/navigation";
+import SplashScreen from "@/components/SplashScreen";
+import { useAuth } from "@/hooks/useAuth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -68,9 +70,14 @@ const enviarAgendamento = async (appointment) => {
 
 export default function Agendamento() {
   const params = useParams();
+  const router = useRouter();
   const id = params?.id;
   const [imovel, setImovel] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [form] = Form.useForm();
+  
+  // Hook de autenticação
+  const { isLoggedIn, user, isLoading: authLoading } = useAuth();
 
   const fetchImovel = async (imovelId) => {
     try {
@@ -98,6 +105,27 @@ export default function Agendamento() {
   useEffect(() => {
     if (id) fetchImovel(id);
   }, [id]);
+
+  // Verificação de login
+  useEffect(() => {
+    if (!authLoading && !isLoggedIn) {
+      message.warning('Você precisa estar logado para agendar uma visita.');
+      router.push(`/login?redirect=${encodeURIComponent(window.location.pathname)}`);
+      return;
+    }
+  }, [authLoading, isLoggedIn, router]);
+
+  // Preenchimento automático dos dados do usuário
+  useEffect(() => {
+    if (user && form) {
+      console.log('👤 Preenchendo dados do usuário:', user);
+      form.setFieldsValue({
+        nome: user.nome || '',
+        email: user.email || '',
+        telefone: user.celular || user.telefone || '',
+      });
+    }
+  }, [user, form]);
 
   const onFinish = async (values) => {
     try {
@@ -136,10 +164,14 @@ export default function Agendamento() {
     }
   };
 
-  if (loading) return <div>Carregando...</div>;
-  if (!imovel) return <div>Imóvel não encontrado.</div>;
+  if (loading || authLoading) return <SplashScreen />;
 
-  const src = buildImovelImage(imovel);
+  // Se não estiver logado, não renderiza nada (redirecionamento já foi feito)
+  if (!isLoggedIn) return null;
+
+  // Busca a primeira imagem disponível do imóvel
+  const imagemUrl = imovel?.imagens?.[0]?.url_imagem || imovel?.imagem_imovel?.[0]?.url_imagem || imovel?.imagem || null;
+  const src = buildImageUrl(imagemUrl, 'imovel', '/imovel1.png');
   const quartos = imovel?.quartos ?? imovel?.casa?.quartos ?? 0;
   const banheiros = imovel?.banheiros ?? imovel?.casa?.banheiros ?? 0;
 
@@ -203,8 +235,10 @@ export default function Agendamento() {
           <div className="flex-1 bg-white px-6 md:px-24 flex flex-col justify-center pt-10 md:pt-15 items-center rounded-t-3xl md:rounded-none">
             <div className="w-full">
               <h2 className="text-3xl !font-bold text-[#4C62AE] mb-6">Insira seus dados</h2>
+              
 
               <Form
+                form={form}
                 name="basic"
                 onFinish={onFinish}
                 autoComplete="off"

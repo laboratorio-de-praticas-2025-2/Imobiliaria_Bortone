@@ -132,7 +132,7 @@ npm test
 ## 🔗 Links
 
 - Figma: <a href="https://www.figma.com/design/w1ARo0t9N2womJ0ffCi4Wt/Laborat%C3%B3rio-de-Pratica---UX?node-id=0-1&t=41vb1y7A3luaibf8-1" target="_blank" rel="noreferrer">protótipo</a>
-- Site: <a href="https://imobiliaria-bortone.vercel.app/" target="_blank" rel="noreferrer">produção</a>
+- Site: <a href="https://imobiliaria-bortone.vercel.app" target="_blank" rel="noreferrer">produção</a>
 
 ---
 

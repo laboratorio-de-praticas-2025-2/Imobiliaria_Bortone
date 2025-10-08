@@ -53,6 +53,7 @@ export default function HomeFooter() {
           width={260}
           height={100}
           className="md:flex hidden"
+          style={{ width: 'auto', height: 'auto' }}
         />
       </div>
     </footer>

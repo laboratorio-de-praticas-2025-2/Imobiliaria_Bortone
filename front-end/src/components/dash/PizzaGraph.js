@@ -1,20 +1,42 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend,  } from "chart.js";
-import { Row, Col } from "antd";
+import dynamic from "next/dynamic";
+import { Spin } from "antd";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+// Import dinâmico para evitar problemas de SSR no Vercel
+const Doughnut = dynamic(
+  () => import("react-chartjs-2").then((mod) => mod.Doughnut),
+  { ssr: false }
+);
 
-export default function RentalByRegion({ data, label, options, className }) {
+// Import dinâmico do Chart.js para evitar problemas no Vercel
+const ChartJS = dynamic(
+  () => import("chart.js").then((mod) => {
+    const { Chart, ArcElement, Tooltip, Legend } = mod;
+    Chart.register(ArcElement, Tooltip, Legend);
+    return Chart;
+  }),
+  { ssr: false }
+);
+
+export default function RentalByRegion({ data, label, options, className, loading }) {
   const [chartData, setChartData] = useState(null);
   const [isReady, setIsReady] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const chartRef = useRef(null);
   const containerRef = useRef(null);
 
+  // Garantir que o componente está montado (importante para Vercel)
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
   // Aguarda o container estar pronto e dados válidos
   useEffect(() => {
+    if (!isMounted) return;
+
     const checkReadiness = () => {
       if (containerRef.current && data && data.labels && data.datasets) {
         const containerRect = containerRef.current.getBoundingClientRect();
@@ -27,17 +49,18 @@ export default function RentalByRegion({ data, label, options, className }) {
           
           if (hasValidData) {
             setIsReady(true);
+            setChartData(data);
           }
         }
       }
     };
 
-    // Aguarda um pouco para garantir que o DOM esteja totalmente renderizado
-    const timer = setTimeout(checkReadiness, 100);
+    // Aguarda mais tempo no Vercel para garantir hidratação completa
+    const timer = setTimeout(checkReadiness, 500);
     
     // Também verifica quando há resize
     const handleResize = () => {
-      setTimeout(checkReadiness, 50);
+      setTimeout(checkReadiness, 100);
     };
     
     window.addEventListener('resize', handleResize);
@@ -46,7 +69,7 @@ export default function RentalByRegion({ data, label, options, className }) {
       clearTimeout(timer);
       window.removeEventListener('resize', handleResize);
     };
-  }, [data]);
+  }, [data, isMounted]);
 
   // Reset quando data mudar
   useEffect(() => {
@@ -83,7 +106,7 @@ export default function RentalByRegion({ data, label, options, className }) {
   };
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className={`group h-full !w-full flex items-center rounded-xl px-4 !bg-[#EEF0F9] !shadow-md ${className}`}
     >
@@ -94,12 +117,14 @@ export default function RentalByRegion({ data, label, options, className }) {
 
         <div className="items-center justify-items-center w-full h-full min-h-[200px]">
           <div className="w-fit h-full min-h-[180px] flex items-center justify-center">
-            {isReady ? (
-              <Doughnut 
+            {loading ? (
+              <Spin tip="Carregando gráfico..." />
+            ) : isReady ? (
+              <Doughnut
                 ref={chartRef}
-                data={safeData} 
+                data={safeData}
                 options={safeOptions}
-                key={JSON.stringify(data)} // Force re-render when data changes
+                key={JSON.stringify(data)}
               />
             ) : (
               <div className="flex items-center justify-center h-full">

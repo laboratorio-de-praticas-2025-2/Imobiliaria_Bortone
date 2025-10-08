@@ -8,19 +8,21 @@ import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import TextField from "@/components/cms/form/fields/TextField";
 import UploadImovel from "@/components/cms/form/fields/UploadImovel";
 import Sidebar from "@/components/cms/Sidebar";
-import { mockImoveis } from "@/mock/imoveis";
+import SplashScreen from "@/components/SplashScreen";
 import { Form as FormAntd } from "antd";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import axios from "axios";
+import { uploadImovelImage, deleteFromNetlify } from "@/services/netlifyUploadService";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
 });
 
 export default function EditarImovelPage({ params }) {
-  const id = params?.id;
+  const { id } = use(params);
   const [form] = FormAntd.useForm();
+  const [formReady, setFormReady] = useState(false);
   const [imovel, setImovel] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [formValues, setFormValues] = useState(null);
@@ -189,10 +191,10 @@ export default function EditarImovelPage({ params }) {
         setOriginalImages(imagesData);
 
         // preencher seleções locais (para os DropdownField customizados)
-        setTipoSelecionado(found.tipo ?? "Selecione o Tipo");
-        setStatusSelecionado(found.status ?? "Selecione o status");
-        setCitiesSelecionado(found.cidade ?? "Selecione a cidade");
-        setSelectedState(found.estado ?? "Selecione o estado");
+        setTipoSelecionado(found.tipo ?? "Tipo");
+        setStatusSelecionado(found.status ?? "Status");
+        setCitiesSelecionado(found.cidade ?? "Cidade");
+        setSelectedState(found.estado ?? "Estado");
         setSelectedBedrooms(found.casa.quartos ? String(found.casa.quartos) : "Quantidade");
 
         setSelectedBathrooms(
@@ -207,6 +209,7 @@ export default function EditarImovelPage({ params }) {
           cidade: found.cidade ?? undefined,
           estado: found.estado ?? undefined,
           descricao: found.descricao ?? undefined,
+          mostrar_preco: found.mostrar_preco ? "sim" : "nao",
           area: found.area ?? undefined,
           preco: found.preco ?? undefined,
           endereco: found.endereco ?? undefined,
@@ -269,18 +272,23 @@ export default function EditarImovelPage({ params }) {
       // Fazer upload de novas imagens
       for (const newImage of newImages) {
         try {
-          const formData = new FormData();
-          formData.append('imagem', newImage.originFileObj);
-          formData.append('imovel_id', id);
-          formData.append('descricao', newImage.name || 'Imagem do imóvel');
-          
-          const response = await axios.post(`${apiUrl}/imagemimovel/upload`, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-          
-          // The API should return the filename (not full URL) for database storage
+        // Upload via Netlify
+        const imageUrl = await uploadImovelImage(
+          newImage.originFileObj,
+          id,
+          newImage.name || 'Imagem do imóvel'
+        );
+
+        // Salvar referência da imagem no backend
+        const response = await axios.post(`${apiUrl}/imagemimovel`, {
+          imovel_id: id,
+          url_imagem: imageUrl,
+          descricao: newImage.name || 'Imagem do imóvel'
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });          // The API should return the filename (not full URL) for database storage
           console.log(`Imagem ${newImage.name} enviada com sucesso. Filename: ${response.data.url_imagem}`);
         } catch (error) {
           console.error(`Erro ao fazer upload da imagem ${newImage.name}:`, error);
@@ -298,10 +306,10 @@ export default function EditarImovelPage({ params }) {
       // Atualizar dados do imóvel
       const updateData = {
         ...formValues,
-        tipo: tipoSelecionado !== "Selecione o Tipo" ? tipoSelecionado : undefined,
-        status: statusSelecionado !== "Selecione o status" ? statusSelecionado : undefined,
-        cidade: citiesSelecionado !== "Selecione a cidade" ? citiesSelecionado : undefined,
-        estado: selectedState !== "Selecione o estado" ? selectedState : undefined,
+        tipo: tipoSelecionado !== "Tipo" ? tipoSelecionado : undefined,
+        status: statusSelecionado !== "Status" ? statusSelecionado : undefined,
+        cidade: citiesSelecionado !== "Cidade" ? citiesSelecionado : undefined,
+        estado: selectedState !== "Estado" ? selectedState : undefined,
         quartos: selectedBedrooms !== "Quantidade" ? parseInt(selectedBedrooms) : undefined,
         banheiros: selectedBathrooms !== "Quantidade" ? parseInt(selectedBathrooms) : undefined,
         vagas: selectedParking !== "Quantidade" ? parseInt(selectedParking) : undefined,
@@ -329,8 +337,7 @@ export default function EditarImovelPage({ params }) {
     }
   };
 
-  if (loading) return <div>Carregando...</div>;
-  if (imovel === null) return <div>Imóvel não encontrado.</div>;
+  if (loading || !form) return <SplashScreen /> ;
 
   return (
     <>
@@ -363,7 +370,7 @@ export default function EditarImovelPage({ params }) {
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
-                      placeholder="Selecione o Tipo"
+                      placeholder="Tipo"
                       label="Tipo"
                       options={options}
                       selected={tipoSelecionado}
@@ -383,13 +390,30 @@ export default function EditarImovelPage({ params }) {
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
-                      placeholder="Selecione o status"
+                      placeholder="Status"
                       options={status}
                       selected={statusSelecionado}
                       setSelected={setStatusSelecionado}
                       handleSelect={(option) => setStatusSelecionado(option)}
                       width={"w-full"}
                       classname="bg-white hover:bg-[#EEF0F9] w-fit "
+                    />
+                  </FormAntd.Item>
+
+                  <FormAntd.Item
+                    name="mostrar_preco"
+                    label={"Mostrar Preço?"}
+                    rules={[
+                      { required: true, message: "Este campo é obrigatório!" },
+                    ]}
+                    className={`custom-form-item  required !w-full`}
+                    labelCol={{ span: 24 }}
+                  >
+                    <RadioFieldImovel
+                      options={[
+                        { label: "Sim", value: "sim" },
+                        { label: "Não", value: "nao" },
+                      ]}
                     />
                   </FormAntd.Item>
                 </div>
@@ -418,7 +442,7 @@ export default function EditarImovelPage({ params }) {
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
-                      placeholder="Selecione a Cidade"
+                      placeholder="Cidade"
                       options={cities}
                       selected={citiesSelecionado}
                       setSelected={setCitiesSelecionado}
@@ -437,7 +461,7 @@ export default function EditarImovelPage({ params }) {
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
-                      placeholder="Selecione o Estado"
+                      placeholder="Estado"
                       label="Estado"
                       options={states}
                       selected={selectedState}
@@ -615,8 +639,6 @@ export default function EditarImovelPage({ params }) {
                           label="Latitude"
                           placeholder="Latitude"
                           className="!w-full"
-                          classInput="!bg-[#EEEEEE]"
-                          readOnly
                         />
                       </div>
                       <div className=" flex flex-row gap-2 !w-full">
@@ -625,8 +647,6 @@ export default function EditarImovelPage({ params }) {
                           label="Longitude"
                           placeholder="Longitude"
                           className="!w-full"
-                          classInput="!bg-[#EEEEEE]"
-                          readOnly
                         />
                       </div>
                     </>
@@ -650,16 +670,12 @@ export default function EditarImovelPage({ params }) {
                         label="Latitude"
                         placeholder="Latitude"
                         className="!w-full"
-                        classInput="!bg-[#EEEEEE]"
-                        readOnly
                       />
                       <TextField
                         name="longitude"
                         label="Longitude"
-                        classInput="!bg-[#EEEEEE]"
                         placeholder="Longitude"
                         className="!w-full !border-b-blue-50"
-                        readOnly
                       />
                     </div>
                   )}

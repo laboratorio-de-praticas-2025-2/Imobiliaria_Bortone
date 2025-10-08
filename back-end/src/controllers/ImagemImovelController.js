@@ -1,99 +1,56 @@
-import multer from 'multer';
 import path from 'path';
-import crypto from 'crypto'; 
-import fs from 'fs';
 import * as ImagemImovelService from '../services/ImagemImovelService.js';
 
+export const createImageReference = async (req, res) => {
+  try {
+    const { imovel_id, url_imagem, descricao } = req.body;
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    // Salvar diretamente no diretório public/images/imoveis do front-end
-    const uploadPath = path.join(process.cwd(), '../front-end/public/images/imoveis');
+    console.log("Create image reference request body:", { imovel_id, url_imagem, descricao });
+
+    if (!imovel_id || !url_imagem) {
+      return res.status(400).json({ error: "Campos obrigatórios: imovel_id e url_imagem." });
+    }
+
+    const novaImagem = await ImagemImovelService.createImagem({
+      imovel_id: parseInt(imovel_id),
+      url_imagem,
+      descricao: descricao || "Imagem do imóvel",
+    });
     
-    // Criar diretório se não existir
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-    
-    cb(null, uploadPath); 
-  },
-  filename: (req, file, cb) => {
-    const extname = path.extname(file.originalname); // Obtém a extensão original do arquivo
-    const newFilename = crypto.randomBytes(16).toString('hex') + extname; // Gera um nome único
-    cb(null, newFilename);
-  },
-});
-
-const upload = multer({ storage: storage });
-
-export const uploadImage = (req, res) => {
-  upload.single('imagem')(req, res, async (err) => {
-    if (err) {
-      console.error("Erro no upload da imagem:", err);
-      return res.status(500).json({ 
-        error: "Erro ao fazer upload da imagem.", 
-        details: err.message 
-      });
-    }
-
-    if (!req.file) {
-      console.error("Nenhum arquivo de imagem enviado. req.body:", req.body);
-      return res.status(400).json({ error: "Nenhum arquivo de imagem enviado." });
-    }
-
-    const { imovel_id, descricao } = req.body;
-    console.log("Upload request body:", { imovel_id, descricao });
-    console.log("Upload file info:", req.file);
-
-    if (!imovel_id) {
-      return res.status(400).json({ error: "Campo obrigatório: imovel_id." });
-    }
-
-    try {
-      // Armazenar URL relativa para o front-end acessar
-      const url_imagem = `/images/imoveis/${req.file.filename}`;
-      const novaImagem = await ImagemImovelService.createImagem({
-        imovel_id: parseInt(imovel_id),
-        url_imagem,
-        descricao: descricao || "Imagem do imóvel",
-      });
-      console.log("Imagem salva com sucesso:", novaImagem);
-      res.status(201).json(novaImagem);
-    } catch (error) {
-      console.error("Erro ao salvar informações da imagem no banco de dados:", error);
-      res.status(500).json({ 
-        error: "Erro interno do servidor ao salvar imagem.", 
-        details: error.message 
-      });
-    }
-  });
+    console.log("Referência de imagem salva com sucesso:", novaImagem);
+    res.status(201).json(novaImagem);
+  } catch (error) {
+    console.error("Erro ao salvar referência da imagem no banco:", error);
+    res.status(500).json({ 
+      error: "Erro interno do servidor ao salvar referência da imagem.", 
+      details: error.message 
+    });
+  }
 };
 
 export const deleteImage = async (req, res) => {
   const { id } = req.params;
   try {
-    // Primeiro buscar a imagem para obter o caminho do arquivo
+    // Primeiro buscar a imagem para obter a URL
     const imagem = await ImagemImovelService.getImageById(id);
     if (!imagem) {
       return res.status(404).json({ error: "Imagem não encontrada." });
     }
 
-    // Extrair o nome do arquivo da URL
+    // Extrair o nome do arquivo da URL para eventual limpeza no Netlify
     const filename = path.basename(imagem.url_imagem);
-    const filePath = path.join(process.cwd(), '../front-end/public/images/imoveis', filename);
+    console.log("Deletando imagem:", { id, filename, url_imagem: imagem.url_imagem });
 
-    // Deletar o arquivo físico se existir
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
-    }
-
-    // Deletar o registro do banco
+    // Deletar o registro do banco (o arquivo físico agora é responsabilidade do Netlify)
     const deleted = await ImagemImovelService.deleteImagem(id);
     if (!deleted) {
       return res.status(404).json({ error: "Erro ao excluir imagem do banco de dados." });
     }
     
-    res.status(200).json({ message: "Imagem excluída com sucesso." });
+    res.status(200).json({ 
+      message: "Referência de imagem excluída com sucesso.",
+      fileName: filename // Retorna nome do arquivo para eventual limpeza no frontend
+    });
   } catch (error) {
     console.error("Erro ao excluir imagem:", error);
     res.status(500).json({ error: "Erro interno do servidor ao excluir imagem." });

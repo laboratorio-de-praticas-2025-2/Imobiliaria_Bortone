@@ -183,8 +183,17 @@ export function handleConnection(ws) {
         }
       }
 
+      // Ping/Pong para manter conexão ativa
+      if (data.type === "ping") {
+        chatService.send(ws, { 
+          type: "pong", 
+          timestamp: data.timestamp || Date.now() 
+        });
+        return;
+      }
+
       // Mensagens
-  if (data.type === "message") {
+      if (data.type === "message") {
         //Garantir que a mensagem é uma string e não vazia
         if (typeof data.text !== "string" || data.text.trim() === "") {
           chatService.send(ws, { type: "error", msg: "Mensagem Inválida." });

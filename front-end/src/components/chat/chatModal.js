@@ -5,6 +5,8 @@ import { IoIosCloseCircle } from "react-icons/io";
 import { IoSend } from "react-icons/io5";
 import { RxAvatar } from "react-icons/rx";
 import { BsEmojiSmileFill } from "react-icons/bs";
+import infoContato from "@/utils/infoContato.json";
+
 
 // Helper movido para fora do componente para evitar recriação a cada renderização
 const getUserData = () => {
@@ -38,13 +40,14 @@ const getUserData = () => {
   }
 };
 
-export default function ChatModal({ onClose }) {
+export default function ChatModal({ onClose, isLoggedIn }) {
   // Estados básicos
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
   const [ws, setWs] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState("disconnected"); // "connecting", "connected", "reconnecting", "disconnected"
   
   // Estados do usuário inicializados com lazy initialization
   const [userData, setUserData] = useState(() => getUserData());
@@ -65,7 +68,10 @@ export default function ChatModal({ onClose }) {
         const { protocol, hostname, port } = window.location;
         const wsProtocol = protocol === "https:" ? "wss:" : "ws:";
         if (hostname === "localhost" || hostname === "127.0.0.1") return `${wsProtocol}//${hostname}:4000`;
-        if (hostname.includes('.vercel.app')) return "wss://imobiliaria-bortone.onrender.com";
+        if (hostname.includes('.vercel.app')) {
+          const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://imobiliaria-bortone.onrender.com';
+          return backendUrl.replace(/^http/, "ws");
+        }
         if (hostname.includes('.onrender.com')) return `${wsProtocol}//${hostname}`;
         return `${wsProtocol}//${hostname}${port ? `:${port}` : ""}`;
       }
@@ -139,12 +145,57 @@ export default function ChatModal({ onClose }) {
 
     let socket;
     let reconnectTimer;
+    let heartbeatTimer;
     let reconnectAttempts = 0;
-    const maxReconnectAttempts = 5;
+    const maxReconnectAttempts = 10;
+    
+    const startHeartbeat = (socket) => {
+      // Limpar heartbeat anterior se existir
+      if (heartbeatTimer) clearInterval(heartbeatTimer);
+      
+      let lastPongTime = Date.now();
+      
+      // Enviar ping a cada 30 segundos e verificar se recebemos pong
+      heartbeatTimer = setInterval(() => {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+          const now = Date.now();
+          
+          // Se não recebemos pong há mais de 60 segundos, considerar conexão morta
+          if (now - lastPongTime > 60000) {
+            console.log("❌ Conexão considerada morta - não recebeu pong");
+            socket.close(1000, "Heartbeat timeout");
+            return;
+          }
+          
+          socket.send(JSON.stringify({ type: "ping", timestamp: now }));
+        }
+      }, 30000);
+      
+      // Atualizar tempo do último pong quando recebermos resposta
+      socket.addEventListener('message', (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type === "pong") {
+            lastPongTime = Date.now();
+          }
+        } catch (e) {
+          // Ignorar erros de parsing neste listener específico
+        }
+      });
+    };
+    
+    const stopHeartbeat = () => {
+      if (heartbeatTimer) {
+        clearInterval(heartbeatTimer);
+        heartbeatTimer = null;
+      }
+    };
     
     const connect = () => {
       const wsUrl = `${getWebSocketUrl()}?token=${userData.token}`;
-      console.log(`🔌 Tentando conectar WebSocket: ${wsUrl}`);
+      console.log(`🔌 Tentando conectar WebSocket (tentativa ${reconnectAttempts + 1}): ${wsUrl}`);
+      
+      setConnectionStatus("connecting");
       
       try {
         socket = new WebSocket(wsUrl);
@@ -153,8 +204,16 @@ export default function ChatModal({ onClose }) {
         socket.onopen = () => {
           console.log("✅ WebSocket conectado com sucesso");
           setIsConnected(true);
+          setConnectionStatus("connected");
           reconnectAttempts = 0;
-          setMessages((prev) => prev.filter(msg => !msg.text.includes("Erro de conexão")));
+          setMessages((prev) => prev.filter(msg => 
+            !msg.text.includes("Erro de conexão") && 
+            !msg.text.includes("Reconectando") &&
+            !msg.text.includes("Conexão perdida")
+          ));
+
+          // Iniciar heartbeat
+          startHeartbeat(socket);
 
           const connectMessage = {
             type: "connect",
@@ -280,6 +339,17 @@ export default function ChatModal({ onClose }) {
                 createMessage(Date.now(), "support", errorMsg),
               ]);
             }
+
+            // Responder a pings do servidor
+            if (type === "ping") {
+              socket.send(JSON.stringify({ type: "pong" }));
+            }
+
+            // Confirmar recebimento de pong
+            if (type === "pong") {
+              const latency = data.timestamp ? Date.now() - data.timestamp : null;
+              console.log(`🏓 Pong recebido do servidor${latency ? ` (latência: ${latency}ms)` : ""}`);
+            }
           } catch (e) {
             console.error("❌ Falha ao processar mensagem WS:", e, event.data);
           }
@@ -288,19 +358,37 @@ export default function ChatModal({ onClose }) {
         socket.onclose = (event) => {
           console.log("❌ WebSocket fechado:", { code: event.code, reason: event.reason });
           setIsConnected(false);
-          if (reconnectAttempts < maxReconnectAttempts) {
+          stopHeartbeat();
+          
+          // Códigos específicos que não devem reconectar
+          const noReconnectCodes = [1000, 1001, 4001, 4002]; // Normal closure, going away, auth errors
+          
+          if (!noReconnectCodes.includes(event.code) && reconnectAttempts < maxReconnectAttempts) {
             reconnectAttempts++;
-            const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), 10000);
-            console.log(`🔄 Tentando reconectar em ${delay}ms`);
+            setConnectionStatus("reconnecting");
+            const delay = Math.min(1000 * Math.pow(2, reconnectAttempts - 1), 10000);
+            console.log(`🔄 Tentando reconectar em ${delay}ms (código: ${event.code})`);
+            
+            setMessages((prev) => [...prev, createMessage(Date.now(), "support", `🔄 Conexão perdida (código: ${event.code}). Reconectando em ${Math.round(delay/1000)}s...`)]);
+            
             reconnectTimer = setTimeout(connect, delay);
           } else {
-            setMessages((prev) => [...prev, createMessage(Date.now(), "support", "❌ Não foi possível conectar ao servidor.")]);
+            setConnectionStatus("disconnected");
+            const errorMsg = event.code === 4001 ? "❌ Token de autenticação obrigatório." :
+                           event.code === 4002 ? "❌ Token de autenticação inválido." :
+                           event.code === 1008 ? "❌ Origem não permitida." :
+                           reconnectAttempts >= maxReconnectAttempts ? "❌ Não foi possível conectar ao servidor após várias tentativas." :
+                           "❌ Conexão encerrada.";
+            
+            setMessages((prev) => [...prev, createMessage(Date.now(), "support", errorMsg)]);
           }
         };
 
         socket.onerror = (error) => {
           console.error("🚨 Erro no WebSocket:", error);
           setIsConnected(false);
+          setConnectionStatus("disconnected");
+          stopHeartbeat();
         };
       } catch (connectionError) {
         console.error("❌ Erro ao criar WebSocket:", connectionError);
@@ -310,7 +398,10 @@ export default function ChatModal({ onClose }) {
     connect();
     return () => {
       if (reconnectTimer) clearTimeout(reconnectTimer);
-      if (socket) socket.close();
+      stopHeartbeat();
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.close(1000, "Component unmounting");
+      }
     };
     // Incluindo dependências necessárias para resolver o warning do ESLint
   }, [userData.token, userData.userId, userData.isAgent, userData.nome, userData.nivel, selectedUser]);
@@ -356,6 +447,72 @@ export default function ChatModal({ onClose }) {
   useEffect(() => {
     console.log("🔍 Estado atual das mensagens:", messages);
   }, [messages]);
+
+  // Função para redirecionar para login
+  const handleLoginRedirect = () => {
+    window.location.href = '/login';
+  };
+
+  // Se o usuário não estiver logado, mostra tela de login
+  if (!isLoggedIn || !userData.token) {
+    return (
+      <div className="fixed z-[9999] inset-0 w-full h-full rounded-none md:inset-auto md:bottom-4 md:right-4 md:w-[90%] md:max-w-sm md:h-[70vh] md:rounded-2xl bg-white shadow-lg flex flex-col overflow-hidden animate-slideUpFade">
+        {/* Header */}
+        <div className="flex items-center justify-between p-3 border-b bg-[#4C62AE]">
+          <div className="flex items-center gap-2">
+            <RxAvatar className="w-8 h-8 md:w-10 md:h-10" color="white" />
+            <div>
+              <h2 className="text-sm md:text-base text-white font-semibold">
+                Suporte Imobiliária Bortone
+              </h2>
+              <p className="text-xs text-white/80">
+                Faça login para conversar
+              </p>
+            </div>
+          </div>
+          <button onClick={onClose}>
+            <IoIosCloseCircle className="w-8 h-8 md:w-10 md:h-10 transition-transform hover:scale-110" color="white" />
+          </button>
+        </div>
+
+        {/* Conteúdo de login necessário */}
+        <div className="flex-1 flex flex-col items-center justify-center p-6 text-center bg-gray-50">
+          <div className="mb-6">
+            <div className="w-16 h-16 bg-[#4C62AE] rounded-full flex items-center justify-center mb-4 mx-auto">
+              <RxAvatar className="w-8 h-8" color="white" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              Entre em contato conosco!
+            </h3>
+            <p className="text-sm text-gray-600 mb-6">
+              Para usar o chat de suporte, você precisa fazer login em sua conta.
+            </p>
+          </div>
+
+          <div className="w-full space-y-3">
+            <button
+              onClick={handleLoginRedirect}
+              className="w-full bg-[#4C62AE] text-white py-3 px-4 rounded-lg font-semibold hover:bg-[#3d4f8a] transition-colors"
+            >
+              Fazer Login
+            </button>
+            <button
+              onClick={() => window.location.href = '/cadastro'}
+              className="w-full border border-[#4C62AE] text-[#4C62AE] py-3 px-4 rounded-lg font-semibold hover:bg-[#4C62AE] hover:text-white transition-colors"
+            >
+              Criar Conta
+            </button>
+          </div>
+
+          <div className="mt-6 text-xs text-gray-500">
+            <p>Ou entre em contato por:</p>
+            <p className="mt-1">📞 {infoContato.telefoneWhats.telefone}</p>
+            <p>📧 {infoContato.contato.email}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="fixed z-[9999] inset-0 w-full h-full rounded-none md:inset-auto md:bottom-4 md:right-4 md:w-[90%] md:max-w-sm md:h-[70vh] md:rounded-2xl bg-white shadow-lg flex flex-col overflow-hidden animate-slideUpFade">
@@ -368,7 +525,11 @@ export default function ChatModal({ onClose }) {
               {userData.isAgent ? "Painel de Atendimento" : "Suporte Imobiliária Bortone"}
             </h2>
             <p className="text-xs text-white/80">
-              {isConnected ? "🟢 Online" : "🔴 Conectando..."} • {userData.nome}
+              {connectionStatus === "connected" && "🟢 Online"}
+              {connectionStatus === "connecting" && "� Conectando..."}
+              {connectionStatus === "reconnecting" && "🟡 Reconectando..."}
+              {connectionStatus === "disconnected" && "🔴 Desconectado"}
+              {" • " + userData.nome}
               {userData.isAgent && ` (Agente)`}
             </p>
           </div>
@@ -426,10 +587,17 @@ export default function ChatModal({ onClose }) {
               )}
             </div>
             <div className="p-2 bg-gray-50 border-t text-xs text-gray-500 text-center">
-              {isConnected ? (
+              {connectionStatus === "connected" && (
                 <span className="text-green-600">🟢 Painel Ativo</span>
-              ) : (
-                <span className="text-red-600">🔴 Reconectando...</span>
+              )}
+              {connectionStatus === "connecting" && (
+                <span className="text-yellow-600">🟡 Conectando...</span>
+              )}
+              {connectionStatus === "reconnecting" && (
+                <span className="text-yellow-600">� Reconectando...</span>
+              )}
+              {connectionStatus === "disconnected" && (
+                <span className="text-red-600">🔴 Desconectado</span>
               )}
             </div>
           </div>

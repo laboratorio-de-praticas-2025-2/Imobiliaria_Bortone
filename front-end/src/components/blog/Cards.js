@@ -4,6 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { buildImageUrl } from "@/utils/imageUtils";
+import SplashScreen from "@/components/SplashScreen";
 
 export default function Cards({ searchTerm = "" }) {
   const [posts, setPosts] = useState([]);
@@ -23,23 +25,10 @@ export default function Cards({ searchTerm = "" }) {
     }));
   };
 
-  const buildImage = (apiUrl, url) => {
-    if (!url) return "/404.png"; // Fallback image
-    
-    // Normalizar URL da imagem
-    let imageUrl = url;
-    
-    // Se não começar com /, adicionar prefixo padrão para imagens de blog
-    if (!imageUrl.startsWith("/")) {
-      imageUrl = `/images/blogImages/${imageUrl}`;
-    }
-    
-    // Se for caminho relativo /images/... e existir NEXT_PUBLIC_API_URL, monta URL absoluta
-    if (imageUrl.startsWith("/images/") && apiUrl) {
-      return `${apiUrl}${imageUrl}`;
-    }
-    
-    return imageUrl;
+  // Usar utilitário unificado para construir URLs de imagens
+  const getImageUrl = (url) => {
+    if (imageErrors[url]) return "/404.png";
+    return buildImageUrl(url, 'publicacao', '/404.png');
   };
 
   useEffect(() => {
@@ -62,7 +51,7 @@ export default function Cards({ searchTerm = "" }) {
         const data = resp.data?.data || resp.data || [];
         const mapped = data.map((p) => ({
           ...p,
-          url_imagem: buildImage(apiUrl, p.url_imagem),
+          url_imagem: getImageUrl(p.url_imagem),
         }));
         setPosts(mapped);
         setTotalItems(mapped.length);
@@ -81,7 +70,7 @@ export default function Cards({ searchTerm = "" }) {
   }, [searchTerm]);
 
   if (loading) {
-    return <div className="text-center text-[var(--primary)]">Carregando posts...</div>;
+    return <SplashScreen />;
   }
 
   return (
