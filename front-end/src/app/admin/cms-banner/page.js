@@ -7,9 +7,7 @@ import { useEffect, useState } from "react";
 import { FaImage } from "react-icons/fa6";
 import { buildImageUrl } from "@/utils/imageUtils";
 import SplashScreen from "@/components/SplashScreen";
-
-// URL base do backend
-const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+import { apiClient } from "@/utils/apiClient";
 
 // Normaliza valor ativo (0 ou 1)
 const normalizeAtivo = (value) => {
@@ -27,13 +25,8 @@ const getImageUrl = (urlImagem) => {
 // Chama backend para alternar status do banner
 const toggleStatus = async (id) => {
   try {
-    const res = await fetch(`${BACKEND_BASE_URL}/banner/toggle/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-    });
-    if (!res.ok) throw new Error("Erro ao atualizar status no servidor.");
-    const data = await res.json();
-    return data;
+    const response = await apiClient.put(`/banner/toggle/${id}`);
+    return response.data;
   } catch (error) {
     console.error("Erro ao alterar status no backend:", error);
     throw error;
@@ -56,9 +49,8 @@ export default function CmsBannerPage() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${BACKEND_BASE_URL}/banner`);
-      if (!res.ok) throw new Error(`Erro ${res.status}: ${res.statusText}`);
-      const data = await res.json();
+      const response = await apiClient.get("/banner");
+      const data = response.data;
       const bannersProcessados = data.map(b => ({
         ...b,
         ativo: normalizeAtivo(b.ativo),
@@ -75,11 +67,7 @@ export default function CmsBannerPage() {
 
   const handleDeleteBanner = async (bannerId) => {
     try {
-      const res = await fetch(`${BACKEND_BASE_URL}/banner/${bannerId}`, { method: "DELETE" });
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({ message: "Erro desconhecido" }));
-        throw new Error(errorData.message);
-      }
+      await apiClient.delete(`/banner/${bannerId}`);
       setBanners(prev => prev.filter(b => b.id !== bannerId));
     } catch (err) {
       console.error(err);

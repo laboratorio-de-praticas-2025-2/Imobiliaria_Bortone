@@ -4,11 +4,10 @@ import Image from "next/image";
 import { Navigation } from "swiper/modules";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useEffect, useState } from "react";
+import { apiClient } from "@/utils/apiClient";
 
 import "swiper/css";
 import "swiper/css/navigation";
-
-const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 // Função helper para construir URL de imagem corretamente
 const getImageUrl = (urlImagem) => {
@@ -21,11 +20,11 @@ const getImageUrl = (urlImagem) => {
   
   // Se começa com /, é um caminho absoluto do backend
   if (urlImagem.startsWith("/")) {
-    return `${apiURL}${urlImagem}`;
+    return `${process.env.NEXT_PUBLIC_API_URL}${urlImagem}`;
   }
   
   // Se não tem /, assume que é apenas o nome do arquivo
-  return `${apiURL}/uploads/${urlImagem}`;
+  return `${process.env.NEXT_PUBLIC_API_URL}/uploads/${urlImagem}`;
 };
 
 // Slides padrão como fallback
@@ -52,12 +51,8 @@ export default function HeaderSlider() {
       
       console.log("🎠 Buscando banners ativos para carrossel...");
       
-      const response = await fetch(`${apiURL}/banner`);
-      if (!response.ok) {
-        throw new Error(`Erro ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+      const response = await apiClient.get("/banner");
+      const data = response.data;
       console.log("📊 Dados recebidos do backend:", data);
       
       // Validação básica dos dados

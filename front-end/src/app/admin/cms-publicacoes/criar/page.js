@@ -14,6 +14,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { uploadBlogImage } from "@/services/netlifyUploadService";
 import { useFormSubmit } from "@/hooks/useAsyncOperation";
+import { apiClient } from "@/utils/apiClient";
 
 export default function CriarPostPage() {
   const [fileList, setFileList] = useState([]);
@@ -45,12 +46,7 @@ export default function CriarPostPage() {
           url_imagem
         };
 
-        const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
-        const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
-
-        const response = await axios.post(`${apiUrl}/publicacoes`, blogData, {
-          headers: { "Content-Type": "application/json" },
-        });
+        const response = await apiClient.post("/publicacoes", blogData);
 
         if (response.status === 201) {
           alert("Publicação criada com sucesso!");
