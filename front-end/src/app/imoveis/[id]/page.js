@@ -111,8 +111,14 @@ export default function Mapa() {
         const imovelData = imovelResponse.data;
         
         // Buscar imagens do imóvel
-        const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
-        const imagesData = imagesResponse.data;
+        let imagesData = [];
+        try {
+          const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
+          imagesData = Array.isArray(imagesResponse.data) ? imagesResponse.data : [];
+        } catch (imageError) {
+          console.warn("Erro ao carregar imagens do imóvel:", imageError);
+          imagesData = [];
+        }
         
         // Combinar dados do imóvel com imagens
         const imovelCompleto = {
@@ -160,12 +166,23 @@ export default function Mapa() {
       ? `${imovelAtual.tipo}, ${imovelAtual.endereco}, imóvel, ${imovelAtual.casa?.quartos || 0} quartos, ${imovelAtual.casa?.banheiros || 0} banheiros`
       : "imóvel, casa, apartamento",
     url: `https://imobiliaria-bortone.vercel.app/imoveis/${id}`,
-    image: imovelAtual?.imagens?.[0]?.url_imagem,
+    image: imovelAtual?.imagens?.[0]?.url_imagem || "https://imobiliaria-bortone.vercel.app/404.png",
   });
 
   if (loading || !imovelAtual) return <SplashScreen />;
   const slides = imovelAtual?.imagens || [];
   const toggleVerMais = () => setVerMais(!verMais);
+
+  // Função para obter URL da imagem com fallback
+  const getImageSrc = (imageUrl) => {
+    if (!imageUrl || imageUrl.trim() === '') {
+      return "/404.png";
+    }
+    return buildImageUrl(imageUrl, "imovel", "/404.png");
+  };
+
+  // Se não há imagens, criar um slide padrão com 404.png
+  const slidesToRender = slides.length > 0 ? slides : [{ url_imagem: null }];
 
   const preco =
     imovelAtual?.preco === null || imovelAtual?.preco === undefined
@@ -182,7 +199,12 @@ export default function Mapa() {
       <main className="flex-1 teste">
         {/* Carrossel */}
         <div className="imoveis-carousel">
-          {slides.length > 1 ? (
+          {slides.length === 0 && (
+            <div className="absolute top-4 left-4 bg-orange-500 text-white px-3 py-1 rounded-lg text-sm z-10">
+              Imagens não disponíveis
+            </div>
+          )}
+          {slidesToRender.length > 1 ? (
             <Swiper
               modules={[Navigation]}
               navigation={{
@@ -199,42 +221,42 @@ export default function Mapa() {
                 1440: { slidesPerView: 2 },
               }}
             >
-              {slides.map((slide, idx) => (
+              {slidesToRender.map((slide, idx) => (
                 <SwiperSlide key={idx} className="flex justify-center">
                   <div className="slide-card w-full">
                     <Image
-                      src={buildImageUrl(
-                        slide.url_imagem,
-                        "imovel",
-                        "/imovel1.png"
-                      )}
-                      alt={`Imóvel ${imovelAtual.id}`}
+                      src={getImageSrc(slide.url_imagem)}
+                      alt={slide.url_imagem ? `Imóvel ${imovelAtual.id}` : `Imóvel ${imovelAtual.id} - Imagem não disponível`}
                       width={407}
                       height={195}
                       className="carousel-img h-[520px]"
+                      onError={(e) => {
+                        e.target.src = "/404.png";
+                      }}
+                      priority={idx === 0} // Prioridade para primeira imagem
                     />
                   </div>
                 </SwiperSlide>
               ))}
             </Swiper>
           ) : (
-            slides.map((slide, idx) => (
+            slidesToRender.map((slide, idx) => (
               <div key={idx} className="slide-card w-full">
                 <Image
-                  src={buildImageUrl(
-                    slide.url_imagem,
-                    "imovel",
-                    "/imovel1.png"
-                  )}
-                  alt={`Imóvel ${imovelAtual.id}`}
+                  src={getImageSrc(slide.url_imagem)}
+                  alt={slide.url_imagem ? `Imóvel ${imovelAtual.id}` : `Imóvel ${imovelAtual.id} - Imagem não disponível`}
                   width={407}
                   height={195}
                   className="carousel-img object-cover rounded-lg aspect-video"
+                  onError={(e) => {
+                    e.target.src = "/404.png";
+                  }}
+                  priority={idx === 0} // Prioridade para primeira imagem
                 />
               </div>
             ))
           )}
-          {slides.length > 1 && (
+          {slidesToRender.length > 1 && (
             <>
               <button className="custom-prev inv">
                 <IoIosArrowBack size={30} color="#2C2C2C" />

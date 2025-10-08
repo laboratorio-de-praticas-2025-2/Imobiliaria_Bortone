@@ -11,6 +11,19 @@ import { FaCheckSquare } from "react-icons/fa";
 import LineGraph from "@/components/dash/LineGraph";
 import { useEffect, useState } from "react";
 import { getDashboardData } from "@/services/dashboardService";
+// import DebugAuth from "@/components/DebugAuth"; // Temporário para debugimport Card from "@/components/dash/Card";
+import Sidebar from "@/components/cms/Sidebar";
+import PizzaGraph from "@/components/dash/PizzaGraph";
+import CMS from "@/components/cms/table";
+import { PiCoinsFill } from "react-icons/pi";
+import { BsFillBuildingFill } from "react-icons/bs";
+import { MdTerrain, MdOutlineBedroomParent } from "react-icons/md";
+import { FaUserPlus, FaUserPen, FaUser, FaHouseChimney } from "react-icons/fa6";
+import { FaCheckSquare } from "react-icons/fa";
+import LineGraph from "@/components/dash/LineGraph";
+import { useEffect, useState } from "react";
+import { getDashboardData } from "@/services/dashboardService";
+import DebugAuth from "@/components/DebugAuth";
 export default function Dashboard() {
 
   const [dados, setDados] = useState(null);
@@ -81,6 +94,7 @@ export default function Dashboard() {
 
   return (
     <>
+      {/* <DebugAuth /> */}
       <Sidebar />
       <div className="md:ml-20">
         <CMS.Body title={"Dashboard"}>
