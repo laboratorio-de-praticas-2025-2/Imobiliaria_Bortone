@@ -33,7 +33,9 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
     // Para publicidades, usar url_imagem; para outros, usar imagem
     const imageUrl = item.url_imagem || item.imagem;
     
-    if (!imageUrl) return "/images/casa.png";
+    if (!imageUrl) {
+      return "/images/casa.png";
+    }
     
     // Usar utilitário unificado para construir URL
     return buildImageUrlWithProxy(imageUrl, getImageType());
