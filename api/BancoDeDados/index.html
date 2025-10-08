@@ -724,6 +724,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#versoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Versões
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#ultimas-mudancas" class="md-nav__link">
     <span class="md-ellipsis">
       Últimas Mudanças
@@ -1230,6 +1239,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#versoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Versões
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#ultimas-mudancas" class="md-nav__link">
     <span class="md-ellipsis">
       Últimas Mudanças
@@ -1387,20 +1405,20 @@
 <li>No ambiente de <i><b>desenvolvimento</b></i>, todos os usuários possuem acesso liberado para inserções e remoções de dados. Caso necessário, esses acessos poderão ser limitados...</li>
 <li>Recomendamos que o desenvolvimento seja iniciado sempre pelo banco local, pois ele oferece maior liberdade para testes e inserções de dados, menor latência nas consultas e a possibilidade de trabalhar com dados inconsistentes ou incompletos sem impacto no ambiente principal ou de desenvolvimento.</li>
 </ul>
+<h2 id="versoes">Versões</h2>
+<ul>
+<li>
+<p>O banco de dados em produção está rodando na versão <code>10.11.13-MariaDB</code>.</p>
+</li>
+<li>
+<p>⚠️ Atenção: ao executar queries localmente, podem surgir erros ou alertas caso a versão MySQL/MariaDB utilizada no ambiente local seja mais recente do que a versão do banco hospedado. Isso acontece devido a diferenças de sintaxe, funções e comportamentos entre versões distintas dos SGBDs. Sugerimos </p>
+</li>
+</ul>
 <h2 id="ultimas-mudancas">Últimas Mudanças</h2>
 <ul>
-<li><em>Banco foi Populado com dados de exemplo!</em></li>
-<li>Adição do atributo <code>tipo_negociacao</code> na tabela IMOVEIS</li>
-<li>Adição do atributo <code>ativo</code> na tabela BANNER_INDEX</li>
-<li>Adição do atributo <code>ativo</code> na tabela PUBLICIDADE</li>
-<li>Atualização do atributo <code>status</code> na tabela IMOVEIS para aceitar os valores <ul>
-<li><code>disponivel</code> - <code>indisponivel</code> - <code>vendido</code> - <code>locado</code></li>
-</ul>
-</li>
-<li>Adição do atributo <code>data_update_status</code> na tabela IMOVEIS<ul>
-<li>Esse atributo é populado por um trigger sempre que o atributo <code>status</code> é modificado </li>
-</ul>
-</li>
+<li>Adição do atributo <em>data_cadastro</em> na tabela <em>usuario</em></li>
+<li>Adição de tabela <em>agendamentos</em></li>
+<li>Adição de views e procedures para time de Dashboard e Reports</li>
 </ul>
 <h2 id="diagrama">Diagrama:</h2>
 <p><img alt="imagem do diagrama" src="../../assets/imoveis_diagrama.mmd.png" /></p>
@@ -1445,6 +1463,16 @@
 <td>celular</td>
 <td>VARCHAR(20)</td>
 <td>Número de celular do usuário</td>
+</tr>
+<tr>
+<td>ativo</td>
+<td>TINYINT(1)</td>
+<td>Status do usuário (0 = inativo, 1 = ativo)</td>
+</tr>
+<tr>
+<td>data_cadastro</td>
+<td>TIMESTAMP</td>
+<td>Data de cadastro (UTC)</td>
 </tr>
 </tbody>
 </table>
@@ -1540,6 +1568,11 @@
 <td>data_update_status</td>
 <td>TIMESTAMP</td>
 <td>Campo guarda a data da ocorrência de update no atributo status do imóvel. Exemplo: Ao atualizar para "vendido" vai ficar registrado que foi vendido no dia do update, o mesmo funciona se mudar para locado, disponivel ou indisponivel (A atualização do campo DATA_UPDATE_STATUS é feita de forma automática no banco por meio de um trigger que observa o campo STATUS)</td>
+</tr>
+<tr>
+<td>visibilidade_preco</td>
+<td>TINYINT(1)</td>
+<td>Exibição do preço (0 = oculto, 1 = visível)</td>
 </tr>
 </tbody>
 </table>
@@ -1924,6 +1957,56 @@
 </table>
 </details>
 <p><em>Tabela para armazenar as postagens do blog</em></p>
+<details class="note">
+<summary>AGENDAMENTOS</summary>
+<table>
+<thead>
+<tr>
+<th>Nome da Coluna</th>
+<th>Tipo de Dado</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>INT(11)</td>
+<td>Identificador único do agendamento</td>
+</tr>
+<tr>
+<td>id_usuario</td>
+<td>INT(11)</td>
+<td>ID do usuário que fez o agendamento</td>
+</tr>
+<tr>
+<td>data_marcada</td>
+<td>DATETIME</td>
+<td>Data e hora marcada para o agendamento</td>
+</tr>
+<tr>
+<td>data_create</td>
+<td>DATETIME</td>
+<td>Data de criação do agendamento (automática)</td>
+</tr>
+<tr>
+<td>id_imovel</td>
+<td>INT(11)</td>
+<td>ID do imóvel relacionado ao agendamento</td>
+</tr>
+<tr>
+<td>mensagem</td>
+<td>TEXT</td>
+<td>Mensagem adicional do usuário</td>
+</tr>
+<tr>
+<td>concluido</td>
+<td>TINYINT(1)</td>
+<td>Status do agendamento (0 = não concluído, 1 = concluído)</td>
+</tr>
+</tbody>
+</table>
+</details>
+<p><em>Tabela para armazenar os agendamentos e interesses de agendamentos</em></p>
 <h2 id="ambientes">Ambientes</h2>
 <h3 id="1-producao">1. Produção</h3>
 <p>Solução de hospedagem: <strong>AlwaysData</strong><br>
