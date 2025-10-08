@@ -1,8 +1,7 @@
 "use client";
 import { Divider } from "antd";
 import Header from "@/components/home/Header";
-import PropriedadesSelecionadas from "@/components/home/PropriedadesSelecionadas";
-import PropriedadesPerto from "@/components/home/PropriedadesPerto";
+import PropriedadesSelecionadas from "@/components/home/PropriedadesSelecionadas";;
 import HomeFooter from "@/components/home/HomeFooter";
 import SplashScreen from "@/components/SplashScreen";
 import { useEffect, useState } from "react";
@@ -85,11 +84,7 @@ export default function Home() {
     <>
       <Header key="header" />
       <Divider size="large" />
-      {isLoggedIn ? (
-        <PropriedadesSelecionadas key="prop-selecionadas" />
-      ) : (
-        <PropriedadesPerto key="prop-perto" />
-      )}
+      <PropriedadesSelecionadas />
       <Divider size="large" />
       <HomeFooter key="footer" />
     </>
