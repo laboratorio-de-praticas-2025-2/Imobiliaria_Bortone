@@ -43,7 +43,6 @@ export default function Filtros() {
                 placeholder={"Quartos"}
                 selected={filterData.quartos || "Quartos"}
                 handleSelect={handleSelectRooms}
-                setSelected={(value) => updateFilterData({ quartos: value === "Quartos" ? null : value })}
                 classname={"w-32"}
               />
               <DropdownFilter
@@ -51,7 +50,6 @@ export default function Filtros() {
                 placeholder={"Banheiros"}
                 selected={filterData.banheiros || "Banheiros"}
                 handleSelect={handleSelectBathrooms}
-                setSelected={(value) => updateFilterData({ banheiros: value === "Banheiros" ? null : value })}
                 classname={"w-32"}
               />
             </Space>

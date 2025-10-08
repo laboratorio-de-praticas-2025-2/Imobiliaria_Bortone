@@ -3,6 +3,8 @@
 export default function ToggleCompraAluguel({ value, onChange }) {
   const options = ["Alugar", "Comprar"];
   const selectedIndex = options.indexOf(value);
+  
+  console.log("ToggleCompraAluguel - value:", value, "selectedIndex:", selectedIndex);
 
   return (
     <div className="relative flex rounded-full border-2 border-[var(--primary)] overflow-hidden w-[220px] h-[40px]">
@@ -14,6 +16,10 @@ export default function ToggleCompraAluguel({ value, onChange }) {
           zIndex: 1,
         }}
       />
+      {/* Debug: Show selectedIndex */}
+      <div className="absolute top-0 left-0 text-xs text-red-500 z-20">
+        {selectedIndex}
+      </div>
       {options.map((option) => (
         <button
           key={option}
