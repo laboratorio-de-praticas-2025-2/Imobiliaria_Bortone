@@ -71,17 +71,18 @@ export default function initWebSocket(server) {
     }
   });
 
-  // Heartbeat: enviar ping a cada 15 minutos
+  // Heartbeat: enviar ping a cada 30 segundos
   setInterval(() => {
     wss.clients.forEach((ws) => {
       if (ws.isAlive === false) {
+        console.log("🔌 Terminando conexão WebSocket inativa");
         ws.terminate();
         return;
       }
       ws.isAlive = false;
       ws.ping();
     });
-  }, 900000); // 15 minutos
+  }, 30000); // 30 segundos
 
   console.log("✅ WebSocket inicializado");
 };

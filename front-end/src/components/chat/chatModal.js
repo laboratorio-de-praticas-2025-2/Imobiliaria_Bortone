@@ -47,6 +47,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
   const [showEmojis, setShowEmojis] = useState(false);
   const [ws, setWs] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState("disconnected"); // "connecting", "connected", "reconnecting", "disconnected"
   
   // Estados do usuário inicializados com lazy initialization
   const [userData, setUserData] = useState(() => getUserData());
@@ -141,12 +142,57 @@ export default function ChatModal({ onClose, isLoggedIn }) {
 
     let socket;
     let reconnectTimer;
+    let heartbeatTimer;
     let reconnectAttempts = 0;
-    const maxReconnectAttempts = 5;
+    const maxReconnectAttempts = 10;
+    
+    const startHeartbeat = (socket) => {
+      // Limpar heartbeat anterior se existir
+      if (heartbeatTimer) clearInterval(heartbeatTimer);
+      
+      let lastPongTime = Date.now();
+      
+      // Enviar ping a cada 30 segundos e verificar se recebemos pong
+      heartbeatTimer = setInterval(() => {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+          const now = Date.now();
+          
+          // Se não recebemos pong há mais de 60 segundos, considerar conexão morta
+          if (now - lastPongTime > 60000) {
+            console.log("❌ Conexão considerada morta - não recebeu pong");
+            socket.close(1000, "Heartbeat timeout");
+            return;
+          }
+          
+          socket.send(JSON.stringify({ type: "ping", timestamp: now }));
+        }
+      }, 30000);
+      
+      // Atualizar tempo do último pong quando recebermos resposta
+      socket.addEventListener('message', (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type === "pong") {
+            lastPongTime = Date.now();
+          }
+        } catch (e) {
+          // Ignorar erros de parsing neste listener específico
+        }
+      });
+    };
+    
+    const stopHeartbeat = () => {
+      if (heartbeatTimer) {
+        clearInterval(heartbeatTimer);
+        heartbeatTimer = null;
+      }
+    };
     
     const connect = () => {
       const wsUrl = `${getWebSocketUrl()}?token=${userData.token}`;
-      console.log(`🔌 Tentando conectar WebSocket: ${wsUrl}`);
+      console.log(`🔌 Tentando conectar WebSocket (tentativa ${reconnectAttempts + 1}): ${wsUrl}`);
+      
+      setConnectionStatus("connecting");
       
       try {
         socket = new WebSocket(wsUrl);
@@ -155,8 +201,16 @@ export default function ChatModal({ onClose, isLoggedIn }) {
         socket.onopen = () => {
           console.log("✅ WebSocket conectado com sucesso");
           setIsConnected(true);
+          setConnectionStatus("connected");
           reconnectAttempts = 0;
-          setMessages((prev) => prev.filter(msg => !msg.text.includes("Erro de conexão")));
+          setMessages((prev) => prev.filter(msg => 
+            !msg.text.includes("Erro de conexão") && 
+            !msg.text.includes("Reconectando") &&
+            !msg.text.includes("Conexão perdida")
+          ));
+
+          // Iniciar heartbeat
+          startHeartbeat(socket);
 
           const connectMessage = {
             type: "connect",
@@ -282,6 +336,17 @@ export default function ChatModal({ onClose, isLoggedIn }) {
                 createMessage(Date.now(), "support", errorMsg),
               ]);
             }
+
+            // Responder a pings do servidor
+            if (type === "ping") {
+              socket.send(JSON.stringify({ type: "pong" }));
+            }
+
+            // Confirmar recebimento de pong
+            if (type === "pong") {
+              const latency = data.timestamp ? Date.now() - data.timestamp : null;
+              console.log(`🏓 Pong recebido do servidor${latency ? ` (latência: ${latency}ms)` : ""}`);
+            }
           } catch (e) {
             console.error("❌ Falha ao processar mensagem WS:", e, event.data);
           }
@@ -290,19 +355,37 @@ export default function ChatModal({ onClose, isLoggedIn }) {
         socket.onclose = (event) => {
           console.log("❌ WebSocket fechado:", { code: event.code, reason: event.reason });
           setIsConnected(false);
-          if (reconnectAttempts < maxReconnectAttempts) {
+          stopHeartbeat();
+          
+          // Códigos específicos que não devem reconectar
+          const noReconnectCodes = [1000, 1001, 4001, 4002]; // Normal closure, going away, auth errors
+          
+          if (!noReconnectCodes.includes(event.code) && reconnectAttempts < maxReconnectAttempts) {
             reconnectAttempts++;
-            const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), 10000);
-            console.log(`🔄 Tentando reconectar em ${delay}ms`);
+            setConnectionStatus("reconnecting");
+            const delay = Math.min(1000 * Math.pow(2, reconnectAttempts - 1), 10000);
+            console.log(`🔄 Tentando reconectar em ${delay}ms (código: ${event.code})`);
+            
+            setMessages((prev) => [...prev, createMessage(Date.now(), "support", `🔄 Conexão perdida (código: ${event.code}). Reconectando em ${Math.round(delay/1000)}s...`)]);
+            
             reconnectTimer = setTimeout(connect, delay);
           } else {
-            setMessages((prev) => [...prev, createMessage(Date.now(), "support", "❌ Não foi possível conectar ao servidor.")]);
+            setConnectionStatus("disconnected");
+            const errorMsg = event.code === 4001 ? "❌ Token de autenticação obrigatório." :
+                           event.code === 4002 ? "❌ Token de autenticação inválido." :
+                           event.code === 1008 ? "❌ Origem não permitida." :
+                           reconnectAttempts >= maxReconnectAttempts ? "❌ Não foi possível conectar ao servidor após várias tentativas." :
+                           "❌ Conexão encerrada.";
+            
+            setMessages((prev) => [...prev, createMessage(Date.now(), "support", errorMsg)]);
           }
         };
 
         socket.onerror = (error) => {
           console.error("🚨 Erro no WebSocket:", error);
           setIsConnected(false);
+          setConnectionStatus("disconnected");
+          stopHeartbeat();
         };
       } catch (connectionError) {
         console.error("❌ Erro ao criar WebSocket:", connectionError);
@@ -312,7 +395,10 @@ export default function ChatModal({ onClose, isLoggedIn }) {
     connect();
     return () => {
       if (reconnectTimer) clearTimeout(reconnectTimer);
-      if (socket) socket.close();
+      stopHeartbeat();
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.close(1000, "Component unmounting");
+      }
     };
     // Incluindo dependências necessárias para resolver o warning do ESLint
   }, [userData.token, userData.userId, userData.isAgent, userData.nome, userData.nivel, selectedUser]);
@@ -436,7 +522,11 @@ export default function ChatModal({ onClose, isLoggedIn }) {
               {userData.isAgent ? "Painel de Atendimento" : "Suporte Imobiliária Bortone"}
             </h2>
             <p className="text-xs text-white/80">
-              {isConnected ? "🟢 Online" : "🔴 Conectando..."} • {userData.nome}
+              {connectionStatus === "connected" && "🟢 Online"}
+              {connectionStatus === "connecting" && "� Conectando..."}
+              {connectionStatus === "reconnecting" && "🟡 Reconectando..."}
+              {connectionStatus === "disconnected" && "🔴 Desconectado"}
+              {" • " + userData.nome}
               {userData.isAgent && ` (Agente)`}
             </p>
           </div>
@@ -494,10 +584,17 @@ export default function ChatModal({ onClose, isLoggedIn }) {
               )}
             </div>
             <div className="p-2 bg-gray-50 border-t text-xs text-gray-500 text-center">
-              {isConnected ? (
+              {connectionStatus === "connected" && (
                 <span className="text-green-600">🟢 Painel Ativo</span>
-              ) : (
-                <span className="text-red-600">🔴 Reconectando...</span>
+              )}
+              {connectionStatus === "connecting" && (
+                <span className="text-yellow-600">🟡 Conectando...</span>
+              )}
+              {connectionStatus === "reconnecting" && (
+                <span className="text-yellow-600">� Reconectando...</span>
+              )}
+              {connectionStatus === "disconnected" && (
+                <span className="text-red-600">🔴 Desconectado</span>
               )}
             </div>
           </div>
