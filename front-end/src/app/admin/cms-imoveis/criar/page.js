@@ -16,6 +16,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { uploadImovelImage } from "@/services/netlifyUploadService";
 import { useFormSubmit } from "@/hooks/useAsyncOperation";
+import { apiClient } from "@/utils/apiClient";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
@@ -31,9 +32,31 @@ export default function CriarImovelPage() {
     if (isLoading) return;
     setIsLoading(true);
     try {
+      // Validações básicas
+      if (tipoSelecionado === "Tipo") {
+        alert("Selecione um tipo de imóvel");
+        setIsLoading(false);
+        return;
+      }
+      if (statusSelecionado === "Status") {
+        alert("Selecione um status");
+        setIsLoading(false);
+        return;
+      }
+      if (citiesSelecionado === "Cidade") {
+        alert("Selecione uma cidade");
+        setIsLoading(false);
+        return;
+      }
+      if (selectedState === "Estado") {
+        alert("Selecione um estado");
+        setIsLoading(false);
+        return;
+      }
+
       const imovelData = {
         usuario_id: 1,
-        tipo: tipoSelecionado,
+        tipo: tipoSelecionado.toLowerCase(),
         status: statusSelecionado.toLowerCase(),
         cidade: citiesSelecionado,
         estado: selectedState,
@@ -42,7 +65,7 @@ export default function CriarImovelPage() {
         area: values.area,
         preco: values.preco,
         descricao: values.descricao,
-        possui_muro: values.possui_muro === "sim" ? true : false,
+        murado: values.possui_muro === "sim" ? true : false,
         latitude: values.latitude,
         longitude: values.longitude,
       };
@@ -51,21 +74,42 @@ export default function CriarImovelPage() {
 
       let specificData = {};
 
-      if (tipoSelecionado === "Casa") {
+      if (tipoSelecionado.toLowerCase() === "casa") {
+        // Validações para casa
+        if (selectedBedrooms === "Quantidade") {
+          alert("Selecione a quantidade de quartos");
+          setIsLoading(false);
+          return;
+        }
+        if (selectedBathrooms === "Quantidade") {
+          alert("Selecione a quantidade de banheiros");
+          setIsLoading(false);
+          return;
+        }
+        if (selectedParking === "Quantidade") {
+          alert("Selecione a quantidade de vagas");
+          setIsLoading(false);
+          return;
+        }
+        
         specificData = {
-          quartos: selectedBedrooms === "Quantidade" ? 0 : parseInt(selectedBedrooms),
-          banheiros: selectedBathrooms === "Quantidade" ? 0 : parseInt(selectedBathrooms),
-          vagas: selectedParking === "Quantidade" ? 0 : parseInt(selectedParking),
+          quartos: parseInt(selectedBedrooms),
+          banheiros: parseInt(selectedBathrooms),
+          vagas: parseInt(selectedParking),
           possui_piscina: values.possui_piscina === "sim" ? true : false,
           possui_jardim: values.possui_jardim === "sim" ? true : false,
         };
       }
 
-      const response = await apiClient.post('/imoveis', {
+      const finalData = {
         ...imovelData,
-        ...(tipoSelecionado === "Casa" ? specificData : {}),
-        ...(tipoSelecionado === "Terreno" ? specificData : {}),
-      });
+        ...(tipoSelecionado.toLowerCase() === "casa" ? specificData : {}),
+        ...(tipoSelecionado.toLowerCase() === "terreno" ? specificData : {}),
+      };
+      
+      console.log("Dados sendo enviados para API:", finalData);
+      
+      const response = await apiClient.post('/imoveis', finalData);
       
 
       if (response.status === 201) {
