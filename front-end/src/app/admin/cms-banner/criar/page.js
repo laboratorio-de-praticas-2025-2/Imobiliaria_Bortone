@@ -89,17 +89,20 @@ export default function CriarBannerPage() {
                   />
 
                   {fileList.length > 0 ? (
-                    <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5">
+                    <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5 overflow-hidden">
                       <Image
                         src={URL.createObjectURL(fileList[0].originFileObj)}
                         alt="Prévia do banner"
                         width={400}
                         height={320}
                         className="h-full w-full object-cover rounded-3xl"
+                        unoptimized
                       />
                     </div>
                   ) : (
-                    <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5" />
+                    <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5 flex items-center justify-center">
+                      <p className="text-gray-500">Selecione uma imagem</p>
+                    </div>
                   )}
                 </div>
                 <TextAreaField

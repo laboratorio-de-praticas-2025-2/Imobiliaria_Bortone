@@ -128,19 +128,30 @@ export default function CmsBannerPage() {
             />
             <CMS.TableBody>
               {paginatedBanners.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-center">
                   {paginatedBanners.map(banner => (
-                    <Card
-                      key={banner.id}
-                      item={banner}
-                      header
-                      onDelete={() => handleDeleteBanner(banner.id)}
-                      onToggle={() => handleToggleBanner(banner.id)} // ✅ toggle funcional
-                    />
+                    <div key={banner.id} className="relative">
+                      <Card
+                        item={banner}
+                        header
+                        onDelete={() => handleDeleteBanner(banner.id)}
+                        onToggle={() => handleToggleBanner(banner.id)}
+                      />
+                      {/* Indicador visual da URL da imagem */}
+                      {banner.url_imagem && (
+                        <div className="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 rounded text-xs z-10">
+                          {banner.url_imagem.includes('netlify') ? 'Netlify' : 
+                           banner.url_imagem.includes('cloudinary') ? 'Cloudinary' : 'Imagem'}
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               ) : (
-                <p>Nenhum banner encontrado.</p>
+                <div className="text-center py-8">
+                  <p className="text-gray-500 text-lg">Nenhum banner encontrado.</p>
+                  <p className="text-gray-400 text-sm mt-2">Clique em "Novo Banner" para criar seu primeiro banner.</p>
+                </div>
               )}
             </CMS.TableBody>
             <CMS.TableFooter
