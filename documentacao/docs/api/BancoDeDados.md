@@ -1,5 +1,8 @@
 # Banco de dados (MySQL)
 
+> [!WARNING]
+> **Aviso:** Se você estiver utilizando a rede da Fatec, a conexão com o banco de dados pode falhar devido a restrições de rede.
+
 ## 📝 Recomendações Gerais:
 - As estruturas e relações de tabelas deste banco **não devem ser alteradas** sem a autorização do time de dados.
 - No ambiente de <i><b>desenvolvimento</b></i>, todos os usuários possuem acesso liberado para inserções e remoções de dados. Caso necessário, esses acessos poderão ser limitados...
@@ -221,6 +224,15 @@
 *Tabela para armazenar as postagens do blog*
 
 ??? note "AGENDAMENTOS"
+
+    Com a implementação desta tabela, o fluxo de agendamento de visitas foi otimizado. Veja como funciona:
+    
+        - **Login Obrigatório:** Para agendar uma visita, **o usuário precisa estar logado**. Se um usuário não logado tentar agendar, será automaticamente redirecionado para a tela de login.
+        - **Dados Automáticos:** Uma vez logado, os dados pessoais do usuário já serão puxados do seu cadastro, não sendo necessário preenchê-los novamente.
+        - **Campo de Mensagem:** O campo `mensagem` (comentário) permanece para que o usuário possa incluir informações importantes, como sua preferência de período (manhã/tarde) e disponibilidade de horários para a imobiliária.
+        - **Status "Concluído":** O atributo `concluido` serve para o controle interno da imobiliária:
+            - **Não Concluído (0):** É o status padrão. Significa que a visita foi marcada, mas ainda não aconteceu ou que o usuário não compareceu na data agendada.
+            - **Concluído (1):** Um administrador altera o status para "concluído" apenas quando a visita é efetivamente realizada com sucesso.
 
     | Nome da Coluna | Tipo de Dado | Descrição |
     |----------------|--------------|-----------|
