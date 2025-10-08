@@ -12,6 +12,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { uploadPublicidadeImage } from "@/services/netlifyUploadService";
 import { useFormSubmit } from "@/hooks/useAsyncOperation";
+import { apiClient } from "@/utils/apiClient";
 
 export default function CriarPublicidadePage() {
   const [fileList, setFileList] = useState([]);
@@ -45,13 +46,7 @@ export default function CriarPublicidadePage() {
           url_imagem
         };
 
-        const apiBase = process.env.NEXT_PUBLIC_API_URL;
-        console.log('API Base URL (NEXT_PUBLIC_API_URL):', apiBase);
-        const response = await axios.post(`${apiBase}/publicidade`, publicidadeData, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await apiClient.post("/publicidade", publicidadeData);
         
         if (response.status === 201) {
           alert("Publicidade cadastrada com sucesso!");

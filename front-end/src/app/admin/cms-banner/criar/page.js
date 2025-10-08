@@ -11,6 +11,7 @@ import Sidebar from "@/components/cms/Sidebar";
 import { useState, useEffect } from "react";
 import { uploadBannerImage } from "@/services/netlifyUploadService";
 import { useFormSubmit } from "@/hooks/useAsyncOperation";
+import { apiClient } from "@/utils/apiClient";
 
 export default function CriarBannerPage() {
   const [fileList, setFileList] = useState([]);
@@ -47,21 +48,13 @@ export default function CriarBannerPage() {
           url_imagem
         };
 
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-        const res = await fetch(`${apiUrl}/banner`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bannerData),
-        });
+        const res = await apiClient.post("/banner", bannerData);
 
-        if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(errorData.error || "Erro ao criar banner");
+        if (res.status !== 201) {
+          throw new Error(res.data?.error || "Erro ao criar banner");
         }
 
-        return await res.json();
+        return res.data;
       },
       {
         successMessage: "Banner criado com sucesso!",
