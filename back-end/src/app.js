@@ -3,6 +3,25 @@ import express from "express";
 import cors from "cors";
 import publicidadeRoutes from "./routes/publicidadeRoutes.js";
 import connection from "./config/sequelize-config.js";
+import { createServer } from 'http';
+import SocketManager from './services/socketManager.js';
+import { setSocketManager } from './utils/socketHelper.js';
+import socketRoutes from './routes/socketRoutes.js';
+// Exemplo de como importar rotas
+import healthRouter from "./routes/route.js"; 
+
+const app = express();
+
+// Criar servidor HTTP
+const server = createServer(app);
+
+// Inicializar SocketManager
+const socketManager = new SocketManager(server);
+
+// Tornar socketManager disponível globalmente
+app.set('socketManager', socketManager);
+setSocketManager(socketManager);
+
 import blogRoutes from "./routes/blogRoutes.js";
 import userRoutes from './routes/userRoutes.js'
 import "./models/Associations.js";
@@ -67,6 +86,9 @@ app.use('/images', express.static(path.join(__dirname, '../../front-end/public/i
 
 // ----------------------
 // Rotas
+// Exemplo de como usar as rotas
+app.use("/", router, healthRouter);
+app.use("/api/socket", socketRoutes);
 // ----------------------
 app.use('/banner', bannerRoutes);
 app.use('/', recomendacaoRouter);
@@ -97,11 +119,13 @@ connection
 // Inicializar servidor
 // ----------------------
 const PORT = process.env.PORT || 4000;
+
 server.listen(PORT, function (erro) {
   if (erro) {
     console.log("Ocorreu um erro! Erro: ", erro);
   } else {
-    console.log(`Servidor iniciado com sucesso na porta ${PORT}! 🚀`);
+    console.log(`Servidor iniciado com sucesso na porta ${PORT}!`);
+    console.log(`Socket.IO habilitado para comunicação em tempo real`);
   }
 });
 
