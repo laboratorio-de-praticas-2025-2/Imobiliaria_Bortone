@@ -41,9 +41,12 @@ const defaultSlides = [
 export default function HeaderSlider() {
   const [slides, setSlides] = useState(defaultSlides);
   const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
   // Função para buscar banners ativos do backend
   const fetchActiveBanners = async () => {
+    if (!isMounted) return; // Não executar se componente não estiver montado
+    
     try {
       setLoading(true);
       
@@ -66,7 +69,7 @@ export default function HeaderSlider() {
       const bannersAtivos = data.filter(banner => banner.ativo === 1);
       console.log(`✅ Banners ativos encontrados: ${bannersAtivos.length}`);
       
-      if (bannersAtivos.length > 0) {
+      if (bannersAtivos.length > 0 && isMounted) {
         // Converte banners para formato de slides
         const slidesFromBanners = bannersAtivos.map(banner => ({
           id: banner.id,
@@ -84,24 +87,54 @@ export default function HeaderSlider() {
           });
         });
         
-        setSlides(slidesFromBanners);
-        console.log("🎉 Carrossel atualizado com banners ativos!");
-      } else {
+        if (isMounted) {
+          setSlides(slidesFromBanners);
+          console.log("🎉 Carrossel atualizado com banners ativos!");
+        }
+      } else if (isMounted) {
         console.log("⚠️ Nenhum banner ativo encontrado, usando slides padrão");
         setSlides(defaultSlides);
       }
       
     } catch (error) {
       console.error("❌ Erro ao buscar banners ativos:", error);
-      console.log("🔄 Usando slides padrão como fallback");
-      setSlides(defaultSlides);
+      if (isMounted) {
+        console.log("🔄 Usando slides padrão como fallback");
+        setSlides(defaultSlides);
+      }
     } finally {
-      setLoading(false);
+      if (isMounted) {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
+    setIsMounted(true);
+    
+    // Reset do estado ao montar o componente
+    setSlides(defaultSlides);
+    setLoading(true);
+    
     fetchActiveBanners();
+    
+    // Listener para reset da página
+    const handlePageReset = (event) => {
+      console.log('🎠 HeaderSlider recebeu sinal de reset, recarregando banners...');
+      if (event.detail?.from === 'admin') {
+        setSlides(defaultSlides);
+        setLoading(true);
+        fetchActiveBanners();
+      }
+    };
+
+    window.addEventListener('pageReset', handlePageReset);
+    
+    // Cleanup ao desmontar
+    return () => {
+      setIsMounted(false);
+      window.removeEventListener('pageReset', handlePageReset);
+    };
   }, []);
 
   // Loading state

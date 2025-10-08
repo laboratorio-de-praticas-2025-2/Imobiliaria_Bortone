@@ -11,6 +11,8 @@ export default function PropriedadesSelecionadas() {
   );
 
   useEffect(() => {
+    let isMounted = true;
+    
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if (!userInfo) return;
 
@@ -20,13 +22,23 @@ export default function PropriedadesSelecionadas() {
           `${process.env.NEXT_PUBLIC_API_URL}/recomendacoes`,
           { params: { usuario_id: userInfo.id } }
         );
-        setImoveis(res.data.data || []);
+        
+        if (isMounted) {
+          setImoveis(res.data.data || []);
+        }
       } catch (err) {
         console.error("Erro ao buscar recomendações:", err);
+        if (isMounted) {
+          setImoveis([]);
+        }
       }
     };
 
     fetchRecomendacoes();
+    
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {

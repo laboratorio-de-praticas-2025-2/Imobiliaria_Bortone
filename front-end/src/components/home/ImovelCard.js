@@ -1,5 +1,5 @@
 import { Button, Flex } from "antd";
-import { handleImgError } from "@/utils/imageFallback";
+import { CloudinaryImg } from "@/components/ui/CloudinaryImage";
 import { PiBathtub } from "react-icons/pi";
 import { BsDoorOpenFill } from "react-icons/bs";
 import { AiOutlineMessage } from "react-icons/ai";
@@ -21,8 +21,8 @@ export default function ImovelCard({ imovel }) {
 
   return (
     <div className="sm:p-3 bg-white sm:bg-[#DEE1F0] flex flex-col gap-2 align-middle rounded-xl sm:shadow-none shadow-lg">
-      <div className="w-full aspect-[16/9]">
-        <img
+      <div className="w-full aspect-[16/9] relative">
+        <CloudinaryImg
           src={
             (imovel.imagens &&
               imovel.imagens.length > 0 &&
@@ -31,11 +31,18 @@ export default function ImovelCard({ imovel }) {
             "/404.png"
           }
           alt={"Imagem do imóvel"}
+          type="imovel"
           className={`w-full h-full object-cover aspect-[16/9] transition-all duration-300 ${
             overlayText ? "brightness-50" : ""
           }`}
-          onError={handleImgError}
         />
+        {overlayText && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-white text-2xl font-bold bg-black bg-opacity-50 px-4 py-2 rounded">
+              {overlayText}
+            </span>
+          </div>
+        )}
       </div>
       <Flex justify="space-between" gap="middle" className="sm:!p-0 !px-3">
         <span className="truncate text-[var(--primary)]">

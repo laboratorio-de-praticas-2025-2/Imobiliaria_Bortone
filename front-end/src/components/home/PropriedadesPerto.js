@@ -1,10 +1,11 @@
 import ImovelCard from "@/components/home/ImovelCard";
 import { mockImoveis } from "@/mock/imoveis";
+import { useState } from "react";
 
 export default function PropriedadesPerto() {
   const [modo, setModo] = useState("comprar");
 
-  const imoveisFiltrados = imoveis.filter((imovel) =>
+  const imoveisFiltrados = mockImoveis.filter((imovel) =>
     modo === "comprar" ? imovel.tipo === "comprar" : imovel.tipo === "alugar"
   );
 
