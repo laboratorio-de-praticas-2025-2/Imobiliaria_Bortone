@@ -13,6 +13,7 @@ import Sidebar from "@/components/cms/Sidebar";
 import { uploadBannerImage } from "@/services/netlifyUploadService";
 import { Form as FormAntd } from "antd";
 import { apiClient } from "@/utils/apiClient";
+import SplashScreen from "@/components/SplashScreen";
 
 export default function EditarBannerPage() {
   const { id } = useParams();
@@ -21,11 +22,13 @@ export default function EditarBannerPage() {
   const [fileList, setFileList] = useState([]);
   const [formValues, setFormValues] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
     const fetchBanner = async () => {
       try {
+        setLoading(true);
         const res = await apiClient.get(`/banner/${id}`);
         const data = res.data;
         setBanner(data);
@@ -46,8 +49,10 @@ export default function EditarBannerPage() {
             },
           ]);
         }
+        setLoading(false);
       } catch (err) {
         console.error("Erro ao buscar banner:", err);
+        setLoading(false);
       }
     };
     fetchBanner();
@@ -97,7 +102,7 @@ export default function EditarBannerPage() {
 
   const onFinishFailed = (errorInfo) => console.log("Edit Failed:", errorInfo);
 
-  if (!banner) return <div>Carregando...</div>;
+  if (loading) return <SplashScreen />;
 
   return (
     <>

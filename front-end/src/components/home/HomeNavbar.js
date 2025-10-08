@@ -96,22 +96,7 @@ export default function HomeNavbar({ className }) {
 
         {/* Botões lado a lado */}
         <div className="flex items-center gap-2 relative">
-          {/* Botão "Contate-nos" */}
-          <button className="pl-5">
-            <Link
-              href="https://wa.me/5513996720645" // substitua pelo número
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-2 rounded-full border-2 border-white bg-transparent
-                         !text-white hover:!bg-white hover:!text-[#304383] transition-colors duration-200
-                         whitespace-nowrap flex-shrink-0 min-w-[130px] text-sm md:text-base
-                         flex items-center justify-center no-underline"
-              style={{ height: "40px" }}
-            >
-              Contate-nos
-            </Link>
-          </button>
-
+        
           {/* Botão do usuário */}
           {isLoggedIn ? (
             <div className="relative inline-block text-left">
@@ -313,19 +298,6 @@ export default function HomeNavbar({ className }) {
             </Link>
           </Flex>
 
-          {/* Botão "Contate-nos" - Mobile */}
-          <Link
-            href="https://wa.me/5513996720645" // substitua pelo número
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-2 rounded-full border-2 border-[#304383] bg-transparent 
-                       text-[#304383] hover:!bg-[#304383] hover:!text-white transition-colors duration-200
-                       whitespace-nowrap flex-shrink-0 min-w-[130px] text-base
-                       flex items-center justify-center no-underline "
-            style={{ height: "40px" }}
-          >
-            Contate-nos
-          </Link>
         </div>
 
         <div className="flex flex-col p-6 gap-6">

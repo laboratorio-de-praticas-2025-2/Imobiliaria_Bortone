@@ -3,7 +3,7 @@
 import ShareButton from "@/components/blog/ShareButton";
 import HomeFooter from "@/components/home/HomeFooter";
 import HomeNavbar from "@/components/home/HomeNavbar";
-import { mockImoveis } from "@/mock/imoveis";
+
 import "@/styles/imoveis.css";
 import { buildImageUrl } from "@/utils/imageUtils";
 import { Input, Divider } from "antd";
@@ -23,25 +23,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useSEO } from "@/hooks/useSEO";
 import { FaArrowRight } from "react-icons/fa6";
 import axios from "axios";
-
-const { Search } = Input;
-const onSearch = async (value) => {
-  if (!value) return;
-  try {
-    const res = await fetch(
-      `${process.env.API_URL}/search/simples?endereco=${encodeURIComponent(
-        value
-      )}`,
-      { method: "GET" }
-    );
-    if (!res.ok) throw new Error("Erro ao buscar imóveis");
-    const data = await res.json();
-    // Atualiza a lista de imóveis exibida
-    setImoveis(data);
-  } catch (err) {
-    console.error("Erro na pesquisa:", err);
-  }
-};
+import SplashScreen from "@/components/SplashScreen";
 
 // Componente de mapa carregado dinamicamente
 const LeafletMap = dynamic(
@@ -181,25 +163,23 @@ export default function Mapa() {
     image: imovelAtual?.imagens?.[0]?.url_imagem,
   });
 
-  if (loading) return <div>Carregando...</div>;
-  if (!post) return <div>Post não encontrado.</div>;
+  if (loading) return <SplashScreen />;
   const slides = imovelAtual?.imagens || [];
   const toggleVerMais = () => setVerMais(!verMais);
+
+  const preco =
+    imovelAtual.preco === null || imovelAtual.preco === undefined
+      ? "Valor Oculto"
+      : Number(imovelAtual.preco).toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
 
   return (
     <div className="flex flex-col min-h-screen">
       <HomeNavbar />
 
       <main className="flex-1 teste">
-        {/* Barra de pesquisa */}
-        <div className="bpq">
-          <Search
-            placeholder="Pesquisa"
-            onSearch={onSearch}
-            className="imoveis-search-bar"
-          />
-        </div>
-
         {/* Carrossel */}
         <div className="imoveis-carousel">
           {slides.length > 1 ? (
@@ -223,7 +203,11 @@ export default function Mapa() {
                 <SwiperSlide key={idx} className="flex justify-center">
                   <div className="slide-card w-full">
                     <Image
-                      src={buildImageUrl(slide.url_imagem, 'imovel', '/imovel1.png')}
+                      src={buildImageUrl(
+                        slide.url_imagem,
+                        "imovel",
+                        "/imovel1.png"
+                      )}
                       alt={`Imóvel ${imovelAtual.id}`}
                       width={407}
                       height={195}
@@ -237,7 +221,11 @@ export default function Mapa() {
             slides.map((slide, idx) => (
               <div key={idx} className="slide-card w-full">
                 <Image
-                  src={buildImageUrl(slide.url_imagem, 'imovel', '/imovel1.png')}
+                  src={buildImageUrl(
+                    slide.url_imagem,
+                    "imovel",
+                    "/imovel1.png"
+                  )}
                   alt={`Imóvel ${imovelAtual.id}`}
                   width={407}
                   height={195}
@@ -324,7 +312,7 @@ export default function Mapa() {
           <div className="valor">
             <div className="Ivalor">
               <p className="Vtxt">Valor deste imóvel</p>
-              <p className="preco">R$ {imovelAtual.preco.toLocaleString()}</p>
+              <p className="preco">{preco}</p>
             </div>
             <div className="md:pl-[10%] hidden md:flex">
               <ShareButton />

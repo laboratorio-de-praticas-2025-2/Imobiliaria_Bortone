@@ -4,7 +4,7 @@ import Form from "@/components/cms/form";
 import FormButton from "@/components/cms/form/fields/Button";
 import TextField from "@/components/cms/form/fields/TextField";
 import Sidebar from "@/components/cms/Sidebar";
-import axios from "axios";
+import SplashScreen from "@/components/SplashScreen";
 import RadioField from "@/components/cms/form/fields/RadioField";
 import { useEffect, useState, use } from "react";
 import { Form as FormAntd } from "antd";
@@ -73,8 +73,7 @@ export default function EditarUserPage({ params }) {
     console.log("Edit Failed:", errorInfo);
   };
 
-  if (!user) return <div>Carregando...</div>;
-  if (!form) return <div>Inicializando formulário...</div>;
+  if (!user || !form) return <SplashScreen />;
 
   return (
     <>
