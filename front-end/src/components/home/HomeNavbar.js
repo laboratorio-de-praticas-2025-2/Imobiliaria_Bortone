@@ -68,7 +68,15 @@ export default function HomeNavbar({ className }) {
         className="hidden md:flex navbar-desktop"
       >
         {/* Logo */}
-        <Link href="/">
+        <Link 
+          href="/"
+          onClick={() => {
+            // Marcar navegação para home se estivermos no admin
+            if (window.location.pathname.includes('/admin')) {
+              sessionStorage.setItem('navigatedFromAdmin', 'true');
+            }
+          }}
+        >
           <Image
             src="/images/LogoPreta.svg"
             alt="Logo Bortone"
@@ -81,7 +89,17 @@ export default function HomeNavbar({ className }) {
         {/* Links de navegação */}
         <div className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
-            <Link href={link.path} key={link.name} className="h-full">
+            <Link 
+              href={link.path} 
+              key={link.name} 
+              className="h-full"
+              onClick={() => {
+                // Marcar navegação para home se estivermos no admin
+                if (link.path === '/' && window.location.pathname.includes('/admin')) {
+                  sessionStorage.setItem('navigatedFromAdmin', 'true');
+                }
+              }}
+            >
               <Flex
                 gap="middle"
                 align="center"
