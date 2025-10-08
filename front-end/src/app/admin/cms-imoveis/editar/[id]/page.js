@@ -8,7 +8,7 @@ import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import TextField from "@/components/cms/form/fields/TextField";
 import UploadImovel from "@/components/cms/form/fields/UploadImovel";
 import Sidebar from "@/components/cms/Sidebar";
-import { mockImoveis } from "@/mock/imoveis";
+import SplashScreen from "@/components/SplashScreen";
 import { Form as FormAntd } from "antd";
 import dynamic from "next/dynamic";
 import { useEffect, useState, use } from "react";
@@ -337,9 +337,7 @@ export default function EditarImovelPage({ params }) {
     }
   };
 
-  if (loading) return <div>Carregando...</div>;
-  if (imovel === null) return <div>Imóvel não encontrado.</div>;
-  if (!form) return <div>Inicializando formulário...</div>;
+  if (loading || !form) return <SplashScreen /> ;
 
   return (
     <>

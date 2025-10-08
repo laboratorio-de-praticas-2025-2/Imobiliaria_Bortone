@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { uploadBlogImage } from "@/services/netlifyUploadService";
 import { Form as FormAntd } from "antd";
 import { buildImageUrl } from "@/utils/imageUtils";
+import SplashScreen from "@/components/SplashScreen";
 
 export default function EditarPostPage() {
   const params = useParams();
@@ -25,6 +26,7 @@ export default function EditarPostPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [imageError, setImageError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Função para gerar URL da imagem com fallback usando utilitário unificado
   const getImageUrl = () => {
@@ -39,6 +41,7 @@ export default function EditarPostPage() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
+        setLoading(true);
         const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
         const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
         const response = await axios.get(`${apiUrl}/publicacoes/${id}`);
@@ -51,8 +54,10 @@ export default function EditarPostPage() {
           titulo: response.data?.titulo || "",
           conteudo: response.data?.conteudo || "",
         });
+        setLoading(false);
       } catch (error) {
         console.error("Erro ao carregar publicação:", error);
+        setLoading(false);
       }
     };
     if (id) fetchPost();
@@ -101,7 +106,7 @@ export default function EditarPostPage() {
     console.log("Edit Failed:", errorInfo);
   };
 
-  if (!post) return <div>Carregando...</div>;
+  if (loading) return <SplashScreen />;
 
   return (
     <>

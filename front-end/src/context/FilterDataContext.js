@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 const FilterDataContext = createContext();
 
 const INITIAL_FILTERS = {
-  status: "disponível",
+  status: "disponivel",
 };
 
 export function FilterDataProvider({ children }) {
