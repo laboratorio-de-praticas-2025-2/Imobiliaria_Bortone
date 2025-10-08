@@ -5,14 +5,14 @@ import { useParams } from "next/navigation";
 import { DatePicker as AntdDatePicker, Form as FormAntd } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
-import Header from "@/components/cms/Header";
+import Sidebar from "@/components/cms/Sidebar";
 import Form from "@/components/cms/form/index";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import FormButton from "@/components/cms/form/fields/Button";
 
 import { CloudinaryImage } from "@/components/ui/CloudinaryImage";
-import UploadImageField from "@/components/cms/form/fields/UploadImageField";
-import { uploadBannerImage } from "@/services/imageUpload";
+import UploadField from "@/components/cms/form/fields/UploadField";
+import { uploadBannerImage } from "@/services/netlifyUploadService";
 import { apiClient } from "@/utils/apiClient";
 import SplashScreen from "@/components/SplashScreen";
 import { useFormSubmit } from "@/hooks/useAsyncOperation";
@@ -146,7 +146,6 @@ export default function EditarBannerPage() {
 
                 <FormButton
                   text="Salvar"
-                  onClick={() => setIsConfirmModalVisible(true)}
                   icon={<UploadOutlined />}
                   loading={isLoading}
                 />
