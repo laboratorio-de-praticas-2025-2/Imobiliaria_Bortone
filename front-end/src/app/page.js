@@ -8,6 +8,8 @@ import SplashScreen from "@/components/SplashScreen";
 import { useEffect, useState } from "react";
 import { useSEO } from "@/hooks/useSEO";
 import { getSEOConfig } from "@/config/seo";
+// Importar sistema de gerenciamento de erros de imagem
+import "@/utils/imageErrorManager";
 
 const isLoggedIn = true;
 
