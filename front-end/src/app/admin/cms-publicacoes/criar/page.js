@@ -27,8 +27,7 @@ export default function CriarPostPage() {
 
   const onFinish = async (values) => {
     await submitForm(
-      () => Promise.resolve(values),
-      ['titulo', 'conteudo'],
+      values,
       async (validatedValues) => {
         let url_imagem = null;
 
@@ -51,7 +50,14 @@ export default function CriarPostPage() {
         const response = await apiClient.post("/publicacoes", blogData);
 
         if (response.status === 201) {
-          alert("Publicação criada com sucesso!");
+          router.push("/admin/cms-publicacoes");
+          return response.data;
+        }
+      },
+      {
+        requiredFields: ['titulo', 'conteudo'],
+        successMessage: "Publicação criada com sucesso!",
+        onSuccess: () => {
           router.push("/admin/cms-publicacoes");
         }
       }

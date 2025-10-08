@@ -67,6 +67,7 @@ export default function CloudinaryImage({
         width={width}
         height={height}
         className={`${className} opacity-50`}
+        style={{ width: 'auto', height: 'auto' }}
         unoptimized={unoptimized}
         onLoad={handleImageLoad}
         {...props}
@@ -91,6 +92,7 @@ export default function CloudinaryImage({
         width={width}
         height={height}
         className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+        style={{ width: 'auto', height: 'auto' }}
         unoptimized={unoptimized}
         onLoad={handleImageLoad}
         onError={handleImageError}

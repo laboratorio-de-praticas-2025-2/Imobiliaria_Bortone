@@ -27,6 +27,9 @@ export default function ImovelCard({ imovel }) {
             (imovel.imagens &&
               imovel.imagens.length > 0 &&
               imovel.imagens[0].url_imagem) ||
+            (imovel.imagem_imovel &&
+              imovel.imagem_imovel.length > 0 &&
+              imovel.imagem_imovel[0].url_imagem) ||
             imovel.imagem ||
             "/404.png"
           }
@@ -56,15 +59,15 @@ export default function ImovelCard({ imovel }) {
         className="sm:!p-0 !px-3"
       >
         <Flex gap="large">
-          {imovel.tipo == "Casa" && (
+          {(imovel.tipo == "Casa" || imovel.tipo == "Apartamento") && (
             <>
               <Flex gap="small" className="text-[var(--primary)]">
                 <PiBathtub />
-                <span>{imovel.banheiros}</span>
+                <span>{imovel.banheiros || imovel.casa?.banheiros || imovel.apartamento?.banheiros || 0}</span>
               </Flex>
               <Flex gap="small" className="text-[var(--primary)]">
                 <BsDoorOpenFill />
-                <span>{imovel.vagas}</span>
+                <span>{imovel.vagas || imovel.casa?.vagas || imovel.apartamento?.vagas || 0}</span>
               </Flex>
             </>
           )}
