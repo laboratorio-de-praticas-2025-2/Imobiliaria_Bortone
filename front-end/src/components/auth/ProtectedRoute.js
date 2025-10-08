@@ -39,9 +39,11 @@ export default function ProtectedRoute({
         // Verificar informações do usuário
         const userInfo = JSON.parse(userInfoString);
         console.log("🔍 ProtectedRoute: Verificando usuário:", userInfo);
+        console.log("🔍 ProtectedRoute: userInfo.nivel:", userInfo.nivel, "tipo:", typeof userInfo.nivel);
 
         // Verificar nível de acesso
-        const userLevel = parseInt(userInfo.nivel) || 1;
+        const userLevel = parseInt(userInfo.nivel ?? 1);
+        console.log("🔍 ProtectedRoute: userLevel após parseInt:", userLevel, "requiredLevel:", requiredLevel);
         
         if (userLevel > requiredLevel) {
           console.log(`❌ ProtectedRoute: Nível insuficiente. Usuário: ${userLevel}, Necessário: ${requiredLevel}`);

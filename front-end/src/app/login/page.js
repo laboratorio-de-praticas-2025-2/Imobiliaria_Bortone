@@ -56,7 +56,7 @@ export default function LoginPage() {
 
       // Redirecionamento baseado no parâmetro redirect ou nível do usuário
       const redirectPath = getRedirectPath();
-      const userLevel = parseInt(savedUserInfo.nivel) || 1;
+      const userLevel = parseInt(savedUserInfo.nivel ?? 1);
 
       let finalRedirect = redirectPath;
       
