@@ -10,6 +10,7 @@ import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import { useEffect, useState } from "react";
 import { buildImageUrl } from "@/utils/imageUtils";
 import { useParams } from "next/navigation";
+import SplashScreen from "@/components/SplashScreen";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -136,8 +137,7 @@ export default function Agendamento() {
     }
   };
 
-  if (loading) return <div>Carregando...</div>;
-  if (!imovel) return <div>Imóvel não encontrado.</div>;
+  if (loading) return <SplashScreen />;
 
   // Busca a primeira imagem disponível do imóvel
   const imagemUrl = imovel?.imagens?.[0]?.url_imagem || imovel?.imagem_imovel?.[0]?.url_imagem || imovel?.imagem || null;

@@ -6,6 +6,7 @@ import CMS from "@/components/cms/table";
 import { useEffect, useState } from "react";
 import { FaImage } from "react-icons/fa6";
 import { buildImageUrl } from "@/utils/imageUtils";
+import SplashScreen from "@/components/SplashScreen";
 
 // URL base do backend
 const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
@@ -108,13 +109,7 @@ export default function CmsBannerPage() {
   const updateFilterData = (newData) => setFilterData(prev => ({ ...prev, ...newData }));
   const handleRetry = () => fetchBanners();
 
-  if (loading) return <div>Carregando banners...</div>;
-  if (error)
-    return (
-      <div>
-        Erro: {error} <button onClick={handleRetry}>Tentar Novamente</button>
-      </div>
-    );
+  if (loading) return <SplashScreen />;
 
   return (
     <>

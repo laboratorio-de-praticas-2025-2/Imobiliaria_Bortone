@@ -15,7 +15,7 @@ export default function InnerImoveisPage({ imoveis }) {
   }, [imoveis]);
 
   const {
-    filterData: { regiao },
+    filterData: { endereco },
   } = useFilterData();
 
   return (
@@ -28,7 +28,7 @@ export default function InnerImoveisPage({ imoveis }) {
           {qtdImoveis} imóveis disponíveis
         </p>
         <p className="text-xl text-[var(--primary)] font-bold">
-          para venda em {regiao}
+          para venda em {endereco || "toda a região"}
         </p>
       </div>
       <div className="pb-11 md:px-17 sm:px-3 px-0 flex justify-center">

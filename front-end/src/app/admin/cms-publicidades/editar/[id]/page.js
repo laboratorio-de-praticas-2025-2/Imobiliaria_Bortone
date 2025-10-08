@@ -11,7 +11,7 @@ import {  Form as FormAntd } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
-import axios from "axios";
+import SplashScreen from "@/components/SplashScreen";
 import { uploadPublicidadeImage } from "@/services/netlifyUploadService";
 import { apiClient } from "@/utils/apiClient";
 import { buildImageUrl } from "@/utils/imageUtils";
@@ -25,9 +25,11 @@ export default function EditarPublicidadePage() {
   const [publicidade, setPublicidade] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [formValues, setFormValues] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const loadPublicidade = useCallback(async () => {
     try {
+      setLoading(true);
       const response = await apiClient.get(`/publicidade/${id}`);
       if (response.status === 200) {
         setPublicidade(response.data);
@@ -40,8 +42,10 @@ export default function EditarPublicidadePage() {
           conteudo: response.data.conteudo,
         });
       }
+      setLoading(false);
     } catch {
       console.log("Erro ao carregar publicidade");
+      setLoading(false);
     }
   }, [id, form]);
 
@@ -116,7 +120,7 @@ export default function EditarPublicidadePage() {
     console.log("Edit Failed:", errorInfo);
   };
 
-  if (!publicidade) return <div>Carregando...</div>;
+  if (loading) return <SplashScreen />;
 
   return (
     <>
