@@ -4,6 +4,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import { createServer } from 'http';
+import initWebSocket from './config/websocket.js';
 
 // Configurações e serviços
 import connection from "./config/sequelize-config.js";
@@ -13,7 +14,7 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import "./models/Associations.js";
 
 // Importar todas as rotas
-import healthRouter from "./routes/route.js";
+import healthRouter from "./routes/healthRouter.js";
 import socketRoutes from './routes/socketRoutes.js';
 import blogRoutes from "./routes/blogRoutes.js";
 import userRoutes from './routes/userRoutes.js';
@@ -70,14 +71,13 @@ app.use('/dashboard', dashboardRouter);
 app.use("/publicacoes", blogRoutes);
 app.use('/imoveis', imoveisRouter);
 app.use('/imagemImovel', imagemImovelRoutes);
-app.use("/publicacoes", blogRoutes);
 app.use('/publicidade', publicidadeRoutes);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
 app.use(errorHandler);
 
-const server = http.createServer(app);
+// Inicializar WebSocket
 initWebSocket(server);
 
 
