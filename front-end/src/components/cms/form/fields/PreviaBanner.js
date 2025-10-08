@@ -41,7 +41,7 @@ export default function PreviaBanner({ fileList }) {
 <div className="lg:w-15 sm:w-3 h-80 w-5 bg-gray-200 rounded-r-3xl" />
  
         {typeof previewUrl === "string" && previewUrl.length > 0 ? (
-<div className="lg:w-100 sm:w-75 w-100 h-80 bg-gray-200 rounded-3xl">
+<div className="lg:w-100 sm:w-75 w-100 h-80 bg-gray-200 rounded-3xl overflow-hidden relative">
 <img
               src={previewUrl}
               alt="Prévia do banner"
@@ -55,15 +55,22 @@ export default function PreviaBanner({ fileList }) {
               }}
             />
 <div
-              className="preview-fallback h-full w-full flex items-center justify-center text-gray-500"
+              className="preview-fallback absolute inset-0 h-full w-full flex items-center justify-center text-gray-500 bg-gray-200 rounded-3xl"
               style={{ display: "none" }}
 >
 <p>Erro ao carregar imagem</p>
 </div>
+            {/* Indicador de imagem carregada */}
+            <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded text-xs">
+              Imagem carregada
+            </div>
 </div>
         ) : (
 <div className="lg:w-100 sm:w-75 h-80 w-100 bg-gray-200 rounded-3xl flex items-center justify-center">
-<p className="text-gray-500">Nenhuma imagem selecionada</p>
+<div className="text-center">
+<p className="text-gray-500 mb-2">Nenhuma imagem selecionada</p>
+<p className="text-gray-400 text-sm">A prévia aparecerá aqui</p>
+</div>
 </div>
         )}
  

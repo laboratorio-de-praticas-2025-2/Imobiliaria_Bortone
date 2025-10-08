@@ -77,17 +77,18 @@ const nextConfig = {
           { key: "X-Frame-Options", value: "DENY" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          // CSP temporariamente mais permissivo para desenvolvimento
+          // CSP com suporte ao Vercel Live e desenvolvimento
           {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel.live",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https: http: res.cloudinary.com *.cloudinary.com",
               "font-src 'self' data:",
-              "connect-src 'self' https: http: ws: wss: http://localhost:* http://127.0.0.1:*",
-              "frame-ancestors 'none'",
+              "connect-src 'self' https: http: ws: wss: http://localhost:* http://127.0.0.1:* https://vercel.live https://*.vercel.live wss://vercel.live wss://*.vercel.live https://imobiliaria-bortone.onrender.com https://*.onrender.com",
+              "frame-src 'self' https://vercel.live https://*.vercel.live",
+              "frame-ancestors 'self' https://vercel.live https://*.vercel.live",
             ].join("; "),
           },
         ],

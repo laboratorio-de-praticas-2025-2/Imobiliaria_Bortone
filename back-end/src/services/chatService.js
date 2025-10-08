@@ -10,7 +10,7 @@ let users = {}; // { userId: { ws, nome, lastActivity } }
 let history = {}; // { userId: [ { userId, nome, text } ] }
 let timeouts = {}; // { userId: timeout }
 
-const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutos
+const INACTIVITY_TIMEOUT = 60 * 60 * 1000; // 60 minutos
 
 // Enviar dados para um socket
 function send(ws, data) {

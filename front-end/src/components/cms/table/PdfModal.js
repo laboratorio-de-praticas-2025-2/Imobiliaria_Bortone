@@ -5,6 +5,7 @@ import { IoClose } from "react-icons/io5";
 import Relatorio from "@/components/relatorio/Relatorio.js";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
+import { exportRelatorioToPdfV2 } from "@/utils/pdfUtilsV2";
 
 export default function PdfModal({
   loading,
@@ -63,7 +64,7 @@ export default function PdfModal({
                     PDF Gerado com sucesso
                   </p>
                   <p className="md:text-2xl text-lg font-bold">
-                    {record.pdfNome}.pdf
+                    {record?.pdfNome || 'Relatorio'}.pdf
                   </p>
                   <div className="flex gap-6">
                     <span className="md:text-xl">2 MB</span>

@@ -10,10 +10,15 @@ import Image from "next/image";
 import Sidebar from "@/components/cms/Sidebar";
 import { useState, useEffect } from "react";
 import { uploadBannerImage } from "@/services/netlifyUploadService";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
+import { apiClient } from "@/utils/apiClient";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function CriarBannerPage() {
   const [fileList, setFileList] = useState([]);
   const [isClient, setIsClient] = useState(false);
+  const { loading, submitForm } = useFormSubmit();
+  const { user } = useAuth();
 
   // Garante que certas partes só rodem no cliente
   useEffect(() => {
@@ -21,46 +26,45 @@ export default function CriarBannerPage() {
   }, []);
 
   const onFinish = async (values) => {
-    try {
-      let url_imagem = null;
+    const formData = { ...values, fileList };
+    
+    await submitForm(
+      formData,
+      async (data) => {
+        let url_imagem = null;
 
-      // Upload da imagem via Netlify se houver arquivo
-      if (fileList.length > 0) {
-        url_imagem = await uploadBannerImage(
-          fileList[0].originFileObj,
-          values.descricao,
-          "1" // usuario_id
-        );
-      }
+        // Upload da imagem via Netlify se houver arquivo
+        if (data.fileList.length > 0) {
+          url_imagem = await uploadBannerImage(
+            data.fileList[0].originFileObj,
+            data.descricao,
+            user?.id?.toString() || "1" // usuario_id do usuário logado
+          );
+        }
 
-      // Enviar dados para o backend sem arquivo
-      const bannerData = {
-        descricao: values.descricao,
-        usuario_id: 1,
-        ativo: true,
-        url_imagem
-      };
+        // Enviar dados para o backend sem arquivo
+        const bannerData = {
+          descricao: data.descricao,
+          usuario_id: user?.id || 1,
+          url_imagem
+        };
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-      const res = await fetch(`${apiUrl}/banner`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+        const res = await apiClient.post("/banner", bannerData);
+
+        if (res.status !== 201) {
+          throw new Error(res.data?.error || "Erro ao criar banner");
+        }
+
+        return res.data;
+      },
+      {
+        successMessage: "Banner criado com sucesso!",
+        onSuccess: () => {
+          setFileList([]);
         },
-        body: JSON.stringify(bannerData),
-      });
-
-      if (res.ok) {
-        alert("Banner criado com sucesso!");
-        setFileList([]);
-      } else {
-        const data = await res.json();
-        alert("Erro ao criar banner: " + (data.error || "Desconhecido"));
+        requiredFields: ['descricao']
       }
-    } catch (error) {
-      console.error(error);
-      alert("Erro ao enviar o formulário: " + error.message);
-    }
+    );
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -89,17 +93,20 @@ export default function CriarBannerPage() {
                   />
 
                   {fileList.length > 0 ? (
-                    <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5">
+                    <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5 overflow-hidden">
                       <Image
                         src={URL.createObjectURL(fileList[0].originFileObj)}
                         alt="Prévia do banner"
                         width={400}
                         height={320}
                         className="h-full w-full object-cover rounded-3xl"
+                        unoptimized
                       />
                     </div>
                   ) : (
-                    <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5" />
+                    <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5 flex items-center justify-center">
+                      <p className="text-gray-500">Selecione uma imagem</p>
+                    </div>
                   )}
                 </div>
                 <TextAreaField
@@ -113,6 +120,7 @@ export default function CriarBannerPage() {
                   text="Publicar"
                   className="!hidden sm:!flex"
                   icon={<UploadOutlined />}
+                  loading={loading}
                 />
               </div>
 
@@ -126,6 +134,7 @@ export default function CriarBannerPage() {
                   text="Publicar"
                   className="!flex !sm:hidden"
                   icon={<UploadOutlined />}
+                  loading={loading}
                 />
               </div>
             </div>

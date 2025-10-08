@@ -10,6 +10,8 @@ export const createRecomendacaoImovel = async (req, res) => {
       imovel_id,
       data_visita
     });
+
+
     res.status(201).json({
       message: 'Novo registro na tabela recomendacao_imovel.',
       data: novaRecomendacao,

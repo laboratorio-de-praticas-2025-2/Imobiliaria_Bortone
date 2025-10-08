@@ -3,70 +3,19 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
+// Importar o novo sistema Cloudinary
+import { buildImageUrl as buildCloudinaryImageUrl, useCloudinaryImage } from './cloudinaryImageUtils';
+
 /**
- * Constrói URL da imagem baseada no tipo de conteúdo e URL fornecida
+ * Constrói URL da imagem com prioridade para Cloudinary
  * @param {string} imageUrl - URL da imagem vinda do banco de dados
  * @param {string} type - Tipo de conteúdo ('banner', 'publicidade', 'publicacao', 'imovel')
  * @param {string} fallback - Imagem de fallback (opcional)
  * @returns {string} URL completa da imagem
  */
 export function buildImageUrl(imageUrl, type = 'default', fallback = '/404.png') {
-  // Log para debug (apenas em desenvolvimento)
-  if (process.env.NODE_ENV === 'development') {
-    console.log('🖼️ buildImageUrl:', { imageUrl, type, fallback });
-  }
-
-  // Se não há imagem, retorna fallback
-  if (!imageUrl || imageUrl.trim() === '') {
-    console.warn('⚠️ Imagem vazia ou nula, usando fallback:', fallback);
-    return fallback;
-  }
-
-  // Limpar espaços em branco
-  const cleanImageUrl = imageUrl.trim();
-
-  // URLs absolutas (http/https/data:) - retorna diretamente
-  if (cleanImageUrl.startsWith('http://') || 
-      cleanImageUrl.startsWith('https://') || 
-      cleanImageUrl.startsWith('data:')) {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('✅ URL absoluta detectada:', cleanImageUrl);
-    }
-    return cleanImageUrl;
-  }
-
-  // URLs que já começam com / - adiciona base URL se necessário
-  if (cleanImageUrl.startsWith('/')) {
-    const apiUrl = getApiBaseUrl();
-    if (apiUrl && cleanImageUrl.startsWith('/images/')) {
-      const finalUrl = `${apiUrl}${cleanImageUrl}`;
-      if (process.env.NODE_ENV === 'development') {
-        console.log('✅ URL relativa com API base:', finalUrl);
-      }
-      return finalUrl;
-    }
-    if (process.env.NODE_ENV === 'development') {
-      console.log('✅ URL relativa sem API base:', cleanImageUrl);
-    }
-    return cleanImageUrl;
-  }
-
-  // URLs relativas - determina pasta baseada no tipo
-  const folder = getImageFolder(type);
-  const apiUrl = getApiBaseUrl();
-  
-  let finalUrl;
-  if (apiUrl) {
-    finalUrl = `${apiUrl}/images/${folder}/${cleanImageUrl}`;
-  } else {
-    finalUrl = `/images/${folder}/${cleanImageUrl}`;
-  }
-  
-  if (process.env.NODE_ENV === 'development') {
-    console.log('✅ URL construída:', { folder, finalUrl });
-  }
-  
-  return finalUrl;
+  // Usar o novo sistema Cloudinary
+  return buildCloudinaryImageUrl(imageUrl, type, { fallback });
 }
 
 /**
@@ -160,36 +109,14 @@ export function isValidImageUrl(imageUrl) {
 }
 
 /**
- * Hook para gerenciar estado de erro de imagem
+ * Hook para gerenciar estado de erro de imagem com sistema Cloudinary
  * @param {string} imageUrl - URL da imagem
  * @param {string} type - Tipo de conteúdo
  * @returns {object} { src, error, handleError, resetError }
  */
 export function useImageWithFallback(imageUrl, type = 'default') {
-  const [error, setError] = useState(false);
-  
-  const src = error ? '/404.png' : buildImageUrlWithProxy(imageUrl, type);
-  
-  const handleError = useCallback(() => {
-    console.warn(`Erro ao carregar imagem: ${imageUrl}`);
-    setError(true);
-  }, [imageUrl]);
-  
-  const resetError = useCallback(() => {
-    setError(false);
-  }, []);
-  
-  // Reset error when imageUrl changes
-  useEffect(() => {
-    resetError();
-  }, [imageUrl, resetError]);
-  
-  return {
-    src,
-    error,
-    handleError,
-    resetError
-  };
+  // Usar o hook Cloudinary mais robusto
+  return useCloudinaryImage(imageUrl, type);
 }
 
 // Para compatibilidade, manter exports das funções antigas

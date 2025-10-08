@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { buildImageUrl } from "@/utils/imageUtils";
+import SplashScreen from "@/components/SplashScreen";
 
 export default function Cards({ searchTerm = "" }) {
   const [posts, setPosts] = useState([]);
@@ -69,7 +70,7 @@ export default function Cards({ searchTerm = "" }) {
   }, [searchTerm]);
 
   if (loading) {
-    return <div className="text-center text-[var(--primary)]">Carregando posts...</div>;
+    return <SplashScreen />;
   }
 
   return (

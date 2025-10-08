@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
-import { Row, Col } from "antd";
+import { Spin } from "antd";
 
 // Import dinâmico para evitar problemas de SSR no Vercel
 const Doughnut = dynamic(
@@ -20,7 +20,7 @@ const ChartJS = dynamic(
   { ssr: false }
 );
 
-export default function RentalByRegion({ data, label, options, className }) {
+export default function RentalByRegion({ data, label, options, className, loading }) {
   const [chartData, setChartData] = useState(null);
   const [isReady, setIsReady] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -106,7 +106,7 @@ export default function RentalByRegion({ data, label, options, className }) {
   };
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className={`group h-full !w-full flex items-center rounded-xl px-4 !bg-[#EEF0F9] !shadow-md ${className}`}
     >
@@ -117,12 +117,14 @@ export default function RentalByRegion({ data, label, options, className }) {
 
         <div className="items-center justify-items-center w-full h-full min-h-[200px]">
           <div className="w-fit h-full min-h-[180px] flex items-center justify-center">
-            {isReady ? (
-              <Doughnut 
+            {loading ? (
+              <Spin tip="Carregando gráfico..." />
+            ) : isReady ? (
+              <Doughnut
                 ref={chartRef}
-                data={safeData} 
+                data={safeData}
                 options={safeOptions}
-                key={JSON.stringify(data)} // Force re-render when data changes
+                key={JSON.stringify(data)}
               />
             ) : (
               <div className="flex items-center justify-center h-full">

@@ -4,11 +4,10 @@ import Image from "next/image";
 import { Navigation } from "swiper/modules";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useEffect, useState } from "react";
+import { apiClient } from "@/utils/apiClient";
 
 import "swiper/css";
 import "swiper/css/navigation";
-
-const BACKEND_BASE_URL = "http://localhost:4000";
 
 // Função helper para construir URL de imagem corretamente
 const getImageUrl = (urlImagem) => {
@@ -21,11 +20,11 @@ const getImageUrl = (urlImagem) => {
   
   // Se começa com /, é um caminho absoluto do backend
   if (urlImagem.startsWith("/")) {
-    return `${BACKEND_BASE_URL}${urlImagem}`;
+    return `${process.env.NEXT_PUBLIC_API_URL}${urlImagem}`;
   }
   
   // Se não tem /, assume que é apenas o nome do arquivo
-  return `${BACKEND_BASE_URL}/uploads/${urlImagem}`;
+  return `${process.env.NEXT_PUBLIC_API_URL}/uploads/${urlImagem}`;
 };
 
 // Slides padrão como fallback
@@ -41,21 +40,70 @@ const defaultSlides = [
 export default function HeaderSlider() {
   const [slides, setSlides] = useState(defaultSlides);
   const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
   // Função para buscar banners ativos do backend
   const fetchActiveBanners = async () => {
+    if (!isMounted) return; // Não executar se componente não estiver montado
+    
     try {
       setLoading(true);
       
       console.log("🎠 Buscando banners ativos para carrossel...");
+      console.log("🌍 Hostname atual:", window.location.hostname);
       
-      const response = await fetch(`${BACKEND_BASE_URL}/banner`);
-      if (!response.ok) {
-        throw new Error(`Erro ${response.status}: ${response.statusText}`);
+      let data;
+      
+      // Verificar se estamos em produção (Vercel)
+      const isVercel = window.location.hostname.includes('vercel.app');
+      
+      try {
+        if (isVercel) {
+          console.log("🌐 Ambiente Vercel detectado, usando proxy...");
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://imobiliaria-bortone.onrender.com';
+          const proxyUrl = `/api/proxy?url=${encodeURIComponent(`${apiUrl}/banner`)}`;
+          const proxyResponse = await fetch(proxyUrl);
+          
+          if (!proxyResponse.ok) {
+            throw new Error(`Proxy error: ${proxyResponse.status} ${proxyResponse.statusText}`);
+          }
+          
+          data = await proxyResponse.json();
+          console.log("📊 Dados via proxy:", data);
+        } else {
+          console.log("🏠 Ambiente local detectado, usando apiClient...");
+          const response = await apiClient.get("/banner");
+          data = response.data;
+          console.log("📊 Dados via apiClient:", data);
+        }
+      } catch (primaryError) {
+        console.warn("⚠️ Erro na requisição primária:", primaryError.message);
+        
+        // Fallback: tentar o método alternativo
+        try {
+          if (isVercel) {
+            console.log("🔄 Tentando apiClient como fallback...");
+            const response = await apiClient.get("/banner");
+            data = response.data;
+            console.log("📊 Dados via apiClient (fallback):", data);
+          } else {
+            console.log("🔄 Tentando proxy como fallback...");
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://imobiliaria-bortone.onrender.com';
+            const proxyUrl = `/api/proxy?url=${encodeURIComponent(`${apiUrl}/banner`)}`;
+            const proxyResponse = await fetch(proxyUrl);
+            
+            if (!proxyResponse.ok) {
+              throw new Error(`Proxy fallback error: ${proxyResponse.status} ${proxyResponse.statusText}`);
+            }
+            
+            data = await proxyResponse.json();
+            console.log("📊 Dados via proxy (fallback):", data);
+          }
+        } catch (fallbackError) {
+          console.error("❌ Ambos os métodos falharam:", fallbackError.message);
+          throw new Error(`API e Proxy falharam: ${primaryError.message} | ${fallbackError.message}`);
+        }
       }
-      
-      const data = await response.json();
-      console.log("📊 Dados recebidos do backend:", data);
       
       // Validação básica dos dados
       if (!Array.isArray(data)) {
@@ -66,7 +114,7 @@ export default function HeaderSlider() {
       const bannersAtivos = data.filter(banner => banner.ativo === 1);
       console.log(`✅ Banners ativos encontrados: ${bannersAtivos.length}`);
       
-      if (bannersAtivos.length > 0) {
+      if (bannersAtivos.length > 0 && isMounted) {
         // Converte banners para formato de slides
         const slidesFromBanners = bannersAtivos.map(banner => ({
           id: banner.id,
@@ -84,24 +132,54 @@ export default function HeaderSlider() {
           });
         });
         
-        setSlides(slidesFromBanners);
-        console.log("🎉 Carrossel atualizado com banners ativos!");
-      } else {
+        if (isMounted) {
+          setSlides(slidesFromBanners);
+          console.log("🎉 Carrossel atualizado com banners ativos!");
+        }
+      } else if (isMounted) {
         console.log("⚠️ Nenhum banner ativo encontrado, usando slides padrão");
         setSlides(defaultSlides);
       }
       
     } catch (error) {
       console.error("❌ Erro ao buscar banners ativos:", error);
-      console.log("🔄 Usando slides padrão como fallback");
-      setSlides(defaultSlides);
+      if (isMounted) {
+        console.log("🔄 Usando slides padrão como fallback");
+        setSlides(defaultSlides);
+      }
     } finally {
-      setLoading(false);
+      if (isMounted) {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
+    setIsMounted(true);
+    
+    // Reset do estado ao montar o componente
+    setSlides(defaultSlides);
+    setLoading(true);
+    
     fetchActiveBanners();
+    
+    // Listener para reset da página
+    const handlePageReset = (event) => {
+      console.log('🎠 HeaderSlider recebeu sinal de reset, recarregando banners...');
+      if (event.detail?.from === 'admin') {
+        setSlides(defaultSlides);
+        setLoading(true);
+        fetchActiveBanners();
+      }
+    };
+
+    window.addEventListener('pageReset', handlePageReset);
+    
+    // Cleanup ao desmontar
+    return () => {
+      setIsMounted(false);
+      window.removeEventListener('pageReset', handlePageReset);
+    };
   }, []);
 
   // Loading state
@@ -144,10 +222,9 @@ export default function HeaderSlider() {
                 height={195}
                 className="w-full h-auto object-cover"
                 onError={(e) => {
-                  // Silenciar logs de erro para banners antigos (localhost:4000)
-                  // console.error("❌ Erro ao carregar imagem:", slide.url);
-                  // Fallback para imagem padrão se houver erro
-                  e.target.src = "/404.png";
+                  import('../../utils/imageErrorManager.js').then(({ handleImageError }) => {
+                    handleImageError(e, "/404.png", "HeaderSlider");
+                  });
                 }}
               />
             </div>
