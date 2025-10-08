@@ -130,8 +130,12 @@ export default function CmsUserPage() {
       console.log("Fetching data from endpoint:", `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`);
       const response = await apiClient.get(endpoint);
       console.log("API Response Data:", response.data);
-      if (Array.isArray(response.data)) {
-        setImoveis(response.data);
+      
+      // A API retorna {data: [imóveis]} então precisamos acessar response.data.data
+      const imoveisData = response.data.data || response.data;
+      
+      if (Array.isArray(imoveisData)) {
+        setImoveis(imoveisData);
       } else {
         console.warn("API did not return an array for imoveis, received:", response.data);
         setImoveis([]); 
