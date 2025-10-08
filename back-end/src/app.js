@@ -1,15 +1,38 @@
+import "dotenv/config";
 import express from "express";
-import router from './routes/recomendacaoImovelRoutes.js';
 import cors from "cors";
-import connection from "./config/sequelize-config.js";
+import path from "path";
+import { fileURLToPath } from "url";
 import { createServer } from 'http';
+
+// Configurações e serviços
+import connection from "./config/sequelize-config.js";
 import SocketManager from './services/socketManager.js';
 import { setSocketManager } from './utils/socketHelper.js';
+import { errorHandler } from "./middlewares/errorHandler.js";
+import "./models/Associations.js";
+
+// Importar todas as rotas
+import healthRouter from "./routes/route.js";
 import socketRoutes from './routes/socketRoutes.js';
-// Exemplo de como importar rotas
-import healthRouter from "./routes/route.js"; 
+import blogRoutes from "./routes/blogRoutes.js";
+import userRoutes from './routes/userRoutes.js';
+import searchRouter from "./routes/imovelSearchRoutes.js";
+import agendamentoRouter from "./routes/agendamentoRoute.js";
+import recomendacaoRouter from "./routes/recomendacaoImovelRoutes.js";
+import faqRoutes from "./routes/faqRoutes.js";
+import relatorioRouter from './routes/reportsRoute.js';
+import mapaRoutes from "./routes/mapaRoutes.js";
+import imoveisRouter from "./routes/ImoveisRouter.js";
+import imagemImovelRoutes from "./routes/imagemImovelRoutes.js";
+import dashboardRouter from "./routes/dashboardRoutes.js";
+import bannerRoutes from './routes/bannerRoutes.js';
+import publicidadeRoutes from "./routes/publicidadeRoutes.js";
 
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Criar servidor HTTP
 const server = createServer(app);
@@ -21,25 +44,56 @@ const socketManager = new SocketManager(server);
 app.set('socketManager', socketManager);
 setSocketManager(socketManager);
 
+// ----------------------
 // Middlewares
-app.use(cors()); // Habilita o CORS para todas as origens
-app.use(express.json()); // Para parsear JSON
+// ----------------------
+app.use(cors()); // Habilita CORS para todas as origens
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Rotas
-// Exemplo de como usar as rotas
-app.use("/", router, healthRouter);
-app.use("/api/socket", socketRoutes);
+// Servir arquivos estáticos
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+app.use(express.static(path.join(__dirname, "../public")));
+app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
 
+// ----------------------
+// Rotas
+// ----------------------
+app.use("/", healthRouter);
+app.use("/api/socket", socketRoutes);
+app.use('/banner', bannerRoutes);
+app.use('/', recomendacaoRouter);
+app.use('/user', userRoutes);
+app.use("/search", searchRouter);
+app.use("/agendamentos", agendamentoRouter);
+app.use("/health", healthRouter);
+app.use("/faq", faqRoutes);
+app.use("/relatorio", relatorioRouter);
+app.use("/mapa", mapaRoutes);
+app.use('/dashboard', dashboardRouter);
+app.use("/publicacoes", blogRoutes);
+app.use('/imoveis', imoveisRouter);
+app.use('/imagemImovel', imagemImovelRoutes);
+app.use('/publicidade', publicidadeRoutes);
+
+// Middleware de tratamento de erros (deve ser o último)
+app.use(errorHandler);
+
+// ----------------------
+// Banco de dados
+// ----------------------
 connection
   .authenticate()
   .then(() => {
     console.log("Conexão com banco de dados realizada com sucesso!");
   })
   .catch((error) => {
-    console.log(error);
+    console.log("Erro ao conectar com banco de dados:", error);
   });
 
+// ----------------------
+// Inicializar servidor
+// ----------------------
 const PORT = process.env.PORT || 4000;
 
 server.listen(PORT, function (erro) {
@@ -50,11 +104,3 @@ server.listen(PORT, function (erro) {
     console.log(`Socket.IO habilitado para comunicação em tempo real`);
   }
 });
-
-// // Exemplo para produção
-// Para um ambiente de produção, é uma boa prática restringir as origens permitidas, como no exemplo abaixo:
-// const corsOptions = {
-//   origin: 'https://imobiliaria-bortone.vercel.app' // Substitua pelo domínio do seu frontend
-// };
-
-// app.use(cors(corsOptions));

@@ -346,11 +346,12 @@
   border-radius: 10px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding:10px
 }
 
 .Ltxt {
-  width: 80%;
+  width: 100%;
   height: 55px;
   font-size: 22px;
   color: black;
@@ -361,9 +362,20 @@
   font-weight: normal;
 }
 
+.Ltxt p {
+  max-width: 10px;   /* limita a largura máxima */
+  white-space: nowrap;       /* impede que quebre linha */
+  overflow: hidden;          /* esconde o excesso */
+  text-overflow: ellipsis;   /* adiciona "..." no final */
+}
+
 .p2 {
   padding-top: 6px;
   font-size: 16px;
+}
+
+.endereco_title{
+  width: 50px !important;   /* limita a largura máxima */
 }
 
 .icon_setaD {
@@ -497,7 +509,7 @@
   }
 
   .descricao {
-    width: 90%;
+    width: 100%;
     height: 100%; /* ocupa toda a altura do pai */
     background-color: #eef0f9;
     border-bottom-right-radius: 5cap;

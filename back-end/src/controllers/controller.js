@@ -1,1 +1,0 @@
-// Esse é apenas um arquivo para manter o diretório ativo

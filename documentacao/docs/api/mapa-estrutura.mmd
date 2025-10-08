@@ -1,0 +1,85 @@
+graph TD
+    A[Frontend/Cliente] --> B[API Routes]
+    B --> C[MapaController]
+    C --> D[MapaService]
+    D --> E[MapaModels]
+    E --> F[(Database)]
+    
+    subgraph "Rotas da API"
+        B1[GET /mapa]
+        B2[GET /mapa/busca]
+        B3[GET /mapa/coordenadas]
+        B4[GET /mapa/:id]
+        B5[GET /mapa/tipos]
+        B6[GET /mapa/cidades]
+    end
+    
+    subgraph "Controladores"
+        C1[listarImoveis]
+        C2[buscarImoveisParaMapa]
+        C3[buscarImoveisPorCoordenadas]
+        C4[buscarImovelPorId]
+        C5[listarTiposImoveis]
+        C6[listarCidades]
+    end
+    
+    subgraph "Serviços"
+        D1[buscarImoveis]
+        D2[buscarImoveisParaMapa]
+        D3[buscarImoveisPorCoordenadas]
+        D4[buscarImovelPorId]
+        D5[buscarTiposImoveis]
+        D6[buscarCidades]
+    end
+    
+    subgraph "Modelos"
+        E1[Usuario]
+        E2[Imovel]
+        E3[Casa]
+        E4[ImagemImovel]
+    end
+    
+    subgraph "Banco de Dados"
+        F1[(usuario)]
+        F2[(imoveis)]
+        F3[(casa)]
+        F4[(imagem_imovel)]
+    end
+    
+    B --> B1
+    B --> B2
+    B --> B3
+    B --> B4
+    B --> B5
+    B --> B6
+    
+    B1 --> C1
+    B2 --> C2
+    B3 --> C3
+    B4 --> C4
+    B5 --> C5
+    B6 --> C6
+    
+    C1 --> D1
+    C2 --> D2
+    C3 --> D3
+    C4 --> D4
+    C5 --> D5
+    C6 --> D6
+    
+    D1 --> E1
+    D1 --> E2
+    D1 --> E3
+    D1 --> E4
+    
+    E1 --> F1
+    E2 --> F2
+    E3 --> F3
+    E4 --> F4
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#e8f5e8
+    style D fill:#fff3e0
+    style E fill:#fce4ec
+    style F fill:#f1f8e9
