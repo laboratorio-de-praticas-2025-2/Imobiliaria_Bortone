@@ -64,7 +64,7 @@ app.use("/search", searchRouter);
 app.use("/agendamentos", agendamentoRouter);
 app.use("/health", healthRouter);
 app.use("/faq", faqRoutes);
-app.use("/relatorio", relatorioRouter)
+app.use("/relatorios", relatorioRouter)
 app.use("/mapa", mapaRoutes);
 app.use('/dashboard', dashboardRouter);
 app.use("/publicacoes", blogRoutes);
