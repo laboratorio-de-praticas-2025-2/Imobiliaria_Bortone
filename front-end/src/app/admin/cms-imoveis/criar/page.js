@@ -529,7 +529,7 @@ export default function CriarImovelPage() {
                   }`}
                 >
                   {/* passa a instância do form para o MapPick */}
-                  {/* <MapPick form={form} /> */}
+                  <MapPick form={form} />
                 </div>
                 <FormButton text="Cadastrar" icon={<LuHousePlus />} />
               </div>
