@@ -170,8 +170,13 @@ export function useImageWithFallback(imageUrl, type = 'default') {
   
   const src = error ? '/404.png' : buildImageUrlWithProxy(imageUrl, type);
   
-  const handleError = useCallback(() => {
-    console.warn(`Erro ao carregar imagem: ${imageUrl}`);
+  const handleError = useCallback((event) => {
+    console.warn(`Erro ao carregar imagem: ${imageUrl}`, {
+      src: event?.target?.src,
+      naturalWidth: event?.target?.naturalWidth,
+      naturalHeight: event?.target?.naturalHeight,
+      error: event?.error
+    });
     setError(true);
   }, [imageUrl]);
   

@@ -137,13 +137,7 @@ export default function CmsBannerPage() {
                         onDelete={() => handleDeleteBanner(banner.id)}
                         onToggle={() => handleToggleBanner(banner.id)}
                       />
-                      {/* Indicador visual da URL da imagem */}
-                      {banner.url_imagem && (
-                        <div className="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 rounded text-xs z-10">
-                          {banner.url_imagem.includes('netlify') ? 'Netlify' : 
-                           banner.url_imagem.includes('cloudinary') ? 'Cloudinary' : 'Imagem'}
-                        </div>
-                      )}
+                 
                     </div>
                   ))}
                 </div>

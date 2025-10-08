@@ -1,6 +1,6 @@
 "use client";
 import HomeNavbar from "@/components/home/HomeNavbar";
-import { Form, message } from "antd";
+import { Form, message, Button } from "antd";
 import { BsDoorOpenFill } from "react-icons/bs";
 import { MdBathtub } from "react-icons/md";
 import TextField from "@/components/cms/form/fields/TextField";
@@ -9,8 +9,9 @@ import FormButton from "@/components/cms/form/fields/Button";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import { useEffect, useState } from "react";
 import { buildImageUrl } from "@/utils/imageUtils";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import SplashScreen from "@/components/SplashScreen";
+import { useAuth } from "@/hooks/useAuth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -69,9 +70,14 @@ const enviarAgendamento = async (appointment) => {
 
 export default function Agendamento() {
   const params = useParams();
+  const router = useRouter();
   const id = params?.id;
   const [imovel, setImovel] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [form] = Form.useForm();
+  
+  // Hook de autenticação
+  const { isLoggedIn, user, isLoading: authLoading } = useAuth();
 
   const fetchImovel = async (imovelId) => {
     try {
@@ -99,6 +105,27 @@ export default function Agendamento() {
   useEffect(() => {
     if (id) fetchImovel(id);
   }, [id]);
+
+  // Verificação de login
+  useEffect(() => {
+    if (!authLoading && !isLoggedIn) {
+      message.warning('Você precisa estar logado para agendar uma visita.');
+      router.push(`/login?redirect=${encodeURIComponent(window.location.pathname)}`);
+      return;
+    }
+  }, [authLoading, isLoggedIn, router]);
+
+  // Preenchimento automático dos dados do usuário
+  useEffect(() => {
+    if (user && form) {
+      console.log('👤 Preenchendo dados do usuário:', user);
+      form.setFieldsValue({
+        nome: user.nome || '',
+        email: user.email || '',
+        telefone: user.celular || user.telefone || '',
+      });
+    }
+  }, [user, form]);
 
   const onFinish = async (values) => {
     try {
@@ -137,7 +164,10 @@ export default function Agendamento() {
     }
   };
 
-  if (loading) return <SplashScreen />;
+  if (loading || authLoading) return <SplashScreen />;
+
+  // Se não estiver logado, não renderiza nada (redirecionamento já foi feito)
+  if (!isLoggedIn) return null;
 
   // Busca a primeira imagem disponível do imóvel
   const imagemUrl = imovel?.imagens?.[0]?.url_imagem || imovel?.imagem_imovel?.[0]?.url_imagem || imovel?.imagem || null;
@@ -205,8 +235,37 @@ export default function Agendamento() {
           <div className="flex-1 bg-white px-6 md:px-24 flex flex-col justify-center pt-10 md:pt-15 items-center rounded-t-3xl md:rounded-none">
             <div className="w-full">
               <h2 className="text-3xl !font-bold text-[#4C62AE] mb-6">Insira seus dados</h2>
+              
+              {user && (
+                <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex justify-between items-center">
+                  <div>
+                    <p className="text-sm text-blue-800">
+                      ✅ <strong>Logado como:</strong> {user.nome} ({user.email})
+                    </p>
+                    <p className="text-xs text-blue-600 mt-1">
+                      Seus dados foram preenchidos automaticamente. Você pode alterá-los se necessário.
+                    </p>
+                  </div>
+                  <Button
+                    size="small"
+                    type="link"
+                    onClick={() => {
+                      form.setFieldsValue({
+                        nome: user.nome || '',
+                        email: user.email || '',
+                        telefone: user.celular || user.telefone || '',
+                      });
+                      message.success('Dados recarregados do seu perfil!');
+                    }}
+                    className="text-blue-600"
+                  >
+                    Recarregar dados
+                  </Button>
+                </div>
+              )}
 
               <Form
+                form={form}
                 name="basic"
                 onFinish={onFinish}
                 autoComplete="off"
