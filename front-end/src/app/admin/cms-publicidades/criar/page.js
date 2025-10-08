@@ -23,8 +23,7 @@ export default function CriarPublicidadePage() {
 
   const onFinish = async (values) => {
     await submitForm(
-      () => Promise.resolve(values),
-      ['titulo', 'conteudo'],
+      values,
       async (validatedValues) => {
         let url_imagem = null;
 
@@ -51,7 +50,14 @@ export default function CriarPublicidadePage() {
         const response = await apiClient.post("/publicidade", publicidadeData);
         
         if (response.status === 201) {
-          alert("Publicidade cadastrada com sucesso!");
+          router.push("/admin/cms-publicidades");
+          return response.data;
+        }
+      },
+      {
+        requiredFields: ['titulo', 'conteudo'],
+        successMessage: "Publicidade cadastrada com sucesso!",
+        onSuccess: () => {
           router.push("/admin/cms-publicidades");
         }
       }

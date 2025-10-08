@@ -79,8 +79,8 @@ export default function PublicidadeImage({
         priority={isPlaceholder} // Priority para placeholders
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         style={{ 
-          width: isPlaceholder ? 'auto' : undefined,
-          height: isPlaceholder ? 'auto' : undefined
+          width: 'auto',
+          height: 'auto'
         }}
         {...props}
       />

@@ -66,8 +66,7 @@ export default function EditarPostPage() {
 
   const onFinish = async (values) => {
     await submitForm(
-      () => Promise.resolve(values),
-      ['titulo', 'conteudo'],
+      values,
       async (validatedValues) => {
         let url_imagem = post?.url_imagem; // Manter imagem atual
 
@@ -92,7 +91,14 @@ export default function EditarPostPage() {
         const response = await apiClient.put(`/publicacoes/${id}`, blogData);
 
         if (response.status === 200) {
-          alert("Publicação atualizada com sucesso!");
+          router.push("/admin/cms-publicacoes");
+          return response.data;
+        }
+      },
+      {
+        requiredFields: ['titulo', 'conteudo'],
+        successMessage: "Publicação atualizada com sucesso!",
+        onSuccess: () => {
           router.push("/admin/cms-publicacoes");
         }
       }

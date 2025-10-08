@@ -64,8 +64,7 @@ export default function EditarPublicidadePage() {
 
   const onConfirm = async () => {
     await submitForm(
-      () => Promise.resolve(formValues),
-      ['titulo', 'conteudo'],
+      formValues,
       async (validatedValues) => {
         console.log('=== FRONT-END DEBUG ===');
         console.log('fileList:', fileList);
@@ -108,7 +107,15 @@ export default function EditarPublicidadePage() {
         const response = await apiClient.put(`/publicidade/${id}`, publicidadeData);
         
         if (response.status === 200) {
-          alert("Publicidade atualizada com sucesso!");
+          setIsConfirmModalVisible(false);
+          router.push("/admin/cms-publicidades");
+          return response.data;
+        }
+      },
+      {
+        requiredFields: ['titulo', 'conteudo'],
+        successMessage: "Publicidade atualizada com sucesso!",
+        onSuccess: () => {
           setIsConfirmModalVisible(false);
           router.push("/admin/cms-publicidades");
         }

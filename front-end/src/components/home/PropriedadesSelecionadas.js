@@ -7,7 +7,9 @@ export default function PropriedadesSelecionadas() {
   const [modo, setModo] = useState("comprar");
 
   const imoveisFiltrados = imoveis.filter((imovel) =>
-    modo === "comprar" ? imovel.tipo === "comprar" : imovel.tipo === "alugar"
+    modo === "comprar" ? 
+      (imovel.tipo === "comprar" || imovel.tipo_negociacao === "venda") : 
+      (imovel.tipo === "alugar" || imovel.tipo_negociacao === "aluguel")
   );
 
   useEffect(() => {
