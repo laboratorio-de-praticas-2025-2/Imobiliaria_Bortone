@@ -13,11 +13,13 @@ import { useRouter } from "next/navigation";
 import { uploadPublicidadeImage } from "@/services/netlifyUploadService";
 import { useFormSubmit } from "@/hooks/useAsyncOperation";
 import { apiClient } from "@/utils/apiClient";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function CriarPublicidadePage() {
   const [fileList, setFileList] = useState([]);
   const router = useRouter();
   const { submitForm, isLoading } = useFormSubmit();
+  const { user } = useAuth();
 
   const onFinish = async (values) => {
     await submitForm(
@@ -32,7 +34,7 @@ export default function CriarPublicidadePage() {
             fileList[0].originFileObj,
             validatedValues.titulo,
             validatedValues.conteudo,
-            "1", // usuario_id
+            user?.id?.toString() || "1", // usuario_id do usuário logado
             true // ativo
           );
         }
@@ -41,7 +43,7 @@ export default function CriarPublicidadePage() {
         const publicidadeData = {
           titulo: validatedValues.titulo,
           conteudo: validatedValues.conteudo,
-          usuario_id: 1,
+          usuario_id: user?.id || 1,
           ativo: true,
           url_imagem
         };

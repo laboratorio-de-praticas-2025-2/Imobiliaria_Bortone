@@ -68,7 +68,10 @@ export default function ChatModal({ onClose, isLoggedIn }) {
         const { protocol, hostname, port } = window.location;
         const wsProtocol = protocol === "https:" ? "wss:" : "ws:";
         if (hostname === "localhost" || hostname === "127.0.0.1") return `${wsProtocol}//${hostname}:4000`;
-        if (hostname.includes('.vercel.app')) return "wss://imobiliaria-bortone.onrender.com";
+        if (hostname.includes('.vercel.app')) {
+          const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://imobiliaria-bortone.onrender.com';
+          return backendUrl.replace(/^http/, "ws");
+        }
         if (hostname.includes('.onrender.com')) return `${wsProtocol}//${hostname}`;
         return `${wsProtocol}//${hostname}${port ? `:${port}` : ""}`;
       }

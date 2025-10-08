@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { uploadBlogImage } from "@/services/netlifyUploadService";
 import { useFormSubmit } from "@/hooks/useAsyncOperation";
 import { apiClient } from "@/utils/apiClient";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function CriarPostPage() {
   const [fileList, setFileList] = useState([]);
@@ -22,6 +23,7 @@ export default function CriarPostPage() {
   const [content, setContent] = useState("");
   const router = useRouter();
   const { submitForm, isLoading } = useFormSubmit();
+  const { user } = useAuth();
 
   const onFinish = async (values) => {
     await submitForm(
@@ -35,14 +37,14 @@ export default function CriarPostPage() {
           url_imagem = await uploadBlogImage(
             fileList[0].originFileObj,
             validatedValues.titulo,
-            "1"
+            user?.id?.toString() || "1"
           );
         }
 
         const blogData = {
           titulo: validatedValues.titulo,
           conteudo: validatedValues.conteudo,
-          usuario_id: 1,
+          usuario_id: user?.id || 1,
           url_imagem
         };
 

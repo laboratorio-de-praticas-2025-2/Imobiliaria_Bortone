@@ -60,7 +60,8 @@ export default function HeaderSlider() {
       try {
         if (isVercel) {
           console.log("🌐 Ambiente Vercel detectado, usando proxy...");
-          const proxyUrl = `/api/proxy?url=${encodeURIComponent('https://imobiliaria-bortone.onrender.com/banner')}`;
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://imobiliaria-bortone.onrender.com';
+          const proxyUrl = `/api/proxy?url=${encodeURIComponent(`${apiUrl}/banner`)}`;
           const proxyResponse = await fetch(proxyUrl);
           
           if (!proxyResponse.ok) {
@@ -87,7 +88,8 @@ export default function HeaderSlider() {
             console.log("📊 Dados via apiClient (fallback):", data);
           } else {
             console.log("🔄 Tentando proxy como fallback...");
-            const proxyUrl = `/api/proxy?url=${encodeURIComponent('https://imobiliaria-bortone.onrender.com/banner')}`;
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://imobiliaria-bortone.onrender.com';
+            const proxyUrl = `/api/proxy?url=${encodeURIComponent(`${apiUrl}/banner`)}`;
             const proxyResponse = await fetch(proxyUrl);
             
             if (!proxyResponse.ok) {
