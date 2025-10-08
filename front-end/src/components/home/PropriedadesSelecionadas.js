@@ -7,14 +7,16 @@ export default function PropriedadesSelecionadas() {
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    if (!userInfo) return;
 
     const fetchRecomendacoes = async () => {
       try {
+        const params = userInfo ? { usuario_id: userInfo.id } : { limit: 20 };
+
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/recomendacoes`,
-          { params: { usuario_id: userInfo.id } }
+          { params }
         );
+
         setImoveis(res.data.data || []);
       } catch (err) {
         console.error("Erro ao buscar recomendações:", err);
@@ -23,6 +25,7 @@ export default function PropriedadesSelecionadas() {
 
     fetchRecomendacoes();
   }, []);
+
 
   useEffect(() => {
     console.log("Imóveis recomendados:", imoveis);
