@@ -23,6 +23,9 @@ export default function Home() {
   // Hook para resetar página quando vem do admin
   usePageReset();
   
+  // Estado para controlar se o componente foi montado no cliente
+  const [isMounted, setIsMounted] = useState(false);
+  
   // Verificar se é primeira visita ou navegação de volta
   const [showSplash, setShowSplash] = useState(() => {
     // Se estivermos no lado do cliente, verificar se já mostrou o splash
@@ -35,6 +38,9 @@ export default function Home() {
   const [animateOut, setAnimateOut] = useState(false);
 
   useEffect(() => {
+    // Marcar que o componente foi montado no cliente
+    setIsMounted(true);
+    
     if (showSplash) {
       // Marcar que já visitou a home
       if (typeof window !== 'undefined') {
@@ -76,9 +82,13 @@ export default function Home() {
     return <SplashScreen animateOut={animateOut} />;
   }
 
-  // Aguardar verificação de autenticação
-  if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center">Carregando...</div>;
+  // Aguardar verificação de autenticação e montagem do componente
+  if (!isMounted || isLoading) {
+    return (
+      <div className="w-screen h-screen bg-gradient-to-b from-[#324587] to-[#0C1121] flex items-center justify-center">
+        <div className="text-white text-lg">Carregando...</div>
+      </div>
+    );
   }
 
   return (
