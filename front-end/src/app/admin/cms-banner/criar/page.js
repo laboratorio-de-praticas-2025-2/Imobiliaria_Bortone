@@ -10,10 +10,12 @@ import Image from "next/image";
 import Sidebar from "@/components/cms/Sidebar";
 import { useState, useEffect } from "react";
 import { uploadBannerImage } from "@/services/netlifyUploadService";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
 
 export default function CriarBannerPage() {
   const [fileList, setFileList] = useState([]);
   const [isClient, setIsClient] = useState(false);
+  const { loading, submitForm } = useFormSubmit();
 
   // Garante que certas partes só rodem no cliente
   useEffect(() => {
@@ -21,46 +23,54 @@ export default function CriarBannerPage() {
   }, []);
 
   const onFinish = async (values) => {
-    try {
-      let url_imagem = null;
+    const formData = { ...values, fileList };
+    
+    await submitForm(
+      formData,
+      async (data) => {
+        let url_imagem = null;
 
-      // Upload da imagem via Netlify se houver arquivo
-      if (fileList.length > 0) {
-        url_imagem = await uploadBannerImage(
-          fileList[0].originFileObj,
-          values.descricao,
-          "1" // usuario_id
-        );
-      }
+        // Upload da imagem via Netlify se houver arquivo
+        if (data.fileList.length > 0) {
+          url_imagem = await uploadBannerImage(
+            data.fileList[0].originFileObj,
+            data.descricao,
+            "1" // usuario_id
+          );
+        }
 
-      // Enviar dados para o backend sem arquivo
-      const bannerData = {
-        descricao: values.descricao,
-        usuario_id: 1,
-        ativo: true,
-        url_imagem
-      };
+        // Enviar dados para o backend sem arquivo
+        const bannerData = {
+          descricao: data.descricao,
+          usuario_id: 1,
+          ativo: true,
+          url_imagem
+        };
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-      const res = await fetch(`${apiUrl}/banner`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+        const res = await fetch(`${apiUrl}/banner`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bannerData),
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Erro ao criar banner");
+        }
+
+        return await res.json();
+      },
+      {
+        successMessage: "Banner criado com sucesso!",
+        onSuccess: () => {
+          setFileList([]);
         },
-        body: JSON.stringify(bannerData),
-      });
-
-      if (res.ok) {
-        alert("Banner criado com sucesso!");
-        setFileList([]);
-      } else {
-        const data = await res.json();
-        alert("Erro ao criar banner: " + (data.error || "Desconhecido"));
+        requiredFields: ['descricao']
       }
-    } catch (error) {
-      console.error(error);
-      alert("Erro ao enviar o formulário: " + error.message);
-    }
+    );
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -116,6 +126,7 @@ export default function CriarBannerPage() {
                   text="Publicar"
                   className="!hidden sm:!flex"
                   icon={<UploadOutlined />}
+                  loading={loading}
                 />
               </div>
 
@@ -129,6 +140,7 @@ export default function CriarBannerPage() {
                   text="Publicar"
                   className="!flex !sm:hidden"
                   icon={<UploadOutlined />}
+                  loading={loading}
                 />
               </div>
             </div>

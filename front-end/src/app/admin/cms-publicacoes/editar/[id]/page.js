@@ -15,6 +15,7 @@ import { uploadBlogImage } from "@/services/netlifyUploadService";
 import { Form as FormAntd } from "antd";
 import { buildImageUrl } from "@/utils/imageUtils";
 import SplashScreen from "@/components/SplashScreen";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
 
 export default function EditarPostPage() {
   const params = useParams();
@@ -27,6 +28,7 @@ export default function EditarPostPage() {
   const [content, setContent] = useState("");
   const [imageError, setImageError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { submitForm, isLoading } = useFormSubmit();
 
   // Função para gerar URL da imagem com fallback usando utilitário unificado
   const getImageUrl = () => {
@@ -64,42 +66,43 @@ export default function EditarPostPage() {
   }, [id, form]);
 
   const onFinish = async (values) => {
-    try {
-      let url_imagem = post?.url_imagem; // Manter imagem atual
+    await submitForm(
+      () => Promise.resolve(values),
+      ['titulo', 'conteudo'],
+      async (validatedValues) => {
+        let url_imagem = post?.url_imagem; // Manter imagem atual
 
-      // Upload da nova imagem via Cloudinary se houver arquivo
-      if (fileList.length > 0 && fileList[0].originFileObj) {
-        url_imagem = await uploadBlogImage(
-          fileList[0].originFileObj,
-          values.titulo,
-          values.conteudo,
-          "1" // usuario_id
-        );
-        console.log('Nova imagem uploaded:', url_imagem);
+        // Upload da nova imagem via Cloudinary se houver arquivo
+        if (fileList.length > 0 && fileList[0].originFileObj) {
+          url_imagem = await uploadBlogImage(
+            fileList[0].originFileObj,
+            validatedValues.titulo,
+            validatedValues.conteudo,
+            "1" // usuario_id
+          );
+          console.log('Nova imagem uploaded:', url_imagem);
+        }
+
+        // Enviar dados para o backend sem arquivo
+        const blogData = {
+          titulo: validatedValues.titulo,
+          conteudo: validatedValues.conteudo,
+          url_imagem
+        };
+
+        const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+        const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
+
+        const response = await axios.put(`${apiUrl}/publicacoes/${id}`, blogData, {
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (response.status === 200) {
+          alert("Publicação atualizada com sucesso!");
+          router.push("/admin/cms-publicacoes");
+        }
       }
-
-      // Enviar dados para o backend sem arquivo
-      const blogData = {
-        titulo: values.titulo,
-        conteudo: values.conteudo,
-        url_imagem
-      };
-
-      const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
-      const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
-
-      const response = await axios.put(`${apiUrl}/publicacoes/${id}`, blogData, {
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (response.status === 200) {
-        alert("Publicação atualizada com sucesso!");
-        router.push("/admin/cms-publicacoes");
-      }
-    } catch (error) {
-      console.error("Erro ao atualizar publicação:", error);
-      alert("Não foi possível atualizar a publicação.");
-    }
+    );
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -186,6 +189,7 @@ export default function EditarPostPage() {
                   text="Publicar"
                   className="!hidden sm:!flex"
                   icon={<UploadOutlined />}
+                  loading={isLoading}
                 />
               </div>
 
@@ -241,6 +245,7 @@ export default function EditarPostPage() {
                   text="Publicar"
                   className="!flex !sm:hidden"
                   icon={<UploadOutlined />}
+                  loading={isLoading}
                 />
               </div>
             </div>

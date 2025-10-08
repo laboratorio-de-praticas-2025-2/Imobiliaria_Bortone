@@ -15,6 +15,7 @@ import { LuHousePlus } from "react-icons/lu";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { uploadImovelImage } from "@/services/netlifyUploadService";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
@@ -23,9 +24,12 @@ const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
 export default function CriarImovelPage() {
   const [form] = FormAntd.useForm();
   const [fileList, setFileList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const onFinish = async (values) => {
+    if (isLoading) return;
+    setIsLoading(true);
     try {
       const imovelData = {
         usuario_id: 1,
@@ -100,6 +104,8 @@ export default function CriarImovelPage() {
     } catch (error) {
       console.error("Erro ao cadastrar imóvel:", error);
       alert("Erro ao cadastrar imóvel. Tente novamente.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -531,7 +537,7 @@ export default function CriarImovelPage() {
                   {/* passa a instância do form para o MapPick */}
                   <MapPick form={form} />
                 </div>
-                <FormButton text="Cadastrar" icon={<LuHousePlus />} />
+                <FormButton text="Cadastrar" icon={<LuHousePlus />} loading={isLoading} />
               </div>
             </div>
           </Form.FormBody>
