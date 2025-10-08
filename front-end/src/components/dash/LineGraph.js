@@ -1,5 +1,5 @@
 "use client";
-import { Row, Col } from "antd";
+import { Spin } from "antd";
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 
@@ -37,7 +37,7 @@ const ChartJS = dynamic(
 );
 
 // agora com parametro dos dados
-export default function LineGraph({ alugueisPorMes }) {
+export default function LineGraph({ alugueisPorMes, loading }) {
   const [isReady, setIsReady] = useState(false);
   const chartRef = useRef(null);
   const containerRef = useRef(null);
@@ -179,7 +179,9 @@ export default function LineGraph({ alugueisPorMes }) {
 
         <div className="items-center justify-items-center w-full h-full">
           <div className="w-full h-[250px] md:h-[300px]" ref={containerRef}>
-            {isReady ? (
+            {loading ? (
+              <Spin tip="Carregando gráfico..." />
+            ) : isReady ? (
               <Line data={data} options={options} />
             ) : (
               <div className="flex items-center justify-center h-full">

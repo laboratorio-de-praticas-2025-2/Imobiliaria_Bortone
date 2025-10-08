@@ -53,31 +53,33 @@ app.use(express.urlencoded({ extended: false }));
 
 // Servir arquivos estáticos
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
-app.use(express.static(path.join(__dirname, "../public")));
-app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
 
-// ----------------------
 // Rotas
-// ----------------------
-app.use("/", healthRouter);
+
+app.use('/', recomendacaoRouter);
 app.use("/api/socket", socketRoutes);
 app.use('/banner', bannerRoutes);
-app.use('/', recomendacaoRouter);
-app.use('/user', userRoutes);
+app.use('/user', userRoutes );
 app.use("/search", searchRouter);
 app.use("/agendamentos", agendamentoRouter);
 app.use("/health", healthRouter);
 app.use("/faq", faqRoutes);
-app.use("/relatorio", relatorioRouter);
+app.use("/relatorios", relatorioRouter)
 app.use("/mapa", mapaRoutes);
 app.use('/dashboard', dashboardRouter);
 app.use("/publicacoes", blogRoutes);
 app.use('/imoveis', imoveisRouter);
 app.use('/imagemImovel', imagemImovelRoutes);
+app.use("/publicacoes", blogRoutes);
 app.use('/publicidade', publicidadeRoutes);
 
-// Middleware de tratamento de erros (deve ser o último)
+app.use(express.static(path.join(__dirname, "../public")));
+app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
 app.use(errorHandler);
+
+const server = http.createServer(app);
+initWebSocket(server);
+
 
 // ----------------------
 // Banco de dados

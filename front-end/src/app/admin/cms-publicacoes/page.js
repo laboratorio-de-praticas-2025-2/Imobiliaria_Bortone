@@ -5,6 +5,7 @@ import CMS from "@/components/cms/table";
 import { useEffect, useState } from "react";
 import { VscNewFile } from "react-icons/vsc";
 import axios from "axios";
+import { PiWarningCircleBold } from "react-icons/pi";
 
 export default function CmsBlogPage() {
   const [publicacoes, setPublicacoes] = useState([]);
@@ -35,12 +36,17 @@ export default function CmsBlogPage() {
     }
   };
 
-  console.log("CmsBlogPage carregado, currentPage:", currentPage, "filterData:", filterData);
+  console.log(
+    "CmsBlogPage carregado, currentPage:",
+    currentPage,
+    "filterData:",
+    filterData
+  );
 
-useEffect(() => {
-  console.log("useEffect chamando loadPublicacoes");
-  loadPublicacoes();
-}, []);
+  useEffect(() => {
+    console.log("useEffect chamando loadPublicacoes");
+    loadPublicacoes();
+  }, []);
 
   useEffect(() => {
     if (searchTerm.trim() === "") {
@@ -68,15 +74,17 @@ useEffect(() => {
     if (searchTerm.trim() === "") {
       // Aplica filtros nos dados já carregados
       let filtered = [...publicacoes];
-      
+
       if (filterData.order) {
         if (filterData.order === "Ordem alfabetica") {
           filtered = filtered.sort((a, b) => a.titulo.localeCompare(b.titulo));
         } else if (filterData.order === "Data de publicação") {
-          filtered = filtered.sort((a, b) => new Date(b.data_publicacao) - new Date(a.data_publicacao));
+          filtered = filtered.sort(
+            (a, b) => new Date(b.data_publicacao) - new Date(a.data_publicacao)
+          );
         }
       }
-      
+
       setFilteredPublicacoes(filtered);
       setPagination((prev) => ({
         ...prev,
@@ -90,7 +98,9 @@ useEffect(() => {
     try {
       setIsLoading(true);
 
-      const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+      const rawApiUrl =
+        process.env.NEXT_PUBLIC_API_URL ||
+        (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
       if (!rawApiUrl) {
         console.error("❌ NEXT_PUBLIC_API_URL não está definida!");
         return;
@@ -115,7 +125,9 @@ useEffect(() => {
 
       // Endpoint correto no backend: /publicacoes
       const endpoint = "publicacoes";
-      const fullUrl = `${apiUrl}/${endpoint}${params.toString() ? "?" + params.toString() : ""}`;
+      const fullUrl = `${apiUrl}/${endpoint}${
+        params.toString() ? "?" + params.toString() : ""
+      }`;
 
       // Debug completo
       console.log("=== DEBUG LOAD PUBLICACOES ===");
@@ -138,7 +150,7 @@ useEffect(() => {
         } else if (Array.isArray(response.data)) {
           data = response.data;
         }
-        
+
         setPublicacoes(data);
         setFilteredPublicacoes(data);
         setPagination((prev) => ({
@@ -185,7 +197,9 @@ useEffect(() => {
     if (!confirm("Deseja realmente excluir este artigo?")) return;
     try {
       setIsLoading(true);
-      const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+      const rawApiUrl =
+        process.env.NEXT_PUBLIC_API_URL ||
+        (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
       const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
       await axios.delete(`${apiUrl}/publicacoes/${id}`);
       loadPublicacoes();
@@ -229,7 +243,31 @@ useEffect(() => {
                   ))}
                 </div>
               ) : (
-                <p>Nenhuma publicação encontrada.</p>
+                <div className="w-full flex justify-center h-[500px] items-center">
+                  <div className="rounded-2xl bg-white shadow-2xl p-10 flex flex-col gap-5">
+                    <div className="flex flex-row gap-5 items-center">
+                      <PiWarningCircleBold
+                        size={50}
+                        className="text-[var(--primary)]"
+                      />
+                      <div className="flex flex-col gap-2">
+                        <span className="text-4xl font-bold text-[var(--primary)]">
+                          Atenção
+                        </span>
+                        <p className="max-w-[200px]">
+                          Não foi possível exibir os dados devido à falta de
+                          existência do mesmo.
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      className="bg-[var(--primary)] !text-white font-bold py-2 px-4 rounded !text-xl"
+                      onClick={() => window.location.reload()}
+                    >
+                      Recarregar
+                    </button>
+                  </div>
+                </div>
               )}
             </CMS.TableBody>
 

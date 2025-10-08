@@ -1,6 +1,7 @@
 "use client";
 import { Row, Col } from "antd";
 import { Line } from "react-chartjs-2";
+import { useEffect, useRef } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,23 +25,24 @@ ChartJS.register(
 
 // agora com parametro dos dados
 export default function LineGraph({graphData, label} ) {
+  const chartRef = useRef(null);
   // define os labels como nome do mes/ano  
   const monthNames = [
     "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
     "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
   ];
   // mapeia os dados com base nas labels e no formato esperado
-  const labels = graphData.map((item) => {
+  const labels = graphData && Array.isArray(graphData) ? graphData.map((item) => {
     const [year, month] = item.mes.split("-");
     return `${monthNames[parseInt(month) - 1]}/${year.slice(2)}`;
-  });
+  }) : [];
 
   const data = {
     labels,
     datasets: [
       {
         label: "Casas",
-        data: graphData.map((item) => item.Casa),
+        data: graphData && Array.isArray(graphData) ? graphData.map((item) => item.Casa) : [],
         borderColor: "#F39C12",
         borderWidth: 4,
         fill: false,
@@ -49,7 +51,7 @@ export default function LineGraph({graphData, label} ) {
       },
       {
         label: "Apartamentos",
-        data: graphData.map((item) => item.Apartamento),
+        data: graphData && Array.isArray(graphData) ? graphData.map((item) => item.Apartamento) : [],
         borderColor: "#243B7B",
         borderWidth: 4,
         fill: false,
@@ -58,7 +60,7 @@ export default function LineGraph({graphData, label} ) {
       },
       {
         label: "Terrenos",
-        data: graphData.map((item) => item.Terreno),
+        data: graphData && Array.isArray(graphData) ? graphData.map((item) => item.Terreno) : [],
         /* data: [10, 5, 12, 1, 22, 13, 16, 11, 19, 7, 14, 9], */
         borderColor: "#E74C3C",
         borderWidth: 4,
@@ -70,11 +72,11 @@ export default function LineGraph({graphData, label} ) {
   };
 
   // calcula o valor maximo entre todas as categorias para definir o teto do grafico
-  const maxValue = Math.max(
+  const maxValue = graphData && Array.isArray(graphData) ? Math.max(
     ...graphData.map((m) =>
       Math.max(m.Casa, m.Apartamento, m.Terreno)
     )
-  );
+  ) : 0;
   // arredonda o teto para o proximo multiplo de 5
   const graphCeiling =  maxValue + (5 - (maxValue % 5));
   // defino os steps como 5
@@ -83,6 +85,10 @@ export default function LineGraph({graphData, label} ) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    animation: {
+      duration: 0 // Desabilita animação para melhor captura em PDF
+    },
+    devicePixelRatio: 2, // Melhora a qualidade para PDF
     scales: {
       y: {
         beginAtZero: true,
@@ -114,8 +120,18 @@ export default function LineGraph({graphData, label} ) {
     },
   };  
 
+  useEffect(() => {
+    if (graphData && chartRef.current) {
+      // Força re-render do gráfico
+      const chart = chartRef.current;
+      if (chart.chartInstance) {
+        chart.chartInstance.update();
+      }
+    }
+  }, [graphData]);
+  
   return (
-    <div className="group h-[350px] !w-full flex items-center rounded-xl  px-10 md:px-3 2xl:px-10 !bg-[#EEF0F9] !shadow-md">
+    <div className="group h-[350px] !w-full flex items-center rounded-xl  px-10 md:px-3 2xl:px-10 !bg-[#EEF0F9] shadow-none">
       <div className="grid grid-col content-evenly w-full h-full">
         <span className="text-lg ms-4 font-semibold text-[var(--primary)]">
           {label}
@@ -123,7 +139,7 @@ export default function LineGraph({graphData, label} ) {
 
         <div className="items-center justify-items-center w-full h-full">
           <div className="w-[95%] h-[280px]">
-            <Line data={data} options={options} />
+            <Line ref={chartRef} data={data} options={options} />
           </div>
         </div>
       </div>
