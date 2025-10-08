@@ -31,7 +31,8 @@ export default function HeaderSliderDebug() {
       // Teste 1: Fetch direto
       try {
         console.log("📡 Tentativa 1: Fetch direto para API...");
-        const response = await fetch('https://imobiliaria-bortone.onrender.com/banner');
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://imobiliaria-bortone.onrender.com';
+        const response = await fetch(`${apiUrl}/banner`);
         
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -60,7 +61,8 @@ export default function HeaderSliderDebug() {
         // Teste 2: Proxy
         try {
           console.log("📡 Tentativa 2: Usando proxy...");
-          const proxyUrl = `/api/proxy?url=${encodeURIComponent('https://imobiliaria-bortone.onrender.com/banner')}`;
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://imobiliaria-bortone.onrender.com';
+          const proxyUrl = `/api/proxy?url=${encodeURIComponent(`${apiUrl}/banner`)}`;
           const proxyResponse = await fetch(proxyUrl);
           
           if (!proxyResponse.ok) {

@@ -12,11 +12,13 @@ import { useState, useEffect } from "react";
 import { uploadBannerImage } from "@/services/netlifyUploadService";
 import { useFormSubmit } from "@/hooks/useAsyncOperation";
 import { apiClient } from "@/utils/apiClient";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function CriarBannerPage() {
   const [fileList, setFileList] = useState([]);
   const [isClient, setIsClient] = useState(false);
   const { loading, submitForm } = useFormSubmit();
+  const { user } = useAuth();
 
   // Garante que certas partes só rodem no cliente
   useEffect(() => {
@@ -36,15 +38,14 @@ export default function CriarBannerPage() {
           url_imagem = await uploadBannerImage(
             data.fileList[0].originFileObj,
             data.descricao,
-            "1" // usuario_id
+            user?.id?.toString() || "1" // usuario_id do usuário logado
           );
         }
 
         // Enviar dados para o backend sem arquivo
         const bannerData = {
           descricao: data.descricao,
-          usuario_id: 1,
-          ativo: true,
+          usuario_id: user?.id || 1,
           url_imagem
         };
 

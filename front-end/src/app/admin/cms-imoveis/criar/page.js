@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { uploadImovelImage } from "@/services/netlifyUploadService";
 import { useFormSubmit } from "@/hooks/useAsyncOperation";
 import { apiClient } from "@/utils/apiClient";
+import { useAuth } from "@/hooks/useAuth";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
@@ -27,6 +28,7 @@ export default function CriarImovelPage() {
   const [fileList, setFileList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { user } = useAuth();
 
   const onFinish = async (values) => {
     if (isLoading) return;
@@ -55,7 +57,7 @@ export default function CriarImovelPage() {
       }
 
       const imovelData = {
-        usuario_id: 1,
+        usuario_id: user?.id || 1,
         tipo: tipoSelecionado.toLowerCase(),
         status: statusSelecionado.toLowerCase(),
         cidade: citiesSelecionado,

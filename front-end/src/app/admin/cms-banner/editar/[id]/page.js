@@ -17,6 +17,7 @@ import { uploadBannerImage } from "@/services/netlifyUploadService";
 import { apiClient } from "@/utils/apiClient";
 import SplashScreen from "@/components/SplashScreen";
 import { useFormSubmit } from "@/hooks/useAsyncOperation";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function EditarBannerPage() {
   const { id } = useParams();
@@ -27,6 +28,7 @@ export default function EditarBannerPage() {
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const { submitForm, isLoading } = useFormSubmit();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (!id) return;
@@ -68,41 +70,51 @@ export default function EditarBannerPage() {
   };
 
   const onConfirm = async () => {
-    await submitForm(
-      () => form.validateFields(),
-      ['descricao'],
-      async (values) => {
-        let url_imagem = banner.url_imagem;
+    try {
+      const values = await form.validateFields();
+      
+      await submitForm(
+        values,
+        async (formData) => {
+          let url_imagem = banner.url_imagem;
 
-        // Upload da nova imagem via Cloudinary se houver arquivo
-        if (fileList.length > 0 && fileList[0].originFileObj) {
-          url_imagem = await uploadBannerImage(
-            fileList[0].originFileObj,
-            values.descricao,
-            "1" // usuario_id
-          );
-          console.log('Nova imagem uploaded:', url_imagem);
+          // Upload da nova imagem via Cloudinary se houver arquivo
+          if (fileList.length > 0 && fileList[0].originFileObj) {
+            url_imagem = await uploadBannerImage(
+              fileList[0].originFileObj,
+              formData.descricao,
+              user?.id?.toString() || "1" // usuario_id do usuário logado
+            );
+            console.log('Nova imagem uploaded:', url_imagem);
+          }
+
+          // Enviar dados para o backend sem arquivo
+          const bannerData = {
+            descricao: formData.descricao,
+            usuario_id: user?.id || 1,
+            url_imagem
+          };
+
+          const res = await apiClient.put(`/banner/${id}`, bannerData);
+
+          if (res.status !== 200) {
+            throw new Error(res.data?.error || "Erro ao atualizar banner");
+          }
+
+          return res.data;
+        },
+        {
+          successMessage: "Banner atualizado com sucesso!",
+          onSuccess: () => {
+            setIsConfirmModalVisible(false);
+            window.location.href = "/admin/cms-banner";
+          },
+          requiredFields: ['descricao']
         }
-
-        // Enviar dados para o backend sem arquivo
-        const bannerData = {
-          descricao: values.descricao,
-          usuario_id: 1,
-          ativo: true,
-          url_imagem
-        };
-
-        const res = await apiClient.put(`/banner/${id}`, bannerData);
-
-        if (res.status === 200) {
-          alert("Banner atualizado com sucesso!");
-          setIsConfirmModalVisible(false);
-          window.location.href = "/admin/cms-banner";
-        } else {
-          alert("Erro ao atualizar banner: " + (res.data?.error || "Desconhecido"));
-        }
-      }
-    );
+      );
+    } catch (error) {
+      console.error("Erro na validação:", error);
+    }
   };
 
   const onFinishFailed = (errorInfo) => console.log("Edit Failed:", errorInfo);
