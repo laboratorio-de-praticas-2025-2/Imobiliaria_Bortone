@@ -236,33 +236,6 @@ export default function Agendamento() {
             <div className="w-full">
               <h2 className="text-3xl !font-bold text-[#4C62AE] mb-6">Insira seus dados</h2>
               
-              {user && (
-                <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex justify-between items-center">
-                  <div>
-                    <p className="text-sm text-blue-800">
-                      ✅ <strong>Logado como:</strong> {user.nome} ({user.email})
-                    </p>
-                    <p className="text-xs text-blue-600 mt-1">
-                      Seus dados foram preenchidos automaticamente. Você pode alterá-los se necessário.
-                    </p>
-                  </div>
-                  <Button
-                    size="small"
-                    type="link"
-                    onClick={() => {
-                      form.setFieldsValue({
-                        nome: user.nome || '',
-                        email: user.email || '',
-                        telefone: user.celular || user.telefone || '',
-                      });
-                      message.success('Dados recarregados do seu perfil!');
-                    }}
-                    className="text-blue-600"
-                  >
-                    Recarregar dados
-                  </Button>
-                </div>
-              )}
 
               <Form
                 form={form}

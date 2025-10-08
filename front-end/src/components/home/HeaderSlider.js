@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 
-const BACKEND_BASE_URL = "http://localhost:4000";
+const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 // Função helper para construir URL de imagem corretamente
 const getImageUrl = (urlImagem) => {
@@ -21,11 +21,11 @@ const getImageUrl = (urlImagem) => {
   
   // Se começa com /, é um caminho absoluto do backend
   if (urlImagem.startsWith("/")) {
-    return `${BACKEND_BASE_URL}${urlImagem}`;
+    return `${apiURL}${urlImagem}`;
   }
   
   // Se não tem /, assume que é apenas o nome do arquivo
-  return `${BACKEND_BASE_URL}/uploads/${urlImagem}`;
+  return `${apiURL}/uploads/${urlImagem}`;
 };
 
 // Slides padrão como fallback
@@ -49,7 +49,7 @@ export default function HeaderSlider() {
       
       console.log("🎠 Buscando banners ativos para carrossel...");
       
-      const response = await fetch(`${BACKEND_BASE_URL}/banner`);
+      const response = await fetch(`${apiURL}/banner`);
       if (!response.ok) {
         throw new Error(`Erro ${response.status}: ${response.statusText}`);
       }
