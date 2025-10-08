@@ -50,10 +50,58 @@ export default function HeaderSlider() {
       setLoading(true);
       
       console.log("🎠 Buscando banners ativos para carrossel...");
+      console.log("🌍 Hostname atual:", window.location.hostname);
       
-      const response = await apiClient.get("/banner");
-      const data = response.data;
-      console.log("📊 Dados recebidos do backend:", data);
+      let data;
+      
+      // Verificar se estamos em produção (Vercel)
+      const isVercel = window.location.hostname.includes('vercel.app');
+      
+      try {
+        if (isVercel) {
+          console.log("🌐 Ambiente Vercel detectado, usando proxy...");
+          const proxyUrl = `/api/proxy?url=${encodeURIComponent('https://imobiliaria-bortone.onrender.com/banner')}`;
+          const proxyResponse = await fetch(proxyUrl);
+          
+          if (!proxyResponse.ok) {
+            throw new Error(`Proxy error: ${proxyResponse.status} ${proxyResponse.statusText}`);
+          }
+          
+          data = await proxyResponse.json();
+          console.log("📊 Dados via proxy:", data);
+        } else {
+          console.log("🏠 Ambiente local detectado, usando apiClient...");
+          const response = await apiClient.get("/banner");
+          data = response.data;
+          console.log("📊 Dados via apiClient:", data);
+        }
+      } catch (primaryError) {
+        console.warn("⚠️ Erro na requisição primária:", primaryError.message);
+        
+        // Fallback: tentar o método alternativo
+        try {
+          if (isVercel) {
+            console.log("🔄 Tentando apiClient como fallback...");
+            const response = await apiClient.get("/banner");
+            data = response.data;
+            console.log("📊 Dados via apiClient (fallback):", data);
+          } else {
+            console.log("🔄 Tentando proxy como fallback...");
+            const proxyUrl = `/api/proxy?url=${encodeURIComponent('https://imobiliaria-bortone.onrender.com/banner')}`;
+            const proxyResponse = await fetch(proxyUrl);
+            
+            if (!proxyResponse.ok) {
+              throw new Error(`Proxy fallback error: ${proxyResponse.status} ${proxyResponse.statusText}`);
+            }
+            
+            data = await proxyResponse.json();
+            console.log("📊 Dados via proxy (fallback):", data);
+          }
+        } catch (fallbackError) {
+          console.error("❌ Ambos os métodos falharam:", fallbackError.message);
+          throw new Error(`API e Proxy falharam: ${primaryError.message} | ${fallbackError.message}`);
+        }
+      }
       
       // Validação básica dos dados
       if (!Array.isArray(data)) {
