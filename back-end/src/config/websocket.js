@@ -9,8 +9,6 @@ export default function initWebSocket(server) {
     "http://localhost:3000",
     "http://localhost:3001", 
     "https://imobiliaria-bortone.vercel.app",
-    "https://imobiliaria-bortone-git-develop-daniel-augusto-mandiras-projects.vercel.app",
-    "https://imobiliaria-bortone-git-14b00d-daniel-augusto-mandiras-projects.vercel.app",
     // Padrões Vercel para branches
     "https://imobiliaria-bortone-git-",
     "https://imobiliaria-bortone-",
