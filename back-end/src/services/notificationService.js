@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import Imovel from "../models/model.js";
+import Imovel from "../models/Imovel.js";
 import RecomendacaoImovel from "../models/recomendacaoImovelModel.js";
 // Importar apenas funções essenciais - SEM REDUNDÂNCIA
 import {
