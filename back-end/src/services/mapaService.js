@@ -1,6 +1,7 @@
 import { Imovel, Casa, ImagemImovel, Usuario } from '../models/mapaModels.js';
 import { Op } from 'sequelize';
 import connection from '../config/sequelize-config.js';
+import { organizarImoveisMapView } from './organizarImoveisMapaService.js';
 
 class MapaService {
   /**
@@ -194,6 +195,12 @@ class MapaService {
         if (filtros.areaMax) whereClause.area[Op.lte] = filtros.areaMax;
       }
 
+      // Filtro por cidades (múltiplas)
+      if (filtros.cidades && filtros.cidades.length > 0) {
+        console.log('Aplicando filtro de cidades:', filtros.cidades);
+        whereClause.cidade = { [Op.in]: filtros.cidades };
+      }
+
       // Filtros específicos para casas
       if (filtros.quartos) {
         includeClause[1].where = { quartos: filtros.quartos };
@@ -234,7 +241,8 @@ class MapaService {
         order: [['data_cadastro', 'DESC']]
       });
 
-      return imoveis;
+      // Organiza os dados para o mapa
+      return organizarImoveisMapView(imoveis);
     } catch (error) {
       throw new Error(`Erro ao buscar imóveis para o mapa: ${error.message}`);
     }

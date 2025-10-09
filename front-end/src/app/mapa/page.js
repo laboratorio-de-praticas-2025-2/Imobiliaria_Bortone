@@ -33,6 +33,40 @@ export default function Mapa() {
   const [showSplash, setShowSplash] = useState(true);
   const [animateOut, setAnimateOut] = useState(false);
 
+  // Função para carregar todos os imóveis iniciais
+  const carregarTodosImoveis = async () => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      
+      if (!apiUrl) {
+        console.error("NEXT_PUBLIC_API_URL não configurada");
+        return;
+      }
+      
+      console.log("Carregando imóveis iniciais...");
+      const response = await fetch(`${apiUrl}/mapa/busca`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Imóveis carregados:", data);
+        if (data.success && data.data) {
+          setImoveisCarrossel(data.data);
+          setImoveisMapa(data.data);
+          console.log(`${data.data.length} imóveis carregados inicialmente`);
+        } else {
+          console.warn("API retornou sucesso mas sem dados");
+        }
+      } else {
+        console.error("Erro HTTP ao carregar imóveis:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Erro na requisição inicial:", error);
+    }
+  };
+
   const onSearch = async (value) => {
     console.log("Buscando imóveis para:", value);
     const endereco = {
@@ -62,9 +96,10 @@ export default function Mapa() {
     }
   };
 
-  // useEffect(() => {
-  //   setImoveis(getImoveis());
-  // }, []);
+  // Carregar todos os imóveis na inicialização
+  useEffect(() => {
+    carregarTodosImoveis();
+  }, []);
 
   useEffect(() => {
     if (showSplash) {
@@ -101,11 +136,11 @@ export default function Mapa() {
         />
       </div>
       <div className="absolute z-900 sm:bottom-0 sm:right-0 flex justify-center w-full md:justify-end h-fit">
-        <CarrosselMapa imoveis={imoveisCarrossel} />
+        <CarrosselMapa imoveis={imoveisCarrossel || []} />
       </div>
       <div className="map-container">
         <MapView
-          imoveis={imoveisMapa}
+          imoveis={imoveisMapa || []}
           hoverImovel={hoverImovel}
           setHoverImovel={setHoverImovel}
         />
