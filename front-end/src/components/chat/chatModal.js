@@ -357,11 +357,17 @@ export default function ChatModal({ onClose, isLoggedIn }) {
 
         socket.onclose = (event) => {
           console.log("❌ WebSocket fechado:", { code: event.code, reason: event.reason });
+          console.log("🔍 Estado da conexão antes do fechamento:", {
+            readyState: socket.readyState,
+            isConnected: isConnected,
+            reconnectAttempts: reconnectAttempts,
+            userData: userData
+          });
           setIsConnected(false);
           stopHeartbeat();
           
           // Códigos específicos que não devem reconectar
-          const noReconnectCodes = [1000, 1001, 4001, 4002]; // Normal closure, going away, auth errors
+          const noReconnectCodes = [1000, 1001, 4001, 4002, 4003]; // Normal closure, going away, auth errors, user limit
           
           if (!noReconnectCodes.includes(event.code) && reconnectAttempts < maxReconnectAttempts) {
             reconnectAttempts++;
