@@ -155,7 +155,7 @@ export const getFilteredImoveis = async (req, res) => {
         [{ model: Casa, as: 'casa' }, { model: Terreno, as: 'terreno' }, { model: ImagemImovel, as: 'imagem_imovel' }], 
         ordering,
         pagination,
-        false // Don't include pagination metadata by default
+        true // Include pagination metadata
       );
       
       res.status(200).json(result);

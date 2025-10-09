@@ -35,6 +35,11 @@ const useStyle = createStyles(({ css, token }) => {
 
 export default function CmsUserPage() {
   const [imoveis, setImoveis] = useState([]);
+  const [paginationInfo, setPaginationInfo] = useState({
+    totalItems: 0,
+    totalPages: 1,
+    currentPage: 1,
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
   const [filterData, setFilterData] = useState({
@@ -103,6 +108,9 @@ export default function CmsUserPage() {
   const fetchImoveis = async () => {
     try {
       const queryParams = new URLSearchParams();
+
+      queryParams.append("page", currentPage);
+      queryParams.append("pagination", pageSize);
       
       // Handle ordering parameters
       if (filterData.order) {
@@ -146,12 +154,18 @@ export default function CmsUserPage() {
       const endpoint = `/imoveis?${queryParams.toString()}`;
       console.log("Fetching data from endpoint:", `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`);
       const response = await apiClient.get(endpoint);
-      console.log("API Response Data:", response.data);
-      if (Array.isArray(response.data)) {
-        setImoveis(response.data);
+      console.log("API Response Data:", response.data);      
+      if (response.data && Array.isArray(response.data.entities)) {
+        setImoveis(response.data.entities);
+        setPaginationInfo({
+          totalItems: response.data.totalCount,
+          totalPages: response.data.totalPages,
+          currentPage: response.data.currentPage,
+        });
       } else {
-        console.warn("API did not return an array for imoveis, received:", response.data);
+        console.warn("API did not return the expected paginated object, received:", response.data);
         setImoveis([]); 
+        setPaginationInfo({ totalItems: 0, totalPages: 1, currentPage: 1 });
       }
     } catch (error) {
       console.error("Error fetching imoveis:", error);
@@ -293,25 +307,19 @@ export default function CmsUserPage() {
     },
   ];
 
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const paginatedMock = imoveis.slice(startIndex, endIndex).map((item) => ({
-    ...item,
-    verificadoText: item.verificado ? "Sim" : "-",
-  }));
-
   const onSearch = (value) => {
     setFilterData((prev) => ({
       ...prev,
       searchTerm: value || null,
       advancedSearch: false,
+      // Keep the current order if it exists
     }));
   };
   const handleSelectOrder = (value) => {
     setFilterData((prev) => ({
       ...prev,
       order: value === "Ordenar por" ? null : value,
-      advancedSearch: false, 
+      // Don't reset advancedSearch when changing order
     }));
   };
   const updateFilterData = (newData) => {
@@ -323,12 +331,13 @@ export default function CmsUserPage() {
   };
 
   const handleAdvancedSearch = (filters) => {
-    setFilterData({
+    setFilterData((prev) => ({
+      ...prev,
       ...filters,
       searchTerm: null, 
-      order: null,
       advancedSearch: true, 
-    });
+      // Keep the current order if it exists
+    }));
   };
 
   return (
@@ -357,13 +366,22 @@ export default function CmsUserPage() {
               updateFilterData={updateFilterData}
               type={"imovel"}
               onAdvancedSearch={handleAdvancedSearch}
+              optionsOrder={[
+                "Ordem alfabética", 
+                "Data de inclusão (mais recente)", 
+                "Data de inclusão (mais antigo)",
+                "Preço (menor para maior)",
+                "Preço (maior para menor)",
+                "Área (menor para maior)",
+                "Área (maior para menor)"
+              ]}
             />
             <CMS.TableBody table={true}>
               <Table
                 columns={columns}
-                dataSource={paginatedMock}
+                dataSource={imoveis}
                 rowKey="id"
-                pagination={false}
+                pagination={true}
                 className={styles.customTable}
                 scroll={{ x: "max-content" }}
                  rowClassName={(record) => (record.status === "indisponivel" ? "opacity-50" : "")}
@@ -372,7 +390,7 @@ export default function CmsUserPage() {
 
             {/* Paginador controlado */}
             <CMS.TableFooter
-              postsData={imoveis}
+              totalItems={paginationInfo.totalItems}
               pageSize={pageSize}
               onPageChange={setCurrentPage}
             />

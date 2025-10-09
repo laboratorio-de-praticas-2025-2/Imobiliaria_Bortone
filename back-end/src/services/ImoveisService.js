@@ -135,13 +135,21 @@ export const deleteImovel = async (id) => {
 /**
  * @param {Object} filters 
  * @param {Object} filterMappings
- * @param {Array<Object>} include 
+ * @param {Array<Object>} include export const getFilteredEntities = async (..., includeMetadata = true) => {
+   // ...
+   if (includeMetadata) {
+     // ... returns { entities, totalCount, totalPages, ... }
+   }
+   // ... otherwise, just returns the entities array
+   return entities;
+ };
+ 
  * @param {Object} ordering - Object with orderBy and orderDirection properties
  * @param {Object} pagination - Object with page and pagination properties
  * @param {boolean} includeMetadata - Whether to include pagination metadata in response
  * @returns {Array<Object>|Object} - Array of entities or object with entities and metadata
  */
-export const getFilteredEntities = async (filters, filterMappings, include = [], ordering = {}, pagination = {}, includeMetadata = false) => {
+export const getFilteredEntities = async (filters, filterMappings, include = [], ordering = {}, pagination = {}, includeMetadata = true) => {
   try {
     const where = {};
     const casaWhere = {};
@@ -217,9 +225,12 @@ export const getFilteredEntities = async (filters, filterMappings, include = [],
 
     // Return pagination metadata only if requested
     if (includeMetadata) {
+      // Count only unique imóveis, not JOIN results
       const totalCount = await Imovel.count({
         where: where,
-        include: include,
+        // Don't include related models in count to avoid inflated numbers
+        distinct: true,
+        col: 'id'
       });
       
       const totalPages = Math.ceil(totalCount / limit);
