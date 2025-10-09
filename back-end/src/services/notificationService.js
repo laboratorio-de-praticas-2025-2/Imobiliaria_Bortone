@@ -46,21 +46,30 @@ class NotificationService {
     }
 
     // Validar tipos de dados críticos
-    if (typeof novoImovel.preco !== 'number' || novoImovel.preco <= 0) {
+    const precoNumerico = parseFloat(novoImovel.preco);
+    if (isNaN(precoNumerico) || precoNumerico <= 0) {
       throw new Error('Preço deve ser um número positivo');
     }
 
-    if (typeof novoImovel.area !== 'number' || novoImovel.area <= 0) {
+    const areaNumerica = parseFloat(novoImovel.area);
+    if (isNaN(areaNumerica) || areaNumerica <= 0) {
       throw new Error('Área deve ser um número positivo');
     }
 
-    if (typeof novoImovel.latitude !== 'number' || typeof novoImovel.longitude !== 'number') {
+    const latitudeNumerico = parseFloat(novoImovel.latitude);
+    const longitudeNumerico = parseFloat(novoImovel.longitude);
+
+    if (isNaN(latitudeNumerico) || isNaN(longitudeNumerico)) {
       throw new Error('Coordenadas geográficas devem ser números válidos');
     }
 
     console.log(`[NotificationService] Parâmetros: Preço: R$${novoImovel.preco}, Área: ${novoImovel.area}m², Tipo: ${novoImovel.tipo_negociacao}`);
 
-    const { latitude, longitude, preco, area, tipo_negociacao, status } = novoImovel;
+    const { tipo_negociacao, status } = novoImovel;
+    const preco = precoNumerico; 
+    const area = areaNumerica;
+    const latitude = latitudeNumerico;
+    const longitude = longitudeNumerico;
 
     const umMesAtras = new Date();
     umMesAtras.setDate(umMesAtras.getDate() - NotificationService.DAYS_LOOKBACK);
@@ -70,6 +79,7 @@ class NotificationService {
         include: [
           {
             model: Imovel,
+            as: 'imovel',
             required: true,
             where: {
               tipo_negociacao,
