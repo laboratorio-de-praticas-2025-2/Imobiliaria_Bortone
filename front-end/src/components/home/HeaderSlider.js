@@ -4,60 +4,77 @@ import Image from "next/image";
 import { Navigation } from "swiper/modules";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useEffect, useState } from "react";
-import { apiClient } from "@/utils/apiClient";
-import { buildImageUrl } from "@/utils/imageUtils";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
+const apiURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
+// Função helper para construir URL de imagem corretamente
+const getImageUrl = (urlImagem) => {
+  if (!urlImagem) return null;
+  
+  // Se já é uma URL completa, retorna como está
+  if (urlImagem.startsWith("http://") || urlImagem.startsWith("https://")) {
+    return urlImagem;
+  }
+  
+  // Se começa com /, é um caminho absoluto do backend
+  if (urlImagem.startsWith("/")) {
+    return `${apiURL}${urlImagem}`;
+  }
+  
+  // Se não tem /, assume que é apenas o nome do arquivo
+  return `${apiURL}/uploads/${urlImagem}`;
+};
 
 // Slides padrão como fallback
 const defaultSlides = [
-  { id: 1, url: "/images/slide1.png", alt: "Slide padrão 1" },
-  { id: 2, url: "/images/slide2.png", alt: "Slide padrão 2" },
-  { id: 3, url: "/images/slide3.png", alt: "Slide padrão 3" },
+  { id: 1, url: "/images/slide1.png" },
+  { id: 2, url: "/images/slide2.png" },
+  { id: 3, url: "/images/slide3.png" },
+  { id: 4, url: "/images/slide1.png" },
+  { id: 5, url: "/images/slide2.png" },
+  { id: 6, url: "/images/slide3.png" },
 ];
 
 export default function HeaderSlider() {
   const [slides, setSlides] = useState(defaultSlides);
   const [loading, setLoading] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
 
-    // Função para buscar banners ativos do backend
+  // Função para buscar banners ativos do backend
   const fetchActiveBanners = async () => {
-    if (!isMounted) return; // Não executar se componente não estiver montado
-
     try {
       setLoading(true);
-      console.log("🎠 Buscando banners ativos do Render...");
       
-      const response = await apiClient.get("/banner");
-      const data = response.data;
-      console.log("📊 Dados recebidos:", data);
+      console.log("🎠 Buscando banners ativos para carrossel...");
 
+      const response = await fetch(`${apiURL}/banner`);
+      if (!response.ok) {
+        throw new Error(`Erro ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      console.log("📊 Dados recebidos do backend:", data);
+      
       // Validação básica dos dados
       if (!Array.isArray(data)) {
-        console.error("❌ Dados recebidos não são um array:", data);
-        throw new Error("Dados recebidos não são um array válido");
+        throw new Error("Dados recebidos não são um array");
       }
-
-      // Filtra apenas banners ativos
-      const bannersAtivos = data.filter(banner => {
-        const isActive = banner.ativo === 1 || banner.ativo === true || banner.ativo === "1";
-        return isActive && banner.url_imagem;
-      });
       
-      console.log(`✅ Banners ativos encontrados: ${bannersAtivos.length} de ${data.length} total`);
-
-      if (bannersAtivos.length > 0 && isMounted) {
-        // Converte banners para formato de slides usando utilitário unificado
+      // Filtra apenas banners ativos
+      const bannersAtivos = data.filter(banner => banner.ativo === 1);
+      console.log(`✅ Banners ativos encontrados: ${bannersAtivos.length}`);
+      
+      if (bannersAtivos.length > 0) {
+        // Converte banners para formato de slides
         const slidesFromBanners = bannersAtivos.map(banner => ({
           id: banner.id,
-          url: buildImageUrl(banner.url_imagem, 'banner', '/images/slide1.png'),
+          url: getImageUrl(banner.url_imagem),
           alt: banner.descricao || `Banner ${banner.id}`,
           originalUrl: banner.url_imagem
         }));
-
+        
         // Log das URLs processadas
         slidesFromBanners.forEach((slide, index) => {
           console.log(`🖼️ Slide ${index + 1}:`, {
@@ -66,56 +83,25 @@ export default function HeaderSlider() {
             processed: slide.url
           });
         });
-
-        if (isMounted) {
-          setSlides(slidesFromBanners);
-          console.log("🎉 Carrossel atualizado com banners ativos!");
-        }
-      } else if (isMounted) {
+        
+        setSlides(slidesFromBanners);
+        console.log("🎉 Carrossel atualizado com banners ativos!");
+      } else {
         console.log("⚠️ Nenhum banner ativo encontrado, usando slides padrão");
         setSlides(defaultSlides);
       }
+      
     } catch (error) {
       console.error("❌ Erro ao buscar banners ativos:", error);
-      if (isMounted) {
-        console.log("🔄 Usando slides padrão como fallback");
-        setSlides(defaultSlides);
-      }
+      console.log("🔄 Usando slides padrão como fallback");
+      setSlides(defaultSlides);
     } finally {
-      if (isMounted) {
-        setLoading(false);
-      }
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    setIsMounted(true);
-
-    // Reset do estado ao montar o componente
-    setSlides(defaultSlides);
-    setLoading(true);
-
     fetchActiveBanners();
-
-    // Listener para reset da página
-    const handlePageReset = (event) => {
-      console.log(
-        "🎠 HeaderSlider recebeu sinal de reset, recarregando banners..."
-      );
-      if (event.detail?.from === "admin") {
-        setSlides(defaultSlides);
-        setLoading(true);
-        fetchActiveBanners();
-      }
-    };
-
-    window.addEventListener("pageReset", handlePageReset);
-
-    // Cleanup ao desmontar
-    return () => {
-      setIsMounted(false);
-      window.removeEventListener("pageReset", handlePageReset);
-    };
   }, []);
 
   // Loading state
@@ -141,10 +127,10 @@ export default function HeaderSlider() {
         grabCursor={true}
         spaceBetween={16}
         breakpoints={{
-          320: { slidesPerView: 1 },
-          640: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
-          1440: { slidesPerView: 4 },
+          320: { slidesPerView: 1 }, 
+          640: { slidesPerView: 2 },  
+          1024: { slidesPerView: 3 },  
+          1440: { slidesPerView: 4 },  
         }}
         className="w-[90%] mx-auto"
       >
@@ -158,11 +144,10 @@ export default function HeaderSlider() {
                 height={195}
                 className="w-full h-auto object-cover"
                 onError={(e) => {
-                  import("../../utils/imageErrorManager.js").then(
-                    ({ handleImageError }) => {
-                      handleImageError(e, "/404.png", "HeaderSlider");
-                    }
-                  );
+                  // Silenciar logs de erro para banners antigos (localhost:4000)
+                  // console.error("❌ Erro ao carregar imagem:", slide.url);
+                  // Fallback para imagem padrão se houver erro
+                  e.target.src = "/404.png";
                 }}
               />
             </div>
