@@ -35,6 +35,7 @@ export default function RentalByRegion({ data, label, className }) {
   const chartRef = useRef(null);
 
   const options = {
+    cutout: "0%", // <-- sem buraco, igual a pizza
     plugins: {
       legend: {
         position: "right",
