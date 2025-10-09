@@ -82,7 +82,7 @@ export const update = async (id, imovelData, casaData) => {
 
     await imovel.update(imovelData, { transaction });
 
-    if (imovelData.tipo.toLowerCase() === 'casa') {
+    if (imovelData.tipo && imovelData.tipo.toLowerCase() === 'casa') {
       const casa = await Casa.findOne({ where: { imovel_id: id }, transaction });
       if (casa) {
         await casa.update(casaData, { transaction });
@@ -137,9 +137,11 @@ export const deleteImovel = async (id) => {
  * @param {Object} filterMappings
  * @param {Array<Object>} include 
  * @param {Object} ordering - Object with orderBy and orderDirection properties
- * @returns {Array<Object>} 
+ * @param {Object} pagination - Object with page and pagination properties
+ * @param {boolean} includeMetadata - Whether to include pagination metadata in response
+ * @returns {Array<Object>|Object} - Array of entities or object with entities and metadata
  */
-export const getFilteredEntities = async (filters, filterMappings, include = [], ordering = {}) => {
+export const getFilteredEntities = async (filters, filterMappings, include = [], ordering = {}, pagination = {}, includeMetadata = false) => {
   try {
     const where = {};
     const casaWhere = {};
@@ -198,11 +200,40 @@ export const getFilteredEntities = async (filters, filterMappings, include = [],
 
     console.log("Service - Final order configuration:", order);
 
+    // Handle pagination
+    const page = parseInt(pagination.page) || 1;
+    const limit = parseInt(pagination.pagination) || 10;
+    const offset = (page - 1) * limit;
+
+    console.log("Service - Pagination:", { page, limit, offset });
+
     const entities = await Imovel.findAll({
       where: where,
       include: include,
       order: order.length > 0 ? order : undefined,
+      limit: limit,
+      offset: offset,
     });
+
+    // Return pagination metadata only if requested
+    if (includeMetadata) {
+      const totalCount = await Imovel.count({
+        where: where,
+        include: include,
+      });
+      
+      const totalPages = Math.ceil(totalCount / limit);
+      return {
+        entities,
+        totalCount,
+        totalPages,
+        currentPage: page,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1
+      };
+    }
+
+    // Return just the entities array (current implementation)
     return entities;
   } catch (error) {
     throw new Error(`Erro ao buscar entidades filtradas: ${error.message}`);

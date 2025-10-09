@@ -134,13 +134,31 @@ export const getFilteredImoveis = async (req, res) => {
       if (req.query.orderDirection) {
         ordering.orderDirection = req.query.orderDirection;
       }
+
+      // Handle pagination parameters
+      const pagination = {};
+      if (req.query.page) {
+        pagination.page = req.query.page;
+      }
+      if (req.query.pagination) {
+        pagination.pagination = req.query.pagination;
+      }
       
       // Debug logging
       console.log("Ordering parameters received:", ordering);
+      console.log("Pagination parameters received:", pagination);
       console.log("Query parameters:", req.query);
 
-      const imoveis = await ImoveisService.getFilteredEntities(filters, filterMappings, [{ model: Casa, as: 'casa' }, { model: Terreno, as: 'terreno' }, { model: ImagemImovel, as: 'imagem_imovel' }], ordering);
-      res.status(200).json(imoveis);
+      const result = await ImoveisService.getFilteredEntities(
+        filters, 
+        filterMappings, 
+        [{ model: Casa, as: 'casa' }, { model: Terreno, as: 'terreno' }, { model: ImagemImovel, as: 'imagem_imovel' }], 
+        ordering,
+        pagination,
+        false // Don't include pagination metadata by default
+      );
+      
+      res.status(200).json(result);
     } catch (error) {
       console.error("Erro ao buscar imóveis com filtros:", error);
       res.status(500).json({ error: "Erro interno do servidor." });
