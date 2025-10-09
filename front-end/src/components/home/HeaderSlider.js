@@ -23,65 +23,17 @@ export default function HeaderSlider() {
   const [loading, setLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
 
-  // Função para buscar banners ativos do backend
+    // Função para buscar banners ativos do backend
   const fetchActiveBanners = async () => {
     if (!isMounted) return; // Não executar se componente não estiver montado
 
     try {
       setLoading(true);
-      console.log("🎠 Buscando banners ativos para carrossel...");
+      console.log("🎠 Buscando banners ativos do Render...");
       
-      // Verificar se estamos em produção (Vercel/Netlify)
-      const isProduction = process.env.NODE_ENV === 'production';
-      const isVercel = typeof window !== 'undefined' && window.location.hostname.includes('vercel.app');
-      
-      let data;
-      
-      try {
-        if (isVercel || isProduction) {
-          console.log("🌐 Ambiente de produção detectado, usando proxy...");
-          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-          const proxyResponse = await fetch(`${apiUrl}/banner`);
-          
-          if (!proxyResponse.ok) {
-            throw new Error(`Proxy error: ${proxyResponse.status} ${proxyResponse.statusText}`);
-          }
-          
-          data = await proxyResponse.json();
-          console.log("📊 Dados via proxy:", data);
-        } else {
-          console.log("🏠 Ambiente local detectado, usando apiClient...");
-          const response = await apiClient.get("/banner");
-          data = response.data;
-          console.log("📊 Dados via apiClient:", data);
-        }
-      } catch (primaryError) {
-        console.warn("⚠️ Erro na requisição primária:", primaryError.message);
-        
-        // Fallback: tentar o método alternativo
-        try {
-          if (isVercel || isProduction) {
-            console.log("🔄 Tentando apiClient como fallback...");
-            const response = await apiClient.get("/banner");
-            data = response.data;
-            console.log("📊 Dados via apiClient (fallback):", data);
-          } else {
-            console.log("🔄 Tentando proxy como fallback...");
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-            const proxyResponse = await fetch(`${apiUrl}/banner`);
-            
-            if (!proxyResponse.ok) {
-              throw new Error(`Proxy fallback error: ${proxyResponse.status} ${proxyResponse.statusText}`);
-            }
-            
-            data = await proxyResponse.json();
-            console.log("📊 Dados via proxy (fallback):", data);
-          }
-        } catch (fallbackError) {
-          console.error("❌ Ambos os métodos falharam:", fallbackError.message);
-          throw new Error(`API e Proxy falharam: ${primaryError.message} | ${fallbackError.message}`);
-        }
-      }
+      const response = await apiClient.get("/banner");
+      const data = response.data;
+      console.log("📊 Dados recebidos:", data);
 
       // Validação básica dos dados
       if (!Array.isArray(data)) {
