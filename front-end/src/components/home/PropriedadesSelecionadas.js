@@ -1,6 +1,6 @@
 import ImovelCard from "@/components/home/ImovelCard";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { apiClient } from "@/utils/apiClient";
 
 export default function PropriedadesSelecionadas() {
   const [imoveis, setImoveis] = useState([]);
@@ -19,16 +19,22 @@ export default function PropriedadesSelecionadas() {
 
     const fetchRecomendacoes = async () => {
       try {
+        console.log("🏠 Buscando recomendações do Render...");
         const params = userInfo ? { usuario_id: userInfo.id } : { limit: 20 };
 
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/recomendacoes`,
-          { params }
-        );
+        const res = await apiClient.get("/recomendacoes", { params });
 
+        console.log("📊 Recomendações recebidas:", res.data.data?.length || 0);
         setImoveis(res.data.data || []);
       } catch (err) {
-        console.error("Erro ao buscar recomendações:", err);
+        console.error("❌ Erro detalhado ao buscar recomendações:", {
+          message: err.message,
+          status: err.response?.status,
+          statusText: err.response?.statusText,
+          data: err.response?.data,
+          url: err.config?.url,
+          method: err.config?.method
+        });
         if (isMounted) {
           setImoveis([]);
         }

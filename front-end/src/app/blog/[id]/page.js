@@ -22,7 +22,7 @@ export default function ContentBlog() {
       if (!id) return;
       try {
         setLoading(true);
-        const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+        const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://imobiliaria-bortone.onrender.com";
         const apiUrl = (rawApiUrl || "").replace(/\/api\/?$/, "");
         const resp = await axios.get(`${apiUrl}/publicacoes/${id}`);
         const data = resp.data;

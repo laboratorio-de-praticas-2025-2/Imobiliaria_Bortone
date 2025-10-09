@@ -98,13 +98,7 @@ export default function CmsBlogPage() {
     try {
       setIsLoading(true);
 
-      const rawApiUrl =
-        process.env.NEXT_PUBLIC_API_URL ||
-        (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
-      if (!rawApiUrl) {
-        console.error("❌ NEXT_PUBLIC_API_URL não está definida!");
-        return;
-      }
+      const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://imobiliaria-bortone.onrender.com";
       const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
 
       const params = new URLSearchParams();
@@ -197,9 +191,7 @@ export default function CmsBlogPage() {
     if (!confirm("Deseja realmente excluir este artigo?")) return;
     try {
       setIsLoading(true);
-      const rawApiUrl =
-        process.env.NEXT_PUBLIC_API_URL ||
-        (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "");
+      const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://imobiliaria-bortone.onrender.com";
       const apiUrl = rawApiUrl.replace(/\/api\/?$/, "");
       await axios.delete(`${apiUrl}/publicacoes/${id}`);
       loadPublicacoes();
