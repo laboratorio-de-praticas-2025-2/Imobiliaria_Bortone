@@ -114,6 +114,8 @@ export const getFilteredImoveis = async (req, res) => {
         quartos: req.query.quartos ? parseInt(req.query.quartos) : undefined,
         banheiros: req.query.banheiros ? parseInt(req.query.banheiros) : undefined,
         vagas: req.query.vagas ? parseInt(req.query.vagas) : undefined,
+        searchTerm: req.query.searchTerm,
+        citySearchTerm: req.query.citySearchTerm,
       };
 
       const filterMappings = {
@@ -124,6 +126,8 @@ export const getFilteredImoveis = async (req, res) => {
         quartos: { field: 'quartos', type: 'exact', model: 'casa' },
         banheiros: { field: 'banheiros', type: 'exact', model: 'casa' },
         vagas: { field: 'vagas', type: 'exact', model: 'casa' },
+        searchTerm: { field: 'endereco', type: 'search' },
+        citySearchTerm: { field: 'cidade', type: 'search' },
       };
 
       // Handle ordering parameters

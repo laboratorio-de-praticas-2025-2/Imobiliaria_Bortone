@@ -21,12 +21,45 @@ export default function ImoveisPage() {
 
 function ImoveisPageContent() {
   const [imoveis, setImoveis] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pagination, setPagination] = useState({
+    totalCount: 0,
+    totalPages: 0,
+    currentPage: 1,
+    hasNextPage: false,
+    hasPrevPage: false,
+  });
+  
+  
   const { filterData } = useFilterData();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   
-  const handleGetImoveis = async () => {
+  const handleGetImoveis = async (page = 1) => {
     try {
-      const queryParams = new URLSearchParams(filterData).toString();
+      const params = {};
+      if (filterData && typeof filterData === "object") {
+        Object.entries(filterData).forEach(([key, value]) => {
+         
+          if (['quartos', 'banheiros', 'vagas'].includes(key)) {
+          if (value && typeof value === 'string') {
+            params[key] = value;
+          }
+        } else if (key === 'citySearch') {
+            params.citySearchTerm = value;
+          } else if (
+            value !== null &&
+            value !== undefined &&
+            value !== "" &&
+            value !== "null"
+          ) {
+            params[key] = value;
+          }
+        });
+      }
+      params.page = page.toString();
+
+      const queryParams = new URLSearchParams(params).toString();
+
       const url = `${apiUrl}/imoveis${queryParams ? `?${queryParams}` : ""}`; 
       const response = await fetch(url, {
         method: "GET",
@@ -34,17 +67,38 @@ function ImoveisPageContent() {
       });
       const data = await response.json();
       console.log(data)
-      setImoveis(Array.isArray(data) ? data : []);
+      console.log("Fetching URL:", url);
+      
+
+      setImoveis(Array.isArray(data.entities) ? data.entities : []);
+    
+        // Handle pagination
+      setPagination({
+        totalCount: data.totalCount ?? 0,
+        totalPages: data.totalPages ?? 0,
+        currentPage: data.currentPage ?? 1,
+        hasNextPage: data.hasNextPage ?? false,
+        hasPrevPage: data.hasPrevPage ?? false,
+      });
+
+      
+      setCurrentPage(page); // ✅ Save current page
     } catch (error) {
       console.error("Erro ao carregar imóveis:", error);
     }
   };
 
   useEffect(() => {
-    handleGetImoveis();
+    handleGetImoveis(1);
   }, [filterData]);
 
-  return <InnerImoveisPage imoveis={imoveis} />;
+  return <InnerImoveisPage 
+  imoveis={imoveis}
+  pagination = {pagination}
+  onPageChange={(page) => handleGetImoveis(page)} 
+  searchedCity={filterData.citySearch}
+  />;
+  
 }
 
 

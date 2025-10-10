@@ -154,15 +154,50 @@ export const getFilteredEntities = async (filters, filterMappings, include = [],
     const where = {};
     const casaWhere = {};
 
+
+    const handlePlusFilter = (value, field) => {
+      if (typeof value === 'string' && value.includes('+')) {
+        const baseNumber = parseInt(value, 10);
+        if (!isNaN(baseNumber)) {
+          casaWhere[field] = {
+            [Op.gte]: baseNumber 
+          };
+          return true;
+        }
+      }
+      return false;
+    };
+
     for (const key in filterMappings) {
       const mapping = filterMappings[key];
       const filterValue = filters[key];
+
+
+      if (mapping.type === 'search' && filterValue) {
+        where[mapping.field] = {
+          [Op.like]: `%${filterValue}%`
+        };
+        continue;
+      }
+
+
       const minKey = `min${key.charAt(0).toUpperCase() + key.slice(1)}`;
       const maxKey = `max${key.charAt(0).toUpperCase() + key.slice(1)}`;
       const minValue = filters[minKey];
       const maxValue = filters[maxKey];
 
       if (mapping.model === 'casa') {
+
+         if (['quartos', 'banheiros', 'vagas'].includes(mapping.field)) {
+          if (filterValue) {
+            if (!handlePlusFilter(filterValue, mapping.field)) {
+              // If not a "+" case, use exact match
+              casaWhere[mapping.field] = parseInt(filterValue, 10);
+            }
+          }
+          continue;
+        }
+
         if (filterValue !== undefined) {
           casaWhere[mapping.field] = filterValue;
         }
@@ -193,7 +228,7 @@ export const getFilteredEntities = async (filters, filterMappings, include = [],
     
     const order = [];
     if (ordering.orderBy && ordering.orderDirection) {
-      const validOrderBy = ['data_cadastro', 'descricao', 'preco', 'area'];
+      const validOrderBy = ['data_cadastro', 'endereco', 'preco', 'area'];
       const validOrderDirection = ['ASC', 'DESC'];
       
       console.log("Service - Ordering received:", ordering);
@@ -226,9 +261,13 @@ export const getFilteredEntities = async (filters, filterMappings, include = [],
     // Return pagination metadata only if requested
     if (includeMetadata) {
       // Count only unique imóveis, not JOIN results
+      console.log("Count include:", JSON.stringify(include, null, 2));
+
       const totalCount = await Imovel.count({
         where: where,
         // Don't include related models in count to avoid inflated numbers
+        
+        include: include.length > 0 ? include : undefined,
         distinct: true,
         col: 'id'
       });

@@ -120,32 +120,41 @@ export default function Mapa() {
 
   useEffect(() => {
     const fetchImovel = async () => {
-      try {
-        setLoading(true);
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-        
-        // Buscar dados do imóvel
-        const imovelResponse = await axios.get(`${apiUrl}/imoveis/${id}`);
-        const imovelData = imovelResponse.data;
-        
-        // Buscar imagens do imóvel
-        const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
-        const imagesData = imagesResponse.data;
-        
-        // Combinar dados do imóvel com imagens
-        const imovelCompleto = {
-          ...imovelData,
-          imagens: imagesData
-        };
-        
-        setImoveis([imovelCompleto]);
-        setLoading(false);
-      } catch (error) {
-        console.error("Erro ao carregar imóvel:", error);
-        setLoading(false);
-      }
+  try {
+    setLoading(true);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    
+    // Buscar dados do imóvel
+    const imovelResponse = await axios.get(`${apiUrl}/imoveis/${id}`);
+    const imovelData = imovelResponse.data;
+    
+    // Buscar imagens do imóvel, mas não falhar se não encontrar
+    let imagesData = [];
+    try {
+      const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
+      imagesData = imagesResponse.data;
+    } catch (imageError) {
+      console.log("Nenhuma imagem encontrada para este imóvel");
+      // Continue without images
+    }
+    
+    // Combinar dados do imóvel com imagens (vazias se não encontradas)
+    const imovelCompleto = {
+      ...imovelData,
+      imagens: Array.isArray(imagesData) ? imagesData : []
     };
     
+    setImoveis([imovelCompleto]);
+  } catch (error) {
+    console.error("Erro ao carregar imóvel:", error);
+    // Only show "Post não encontrado" if the imóvel itself wasn't found
+    if (error.response?.status === 404) {
+      setImoveis([]);
+    }
+  } finally {
+    setLoading(false);
+  }
+};
     fetchImovel();
   }, [id]);
 
@@ -264,13 +273,13 @@ export default function Mapa() {
             <div className="Dtexto">
               <div className="t1">
                 {imovelAtual.tipo.toLowerCase() === "casa" ||
-                imovelAtual.tipotoLowerCase() === "Apartamento" ? (
+                imovelAtual.tipo.toLowerCase() === "Apartamento" ? (
                   <>
                     <p>{imovelAtual.tipo}</p>
                     <p className="T1ponto"> • </p>
                     <p>{imovelAtual.area}m²</p>
                   </>
-                ) : imovelAtual.tipotoLowerCase() === "Terreno" ? (
+                ) : imovelAtual.tipo.toLowerCase() === "Terreno" ? (
                   <>
                     <p>{imovelAtual.tipo}</p>
                   </>

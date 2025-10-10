@@ -16,6 +16,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { uploadImovelImage } from "@/services/netlifyUploadService";
 import { apiClient } from "@/utils/apiClient";
+import { statesMap } from "@/utils/stateMapping";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
@@ -33,7 +34,7 @@ export default function CriarImovelPage() {
         tipo: tipoSelecionado,
         status: statusSelecionado.toLowerCase(),
         cidade: citiesSelecionado,
-        estado: selectedState,
+        estado: statesMap[selectedState],
         endereco: values.endereco,
         area: values.area,
         preco: values.preco,
@@ -160,6 +161,7 @@ export default function CriarImovelPage() {
     "Sergipe",
     "Tocantins",
   ];
+
   const options = ["Casa", "Terreno"];
   const status = ["Disponivel", "Indisponivel", "Vendido", "Locado"];
   const cities = [

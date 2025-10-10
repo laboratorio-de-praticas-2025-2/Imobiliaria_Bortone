@@ -5,12 +5,11 @@ import { useEffect } from "react";
 export default function TableFooter({
   postsData, // For backward compatibility (client-side pagination)
   totalItems, // For server-side pagination
-  pageSize,
+  pageSize = 10, // Default to 10 if not provided
   currentPage,
   onPageChange,
 }) {
-  // Determine the total number of items. Prioritize `totalItems` for server-side pagination,
-  // but fall back to `postsData.length` for older client-side implementations.
+  // Determine the total number of items
   const total = totalItems ?? postsData?.length ?? 0;
 
   const handleChange = (page) => {
@@ -18,15 +17,23 @@ export default function TableFooter({
   };
 
   useEffect(() => {
-    // When filters change the total number of items, reset to page 1.
-    // This prevents being on a page that no longer exists.
     if (onPageChange) {
       onPageChange(1);
     }
   }, [total]);
 
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = Math.min(startIndex + pageSize, total);
+  // Calculate display range
+  const calculateRange = () => {
+    if (!total || total === 0) return { start: 0, end: 0 };
+
+    const start = (currentPage - 1) * pageSize + 1;
+    const calculatedEnd = currentPage * pageSize;
+    const end = Math.min(calculatedEnd, total);
+
+    return { start, end };
+  };
+
+  const { start, end } = calculateRange();
 
   return (
     <div className="bg-white p-4 py- relative flex items-center md:flex-row flex-col">
@@ -49,7 +56,7 @@ export default function TableFooter({
       {/* Texto alinhado à direita */}
       <div className="md:ml-auto">
         <p className="text-sm text-gray-600">
-          Exibindo {total > 0 ? startIndex + 1 : 0} - {endIndex} de {total}{" "}
+          Exibindo {total > 0 ? start : 0} - {end} de {total}{" "}
           registros
         </p>
       </div>

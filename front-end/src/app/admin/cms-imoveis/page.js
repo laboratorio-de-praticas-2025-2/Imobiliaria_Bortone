@@ -115,7 +115,7 @@ export default function CmsUserPage() {
       // Handle ordering parameters
       if (filterData.order) {
         const orderMapping = {
-          "Ordem alfabética": { orderBy: "descricao", orderDirection: "ASC" },
+          "Ordem alfabética": { orderBy: "endereco", orderDirection: "ASC" },
           "Data de inclusão (mais recente)": { orderBy: "data_cadastro", orderDirection: "DESC" },
           "Data de inclusão (mais antigo)": { orderBy: "data_cadastro", orderDirection: "ASC" },
           "Preço (menor para maior)": { orderBy: "preco", orderDirection: "ASC" },
@@ -226,6 +226,15 @@ export default function CmsUserPage() {
       title: "Data",
       dataIndex: "data_cadastro",
       key: "data",
+      render: (value) => {
+      if (!value) return "-";
+      const date = new Date(value);
+      return date.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+    }
     },
     {
       title: "Murado",
@@ -395,6 +404,7 @@ export default function CmsUserPage() {
             <CMS.TableFooter
               totalItems={paginationInfo.totalItems}
               pageSize={pageSize}
+              currentPage={currentPage} 
               onPageChange={setCurrentPage}
             />
           </CMS.Table>

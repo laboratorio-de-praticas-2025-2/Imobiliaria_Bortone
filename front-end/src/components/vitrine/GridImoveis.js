@@ -3,7 +3,7 @@ import ImovelCard from "./ImovelCard";
 import GridImoveisFooter from "./GridImoveisFooter";
 import Link from "next/link";
 
-export default function GridImoveis({imoveis}) {
+export default function GridImoveis({ imoveis, pagination, onPageChange }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
   const [windowWidth, setWindowWidth] = useState(0);
@@ -24,14 +24,27 @@ export default function GridImoveis({imoveis}) {
     setCurrentPage(1);
   }, [windowWidth]);
 
-  const totalPages = Math.ceil(imoveis.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = imoveis.slice(startIndex, endIndex);
+  // Determine if using server-side pagination
+  const isServerPaginated = !!pagination;
 
-  const handlePrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const handleNext = () =>
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  const effectivePage = isServerPaginated ? pagination.currentPage : currentPage;
+  const totalPages = isServerPaginated
+    ? pagination.totalPages
+    : Math.ceil(imoveis.length / itemsPerPage);
+
+  const startIndex = (effectivePage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = isServerPaginated ? imoveis : imoveis.slice(startIndex, endIndex);
+
+  const handlePrev = () => {
+    const newPage = Math.max(effectivePage - 1, 1);
+    isServerPaginated ? onPageChange?.(newPage) : setCurrentPage(newPage);
+  };
+
+  const handleNext = () => {
+    const newPage = Math.min(effectivePage + 1, totalPages);
+    isServerPaginated ? onPageChange?.(newPage) : setCurrentPage(newPage);
+  };
 
   const showMoreMobile = () => {
     setItemsPerPage((prev) => Math.min(prev + 4, imoveis.length));
@@ -50,13 +63,15 @@ export default function GridImoveis({imoveis}) {
 
       {/* Footer */}
       <GridImoveisFooter
-        currentPage={currentPage}
+        currentPage={effectivePage}
         totalPages={totalPages}
         handlePrev={handlePrev}
         handleNext={handleNext}
         windowWidth={windowWidth}
         showMoreMobile={
-          windowWidth < 640 && currentItems.length < imoveis.length
+          !isServerPaginated &&
+          windowWidth < 640 &&
+          currentItems.length < imoveis.length
             ? showMoreMobile
             : null
         }

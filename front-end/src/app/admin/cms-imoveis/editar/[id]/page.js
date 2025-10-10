@@ -320,13 +320,27 @@ export default function EditarImovelPage({ params }) {
     }
   };
 
+    // Add this helper function at the top of your file
+  const normalizeText = (text) => {
+    return text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  };
+
   const onConfirm = async () => {
     try {
+
+    // Normalize status to lowercase before sending
+    const normalizedStatus = statusSelecionado !== "Selecione o status" 
+      ? normalizeText(statusSelecionado)
+      : undefined;
+
       // Atualizar dados do imóvel
       const updateData = {
         ...formValues,
         tipo: tipoSelecionado !== "Selecione o Tipo" ? tipoSelecionado : undefined,
-        status: statusSelecionado !== "Selecione o status" ? statusSelecionado : undefined,
+        status: normalizedStatus,
         cidade: citiesSelecionado !== "Selecione a cidade" ? citiesSelecionado : undefined,
         estado: selectedState !== "Selecione o estado" ? selectedState : undefined,
         quartos: selectedBedrooms !== "Quantidade" ? parseInt(selectedBedrooms) : undefined,

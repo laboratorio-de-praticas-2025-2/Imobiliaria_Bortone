@@ -25,13 +25,25 @@ export default function Filtros() {
       updateFilterData({ banheiros: option === "Banheiros" ? null : option });
     };
 
+    const handleCitySearch = (value) => {
+    updateFilterData({
+      ...filterData,
+      citySearch: value || null
+    });
+  };
+
     return (
       <>
         {/* Filtros Desktop */}
         <div className="py-7 lg:px-18 md:px-2 hidden md:block">
           <Flex justify="space-between" style={{ width: "100%" }}>
             <Space size="large">
-              <LocationInput />
+             <LocationInput 
+                placeholder="Buscar por cidade..."
+                onSelect={handleCitySearch}
+                allowClear
+                className="w-full"
+              />
               <DropdownFilter
                 options={optionsBuy}
                 selected={filterData.tipo_negociacao || "Comprar"}
