@@ -267,12 +267,33 @@ export default function Page() {
       {isCreateModalVisible && (
         <FaqModal
           onClose={() => setIsCreateModalVisible(false)}
-          onSave={(newItem) => {
-            // Criar função para adicionar FAQ na API
+          onSave={async (newItem) => {
+            try{
+              setLoading(true);
+              const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+              const response = await fetch(`${apiUrl}/faq`,{
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newItem),
+              });
+
+              if (!response.ok) {
+                throw new Error(`Erro ao criar FAQ: ${response.status}`);
+              }
+
+              const createdItem = await response.json();
+
             // Implementar requisição POST para /faq
-            setAnswers((prev) => [newItem, ...prev]);
-            setAllAnswers((prev) => [newItem, ...prev]);
+            setAnswers((prev) => [createdItem, ...prev]);
+            setAllAnswers((prev) => [createdItem, ...prev]);
             setIsCreateModalVisible(false);
+             }catch (err){
+              console.error("Erro ao criar FAQ: ", err);
+            }finally{
+              setLoading(false);
+            }
           }}
         />
       )}
