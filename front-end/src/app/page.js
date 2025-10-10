@@ -42,7 +42,7 @@ export default function Home() {
           {isLoggedIn ? <PropriedadesSelecionadas /> : <PropriedadesPerto />}
         </div>
 
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 w-full md:w-[20%]">
           <div className="hidden md:block pt-10">
             <Image
               src="/images/dudaShopVerticalMaior.svg"
