@@ -233,7 +233,7 @@ export default function Page() {
               <Table
                 columns={columns}
                 dataSource={paginatedAnswers}
-                rowKey={(record) => record.id || `faq-${Math.random()}`}
+                rowKey="id"
                 pagination={false}
                 className={styles.customTable}
                 scroll={{ x: "max-content" }}
@@ -254,13 +254,41 @@ export default function Page() {
           isEdit
           data={editingItem}
           onClose={() => setIsEditModalVisible(false)}
-          onSave={(updatedItem) => {
-            // Criar função para editar FAQ na API
-            // Implementar requisição PUT para /faq/:id
-            setAnswers((prev) =>
-              prev.map((ans) => (ans.id === updatedItem.id ? updatedItem : ans))
-            );
-            setIsEditModalVisible(false);
+          onSave={async (updatedItem) => {
+            try {
+              setLoading(true);
+              const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+              const response = await fetch(`${apiUrl}/faq/${updatedItem.id}`, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  pergunta: updatedItem.pergunta,
+                  resposta: updatedItem.resposta,
+                  ultima_atualizacao: updatedItem.ultima_atualizacao,
+                }),
+              });
+
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+
+              const updatedFaq = await response.json();
+
+              setAnswers(prev =>
+                prev.map(ans => (ans.id === updatedFaq.id ? updatedFaq : ans))
+              );
+              setAllAnswers(prev =>
+                prev.map(ans => (ans.id === updatedFaq.id ? updatedFaq : ans))
+              );
+
+              setIsEditModalVisible(false);
+            } catch (err) {
+              console.error("Erro ao editar FAQ:", err);
+            } finally {
+              setLoading(true);
+            }
           }}
         />
       )}
