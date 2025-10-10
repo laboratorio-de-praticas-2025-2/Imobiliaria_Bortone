@@ -288,7 +288,7 @@ export default function Page() {
             } catch (err) {
               console.error("Erro ao editar FAQ:", err);
             } finally {
-              setLoading(true);
+              setLoading(false);
             }
           }}
         />
@@ -300,12 +300,16 @@ export default function Page() {
             try{
               setLoading(true);
               const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+              const usuarioId = JSON.parse(localStorage.getItem("usuario"))?.id || 1; 
               const response = await fetch(`${apiUrl}/faq`,{
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify(newItem),
+                body: JSON.stringify({
+                  ...newItem,
+                  usuario_id: usuarioId,
+                }),
               });
 
               if (!response.ok) {
@@ -317,6 +321,7 @@ export default function Page() {
             // Implementar requisição POST para /faq
             setAnswers((prev) => [createdItem, ...prev]);
             setAllAnswers((prev) => [createdItem, ...prev]);
+            setCurrentPage(1);
             setIsCreateModalVisible(false);
              }catch (err){
               console.error("Erro ao criar FAQ: ", err);
