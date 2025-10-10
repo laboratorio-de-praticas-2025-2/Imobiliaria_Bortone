@@ -70,6 +70,7 @@ export default function Page() {
       
       setAnswers((prev) => prev.filter((ans) => ans.id !== deleteId));
       setAllAnswers((prev) => prev.filter((ans) => ans.id !== deleteId));
+      setCurrentPage(1);
       setIsConfirmModalVisible(false);
       setDeleteId(null);
       setLoading(false);
