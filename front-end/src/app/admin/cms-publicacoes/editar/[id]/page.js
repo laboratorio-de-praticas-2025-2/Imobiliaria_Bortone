@@ -1,70 +1,126 @@
 "use client";
 import { useParams } from "next/navigation";
-import ConfirmModal from "@/components/cms/ConfirmModal";
 import Form from "@/components/cms/form";
 import FormButton from "@/components/cms/form/fields/Button";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import TextField from "@/components/cms/form/fields/TextField";
 import UploadField from "@/components/cms/form/fields/UploadField";
 import Sidebar from "@/components/cms/Sidebar";
-import PreviaPost from "@/components/cms/form/fields/PreviaPost";
-import { postsData } from "@/mock/posts";
 import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { uploadBlogImage } from "@/services/netlifyUploadService";
+import { Form as FormAntd } from "antd";
+import { buildImageUrl } from "@/utils/imageUtils";
+import SplashScreen from "@/components/SplashScreen";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
+import { apiClient } from "@/utils/apiClient";
 
 export default function EditarPostPage() {
-   const params = useParams(); 
-   const id = params?.id;
+  const params = useParams();
+  const id = params?.id;
+  const router = useRouter();
+  const [form] = FormAntd.useForm();
   const [fileList, setFileList] = useState([]);
   const [post, setPost] = useState(null);
-  const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
-  const [formValues, setFormValues] = useState(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [imageError, setImageError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { submitForm, isLoading } = useFormSubmit();
 
-  useEffect(() => {
-    const found = postsData.find((b) => String(b.id) === String(id));
-    setPost(found);
-  }, [id]);
-
-  const onFinish = (values) => {
-    setFormValues(values);
-    setIsConfirmModalVisible(true);
+  // Função para gerar URL da imagem com fallback usando utilitário unificado
+  const getImageUrl = () => {
+    if (imageError) {
+      return "/404.png";
+    }
+    return buildImageUrl(post?.url_imagem, 'publicacao', '/404.png');
   };
 
-  const onConfirm = () => {
-    console.log("Edit Success:", formValues);
-    setIsConfirmModalVisible(false);
-    window.location.href = "/admin/cms-publicacoes";
+  // Usaremos caminhos relativos para imagens (sem hostname) para evitar exigência de domains no Next/Image
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        setLoading(true);
+        const response = await apiClient.get(`/publicacoes/${id}`);
+        setPost(response.data);
+        setTitle(response.data?.titulo || "");
+        setContent(response.data?.conteudo || "");
+        
+        // Preencher o formulário com os dados carregados
+        form.setFieldsValue({
+          titulo: response.data?.titulo || "",
+          conteudo: response.data?.conteudo || "",
+        });
+        setLoading(false);
+      } catch (error) {
+        console.error("Erro ao carregar publicação:", error);
+        setLoading(false);
+      }
+    };
+    if (id) fetchPost();
+  }, [id, form]);
+
+  const onFinish = async (values) => {
+    await submitForm(
+      values,
+      async (validatedValues) => {
+        let url_imagem = post?.url_imagem; // Manter imagem atual
+
+        // Upload da nova imagem via Cloudinary se houver arquivo
+        if (fileList.length > 0 && fileList[0].originFileObj) {
+          url_imagem = await uploadBlogImage(
+            fileList[0].originFileObj,
+            validatedValues.titulo,
+            validatedValues.conteudo,
+            "1" // usuario_id
+          );
+          console.log('Nova imagem uploaded:', url_imagem);
+        }
+
+        // Enviar dados para o backend sem arquivo
+        const blogData = {
+          titulo: validatedValues.titulo,
+          conteudo: validatedValues.conteudo,
+          url_imagem
+        };
+
+        const response = await apiClient.put(`/publicacoes/${id}`, blogData);
+
+        if (response.status === 200) {
+          router.push("/admin/cms-publicacoes");
+          return response.data;
+        }
+      },
+      {
+        requiredFields: ['titulo', 'conteudo'],
+        successMessage: "Publicação atualizada com sucesso!",
+        onSuccess: () => {
+          router.push("/admin/cms-publicacoes");
+        }
+      }
+    );
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Edit Failed:", errorInfo);
   };
 
-  if (!post) return <div>Carregando...</div>;
+  if (loading) return <SplashScreen />;
 
   return (
     <>
-      {isConfirmModalVisible && (
-        <ConfirmModal
-          message="Você tem certeza que deseja alterar o registro definitivamente?"
-          onConfirm={onConfirm}
-          onCancel={() => setIsConfirmModalVisible(false)}
-        />
-      )}
       <Sidebar />
       <div className="md:ml-20">
         <Form.Body title="Publicações | Edição">
           <Form.FormHeader href="/admin/cms-publicacoes" />
           <Form.FormBody
+            form={form}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            initialValues={{
-              titulo: post.titulo,
-              conteudo: post.conteudo,
-            }}
           >
             <div className="flex flex-col sm:flex-row w-full gap-6">
               {/* Coluna do Formulário */}
@@ -98,7 +154,26 @@ export default function EditarPostPage() {
                       />
                     </div>
                   ) : (
-                    <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5" />
+                    <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5">
+                      <Image
+                        src={getImageUrl()}
+                        alt="Imagem atual"
+                        width={400}
+                        height={320}
+                        className="h-full w-full object-cover rounded-3xl"
+                        onError={(e) => {
+                          console.error('❌ Erro ao carregar imagem da publicação:', {
+                            original: post?.url_imagem,
+                            constructed: getImageUrl(),
+                            error: e
+                          });
+                          setImageError(true);
+                        }}
+                        onLoad={() => {
+                          console.log('✅ Imagem da publicação carregada com sucesso:', getImageUrl());
+                        }}
+                      />
+                    </div>
                   )}
                 </div>
                 <TextAreaField
@@ -114,27 +189,63 @@ export default function EditarPostPage() {
                   text="Publicar"
                   className="!hidden sm:!flex"
                   icon={<UploadOutlined />}
+                  loading={isLoading}
                 />
               </div>
 
               <div className="sm:w-[40%] hidden sm:flex">
-                <PreviaPost
-                  fileList={fileList}
-                  title={title || post.titulo}
-                  content={content || post.conteudo}
-                />
+                <div className="w-full">
+                  {fileList.length > 0 ? (
+                    <Image
+                      src={URL.createObjectURL(fileList[0].originFileObj)}
+                      alt="Prévia do banner"
+                      width={600}
+                      height={400}
+                      className="w-full h-auto rounded-3xl"
+                    />
+                  ) : (
+                    <Image
+                      src={getImageUrl()}
+                      alt="Imagem atual"
+                      width={600}
+                      height={400}
+                      className="w-full h-auto rounded-3xl"
+                      onError={() => {
+                        setImageError(true);
+                      }}
+                    />
+                  )}
+                </div>
               </div>
 
               <div className="sm:hidden w-full flex flex-col gap-3.5 items-center">
-                <PreviaPost
-                  fileList={fileList}
-                  title={title || post.titulo}
-                  content={content || post.conteudo}
-                />
+                <div className="w-full">
+                  {fileList.length > 0 ? (
+                    <Image
+                      src={URL.createObjectURL(fileList[0].originFileObj)}
+                      alt="Prévia do banner"
+                      width={600}
+                      height={400}
+                      className="w-full h-auto rounded-3xl"
+                    />
+                  ) : (
+                    <Image
+                      src={getImageUrl()}
+                      alt="Imagem atual"
+                      width={600}
+                      height={400}
+                      className="w-full h-auto rounded-3xl"
+                      onError={() => {
+                        setImageError(true);
+                      }}
+                    />
+                  )}
+                </div>
                 <FormButton
                   text="Publicar"
                   className="!flex !sm:hidden"
                   icon={<UploadOutlined />}
+                  loading={isLoading}
                 />
               </div>
             </div>

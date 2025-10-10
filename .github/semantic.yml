@@ -9,9 +9,12 @@ types:
   - test
   - chore
 scopes:
-  - frontend
-  - backend
-  - api
-  - db
-  - auth
+  - front-end
+  - back-end
   - ci
+  - build
+  - deps  
+  - documentacao
+  - api
+
+  

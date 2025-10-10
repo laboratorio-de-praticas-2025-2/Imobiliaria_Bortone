@@ -1,22 +1,50 @@
 import { Flex, Slider, ConfigProvider } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InputNumerico from "./InputNumerico";
 
-export default function SliderPreco() {
-  const [minValue, setMinValue] = useState(150000);
-  const [maxValue, setMaxValue] = useState(400000);
+export default function SliderPreco({ value, onChange }) {
+  const [minValue, setMinValue] = useState(value[0]);
+  const [maxValue, setMaxValue] = useState(value[1]);
 
-  const onChange = (value) => {
-    if (Array.isArray(value)) {
-      setMinValue(value[0]);
-      setMaxValue(value[1]);
+  useEffect(() => {
+    setMinValue(value[0]);
+    setMaxValue(value[1]);
+  }, [value]);
+
+  const handleSliderChange = (newValue) => {
+    if (Array.isArray(newValue)) {
+      setMinValue(newValue[0]);
+      setMaxValue(newValue[1]);
+      if (onChange) {
+        onChange(newValue);
+      }
+    }
+  };
+
+  const handleMinInputChange = (newMin) => {
+    const newMinVal = parseFloat(newMin);
+    if (!isNaN(newMinVal) && newMinVal <= maxValue) {
+      setMinValue(newMinVal);
+      if (onChange) {
+        onChange([newMinVal, maxValue]);
+      }
+    }
+  };
+
+  const handleMaxInputChange = (newMax) => {
+    const newMaxVal = parseFloat(newMax);
+    if (!isNaN(newMaxVal) && newMaxVal >= minValue) {
+      setMaxValue(newMaxVal);
+      if (onChange) {
+        onChange([minValue, newMaxVal]);
+      }
     }
   };
 
   return (
     <div className="w-full slider-preco-container">
       <Flex vertical gap={16}>
-        <p className="text-[var(--primary)] font-bold md:text-end">Valor</p>
+        <p className="text-[var(--primary)] font-bold md:text-start">Valor</p>
         <ConfigProvider
           theme={{
             components: {
@@ -44,12 +72,12 @@ export default function SliderPreco() {
             max={600000}
             step={10}
             tooltip={{ open: false }}
-            onChange={onChange}
+            onChange={handleSliderChange}
           />
         </ConfigProvider>
         <Flex gap={24}>
-          <InputNumerico label="De:" value={minValue} onChange={setMinValue} />
-          <InputNumerico label="Até:" value={maxValue} onChange={setMaxValue} />
+          <InputNumerico label="De:" value={minValue} onChange={handleMinInputChange} />
+          <InputNumerico label="Até:" value={maxValue} onChange={handleMaxInputChange} />
         </Flex>
       </Flex>
     </div>

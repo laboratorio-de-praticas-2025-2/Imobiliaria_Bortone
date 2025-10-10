@@ -5,22 +5,32 @@ import { BiPencil } from "react-icons/bi";
 import { IoMdTrash } from "react-icons/io";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import Link from "next/link";
+import { buildImageUrl } from "@/utils/imageUtils";
 
-export default function PostCard({ item }) {
+export default function PostCard({ item, onDelete }) {
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
-  const onDelete = () => {
+  const onDeleteClick = () => {
     setIsConfirmModalVisible(true);
   };
 
   const onConfirmDelete = () => {
-    console.log("Delete Confirmed");
+    if (onDelete) {
+      onDelete(item.id);
+    }
     setIsConfirmModalVisible(false);
   };
 
   // Função para truncar o texto se for muito grande
   const truncate = (str, n) => {
     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
+  };
+
+  // Usar utilitário unificado para construir URL da imagem
+  const getImageSrc = () => {
+    if (imageError) return "/404.png";
+    return buildImageUrl(item.url_imagem, 'publicacao', '/404.png');
   };
 
   return (
@@ -32,19 +42,41 @@ export default function PostCard({ item }) {
           onCancel={() => setIsConfirmModalVisible(false)}
         />
       )}
-      <div className="rounded-2xl flex flex-col w-fit bg-white mb-5">
+      <div className="rounded-2xl flex flex-col w-full max-w-[425px] bg-white mb-5 h-[400px]">
         <p className="p-3 text-lg font-bold" title={item.titulo}>
           {truncate(item.titulo, 40)}
         </p>
-        <Image
-          src={item.url_imagem}
-          alt={"Imagem do item " + item.id}
-          width={425}
-          height={130}
-          className={`aspect-[4/2] object-cover w-full`}
-        />
-        <div className="sm:w-[60vw] w-[70vw] flex flex-col gap-3.5 p-3 md:w-full flex-1">
-          <p>{truncate(item.conteudo, 260)}</p>
+        {item.url_imagem && !imageError ? (
+          <div className="aspect-[4/2] w-full overflow-hidden">
+            <Image
+              src={getImageSrc()}
+              alt={"Imagem do item " + item.id}
+              width={425}
+              height={130}
+              className="w-full h-full object-cover"
+              onError={() => {
+                setImageError(true);
+              }}
+            />
+          </div>
+        ) : (
+          <div className="aspect-[4/2] w-full overflow-hidden">
+            <Image
+              src="/404.png"
+              alt="Imagem não encontrada"
+              width={425}
+              height={130}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+        {!item.url_imagem && (
+          <div className="aspect-[4/2] w-full bg-gray-200 flex items-center justify-center">
+            <span className="text-gray-500 text-sm">Sem imagem</span>
+          </div>
+        )}
+        <div className="flex flex-col gap-3.5 p-3 flex-1 overflow-hidden">
+          <p className="flex-1 overflow-hidden">{truncate(item.conteudo, 260)}</p>
           <div className="w-full flex justify-end gap-4 p-3 mt-auto">
             <Link href={`/admin/cms-publicacoes/editar/${item.id}`}>
               <BiPencil
@@ -52,7 +84,7 @@ export default function PostCard({ item }) {
                 className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"
               />
             </Link>
-            <button onClick={onDelete}>
+            <button onClick={onDeleteClick}>
               <IoMdTrash
                 size={22}
                 className="text-[#192243] hover:text-[var(--primary)] transition-colors cursor-pointer"

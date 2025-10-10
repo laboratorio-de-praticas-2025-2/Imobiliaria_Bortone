@@ -1,46 +1,55 @@
 "use client";
 import Link from "next/link";
-import { Form, Input, Button, Flex } from "antd";
+import { Form, Input, Button, Flex, message } from "antd";
 import { useSEO } from "@/hooks/useSEO";
 import { getSEOConfig } from "@/config/seo";
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import "dotenv/config";
 
 export default function CadastroPage() {
   // SEO para página de cadastro
-  useSEO(getSEOConfig('/cadastro'));
+  useSEO(getSEOConfig("/cadastro"));
 
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const onFinish = async (values) => {
     setLoading(true);
 
+    const dados = {
+      nome: values.name,
+      email: values.email,
+      senha: values.password,
+    };
     try {
-      // 🔹 Mock da chamada à API
-      console.log("📡 Enviando cadastro...", values);
-
-      // Simula delay de request
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-
-      // Mock de resposta
-      const mockResponse = {
-        success: true,
-        user: {
-          id: 1,
-          name: values.name,
-          email: values.email,
-        },
-      };
-
-      if (mockResponse.success) {
-        message.success(`Conta criada para ${mockResponse.user.name}!`);
-        // Aqui no futuro: redirecionar para login
-        // router.push("/login")
-      } else {
-        message.error("Erro ao criar conta. Tente novamente.");
-      }
+      console.log("📡 Enviando cadastro para o back-end...", dados);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/register`,
+        dados
+      );
+      
+      console.log("✅ Resposta do servidor:", response.data);
+      message.success(response.data.message || "Conta criada com sucesso!");
+      
+      setTimeout(() => {
+        router.push("/login");
+      }, 1500);
     } catch (error) {
-      console.error(error);
-      message.error("Erro ao conectar com o servidor.");
+      console.error("❌ Erro ao cadastrar:", error);
+
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        message.error(error.response.data.message);
+      } else {
+        message.error(
+          "Não foi possível conectar ao servidor. Tente novamente."
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -49,7 +58,7 @@ export default function CadastroPage() {
   const onFinishFailed = (errorInfo) => {
     console.log("❌ Falha no formulário:", errorInfo);
   };
-
+  
   return (
     <div>
       <div className="image-header" />
@@ -63,7 +72,7 @@ export default function CadastroPage() {
             autoComplete="off"
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-          >
+            >
             <Flex vertical align="center">
               <Form.Item
                 name="name"
@@ -71,7 +80,7 @@ export default function CadastroPage() {
                   { required: true, message: "Por favor, insira seu nome!" },
                 ]}
                 className="login-form-item"
-              >
+                >
                 <Input placeholder="Digite seu nome:" />
               </Form.Item>
               <Form.Item

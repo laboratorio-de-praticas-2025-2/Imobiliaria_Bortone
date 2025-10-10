@@ -6,6 +6,8 @@ export const sidebarLinks = [
   { label: "Publicações", href: "/admin/cms-publicacoes" },
   { label: "Publicidades", href: "/admin/cms-publicidades" },
   { label: "Banner", href: "/admin/cms-banner" },
+  { label: "FAQs", href: "/admin/cms-faq" },
+  { label: "Agendamentos", href: "/admin/cms-agendamentos" },
 ];
 
 export default sidebarLinks;

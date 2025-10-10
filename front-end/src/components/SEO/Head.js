@@ -16,7 +16,7 @@ export default function CustomHead({
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
-      <meta name="author" content="Imobiliária Bortone" />
+      <meta name="author" content="FatecRegistro-20252" />
       <meta name="robots" content="index, follow" />
       <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
       

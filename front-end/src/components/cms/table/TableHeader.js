@@ -1,11 +1,10 @@
 "use client";
 import { Input } from "antd";
 import { IoSearchSharp } from "react-icons/io5";
-import DropdownFilter from "../../vitrine/DropdownFilter";
+import DropdownFilter from "@/components/vitrine/DropdownFilter";
 import Link from "next/link";
 import PesquisaAvancadaUser from "./pesquisaavancada/PesquisaAvancada";
-import PesquisaAvancada from "@/components/vitrine/PesquisaAvancada/PesquisaAvancada";
-
+import PesquisaAvancada from "@/components/cms/form/PesquisaAvancada";
 const { Search } = Input;
 
 const optionsOrder = ["Ordem alfabetica", "Data de inclusão"];
@@ -18,12 +17,19 @@ export default function TableHeader({
   handleSelectOrder,
   filterData,
   updateFilterData,
-  type=undefined,
+  type = undefined,
   newButton = true,
+  modalNewButton = false,
+  onClick,
+  onAdvancedFilter,
 }) {
   return (
-    <div className={`w-full flex ${newButton ? "justify-between" : "justify-end"} items-center px-4 py-4 bg-[var(--primary)] rounded-t-4xl gap-2`}>
-      {newButton && (
+    <div
+      className={`w-full flex ${
+        newButton ? "justify-between" : "justify-end"
+      } items-center px-4 py-4 bg-[var(--primary)] rounded-t-4xl gap-2`}
+    >
+      {newButton && !modalNewButton && (
         <Link
           href={href}
           className="!bg-white !text-[var(--primary)] !font-bold !border-0 !rounded-full h-[34.4px] !text-lg !px-4 hover:!bg-[var(--primary)] hover:!text-white transition-colors flex gap-2 justify-center items-center"
@@ -32,9 +38,23 @@ export default function TableHeader({
           {buttonIcon && <span className="md:ml-2">{buttonIcon}</span>}
         </Link>
       )}
+
+      {modalNewButton &&
+        newButton &&(
+          <button
+            onClick={onClick}
+            className="!bg-white !text-[var(--primary)] !font-bold !border-0 !rounded-full h-[34.4px] !text-lg !px-4 hover:!bg-[var(--primary)] hover:!text-white transition-colors flex gap-2 justify-center items-center"
+          >
+            <p className="hidden md:flex">{buttonText}</p>
+            {buttonIcon && <span className="md:ml-2">{buttonIcon}</span>}
+          </button>
+        )}
+
       <div className="flex md:gap-4 gap-2 items-center">
-        {type == "user" && <PesquisaAvancadaUser />}
-        {type == "imovel" && <PesquisaAvancada />}
+        {type === "user" && (
+          <PesquisaAvancadaUser onAdvancedFilter={onAdvancedFilter} />
+        )}
+        {type === "imovel" && <PesquisaAvancada />}
         <Search
           placeholder="Pesquisar"
           onSearch={onSearch}

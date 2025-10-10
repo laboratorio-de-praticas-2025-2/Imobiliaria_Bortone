@@ -4,11 +4,12 @@ import ChatModal from "@/components/chat/chatModal";
 import FaqContent from "@/components/faq/FaqContent";
 import HomeFooter from "@/components/home/HomeFooter";
 import HomeNavbar from "@/components/home/HomeNavbar";
-import { MOCKFAQ } from "@/mock/faq";
 import { Divider } from "antd";
 import { useEffect, useState } from "react";
 import { useSEO } from "@/hooks/useSEO";
 import { getSEOConfig } from "@/config/seo";
+import { apiClient } from "@/utils/apiClient";
+import "dotenv/config"
 
 export default function FaqPage() {
   // SEO para página de FAQ
@@ -16,14 +17,20 @@ export default function FaqPage() {
   const [faqData, setFaqData] = useState([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  const fetchFaq = async () => {
-    // Simulando uma chamada de API com dados mockados
-    setFaqData(MOCKFAQ);
+const fetchFaq = async () => {
+   try{
+    const response = await apiClient.get('/faq');
+    setFaqData(response.data);
+   }catch(error){
+    console.log("Erro ao buscar FAQ:", error);
+    setFaqData([])
+   }
   };
 
   useEffect(() => {
-    setFaqData(MOCKFAQ);
+    fetchFaq();
   }, []);
+
 
   return (
     <>

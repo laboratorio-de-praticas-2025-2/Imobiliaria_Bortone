@@ -1,9 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { handleImgError } from "@/utils/imageFallback";
 import Card from "./CardMapa";
 
 export default function CarrosselMapa({ imoveis }) {
+  console.log(`CarrosselMapa renderizando com ${imoveis?.length || 0} imóveis:`, imoveis?.map(i => ({ id: i.id, tipo: i.tipo, cidade: i.cidade })));
+  
   const carouselRef = useRef(null);
   const sheetRef = useRef(null);
 
@@ -89,6 +92,7 @@ export default function CarrosselMapa({ imoveis }) {
               src="images/top-carousel.svg"
               alt="topo"
               className="absolute z-1"
+              onError={handleImgError}
             />
           )}
 
@@ -112,9 +116,15 @@ export default function CarrosselMapa({ imoveis }) {
               </div>
             )}
             <div className="flex flex-col gap-4">
-              {imoveis.map((imovel) => (
-                <Card key={imovel.id} imovel={imovel} />
-              ))}
+              {imoveis && imoveis.length > 0 ? (
+                imoveis.map((imovel) => (
+                  <Card key={imovel.id} imovel={imovel} />
+                ))
+              ) : (
+                <div className="text-center text-gray-500 py-8">
+                  Nenhum imóvel encontrado
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -131,9 +141,15 @@ export default function CarrosselMapa({ imoveis }) {
           onMouseMove={handleMouseMove}
         >
           <div className="flex gap-4 px-4 flex-row">
-            {imoveis.map((imovel) => (
-              <Card key={imovel.id} imovel={imovel} />
-            ))}
+            {imoveis && imoveis.length > 0 ? (
+              imoveis.map((imovel) => (
+                <Card key={imovel.id} imovel={imovel} />
+              ))
+            ) : (
+              <div className="text-center text-gray-500 py-8 whitespace-nowrap">
+                Nenhum imóvel encontrado
+              </div>
+            )}
           </div>
         </div>
       )}
