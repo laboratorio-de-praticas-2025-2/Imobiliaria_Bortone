@@ -3,7 +3,7 @@ import Casa from '../models/Casa.js';
 import Terreno from '../models/Terreno.js';
 import ImagemImovel from '../models/ImagemImovel.js';
 import connection from '../config/sequelize-config.js'; 
-import { Sequelize, Op } from 'sequelize';import RecomendacaoImovel from '../models/recomendacaoImovelModal.js';
+import { Sequelize, Op } from 'sequelize';import RecomendacaoImovel from '../models/recomendacaoImovelModel.js';
 
 
 export const create = async (imovelData, casaData) => {
@@ -11,7 +11,7 @@ export const create = async (imovelData, casaData) => {
   try {
     const newImovel = await Imovel.create(imovelData, { transaction });
 
-    if (imovelData.tipo === 'casa' || imovelData.tipo === 'apartamento') {
+    if (imovelData.tipo.toLowerCase() === 'casa' || imovelData.tipo.toLowerCase() === 'apartamento') {
       await Casa.create({
         ...casaData,
         imovel_id: newImovel.id
@@ -82,7 +82,7 @@ export const update = async (id, imovelData, casaData) => {
 
     await imovel.update(imovelData, { transaction });
 
-    if (imovelData.tipo === 'casa') {
+    if (imovelData.tipo.toLowerCase() === 'casa') {
       const casa = await Casa.findOne({ where: { imovel_id: id }, transaction });
       if (casa) {
         await casa.update(casaData, { transaction });
@@ -141,28 +141,42 @@ export const deleteImovel = async (id) => {
 export const getFilteredEntities = async (filters, filterMappings, include = []) => {
   try {
     const where = {};
+    const casaWhere = {};
 
-    for (const key in filters) {
-      if (filters[key] !== undefined) {
-        const mapping = filterMappings[key];
-        if (mapping) {
-          if (mapping.type === 'exact') {
-            where[mapping.field] = filters[key];
-          } else if (mapping.type === 'range') {
-            const minKey = `min${key.charAt(0).toUpperCase() + key.slice(1)}`;
-            const maxKey = `max${key.charAt(0).toUpperCase() + key.slice(1)}`;
-            const minValue = filters[minKey];
-            const maxValue = filters[maxKey];
+    for (const key in filterMappings) {
+      const mapping = filterMappings[key];
+      const filterValue = filters[key];
+      const minKey = `min${key.charAt(0).toUpperCase() + key.slice(1)}`;
+      const maxKey = `max${key.charAt(0).toUpperCase() + key.slice(1)}`;
+      const minValue = filters[minKey];
+      const maxValue = filters[maxKey];
 
-            if (minValue !== undefined && maxValue !== undefined) {
-              where[mapping.field] = { [Op.between]: [minValue, maxValue] };
-            } else if (minValue !== undefined) {
-              where[mapping.field] = { [Op.gte]: minValue };
-            } else if (maxValue !== undefined) {
-              where[mapping.field] = { [Op.lte]: maxValue };
-            }
-          }
+      if (mapping.model === 'casa') {
+        if (filterValue !== undefined) {
+          casaWhere[mapping.field] = filterValue;
         }
+      } else if (mapping.type === 'exact') {
+        if (filterValue !== undefined) {
+          where[mapping.field] = filterValue;
+        }
+      } else if (mapping.type === 'range') {
+        if (minValue !== undefined && maxValue !== undefined) {
+          where[mapping.field] = { [Op.between]: [minValue, maxValue] };
+        } else if (minValue !== undefined) {
+          where[mapping.field] = { [Op.gte]: minValue };
+        } else if (maxValue !== undefined) {
+          where[mapping.field] = { [Op.lte]: maxValue };
+        }
+      }
+    }
+
+    if (Object.keys(casaWhere).length > 0) {
+      let casaInclude = include.find(item => item.model === Casa && item.as === 'casa');
+
+      if (casaInclude) {
+        casaInclude.where = { ...casaInclude.where, ...casaWhere };
+      } else {
+        include.push({ model: Casa, as: 'casa', where: casaWhere });
       }
     }
 
@@ -173,5 +187,70 @@ export const getFilteredEntities = async (filters, filterMappings, include = [])
     return entities;
   } catch (error) {
     throw new Error(`Erro ao buscar entidades filtradas: ${error.message}`);
+  }
+};
+
+/**
+ * @param {Object} filters 
+ * @param {Object} filterMappings 
+ * @param {Array<Object>} include 
+ * @param {Object} paginationParams 
+ * @returns {Object} 
+ */
+export const getFilteredEntitiesWithPagination = async (filters, filterMappings, include = [], paginationParams = {}) => {
+  try {
+    const where = {};
+    const casaWhere = {};
+    const { limit, offset } = paginationParams;
+
+    for (const key in filterMappings) {
+      const mapping = filterMappings[key];
+      const filterValue = filters[key];
+      const minKey = `min${key.charAt(0).toUpperCase() + key.slice(1)}`;
+      const maxKey = `max${key.charAt(0).toUpperCase() + key.slice(1)}`;
+      const minValue = filters[minKey];
+      const maxValue = filters[maxKey];
+
+      if (mapping.model === 'casa') {
+        if (filterValue !== undefined) {
+          casaWhere[mapping.field] = filterValue;
+        }
+      } else if (mapping.type === 'exact') {
+        if (filterValue !== undefined) {
+          where[mapping.field] = filterValue;
+        }
+      } else if (mapping.type === 'range') {
+        if (minValue !== undefined && maxValue !== undefined) {
+          where[mapping.field] = { [Op.between]: [minValue, maxValue] };
+        } else if (minValue !== undefined) {
+          where[mapping.field] = { [Op.gte]: minValue };
+        } else if (maxValue !== undefined) {
+          where[mapping.field] = { [Op.lte]: maxValue };
+        }
+      }
+    }
+
+    if (Object.keys(casaWhere).length > 0) {
+      let casaInclude = include.find(item => item.model === Casa && item.as === 'casa');
+
+      if (casaInclude) {
+        casaInclude.where = { ...casaInclude.where, ...casaWhere };
+      } else {
+        include.push({ model: Casa, as: 'casa', where: casaWhere });
+      }
+    }
+
+    const result = await Imovel.findAndCountAll({
+      where: where,
+      include: include,
+      limit: limit,
+      offset: offset,
+      order: [['data_cadastro', 'DESC'], ['id', 'DESC']], // Ordenar por mais recentes primeiro
+      distinct: true, // Para contar corretamente com JOINs
+    });
+
+    return result;
+  } catch (error) {
+    throw new Error(`Erro ao buscar entidades filtradas com paginação: ${error.message}`);
   }
 };

@@ -4,22 +4,15 @@ export const createPublicidade = async (req, res) => {
   try {
     console.log('=== BACK-END DEBUG ===');
     console.log('req.body:', req.body);
-    console.log('req.file:', req.file);
-    console.log('req.files:', req.files);
-    console.log('req.headers:', req.headers);
-    console.log('Content-Type:', req.headers['content-type']);
     console.log('======================');
     
-    const { titulo, conteudo, usuario_id, ativo } = req.body;
+    const { titulo, conteudo, usuario_id, ativo, url_imagem } = req.body;
     
-    // Se há arquivo enviado, usar o caminho completo
-    const url_imagem = req.file ? `/images/publicidadeImages/${req.file.filename}` : null;
-    
-    console.log('url_imagem calculada:', url_imagem);
+    console.log('url_imagem recebida:', url_imagem);
 
     // Converter strings para tipos corretos
     const usuarioIdNumber = parseInt(usuario_id, 10);
-    const ativoBoolean = ativo === 'true';
+    const ativoBoolean = ativo === true || ativo === 'true';
 
     if (!titulo || !conteudo || !usuario_id) {
       return res.status(400).json({ error: "Título, conteúdo e ID do usuário são obrigatórios." });
@@ -28,8 +21,6 @@ export const createPublicidade = async (req, res) => {
     if (isNaN(usuarioIdNumber) || usuarioIdNumber <= 0) {
       return res.status(400).json({ error: "ID do usuário deve ser um número inteiro positivo." });
     }
-
-    // Aqui você poderia validar se o usuário existe, mas como não temos o model Usuario importado, vamos pular essa parte nos testes mockados
 
     const novaPublicidade = await publicidadeService.createPublicidade({
       titulo,
@@ -93,12 +84,11 @@ export const updatePublicidade = async (req, res) => {
   try {
     console.log('=== UPDATE DEBUG ===');
     console.log('req.body:', req.body);
-    console.log('req.file:', req.file);
     console.log('req.params:', req.params);
     console.log('===================');
     
     const { id } = req.params;
-    const { titulo, conteudo, usuario_id, ativo } = req.body;
+    const { titulo, conteudo, usuario_id, ativo, url_imagem } = req.body;
     
     if (!/^\d+$/.test(id)) {
       return res.status(400).json({ error: "ID inválido. O ID deve ser numérico." });
@@ -129,9 +119,9 @@ export const updatePublicidade = async (req, res) => {
       updateData.ativo = ativoBoolean;
     }
     
-    // Se há arquivo enviado, usar o caminho completo
-    if (req.file) {
-      updateData.url_imagem = `/images/publicidadeImages/${req.file.filename}`;
+    // Se há URL de imagem fornecida, usar ela
+    if (url_imagem !== undefined) {
+      updateData.url_imagem = url_imagem;
     }
     
     console.log('updateData:', updateData);

@@ -1,5 +1,6 @@
+import { Spin } from "antd";
 import { MdOutlineBedroomParent } from "react-icons/md";
-export default function Card({name, label, value, className, icon, classNameNumber}) {
+export default function Card({name, label, value, className, icon, classNameNumber, loading}) {
   return (
     <div
       className="group h-[full] md:!h-full !w-full flex  items-center    
@@ -15,7 +16,7 @@ export default function Card({name, label, value, className, icon, classNameNumb
 
         <div className="flex items-center justify-between w-full ">
           <span className={`text-4xl md:text-3xl lg:text-5xl font-bold text-[var(--primary)] group-hover:text-white transition-colors ${classNameNumber} `}>
-            {value}
+            {loading ? <Spin /> : value}
           </span>
             {icon}
         </div>

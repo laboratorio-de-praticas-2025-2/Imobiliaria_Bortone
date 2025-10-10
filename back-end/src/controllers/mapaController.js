@@ -51,10 +51,13 @@ class MapaController {
         areaMax: req.query.areaMax ? parseInt(req.query.areaMax) : null,
         quartos: req.query.quartos ? parseInt(req.query.quartos) : null,
         banheiros: req.query.banheiros ? parseInt(req.query.banheiros) : null,
+        cidades: req.query.cidades ? req.query.cidades.split(',').map(c => c.trim()) : null,
         possuiPiscina: req.query.possuiPiscina !== undefined ? req.query.possuiPiscina === 'true' : undefined,
         possuiJardim: req.query.possuiJardim !== undefined ? req.query.possuiJardim === 'true' : undefined,
         murado: req.query.murado !== undefined ? req.query.murado === 'true' : undefined
       };
+
+      console.log('Filtros processados no controller:', filtros);
 
       const imoveis = await mapaService.buscarImoveisParaMapa(filtros);
       

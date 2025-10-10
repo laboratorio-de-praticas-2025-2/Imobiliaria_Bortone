@@ -1,6 +1,9 @@
 "use client";
-import { Row, Col } from "antd";
-import { Line } from "react-chartjs-2";
+import { Spin } from "antd";
+import { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
+
+// ✅ Importa Chart.js normalmente e registra os módulos necessários
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,17 +25,75 @@ ChartJS.register(
   Legend
 );
 
+// ✅ Importa o componente Line de forma dinâmica (sem SSR)
+const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
+  ssr: false,
+});
+
 // agora com parametro dos dados
-export default function LineGraph({alugueisPorMes}) {
+export default function LineGraph({ alugueisPorMes, loading }) {
+  const [isReady, setIsReady] = useState(false);
+  const chartRef = useRef(null);
+  const containerRef = useRef(null);
+  // Aguarda o container estar pronto e dados válidos
+  useEffect(() => {
+    const checkReadiness = () => {
+      if (containerRef.current && alugueisPorMes && alugueisPorMes.length > 0) {
+        const containerRect = containerRef.current.getBoundingClientRect();
+        if (containerRect.width > 0 && containerRect.height > 0) {
+          setIsReady(true);
+        }
+      }
+    };
+
+    const timer = setTimeout(checkReadiness, 100);
+
+    const handleResize = () => {
+      setTimeout(checkReadiness, 50);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [alugueisPorMes]);
+
+  useEffect(() => {
+    setIsReady(false);
+  }, [alugueisPorMes]);
+
+  // Dados seguros
+  const safeAlugueisPorMes =
+    alugueisPorMes && alugueisPorMes.length > 0
+      ? alugueisPorMes
+      : [{ mes: "2024-01", Casa: 0, Apartamento: 0, Terreno: 0 }];
+
   // define os labels como nome do mes/ano
   const monthNames = [
-    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro",
   ];
+
   // mapeia os dados com base nas labels e no formato esperado
-  const labels = alugueisPorMes.map((item) => {
-    const [year, month] = item.mes.split("-");
-    return `${monthNames[parseInt(month) - 1]}/${year.slice(2)}`;
+  const labels = safeAlugueisPorMes.map((item) => {
+    try {
+      const [year, month] = item.mes.split("-");
+      return `${monthNames[parseInt(month) - 1]}/${year.slice(2)}`;
+    } catch (error) {
+      return "N/A";
+    }
   });
 
   const data = {
@@ -40,7 +101,7 @@ export default function LineGraph({alugueisPorMes}) {
     datasets: [
       {
         label: "Casas",
-        data: alugueisPorMes.map((item) => item.Casa),
+        data: safeAlugueisPorMes.map((item) => item.Casa || 0),
         borderColor: "#F39C12",
         borderWidth: 4,
         fill: false,
@@ -49,7 +110,7 @@ export default function LineGraph({alugueisPorMes}) {
       },
       {
         label: "Apartamentos",
-        data: alugueisPorMes.map((item) => item.Apartamento),
+        data: safeAlugueisPorMes.map((item) => item.Apartamento || 0),
         borderColor: "#243B7B",
         borderWidth: 4,
         fill: false,
@@ -58,8 +119,7 @@ export default function LineGraph({alugueisPorMes}) {
       },
       {
         label: "Terrenos",
-        data: alugueisPorMes.map((item) => item.Terreno),
-        /* data: [10, 5, 12, 1, 22, 13, 16, 11, 19, 7, 14, 9], */
+        data: safeAlugueisPorMes.map((item) => item.Terreno || 0),
         borderColor: "#E74C3C",
         borderWidth: 4,
         fill: false,
@@ -71,15 +131,16 @@ export default function LineGraph({alugueisPorMes}) {
 
   // calcula o valor maximo entre todas as categorias para definir o teto do grafico
   const maxValue = Math.max(
-    ...alugueisPorMes.map((m) =>
-      Math.max(m.Casa, m.Apartamento, m.Terreno)
+    1, // Mínimo de 1 para evitar erro
+    ...safeAlugueisPorMes.map((m) =>
+      Math.max(m.Casa || 0, m.Apartamento || 0, m.Terreno || 0)
     )
   );
   // arredonda o teto para o proximo multiplo de 5
-  const graphCeiling =  maxValue + (5 - (maxValue % 5));
+  const graphCeiling = maxValue + (5 - (maxValue % 5));
   // defino os steps como 5
   const stepSize = graphCeiling / 5;
-  
+
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -87,7 +148,7 @@ export default function LineGraph({alugueisPorMes}) {
       y: {
         beginAtZero: true,
         max: graphCeiling,
-        ticks: { stepSize },  
+        ticks: { stepSize },
         grid: { color: "#000000" },
       },
       x: { grid: { display: false } },
@@ -122,8 +183,16 @@ export default function LineGraph({alugueisPorMes}) {
         </span>
 
         <div className="items-center justify-items-center w-full h-full">
-          <div className="w-full h-[250px] md:h-[300px]">
-            <Line data={data} options={options} />
+          <div className="w-full h-[250px] md:h-[300px]" ref={containerRef}>
+            {loading ? (
+              <Spin tip="Carregando gráfico..." />
+            ) : isReady ? (
+              <Line data={data} options={options} />
+            ) : (
+              <div className="flex items-center justify-center h-full">
+                <div className="text-gray-500">Carregando gráfico...</div>
+              </div>
+            )}
           </div>
         </div>
       </div>

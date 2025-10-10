@@ -15,9 +15,6 @@ export default function Contato() {
         {/* Cabeçalho */}
         <div className="md:col-span-4 flex flex-col justify-start p-4">
           <p className="text-4xl md:text-5xl lg:text-7xl font-bold">CONTATO</p>
-          <p className="text-2xl md:text-3xl lg:text-4xl font-bold">
-            ENCONTRE INFORMAÇÕES SOBRE NOSSOS CANAIS DE ATENDIMENTO
-          </p>
         </div>
 
         <div className="md:col-span-4 border-y border-gray-300/70 py-8 my-4">
@@ -33,7 +30,7 @@ export default function Contato() {
               <p className="text-xl lg:text-2xl font-light">
                 Ou{" "}
                 <Link
-                  href={infoContato.telefoneWhats.whatsapp.url}
+                  href={`${infoContato.telefoneWhats.whatsapp.url}`}
                   target={infoContato.telefoneWhats.whatsapp.target}
                   rel={infoContato.telefoneWhats.whatsapp.rel}
                   className="underline hover:opacity-80"
@@ -63,9 +60,6 @@ export default function Contato() {
 
         {/* Endereço */}
         <div className="md:col-span-4 flex flex-col items-start justify-start p-4">
-          <p className="text-xl md:text-2xl font-bold">
-            Ou venha direto ate a Imobiliária Bortone!
-          </p>
           <p className="text-lg md:text-2xl font-light">
             Nos localizamos na{" "}
             <Link

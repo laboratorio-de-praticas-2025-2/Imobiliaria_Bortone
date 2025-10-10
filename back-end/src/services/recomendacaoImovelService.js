@@ -1,5 +1,7 @@
-import RecomendacaoImovel from "../models/recomendacaoImovelModal.js";
+import RecomendacaoImovel from "../models/recomendacaoImovelModel.js";
 import Imovel from "../models/Imovel.js";
+import Casa from "../models/Casa.js";
+import ImagemImovel from "../models/ImagemImovel.js";
 import { Sequelize } from "sequelize";
 // Importa o Lodash para simplificar a manipulação de arrays e objetos.
 import _ from "lodash";
@@ -79,8 +81,29 @@ const inferirPreferencias = async (idsImoveis) => {
   return preferencias;
 };
 
+const INCLUDE_OPTIONS = [
+  {
+    model: Casa,
+    as: "casa",
+    attributes: [
+      "quartos",
+      "banheiros",
+      "vagas",
+      "possui_piscina",
+      "possui_jardim",
+    ],
+    required: false,
+  },
+  {
+    model: ImagemImovel,
+    as: "imagem_imovel",
+    attributes: ["id", "url_imagem"],
+    required: false,
+  },
+];
+
 // Retorna até 20 imóveis mais populares do sistema (geral), usados como fallback.
-const getImoveisPopulares = async () => {
+const getImoveisPopulares = async (idsImoveisVisitados = []) => {
   // `attributes` define as colunas que vão vir como resposta.
   const imoveisPopulares = await RecomendacaoImovel.findAll({
     attributes: [
@@ -109,6 +132,7 @@ const getImoveisPopulares = async () => {
       status: "disponivel",
     },
     limit: 20,
+    include: INCLUDE_OPTIONS,
   });
 };
 
@@ -118,69 +142,112 @@ export const getRecomendacoesByUserId = async (usuario_id) => {
     // Pega o histórico de imóveis visitados pelo usuário.
     const imoveisVisitados = await getTopImoveisVisitados(usuario_id);
 
-    // Se o usuário não tiver NENHUM histórico, retorna os imóveis populares.
+    let imoveisRecomendados = []; // Inicializa a lista de recomendações // Se o usuário não tiver NENHUM histórico, busca populares e pula para o tratamento.
+
     if (_.isEmpty(imoveisVisitados)) {
       console.log("Usuário sem histórico. Retornando imóveis populares.");
-      return await getImoveisPopulares();
-    }
+      imoveisRecomendados = await getImoveisPopulares();
+    } else {
+      // Extrai os IDs dos imóveis visitados para evitar recomendá-los novamente.
+      const idsImoveisVisitados = _.map(imoveisVisitados, "imovel_id");
+      // Infere as preferências do usuário com base no histórico.
+      const preferencias = await inferirPreferencias(idsImoveisVisitados);
 
-    // Extrai os IDs dos imóveis visitados para evitar recomendá-los novamente.
-    const idsImoveisVisitados = _.map(imoveisVisitados, "imovel_id");
-    // Infere as preferências do usuário com base no histórico.
-    const preferencias = await inferirPreferencias(idsImoveisVisitados);
-
-    // Constrói os filtros base (sempre aplicados)
-    const filtrosBase = {
-      id: {
-        [Sequelize.Op.notIn]: idsImoveisVisitados,
-      },
-      status: "disponivel",
-    };
-
-    // Primeira tentativa (fallback): busca com todos os filtros de preferência
-    let filtros = {
-      ...filtrosBase,
-      tipo: preferencias.tipo,
-      cidade: preferencias.cidade,
-      estado: preferencias.estado,
-    };
-    if (!_.isNaN(preferencias.precoMin) && !_.isNaN(preferencias.precoMax)) {
-      filtros.preco = {
-        [Sequelize.Op.between]: [preferencias.precoMin, preferencias.precoMax],
+      // Constrói os filtros base (sempre aplicados)
+      const filtrosBase = {
+        id: {
+          [Sequelize.Op.notIn]: idsImoveisVisitados,
+        },
+        status: "disponivel",
       };
-    }
-    let imoveisRecomendados = await Imovel.findAll({
-      where: filtros,
-      limit: 20,
-    });
 
-    // Segunda tentativa (fallback): se a primeira falhar, suaviza a busca
-    if (_.isEmpty(imoveisRecomendados)) {
-      console.log(
-        "Nenhuma recomendação encontrada com filtros estritos. Expandindo a busca..."
-      );
-
-      // Remove os filtros de preço, cidade e estado, mantendo apenas o tipo
-      let filtrosExpandidos = {
+      // Primeira tentativa (fallback): busca com todos os filtros de preferência
+      let filtros = {
         ...filtrosBase,
         tipo: preferencias.tipo,
+        cidade: preferencias.cidade,
+        estado: preferencias.estado,
       };
+      if (!_.isNaN(preferencias.precoMin) && !_.isNaN(preferencias.precoMax)) {
+        filtros.preco = {
+          [Sequelize.Op.between]: [
+            preferencias.precoMin,
+            preferencias.precoMax,
+          ],
+        };
+      }
       imoveisRecomendados = await Imovel.findAll({
-        where: filtrosExpandidos,
+        where: filtros,
         limit: 20,
+        include: INCLUDE_OPTIONS,
       });
+
+      // Segunda tentativa (fallback): se a primeira falhar, suaviza a busca
+      if (_.isEmpty(imoveisRecomendados)) {
+        console.log(
+          "Nenhuma recomendação encontrada com filtros estritos. Expandindo a busca..."
+        );
+
+        // Remove os filtros de preço, cidade e estado, mantendo apenas o tipo
+        let filtrosExpandidos = {
+          ...filtrosBase,
+          tipo: preferencias.tipo,
+        };
+        imoveisRecomendados = await Imovel.findAll({
+          where: filtrosExpandidos,
+          limit: 20,
+          include: INCLUDE_OPTIONS,
+        });
+      }
+
+      // Terceira tentativa (fallback final): se a busca expandida também falhar
+      if (_.isEmpty(imoveisRecomendados)) {
+        console.log(
+          "Nenhuma recomendação encontrada com filtros expandidos. Retornando populares."
+        );
+        imoveisRecomendados = await getImoveisPopulares(idsImoveisVisitados);
+      }
     }
 
-    // Terceira tentativa (fallback final): se a busca expandida também falhar
-    if (_.isEmpty(imoveisRecomendados)) {
-      console.log(
-        "Nenhuma recomendação encontrada com filtros expandidos. Retornando populares."
-      );
-      return await getImoveisPopulares();
-    }
+    // Tratamento final: ajusta o JSON para renomear a chave 'casa' para 'apartamento' ou 'terreno', conforme o tipo do imóvel.
+    const imoveisTratados = imoveisRecomendados.map((imovel) => {
+      // Converte o objeto do Sequelize para um objeto JavaScript simples (JSON).
+      const imovelData = imovel.toJSON ? imovel.toJSON() : imovel;
 
-    // Retorna a lista de imóveis recomendados.
-    return imoveisRecomendados;
+      // O Sequelize retorna os dados da tabela de comodidades sempre sob o alias 'casa'.
+      // Verificamos se essa propriedade existe na saída, seja ela um objeto ou 'null' (imóvel sem comodidades).
+      if (Object.hasOwn(imovelData, "casa")) {
+        // Converte o tipo do imóvel para minúsculas para facilitar a comparação.
+        const tipoImovel = imovelData.tipo
+          ? imovelData.tipo.toLowerCase()
+          : null;
+        let novaChave = null; // Variável para armazenar o nome da chave final ('apartamento' ou 'terreno').
+
+        // 1. Determina a nova chave com base no tipo de imóvel
+        if (tipoImovel === "apartamento") {
+          novaChave = "apartamento";
+        } else if (tipoImovel === "terreno") {
+          novaChave = "terreno";
+        }
+        // Se tipoImovel for 'casa' ou outro valor, 'novaChave' permanece 'null',
+        // e o nome da chave original ('casa') será mantido.
+
+        // 2. Executa a renomeação se uma nova chave foi definida
+        if (novaChave) {
+          // Cria a nova chave (ex: 'apartamento' ou 'terreno') e copia o valor da chave 'casa'.
+          // Isso preserva o objeto de comodidades OU o valor 'null'.
+          imovelData[novaChave] = imovelData.casa;
+
+          // Remove a chave antiga 'casa'.
+          delete imovelData.casa;
+        }
+      }
+      // Retorna o objeto do imóvel com a chave de comodidades ajustada.
+      return imovelData;
+    });
+
+    // Retorna a lista final de imóveis com o JSON formatado corretamente.
+    return imoveisTratados;
   } catch (error) {
     console.error(error);
     throw new Error(

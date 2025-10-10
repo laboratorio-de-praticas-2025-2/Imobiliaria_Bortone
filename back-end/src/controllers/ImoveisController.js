@@ -104,6 +104,11 @@ export const getByNegociacao = async (req, res) => {
 
 export const getFilteredImoveis = async (req, res) => {
     try {
+      // Parâmetros de paginação
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 50; // Default 50 para manter compatibilidade
+      const offset = (page - 1) * limit;
+
       const filters = {
         tipo_negociacao: req.query.tipo_negociacao,
         tipo: req.query.tipo,
@@ -111,6 +116,9 @@ export const getFilteredImoveis = async (req, res) => {
         maxPreco: req.query.maxPreco ? parseFloat(req.query.maxPreco) : undefined,
         minArea: req.query.minArea ? parseInt(req.query.minArea) : undefined,
         maxArea: req.query.maxArea ? parseInt(req.query.maxArea) : undefined,
+        quartos: req.query.quartos ? parseInt(req.query.quartos) : undefined,
+        banheiros: req.query.banheiros ? parseInt(req.query.banheiros) : undefined,
+        vagas: req.query.vagas ? parseInt(req.query.vagas) : undefined,
       };
 
       const filterMappings = {
@@ -118,10 +126,45 @@ export const getFilteredImoveis = async (req, res) => {
         tipo: { field: 'tipo', type: 'exact' },
         preco: { field: 'preco', type: 'range' },
         area: { field: 'area', type: 'range' },
+        quartos: { field: 'quartos', type: 'exact', model: 'casa' },
+        banheiros: { field: 'banheiros', type: 'exact', model: 'casa' },
+        vagas: { field: 'vagas', type: 'exact', model: 'casa' },
       };
 
-      const imoveis = await ImoveisService.getFilteredEntities(filters, filterMappings, [{ model: Casa, as: 'casa' }, { model: Terreno, as: 'terreno' }, { model: ImagemImovel, as: 'imagem_imovel' }]);
-      res.status(200).json(imoveis);
+      // Adicionar paginação aos parâmetros
+      const paginationParams = { limit, offset };
+
+      const result = await ImoveisService.getFilteredEntitiesWithPagination(
+        filters, 
+        filterMappings, 
+        [{ model: Casa, as: 'casa' }, { model: Terreno, as: 'terreno' }, { model: ImagemImovel, as: 'imagem_imovel' }],
+        paginationParams
+      );
+
+      // Se o serviço não suportar paginação ainda, usar o método antigo
+      if (!result || typeof result.count === 'undefined') {
+        const imoveis = await ImoveisService.getFilteredEntities(filters, filterMappings, [{ model: Casa, as: 'casa' }, { model: Terreno, as: 'terreno' }, { model: ImagemImovel, as: 'imagem_imovel' }]);
+        
+        // Aplicar paginação manual se necessário
+        const total = imoveis.length;
+        const paginatedImoveis = limit < 50 ? imoveis.slice(offset, offset + limit) : imoveis;
+        
+        return res.status(200).json({
+          data: paginatedImoveis,
+          total,
+          page,
+          limit,
+          totalPages: Math.ceil(total / limit)
+        });
+      }
+
+      res.status(200).json({
+        data: result.rows,
+        total: result.count,
+        page,
+        limit,
+        totalPages: Math.ceil(result.count / limit)
+      });
     } catch (error) {
       console.error("Erro ao buscar imóveis com filtros:", error);
       res.status(500).json({ error: "Erro interno do servidor." });

@@ -10,15 +10,58 @@ import Image from "next/image";
 import Sidebar from "@/components/cms/Sidebar";
 
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { uploadBlogImage } from "@/services/netlifyUploadService";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
+import { apiClient } from "@/utils/apiClient";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function CriarPostPage() {
   const [fileList, setFileList] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const router = useRouter();
+  const { submitForm, isLoading } = useFormSubmit();
+  const { user } = useAuth();
 
-  const onFinish = (values) => {
-    setFormValues(values);
-    console.log("Success:", values);
+  const onFinish = async (values) => {
+    await submitForm(
+      values,
+      async (validatedValues) => {
+        let url_imagem = null;
+
+        // Upload da imagem via Netlify se houver arquivo
+        if (fileList.length > 0 && fileList[0].originFileObj) {
+          url_imagem = await uploadBlogImage(
+            fileList[0].originFileObj,
+            validatedValues.titulo,
+            user?.id?.toString() || "1"
+          );
+        }
+
+        const blogData = {
+          titulo: validatedValues.titulo,
+          conteudo: validatedValues.conteudo,
+          usuario_id: user?.id || 1,
+          url_imagem
+        };
+
+        const response = await apiClient.post("/publicacoes", blogData);
+
+        if (response.status === 201) {
+          router.push("/admin/cms-publicacoes");
+          return response.data;
+        }
+      },
+      {
+        requiredFields: ['titulo', 'conteudo'],
+        successMessage: "Publicação criada com sucesso!",
+        onSuccess: () => {
+          router.push("/admin/cms-publicacoes");
+        }
+      }
+    );
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -80,6 +123,7 @@ export default function CriarPostPage() {
                   text="Publicar"
                   className="!hidden sm:!flex"
                   icon={<UploadOutlined />}
+                  loading={isLoading}
                 />
               </div>
 
@@ -101,6 +145,7 @@ export default function CriarPostPage() {
                   text="Publicar"
                   className="!flex !sm:hidden"
                   icon={<UploadOutlined />}
+                  loading={isLoading}
                 />
               </div>
             </div>

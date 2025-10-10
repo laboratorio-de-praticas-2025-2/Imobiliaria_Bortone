@@ -3,7 +3,10 @@
 
 import "leaflet/dist/leaflet.css";
 import React from "react";
-import { useState } from "react";
+import { Suspense, useMemo, useRef, useState } from "react";
+import { handleImgError } from "@/utils/imageFallback";
+import { buildImageUrl } from "@/utils/imageUtils";
+import Image from "next/image";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import ImovelMarker from "./ImovelMarker";
 import LocationButton from "./LocationButton";
@@ -43,8 +46,15 @@ function ZoomButtons() {
 export default function MapView({ imoveis }) {
   const [hoverImovel, setHoverImovel] = useState(null);
   const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 });
+  const hoverTimeoutRef = useRef(null);
 
   const handleHover = (imovel, map) => {
+    // Limpa qualquer timeout pendente
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    
     setHoverImovel(imovel);
     const point = map.latLngToContainerPoint([
       imovel.latitude,
@@ -54,13 +64,51 @@ export default function MapView({ imoveis }) {
   };
 
   const handleLeave = () => {
-    setTimeout(() => setHoverImovel(null), 100); // delay para evitar flicker
+    // Limpa timeout anterior se existir
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    
+    // Define um novo timeout para limpar o hover
+    hoverTimeoutRef.current = setTimeout(() => {
+      setHoverImovel(null);
+      hoverTimeoutRef.current = null;
+    }, 100);
   };
 
+  // Cleanup effect para limpar timeout quando componente for desmontado
+  React.useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Gera uma key baseada nos IDs dos imóveis para forçar re-render quando a lista mudar
+  const mapKey = useMemo(() => {
+    if (!imoveis || imoveis.length === 0) return 'empty';
+    return imoveis.map(i => i.id).sort().join('-');
+  }, [imoveis]);
+
+  console.log(`MapView renderizando com ${imoveis?.length || 0} imóveis`, { 
+    mapKey, 
+    imoveisInfo: imoveis?.map(i => ({ id: i.id, tipo: i.tipo, cidade: i.cidade })) 
+  });
+
   return (
-    <div className="map-container">
+    <div 
+      className="map-container"
+      onMouseLeave={() => {
+        // Limpa o hover quando o mouse sai do container do mapa
+        if (hoverTimeoutRef.current) {
+          clearTimeout(hoverTimeoutRef.current);
+        }
+        setHoverImovel(null);
+      }}
+    >
       <MapContainer
-        key={JSON.stringify(imoveis.map((i) => i.id))} // força remount se os imóveis mudarem
+        key={mapKey} // força remount se os imóveis mudarem
         center={[-23.5, -46.6]}
         zoom={13}
         scrollWheelZoom={true}
@@ -78,15 +126,22 @@ export default function MapView({ imoveis }) {
           spiderfyOnMaxZoom={true}
           maxClusterRadius={40}
         >
-          {imoveis.map((imovel) => (
-            <ImovelMarker
-              key={imovel.id}
-              imovel={imovel}
-              icon={casaIcon}
-              onHover={handleHover}
-              onLeave={handleLeave}
-            />
-          ))}
+          {imoveis && imoveis.length > 0 ? (
+            imoveis
+              .filter(imovel => imovel.latitude && imovel.longitude) // Só renderiza imóveis com coordenadas válidas
+              .map((imovel) => (
+                <ImovelMarker
+                  key={`${imovel.id}-${mapKey}`}
+                  imovel={imovel}
+                  icon={casaIcon}
+                  onHover={handleHover}
+                  onLeave={handleLeave}
+                />
+              ))
+          ) : (
+            // Nenhum marcador se não houver imóveis
+            <></>
+          )}
         </MarkerClusterGroup>
 
         <div className="map-controls">
@@ -108,9 +163,15 @@ export default function MapView({ imoveis }) {
           }}
         >
           <img
-            src={hoverImovel.imagem}
+            src={buildImageUrl(
+              (hoverImovel.imagens && hoverImovel.imagens.length > 0 && hoverImovel.imagens[0].url_imagem) ||
+              hoverImovel.imagem,
+              'imovel',
+              '/imovel1.png'
+            )}
             alt="Imagem do imóvel"
             className="w-full h-32 object-cover mb-2 rounded"
+            onError={handleImgError}
           />
           <a className="card-preco">
             <p>R$ {hoverImovel.preco.toLocaleString()}</p>

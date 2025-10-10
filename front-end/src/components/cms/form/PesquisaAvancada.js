@@ -5,7 +5,11 @@ import { useState } from "react";
 import useHandleClickOutside from "@/hooks/useHandleClickOutside";
 import { useRef } from "react";
 
-export default function PesquisaAvancada() {
+export default function PesquisaAvancada({
+  filterData,
+  updateFilterData,
+  onAdvancedSearch,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -22,7 +26,14 @@ export default function PesquisaAvancada() {
           Pesquisa avançada
         </p>
       </button>
-      {isOpen && <PesquisaAvancadaModal />}
+      {isOpen && (
+        <PesquisaAvancadaModal
+          onClose={() => setIsOpen(false)}
+          filterData={filterData}
+          updateFilterData={updateFilterData}
+          onAdvancedSearch={onAdvancedSearch}
+        />
+      )}
     </div>
   );
 }

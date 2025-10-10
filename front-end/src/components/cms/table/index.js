@@ -6,16 +6,14 @@ import TableHeader from "./TableHeader";
 import TableFooterPublicidade from "./TableFooterPublicidade";
 import TableHeaderPublicidade from "./TableHeaderPublicidade";
 
-export { Body, Table, TableBody, TableFooter, TableHeader, TableFooterPublicidade, TableHeaderPublicidade };
+export { Body, Table, TableBody, TableFooter, TableHeader};
 
 const CMS = {
   Body,
   Table,
   TableHeader,
   TableBody,
-  TableFooter,
-  TableFooterPublicidade,
-  TableHeaderPublicidade,
+  TableFooter
 };
 
 export default CMS;

@@ -10,36 +10,52 @@ import Sidebar from "@/components/cms/Sidebar";
 import {  Form as FormAntd } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState, useCallback } from "react";
+import SplashScreen from "@/components/SplashScreen";
+import { uploadPublicidadeImage } from "@/services/netlifyUploadService";
+import { apiClient } from "@/utils/apiClient";
+import { buildImageUrl } from "@/utils/imageUtils";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
 
 export default function EditarPublicidadePage() {
   const params = useParams(); 
   const id = params?.id;
   const router = useRouter();
+  const [form] = FormAntd.useForm();
   const [fileList, setFileList] = useState([]);
   const [publicidade, setPublicidade] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [formValues, setFormValues] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { submitForm, isLoading } = useFormSubmit();
+
+  const loadPublicidade = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await apiClient.get(`/publicidade/${id}`);
+      if (response.status === 200) {
+        setPublicidade(response.data);
+        setFileList([]);
+        console.log('Publicidade carregada:', response.data);
+        
+        // Preencher o formulário com os dados carregados
+        form.setFieldsValue({
+          titulo: response.data.titulo,
+          conteudo: response.data.conteudo,
+        });
+      }
+      setLoading(false);
+    } catch {
+      console.log("Erro ao carregar publicidade");
+      setLoading(false);
+    }
+  }, [id, form]);
 
   useEffect(() => {
     if (id) {
       loadPublicidade();
     }
-  }, [id]);
-
-  const loadPublicidade = async () => {
-    try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`);
-      if (response.status === 200) {
-        setPublicidade(response.data);
-        setFileList([]);
-        console.log('Publicidade carregada:', response.data);
-      }
-    } catch {
-      console.log("Erro ao carregar publicidade");
-    }
-  };
+  }, [id, loadPublicidade]);
 
   const onFinish = (values) => {
     setFormValues(values);
@@ -47,8 +63,9 @@ export default function EditarPublicidadePage() {
   };
 
   const onConfirm = async () => {
-    if (formValues.titulo && formValues.conteudo) {
-      try {
+    await submitForm(
+      formValues,
+      async (validatedValues) => {
         console.log('=== FRONT-END DEBUG ===');
         console.log('fileList:', fileList);
         console.log('fileList.length:', fileList.length);
@@ -56,52 +73,61 @@ export default function EditarPublicidadePage() {
           console.log('fileList[0]:', fileList[0]);
           console.log('fileList[0].originFileObj:', fileList[0].originFileObj);
         }
-        console.log('formValues:', formValues);
+        console.log('validatedValues:', validatedValues);
         console.log('publicidade:', publicidade);
         console.log('=======================');
         
-        const formData = new FormData();
-        formData.append('titulo', formValues.titulo);
-        formData.append('conteudo', formValues.conteudo);
-        formData.append('usuario_id', publicidade.usuario_id.toString());
-        formData.append('ativo', publicidade.ativo.toString());
-        
+        let url_imagem = publicidade.url_imagem; // Manter imagem atual
+
+        // Upload da nova imagem via Cloudinary se houver arquivo
         if (fileList.length > 0 && fileList[0].originFileObj) {
-          formData.append('url_imagem', fileList[0].originFileObj);
-          console.log('Arquivo adicionado ao FormData:', fileList[0].originFileObj.name);
+          url_imagem = await uploadPublicidadeImage(
+            fileList[0].originFileObj,
+            validatedValues.titulo,
+            validatedValues.conteudo,
+            publicidade.usuario_id.toString(),
+            publicidade.ativo
+          );
+          console.log('Nova imagem uploaded:', url_imagem);
         } else {
-          console.log('Nenhum arquivo novo selecionado');
+          console.log('Nenhum arquivo novo selecionado, mantendo imagem atual');
         }
 
-        console.log('FormData entries:');
-        for (let [key, value] of formData.entries()) {
-          console.log(key, value);
-        }
+        // Enviar dados para o backend sem arquivo
+        const publicidadeData = {
+          titulo: validatedValues.titulo,
+          conteudo: validatedValues.conteudo,
+          usuario_id: publicidade.usuario_id,
+          ativo: publicidade.ativo,
+          url_imagem
+        };
 
-        const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        console.log('Enviando dados para backend:', publicidadeData);
+
+        const response = await apiClient.put(`/publicidade/${id}`, publicidadeData);
         
         if (response.status === 200) {
-          alert("Publicidade atualizada com sucesso!");
+          setIsConfirmModalVisible(false);
+          router.push("/admin/cms-publicidades");
+          return response.data;
+        }
+      },
+      {
+        requiredFields: ['titulo', 'conteudo'],
+        successMessage: "Publicidade atualizada com sucesso!",
+        onSuccess: () => {
           setIsConfirmModalVisible(false);
           router.push("/admin/cms-publicidades");
         }
-      } catch (error) {
-        console.log("Erro ao atualizar a publicidade:", error);
       }
-    } else {
-      alert("Preencha todos os campos!");
-    }
+    );
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Edit Failed:", errorInfo);
   };
 
-  if (!publicidade) return <div>Carregando...</div>;
+  if (loading) return <SplashScreen />;
 
   return (
     <>
@@ -117,12 +143,9 @@ export default function EditarPublicidadePage() {
         <Form.Body title="Publicidades | Edição">
           <Form.FormHeader href="/admin/cms-publicidades" />
           <Form.FormBody
+            form={form}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            initialValues={{
-              titulo: publicidade.titulo,
-              conteudo: publicidade.conteudo,
-            }}
           >
             <div className="flex flex-col w-full gap-2 ">
               <p className="!text-[#0d1b3e] !font-semibold text-[16px]">
@@ -146,6 +169,27 @@ export default function EditarPublicidadePage() {
                     width={400}
                     height={320}
                     className="h-full w-full object-cover rounded-3xl"
+                  />
+                </div>
+              ) : publicidade?.url_imagem ? (
+                <div className="w-[100%] md:h-[25vh] h-[13vh] bg-gray-200 rounded-3xl ">
+                  <Image
+                    src={buildImageUrl(publicidade.url_imagem, 'publicidade', '/images/casa.png')}
+                    alt="Imagem atual"
+                    width={400}
+                    height={320}
+                    className="h-full w-full object-cover rounded-3xl"
+                    onError={(e) => { 
+                      console.error('❌ Erro ao carregar imagem da publicidade:', {
+                        original: publicidade.url_imagem,
+                        constructed: buildImageUrl(publicidade.url_imagem, 'publicidade', '/images/casa.png'),
+                        error: e
+                      });
+                      try { e.target.src = '/404.png'; } catch {} 
+                    }}
+                    onLoad={() => {
+                      console.log('✅ Imagem da publicidade carregada com sucesso:', buildImageUrl(publicidade.url_imagem, 'publicidade', '/images/casa.png'));
+                    }}
                   />
                 </div>
               ) : (
@@ -185,6 +229,7 @@ export default function EditarPublicidadePage() {
                   text="Publicar"
                   onClick={() => setIsConfirmModalVisible(true)}
                   icon={<UploadOutlined />}
+                  loading={isLoading}
                 />
               </div>
             </div>

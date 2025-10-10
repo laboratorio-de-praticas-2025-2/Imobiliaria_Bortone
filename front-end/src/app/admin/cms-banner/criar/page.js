@@ -8,14 +8,63 @@ import { UploadOutlined } from "@ant-design/icons";
 import FormButton from "@/components/cms/form/fields/Button";
 import Image from "next/image";
 import Sidebar from "@/components/cms/Sidebar";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { uploadBannerImage } from "@/services/netlifyUploadService";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
+import { apiClient } from "@/utils/apiClient";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function CriarBannerPage() {
   const [fileList, setFileList] = useState([]);
+  const [isClient, setIsClient] = useState(false);
+  const { loading, submitForm } = useFormSubmit();
+  const { user } = useAuth();
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  // Garante que certas partes só rodem no cliente
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const onFinish = async (values) => {
+    const formData = { ...values, fileList };
+    
+    await submitForm(
+      formData,
+      async (data) => {
+        let url_imagem = null;
+
+        // Upload da imagem via Netlify se houver arquivo
+        if (data.fileList.length > 0) {
+          url_imagem = await uploadBannerImage(
+            data.fileList[0].originFileObj,
+            data.descricao,
+            user?.id?.toString() || "1" // usuario_id do usuário logado
+          );
+        }
+
+        // Enviar dados para o backend sem arquivo
+        const bannerData = {
+          descricao: data.descricao,
+          usuario_id: user?.id || 1,
+          url_imagem
+        };
+
+        const res = await apiClient.post("/banner", bannerData);
+
+        if (res.status !== 201) {
+          throw new Error(res.data?.error || "Erro ao criar banner");
+        }
+
+        return res.data;
+      },
+      {
+        successMessage: "Banner criado com sucesso!",
+        onSuccess: () => {
+          setFileList([]);
+        },
+        requiredFields: ['descricao']
+      }
+    );
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -44,17 +93,20 @@ export default function CriarBannerPage() {
                   />
 
                   {fileList.length > 0 ? (
-                    <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5">
+                    <div className="sm:hidden w-[100%] h-80 bg-gray-200 rounded-3xl my-3.5 overflow-hidden">
                       <Image
                         src={URL.createObjectURL(fileList[0].originFileObj)}
                         alt="Prévia do banner"
                         width={400}
                         height={320}
                         className="h-full w-full object-cover rounded-3xl"
+                        unoptimized
                       />
                     </div>
                   ) : (
-                    <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5" />
+                    <div className="sm:hidden h-80 w-[100%] bg-gray-200 rounded-3xl my-3.5 flex items-center justify-center">
+                      <p className="text-gray-500">Selecione uma imagem</p>
+                    </div>
                   )}
                 </div>
                 <TextAreaField
@@ -68,6 +120,7 @@ export default function CriarBannerPage() {
                   text="Publicar"
                   className="!hidden sm:!flex"
                   icon={<UploadOutlined />}
+                  loading={loading}
                 />
               </div>
 
@@ -81,6 +134,7 @@ export default function CriarBannerPage() {
                   text="Publicar"
                   className="!flex !sm:hidden"
                   icon={<UploadOutlined />}
+                  loading={loading}
                 />
               </div>
             </div>

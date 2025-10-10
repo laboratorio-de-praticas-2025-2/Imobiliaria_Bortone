@@ -6,6 +6,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import SidebarNav from "./SidebarNav";
 import Link from "next/link";
 import { usersMock } from "@/mock/users"; // Certifique-se que o caminho do import está correto
+import { handleLogout } from "@/utils/auth";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,7 +58,7 @@ export default function Sidebar() {
 
                 {/* Dropdown */}
                 <ul
-                  className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9999] 
+                  className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9000] 
                              transition-all duration-300 ease-out 
                              ${
                                userMenuOpen
@@ -80,20 +81,19 @@ export default function Sidebar() {
                       </li>
                     </Link>
                   )}
-                  <Link href={"/bem-vindo"}>
-                    <li
-                      className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out
-                                ${ userMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2" }`}
-                      style={{
-                        color: "#304383",
-                        borderBottomLeftRadius: bottomRadius,
-                        borderBottomRightRadius: bottomRadius,
-                        transitionDelay: user.nivel === "administrador" ? delays[2] : delays[1],
-                      }}
-                    >
-                      Sair
-                    </li>
-                  </Link>
+                  <li
+                    onClick={handleLogout}
+                    className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out
+                              ${ userMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2" }`}
+                    style={{
+                      color: "#304383",
+                      borderBottomLeftRadius: bottomRadius,
+                      borderBottomRightRadius: bottomRadius,
+                      transitionDelay: user.nivel === "administrador" ? delays[2] : delays[1],
+                    }}
+                  >
+                    Sair
+                  </li>
                 </ul>
               </div>
             )}

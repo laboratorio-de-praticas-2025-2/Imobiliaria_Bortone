@@ -7,16 +7,29 @@ import L from "leaflet";
 import LocationButton from "@/components/mapa/LocationButton";
 
 /* Corrige ícone padrão do Leaflet (usa CDN para evitar problemas em Next.js) */
-const DefaultIcon = L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-L.Marker.prototype.options.icon = DefaultIcon;
+let DefaultIcon;
+try {
+  DefaultIcon = L.icon({
+    iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+    iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+  L.Marker.prototype.options.icon = DefaultIcon;
+} catch (error) {
+  console.warn("Erro ao carregar ícone do marcador:", error);
+  // Fallback para ícone SVG inline
+  DefaultIcon = L.divIcon({
+    html: '<div style="background: #3b82f6; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+    className: 'custom-map-marker',
+    iconSize: [20, 20],
+    iconAnchor: [10, 10]
+  });
+  L.Marker.prototype.options.icon = DefaultIcon;
+}
 
 /* Botões de zoom customizados (usa useMap dentro do contexto do mapa) */
 function ZoomButtons() {
@@ -63,29 +76,82 @@ function ClickHandler({ form, onSetPos }) {
   return null;
 }
 
+/* Componente para atualizar o centro do mapa quando necessário */
+function MapUpdater({ center }) {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (center && center[0] !== undefined && center[1] !== undefined) {
+      map.setView(center, map.getZoom(), { animate: true });
+    }
+  }, [center, map]);
+  
+  return null;
+}
+
 
 export default function MapPick({ form, initialCenter = [-24.4886, -47.8442], initialZoom = 12 }) {
   const [pos, setPos] = useState(null);
+  const [mapCenter, setMapCenter] = useState(initialCenter);
 
   // se o form já tiver valores de latitude/longitude, inicializa o marcador
   useEffect(() => {
     if (!form) return;
-    const lat = form.getFieldValue?.("latitude");
-    const lng = form.getFieldValue?.("longitude");
-    if (lat != null && lng != null && !Number.isNaN(lat) && !Number.isNaN(lng)) {
-      setPos([Number(lat), Number(lng)]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
+    const checkFormValues = () => {
+      const lat = form.getFieldValue?.("latitude");
+      const lng = form.getFieldValue?.("longitude");
+      
+      if (lat != null && lng != null && !Number.isNaN(lat) && !Number.isNaN(lng)) {
+        const newPos = [Number(lat), Number(lng)];
+        setPos(newPos);
+        setMapCenter(newPos);
+        console.log("MapPick: Posição definida a partir do form:", newPos);
+      }
+    };
+
+    // Verificar imediatamente
+    checkFormValues();
+    
+    // Verificar novamente após um pequeno delay para garantir que o form foi atualizado
+    const timeout = setTimeout(checkFormValues, 100);
+    
+    return () => clearTimeout(timeout);
   }, [form]);
+
+  // Observar mudanças nos valores do form
+  useEffect(() => {
+    if (!form) return;
+
+    const interval = setInterval(() => {
+      const lat = form.getFieldValue?.("latitude");
+      const lng = form.getFieldValue?.("longitude");
+      
+      if (lat != null && lng != null && !Number.isNaN(lat) && !Number.isNaN(lng)) {
+        const newPos = [Number(lat), Number(lng)];
+        const currentPos = pos;
+        
+        // Só atualizar se a posição realmente mudou
+        if (!currentPos || currentPos[0] !== newPos[0] || currentPos[1] !== newPos[1]) {
+          setPos(newPos);
+          setMapCenter(newPos);
+          console.log("MapPick: Posição atualizada via form:", newPos);
+        }
+      }
+    }, 500); // Verifica a cada 500ms
+
+    return () => clearInterval(interval);
+  }, [form, pos]);
 
   return (
     <div className="h-full w-full relative">
       <MapContainer
-        center={pos ?? initialCenter}
+        center={mapCenter}
         zoom={initialZoom}
         scrollWheelZoom={true}
         zoomControl={false}
         className="w-full h-full"
+        key={`${mapCenter[0]}-${mapCenter[1]}`} // Force re-render when center changes
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -93,6 +159,7 @@ export default function MapPick({ form, initialCenter = [-24.4886, -47.8442], in
         />
 
         <ClickHandler form={form} onSetPos={setPos} />
+        <MapUpdater center={pos} />
 
         {pos && <Marker position={pos} />}
 
