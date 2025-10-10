@@ -1,4 +1,4 @@
-module.exports = function validateSimulacao(req, res, next) {
+const validateSimulacao = (req, res, next) => {
   const { tipo, valorImovel, entrada, parcelas, modalidade } = req.body;
 
   function isValidNumber(value) {
@@ -28,3 +28,5 @@ module.exports = function validateSimulacao(req, res, next) {
 
   next();
 };
+
+export default validateSimulacao;

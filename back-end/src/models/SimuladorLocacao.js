@@ -1,6 +1,6 @@
 // src/models/mapaModels.js
-import { DataTypes } from 'sequelize';
-import connection from '../config/sequelize-config.js';
+const { DataTypes } = require('sequelize');
+const connection = require('../config/sequelize-config.js');
 
 // ---------------------------
 // Model Imovel
@@ -38,7 +38,7 @@ Financiamento.belongsTo(SimImovel, { foreignKey: 'imovel_id' });
 // ---------------------------
 // Exportando todos os models
 // ---------------------------
-export {
+module.exports = {
   SimImovel,
   Financiamento,
 };

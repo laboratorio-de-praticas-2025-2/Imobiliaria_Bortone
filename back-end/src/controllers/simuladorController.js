@@ -1,4 +1,4 @@
-exports.calcularSimulacao = async (req, res) => {
+export const calcularSimulacao = async (req, res) => {
   
   //SAC
   function calcularSAC(principal, jurosMensal, parcelasNum) {
@@ -162,3 +162,5 @@ exports.calcularSimulacao = async (req, res) => {
   // Caso o tipo da simualação seja inválido
   return res.status(400).json({ sucesso: false, erro: 'Tipo de simulação inválido.' });
 };
+
+export default {calcularSimulacao};
