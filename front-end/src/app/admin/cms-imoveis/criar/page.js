@@ -15,6 +15,7 @@ import { LuHousePlus } from "react-icons/lu";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { uploadImovelImage } from "@/services/netlifyUploadService";
+import { apiClient } from "@/utils/apiClient";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
@@ -37,7 +38,7 @@ export default function CriarImovelPage() {
         area: values.area,
         preco: values.preco,
         descricao: values.descricao,
-        possui_muro: values.possui_muro === "sim" ? true : false,
+        murado: values.possui_muro === "sim" ? true : false,
         latitude: values.latitude,
         longitude: values.longitude,
       };
@@ -160,7 +161,7 @@ export default function CriarImovelPage() {
     "Tocantins",
   ];
   const options = ["Casa", "Terreno"];
-  const status = ["Disponivel", "Indisponivel", "Vendido", "Alugado"];
+  const status = ["Disponivel", "Indisponivel", "Vendido", "Locado"];
   const cities = [
     "Apiaí",
     "Barra do Chapéu",

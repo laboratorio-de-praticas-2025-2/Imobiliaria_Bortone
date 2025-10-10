@@ -72,7 +72,7 @@ export default function EditarImovelPage({ params }) {
     "Tocantins",
   ];
   const options = ["Casa", "Terreno"];
-  const status = ["Disponível", "Indisponível", "Vendido", "Alugado"];
+  const status = ["Disponível", "Indisponível", "Vendido", "Locado"];
   const cities = [
     "Apiaí",
     "Barra do Chapéu",
@@ -118,89 +118,108 @@ export default function EditarImovelPage({ params }) {
         setImovel(found);
 
         // Fetch images for the imovel
-        const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
-        const imagesData = imagesResponse.data;
+        try {
+          const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
+          const imagesData = imagesResponse.data;
 
-        // Process and set the fileList with improved error handling
-        console.log('DEBUG EDITAR: imagesData from API:', imagesData);
-        console.log('DEBUG EDITAR: apiUrl:', apiUrl);
-        
-        if (!Array.isArray(imagesData)) {
-          console.warn('DEBUG EDITAR: imagesData não é array:', imagesData);
+          // Process and set the fileList with improved error handling
+          console.log('DEBUG EDITAR: imagesData from API:', imagesData);
+          console.log('DEBUG EDITAR: apiUrl:', apiUrl);
+          
+          if (!Array.isArray(imagesData)) {
+            console.warn('DEBUG EDITAR: imagesData não é array:', imagesData);
+            setFileList([]);
+            setOriginalImages([]);
+          } else {
+            // Process images only if we have valid data
+            const formattedImages = imagesData.map((image, index) => {
+              try {
+                // Validação básica do objeto imagem
+                if (!image || !image.url_imagem) {
+                  console.warn(`DEBUG EDITAR: Imagem inválida no índice ${index}:`, image);
+                  return null;
+                }
+                
+                // Construir URL completa da imagem
+                const cleanApiUrl = apiUrl?.replace(/\/+$/, '') || '';
+                let cleanImageUrl = image.url_imagem;
+                
+                // Se já é uma URL completa, use como está
+                if (cleanImageUrl.startsWith('http://') || cleanImageUrl.startsWith('https://')) {
+                  console.log(`DEBUG EDITAR: URL já completa: ${cleanImageUrl}`);
+                  return {
+                    uid: `image-${image.id}-${index}`,
+                    name: cleanImageUrl.split('/').pop() || `image-${image.id}`,
+                    status: 'done',
+                    url: cleanImageUrl,
+                    originalId: image.id,
+                    isOriginal: true,
+                    filename: image.url_imagem
+                  };
+                }
+                
+                // Garantir que a URL relativa esteja correta
+                if (!cleanImageUrl.startsWith('/')) {
+                  cleanImageUrl = `/${cleanImageUrl}`;
+                }
+                
+                const fullUrl = `${cleanApiUrl}${cleanImageUrl}`;
+                
+                console.log('DEBUG EDITAR: Construindo URL:');
+                console.log('  - Image original:', image.url_imagem);
+                console.log('  - API URL limpa:', cleanApiUrl);
+                console.log('  - Image URL limpa:', cleanImageUrl);
+                console.log('  - URL final:', fullUrl);
+                
+                return {
+                  uid: `image-${image.id}-${index}`, // Unique identifier mais robusto
+                  name: image.url_imagem.split('/').pop() || `image-${image.id}`,
+                  status: 'done',
+                  url: fullUrl,
+                  originalId: image.id,
+                  isOriginal: true,
+                  filename: image.url_imagem
+                };
+              } catch (error) {
+                console.error(`DEBUG EDITAR: Erro ao processar imagem ${index}:`, error, image);
+                return null;
+              }
+            }).filter(Boolean); // Remove entradas nulas
+            
+            console.log('DEBUG EDITAR: formattedImages processadas:', formattedImages);
+            setFileList(formattedImages);
+            setOriginalImages(imagesData);
+          }
+        } catch (imageError) {
+          console.warn('DEBUG EDITAR: Erro ao buscar imagens (pode ser normal se não houver imagens):', imageError);
           setFileList([]);
           setOriginalImages([]);
-          return;
         }
-        
-        const formattedImages = imagesData.map((image, index) => {
-          try {
-            // Validação básica do objeto imagem
-            if (!image || !image.url_imagem) {
-              console.warn(`DEBUG EDITAR: Imagem inválida no índice ${index}:`, image);
-              return null;
-            }
-            
-            // Construir URL completa da imagem
-            const cleanApiUrl = apiUrl?.replace(/\/+$/, '') || '';
-            let cleanImageUrl = image.url_imagem;
-            
-            // Se já é uma URL completa, use como está
-            if (cleanImageUrl.startsWith('http://') || cleanImageUrl.startsWith('https://')) {
-              console.log(`DEBUG EDITAR: URL já completa: ${cleanImageUrl}`);
-              return {
-                uid: `image-${image.id}-${index}`,
-                name: cleanImageUrl.split('/').pop() || `image-${image.id}`,
-                status: 'done',
-                url: cleanImageUrl,
-                originalId: image.id,
-                isOriginal: true,
-                filename: image.url_imagem
-              };
-            }
-            
-            // Garantir que a URL relativa esteja correta
-            if (!cleanImageUrl.startsWith('/')) {
-              cleanImageUrl = `/${cleanImageUrl}`;
-            }
-            
-            const fullUrl = `${cleanApiUrl}${cleanImageUrl}`;
-            
-            console.log('DEBUG EDITAR: Construindo URL:');
-            console.log('  - Image original:', image.url_imagem);
-            console.log('  - API URL limpa:', cleanApiUrl);
-            console.log('  - Image URL limpa:', cleanImageUrl);
-            console.log('  - URL final:', fullUrl);
-            
-            return {
-              uid: `image-${image.id}-${index}`, // Unique identifier mais robusto
-              name: image.url_imagem.split('/').pop() || `image-${image.id}`,
-              status: 'done',
-              url: fullUrl,
-              originalId: image.id,
-              isOriginal: true,
-              filename: image.url_imagem
-            };
-          } catch (error) {
-            console.error(`DEBUG EDITAR: Erro ao processar imagem ${index}:`, error, image);
-            return null;
-          }
-        }).filter(Boolean); // Remove entradas nulas
-        
-        console.log('DEBUG EDITAR: formattedImages processadas:', formattedImages);
-        setFileList(formattedImages);
-        setOriginalImages(imagesData);
 
         // preencher seleções locais (para os DropdownField customizados)
         setTipoSelecionado(found.tipo ?? "Selecione o Tipo");
         setStatusSelecionado(found.status ?? "Selecione o status");
         setCitiesSelecionado(found.cidade ?? "Selecione a cidade");
         setSelectedState(found.estado ?? "Selecione o estado");
-        setSelectedBedrooms(found.casa.quartos ? String(found.casa.quartos) : "Quantidade");
-
-        setSelectedBathrooms(
-          found.casa.banheiros ? String(found.casa.banheiros) : "Quantidade"
-        );
-        setSelectedParking(found.casa.vagas ? String(found.casa.vagas) : "Quantidade");
+        // Only set casa properties if casa exists and tipo is not terreno
+        if (found.casa && found.tipo && found.tipo.toLowerCase() !== "terreno") {
+          // Convert 5 to "5+" for display
+          const formatValue = (value) => {
+            if (value >= 5) return "5+";
+            return String(value);
+          };
+          
+          setSelectedBedrooms(found.casa.quartos ? formatValue(found.casa.quartos) : "Quantidade");
+          setSelectedBathrooms(
+            found.casa.banheiros ? formatValue(found.casa.banheiros) : "Quantidade"
+          );
+          setSelectedParking(found.casa.vagas ? formatValue(found.casa.vagas) : "Quantidade");
+        } else {
+          // Set default values for terreno or when casa doesn't exist
+          setSelectedBedrooms("Quantidade");
+          setSelectedBathrooms("Quantidade");
+          setSelectedParking("Quantidade");
+        }
 
         // setar valores do form Antd
         form.setFieldsValue({
@@ -212,12 +231,13 @@ export default function EditarImovelPage({ params }) {
           area: found.area ?? undefined,
           preco: found.preco ?? undefined,
           endereco: found.endereco ?? undefined,
-          quartos: found.casa.quartos ?? undefined,
-          banheiros: found.casa.banheiros ?? undefined,
-          vagas: found.casa.vagas ?? undefined,
+          // Only set casa properties if casa exists
+          quartos: found.casa?.quartos ?? undefined,
+          banheiros: found.casa?.banheiros ?? undefined,
+          vagas: found.casa?.vagas ?? undefined,
           possui_muro: found.murado ? "sim" : "nao",
-          possui_piscina: found.casa.possui_piscina ? "sim" : "nao",
-          possui_jardim: found.casa.possui_jardim ? "sim" : "nao",
+          possui_piscina: found.casa?.possui_piscina ? "sim" : "nao",
+          possui_jardim: found.casa?.possui_jardim ? "sim" : "nao",
           latitude: found.latitude ?? undefined,
           longitude: found.longitude ?? undefined,
           // imagens: found.imagens ?? [], // se UploadImovel aceitar
@@ -244,8 +264,8 @@ export default function EditarImovelPage({ params }) {
 
   const handleImageChanges = async () => {
     try {
-      // Obter IDs das imagens originais
-      const originalImageIds = originalImages.map(img => img.id);
+      // Obter IDs das imagens originais (só se existirem)
+      const originalImageIds = Array.isArray(originalImages) ? originalImages.map(img => img.id) : [];
       
       // Obter IDs das imagens atuais (apenas as originais que ainda estão presentes)
       const currentOriginalIds = fileList

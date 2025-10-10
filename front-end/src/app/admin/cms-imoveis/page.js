@@ -243,16 +243,19 @@ export default function CmsUserPage() {
       title: "Quartos",
       dataIndex: ['casa',"quartos"],
       key: "quartos",
+      render: (value) => value >= 5 ? "5+" : value,
     },
     {
       title: "Banheiros",
       dataIndex: ['casa',"banheiros"],
       key: "banheiros",
+      render: (value) => value >= 5 ? "5+" : value,
     },
     {
       title: "Vagas",
       dataIndex: ['casa',"vagas"],
       key: "vagas",
+      render: (value) => value >= 5 ? "5+" : value,
     },
     {
       title: "Piscina",
