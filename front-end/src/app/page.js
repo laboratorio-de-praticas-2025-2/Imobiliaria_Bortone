@@ -1,5 +1,6 @@
 "use client";
 import { Divider } from "antd";
+import Image from "next/image";
 import Header from "@/components/home/Header";
 import PropriedadesSelecionadas from "@/components/home/PropriedadesSelecionadas";;
 import HomeFooter from "@/components/home/HomeFooter";
@@ -94,7 +95,35 @@ export default function Home() {
     <>
       <Header key="header" />
       <Divider size="large" />
-      <PropriedadesSelecionadas />
+
+      <div className="flex flex-col md:flex-row items-center justify-center gap-8 px-4 md:px-16">
+        <div className="flex-1 w-full">
+          <PropriedadesSelecionadas />
+        </div>
+
+        <div className="flex-shrink-0 w-full md:w-[20%]">
+          <div className="hidden md:block pt-10">
+            <Image
+              src="/images/dudaShopVerticalMaior.svg"
+              alt="dudaShopVertical"
+              width={301}
+              height={600}
+              className="block object-contain pt-5"
+            />
+          </div>
+
+          <div className="block md:hidden">
+            <Image
+              src="/images/dudaShop.svg"
+              alt="dudaShop"
+              width={344}
+              height={100}
+              className="block object-contain w-full"
+            />
+          </div>
+        </div>
+      </div>
+
       <Divider size="large" />
       <HomeFooter key="footer" />
     </>
