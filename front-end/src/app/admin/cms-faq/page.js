@@ -41,6 +41,39 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const { styles } = useStyle();
 
+  // Função para buscar FAQs da API
+  const fetchAnswers = async () => {
+    try {
+      setLoading(true);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      const fullUrl = `${apiUrl}/faq`;
+      
+      const response = await fetch(fullUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors',
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const jsonData = await response.json();
+      const data = Array.isArray(jsonData) ? jsonData : [];
+      
+      setAnswers(data);
+      setAllAnswers(data);
+      setLoading(false);
+    } catch (err) {
+      console.error("Erro ao buscar FAQs:", err);
+      setAnswers([]);
+      setAllAnswers([]);
+      setLoading(false);
+    }
+  };
+
   const [deleteId, setDeleteId] = useState(null);
   const onDelete = (id) => {
     setDeleteId(id);
@@ -54,7 +87,6 @@ export default function Page() {
 
   const onConfirmDelete = async () => {
     try {
-      setLoading(true);
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
       
       const response = await fetch(`${apiUrl}/faq/${deleteId}`, {
@@ -68,17 +100,15 @@ export default function Page() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
-      setAnswers((prev) => prev.filter((ans) => ans.id !== deleteId));
-      setAllAnswers((prev) => prev.filter((ans) => ans.id !== deleteId));
+      // Recarregar dados da API após sucesso
+      await fetchAnswers();
       setCurrentPage(1);
       setIsConfirmModalVisible(false);
       setDeleteId(null);
-      setLoading(false);
     } catch (err) {
       console.error("Erro ao deletar a pergunta:", err);
       setIsConfirmModalVisible(false);
       setDeleteId(null);
-      setLoading(false);
     }
   };
 
@@ -133,37 +163,6 @@ export default function Page() {
   ];
 
   useEffect(() => {
-    async function fetchAnswers() {
-      try {
-        setLoading(true);
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-        const fullUrl = `${apiUrl}/faq`;
-        
-        const response = await fetch(fullUrl, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          mode: 'cors',
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const jsonData = await response.json();
-        const data = Array.isArray(jsonData) ? jsonData : [];
-        
-        setAnswers(data);
-        setAllAnswers(data);
-        setLoading(false);
-      } catch (err) {
-        console.error("Erro ao buscar FAQs:", err);
-        setAnswers([]);
-        setAllAnswers([]);
-        setLoading(false);
-      }
-    }
     fetchAnswers();
   }, []);
 
@@ -257,7 +256,6 @@ export default function Page() {
           onClose={() => setIsEditModalVisible(false)}
           onSave={async (updatedItem) => {
             try {
-              setLoading(true);
               const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
               const response = await fetch(`${apiUrl}/faq/${updatedItem.id}`, {
                 method: "PUT",
@@ -275,20 +273,11 @@ export default function Page() {
                 throw new Error(`HTTP error! status: ${response.status}`);
               }
 
-              const updatedFaq = await response.json();
-
-              setAnswers(prev =>
-                prev.map(ans => (ans.id === updatedFaq.id ? updatedFaq : ans))
-              );
-              setAllAnswers(prev =>
-                prev.map(ans => (ans.id === updatedFaq.id ? updatedFaq : ans))
-              );
-
+              // Recarregar dados da API após sucesso
+              await fetchAnswers();
               setIsEditModalVisible(false);
             } catch (err) {
               console.error("Erro ao editar FAQ:", err);
-            } finally {
-              setLoading(false);
             }
           }}
         />
@@ -297,11 +286,10 @@ export default function Page() {
         <FaqModal
           onClose={() => setIsCreateModalVisible(false)}
           onSave={async (newItem) => {
-            try{
-              setLoading(true);
+            try {
               const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
               const usuarioId = JSON.parse(localStorage.getItem("usuario"))?.id || 1; 
-              const response = await fetch(`${apiUrl}/faq`,{
+              const response = await fetch(`${apiUrl}/faq`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -316,17 +304,12 @@ export default function Page() {
                 throw new Error(`Erro ao criar FAQ: ${response.status}`);
               }
 
-              const createdItem = await response.json();
-
-            // Implementar requisição POST para /faq
-            setAnswers((prev) => [createdItem, ...prev]);
-            setAllAnswers((prev) => [createdItem, ...prev]);
-            setCurrentPage(1);
-            setIsCreateModalVisible(false);
-             }catch (err){
+              // Recarregar dados da API após sucesso
+              await fetchAnswers();
+              setCurrentPage(1);
+              setIsCreateModalVisible(false);
+            } catch (err) {
               console.error("Erro ao criar FAQ: ", err);
-            }finally{
-              setLoading(false);
             }
           }}
         />
