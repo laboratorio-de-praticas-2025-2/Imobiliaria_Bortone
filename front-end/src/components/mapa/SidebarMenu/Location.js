@@ -84,7 +84,7 @@ export default function Location() {
       rows.push(
         <Row key={i} gutter={[8, 8]} justify="center" className={i > 0 ? "pt-3" : ""}>
           {cidadesNaLinha.map((cidade, index) => (
-            <Col key={`${cidade}-${index}`} span={spans} align="center">
+            <Col key={`${cidade}-${index}`} span={spans} align="center" style={{maxWidth: 'none'}}>
               <LocationButton
                 label={cidade}
                 onClick={() => handleSelectOption(cidade)}
