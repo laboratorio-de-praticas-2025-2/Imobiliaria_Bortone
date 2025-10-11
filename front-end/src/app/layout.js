@@ -12,8 +12,11 @@ import "@/styles/cms.css";
 import "leaflet/dist/leaflet.css";
 import Script from "next/script";
 import ChatWrapper from "@/components/chat/chatWrapper";
+import NotificationProvider from "@/components/notifications/NotificationProvider";
+
 
 export default function RootLayout({ children }) {
+    console.log("🔥 Layout renderizando...");
   return (
     <html lang="pt-br">
       <head>
@@ -78,6 +81,7 @@ export default function RootLayout({ children }) {
       <body className="antialiased">
         {children}
         <ChatWrapper />
+        <NotificationProvider />
       </body>
     </html>
   );

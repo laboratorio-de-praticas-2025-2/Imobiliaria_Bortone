@@ -200,6 +200,14 @@ class NotificationService {
 
   // Função para enviar notificações via Socket.IO - SEM REDUNDÂNCIAS
   async _enviarNotificacoes(recomendacoes, novoImovel, imovelSorteado) {
+
+      console.log('🎯 _enviarNotificacoes INICIADO');
+    console.log('📊 Parâmetros recebidos:', {
+        recomendacoes: recomendacoes?.length || 0,
+        novoImovel: novoImovel?.id,
+        imovelSorteado: imovelSorteado?.id
+    });
+
     const notificacoesSent = {
       recomendacoes: 0,
       broadcast: false
@@ -211,7 +219,7 @@ class NotificationService {
         const usuariosIds = [...new Set(recomendacoes.map(r => r.usuario_id))];
         console.log(`[NotificationService] Enviando recomendações personalizadas para ${usuariosIds.length} usuários: ${usuariosIds.join(', ')}`);
 
-        const resultados = sendToMultipleUsers(usuariosIds, 'property_recommendation', {
+        const resultados = sendToMultipleUsers(usuariosIds, 'nova_recomendacao', {
           type: 'personalized_recommendation',
           title: 'Nova Recomendação Personalizada',
           message: 'Encontramos um imóvel que combina com seu perfil!',
@@ -231,9 +239,9 @@ class NotificationService {
 
       // 2. BROADCAST DE IMÓVEL POPULAR (para usuários sem histórico) - UMA SÓ VEZ
       if (imovelSorteado) {
-        console.log(`[NotificationService] Enviando broadcast de imóvel popular: ${imovelSorteado.id}`);
+        console.log(`🔥 ENVIANDO BROADCAST para imóvel popular:`, imovelSorteado.id);
 
-        const broadcastResult = broadcastNotification('popular_property', {
+        const broadcastResult = broadcastNotification('imovel_popular', {
           type: 'popular_property',
           title: 'Imóvel Popular em Destaque',
           message: 'Confira este imóvel que está chamando atenção!',
@@ -248,11 +256,14 @@ class NotificationService {
         });
 
         notificacoesSent.broadcast = broadcastResult;
-        console.log(`[NotificationService] Broadcast de imóvel popular ${broadcastResult ? 'enviado' : 'falhou'}`);
-      }
-
+      console.log(`🚀 Broadcast resultado:`, broadcastResult ? '✅ SUCESSO' : '❌ FALHOU');
+      } else {
+            console.log('ℹ️ Nenhum imóvel popular encontrado para broadcast');
+        }
+ console.log('🎯 _enviarNotificacoes FINALIZADO:', notificacoesSent);
+        return notificacoesSent;
     } catch (error) {
-      console.error("[NotificationService] Erro ao enviar notificações via Socket.IO:", error.message);
+      console.error("❌ ERRO em _enviarNotificacoes:", error.message);
       throw new Error("Erro ao enviar notificações em tempo real.");
     }
 
@@ -271,7 +282,7 @@ class NotificationService {
       if (interessados.length > 0) {
         const userIds = [...new Set(interessados.map(i => i.usuario_id))];
 
-        const results = sendToMultipleUsers(userIds, 'price_change', {
+        const results = sendToMultipleUsers(userIds, 'alteracao_preco', {
           type: 'price_change',
           title: 'Alteração de Preço',
           message: 'O preço de um imóvel de seu interesse foi alterado',
