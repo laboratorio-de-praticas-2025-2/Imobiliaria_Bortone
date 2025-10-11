@@ -1,3 +1,4 @@
+// app/admin/cms-banner/page.js - ATUALIZE A FUNÇÃO getImageUrl
 "use client";
 
 import Card from "@/components/cms/Card";
@@ -6,7 +7,6 @@ import CMS from "@/components/cms/table";
 import { useEffect, useState } from "react";
 import { FaImage } from "react-icons/fa6";
 
-// URL base do backend
 const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 // Normaliza valor ativo (0 ou 1)
@@ -17,106 +17,202 @@ const normalizeAtivo = (value) => {
   return 0;
 };
 
-// Constrói URL da imagem
+// 🔥 FUNÇÃO getImageUrl CORRIGIDA
 const getImageUrl = (urlImagem) => {
-  if (!urlImagem) return "/images/casa.png";
-  if (urlImagem.startsWith("http://") || urlImagem.startsWith("https://")) return urlImagem;
-  if (urlImagem.startsWith("/")) return `${BACKEND_BASE_URL}${urlImagem}`;
-  return `${BACKEND_BASE_URL}/uploads/banners/${urlImagem}`;
-};
-
-// Chama backend para alternar status do banner
-const toggleStatus = async (id) => {
-  try {
-    const res = await fetch(`${BACKEND_BASE_URL}/banner/toggle/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-    });
-    if (!res.ok) throw new Error("Erro ao atualizar status no servidor.");
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.error("Erro ao alterar status no backend:", error);
-    throw error;
+  console.log("🖼️ Processando imagem:", urlImagem); // Debug
+  
+  if (!urlImagem || urlImagem === "null" || urlImagem === "undefined") {
+    return "/images/casa.png"; // Imagem padrão
   }
+  
+  // Se já é uma URL completa
+  if (urlImagem.startsWith("http://") || urlImagem.startsWith("https://")) {
+    return urlImagem;
+  }
+  
+  // Se começa com /, adiciona base URL
+  if (urlImagem.startsWith("/")) {
+    return `${BACKEND_BASE_URL}${urlImagem}`;
+  }
+  
+  // Se é apenas o nome do arquivo
+  return `${BACKEND_BASE_URL}/uploads/banners/${urlImagem}`;
 };
 
 export default function CmsBannerPage() {
   const [banners, setBanners] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const pageSize = 8;
-  const [filterData, setFilterData] = useState({ order: null });
+  
+  const [filterData, setFilterData] = useState({ 
+    order: null,
+    search: ""
+  });
 
   useEffect(() => {
     fetchBanners();
   }, []);
 
-  const fetchBanners = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const res = await fetch(`${BACKEND_BASE_URL}/banner`);
-      if (!res.ok) throw new Error(`Erro ${res.status}: ${res.statusText}`);
-      const data = await res.json();
-      const bannersProcessados = data.map(b => ({
-        ...b,
-        ativo: normalizeAtivo(b.ativo),
-        imagem: getImageUrl(b.url_imagem),
-      }));
-      setBanners(bannersProcessados);
-    } catch (err) {
-      console.error(err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
+  // Adicione este debug no fetchBanners
+const fetchBanners = async () => {
+  try {
+    setLoading(true);
+    setError(null);
+    
+    const res = await fetch(`${BACKEND_BASE_URL}/banner`);
+    
+    if (!res.ok) throw new Error(`Erro ${res.status}`);
+    
+    const data = await res.json();
+    console.log("🔍 ESTRUTURA DOS BANNERS:", data);
+    
+    // 🔥 DEBUG DETALHADO - Mostra a estrutura de cada banner
+    if (data && data.length > 0) {
+      console.log("📋 PRIMEIRO BANNER (exemplo):", data[0]);
+      console.log("🎯 CAMPOS DISPONÍVEIS:", Object.keys(data[0]));
     }
-  };
+    
+    const bannersProcessados = data.map(b => ({
+      ...b,
+      ativo: normalizeAtivo(b.ativo),
+      imagem: getImageUrl(b.url_imagem || b.imagem),
+    }));
+    
+    setBanners(bannersProcessados);
+    
+  } catch (err) {
+    console.error("Erro ao buscar banners:", err);
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};;
+
+  // ... resto das funções permanecem iguais
 
   const handleDeleteBanner = async (bannerId) => {
+    if (!confirm("Tem certeza que deseja excluir este banner?")) return;
+    
     try {
-      const res = await fetch(`${BACKEND_BASE_URL}/banner/${bannerId}`, { method: "DELETE" });
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({ message: "Erro desconhecido" }));
-        throw new Error(errorData.message);
-      }
+      const res = await fetch(`${BACKEND_BASE_URL}/banner/${bannerId}`, { 
+        method: "DELETE" 
+      });
+      if (!res.ok) throw new Error("Erro ao deletar banner");
       setBanners(prev => prev.filter(b => b.id !== bannerId));
     } catch (err) {
-      console.error(err);
       alert(`Erro ao deletar banner: ${err.message}`);
-      throw err;
     }
   };
 
   const handleToggleBanner = async (bannerId) => {
     try {
-      const data = await toggleStatus(bannerId);
+      const res = await fetch(`${BACKEND_BASE_URL}/banner/toggle/${bannerId}`, {
+        method: "PUT",
+      });
+      if (!res.ok) throw new Error("Erro ao atualizar status");
+      const data = await res.json();
       setBanners(prev =>
-        prev.map(b => (b.id === bannerId ? { ...b, ativo: normalizeAtivo(data.ativo) } : b))
+        prev.map(b => b.id === bannerId ? { ...b, ativo: normalizeAtivo(data.ativo) } : b)
       );
     } catch (err) {
-      console.error(err);
       alert("Erro ao alterar status do banner.");
     }
   };
 
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const paginatedBanners = banners.slice(startIndex, endIndex);
+  const onSearch = (value) => {
+    setFilterData(prev => ({ ...prev, search: value }));
+    setCurrentPage(1);
+  };
 
-  const onSearch = (value) => console.log("Search:", value);
-  const handleSelectOrder = (value) => setFilterData(prev => ({ ...prev, order: value }));
-  const updateFilterData = (newData) => setFilterData(prev => ({ ...prev, ...newData }));
-  const handleRetry = () => fetchBanners();
+  const handleSelectOrder = (value) => {
+    console.log("🎯 Ordenação selecionada:", value);
+    setFilterData(prev => ({ ...prev, order: value }));
+    setCurrentPage(1);
+  };
 
-  if (loading) return <div>Carregando banners...</div>;
-  if (error)
+  const updateFilterData = (newData) => {
+    setFilterData(prev => ({ ...prev, ...newData }));
+    setCurrentPage(1);
+  };
+
+  // Funções de ordenação e filtro
+  // Função de ordenação melhorada com logs
+// Função de ordenação CORRIGIDA - usa "descricao" em vez de "titulo"
+const sortBanners = (bannersToSort, order) => {
+  if (!order || !bannersToSort?.length) return bannersToSort;
+  
+  console.log(`🔄 ORDENANDO por: ${order}`);
+  console.log("📝 Primeiros 3 banners antes da ordenação:", 
+    bannersToSort.slice(0, 3).map(b => ({ id: b.id, descricao: b.descricao }))
+  );
+  
+  const sorted = [...bannersToSort].sort((a, b) => {
+    // 🔥 CORREÇÃO: Usa "descricao" em vez de "titulo"
+    const descricaoA = a.descricao || "";
+    const descricaoB = b.descricao || "";
+    
+    console.log(`📚 Comparando "${descricaoA}" com "${descricaoB}"`);
+    
+    switch (order) {
+      case "Alfabética A-Z":
+        return descricaoA.localeCompare(descricaoB);
+      case "Alfabética Z-A":
+        return descricaoB.localeCompare(descricaoA);
+      case "Mais recente":
+        return (b.id || 0) - (a.id || 0);
+      case "Mais antiga":
+        return (a.id || 0) - (b.id || 0);
+      default:
+        return 0;
+    }
+  });
+  
+  console.log("✅ Primeiros 3 banners após ordenação:", 
+    sorted.slice(0, 3).map(b => ({ id: b.id, descricao: b.descricao }))
+  );
+  
+  return sorted;
+};
+
+const filterBanners = (bannersToFilter, search) => {
+  if (!search || !bannersToFilter?.length) return bannersToFilter;
+  
+  return bannersToFilter.filter(banner => 
+    (banner.descricao || "").toLowerCase().includes(search.toLowerCase())
+  );
+};
+
+  // Processamento dos dados
+  const filteredBanners = filterBanners(banners, filterData.search);
+  const sortedBanners = sortBanners(filteredBanners, filterData.order);
+  const paginatedBanners = sortedBanners.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  if (loading) {
     return (
-      <div>
-        Erro: {error} <button onClick={handleRetry}>Tentar Novamente</button>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg">Carregando banners...</div>
       </div>
     );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="text-red-500 text-lg mb-4">Erro: {error}</div>
+        <button 
+          onClick={fetchBanners}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Tentar Novamente
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -132,29 +228,44 @@ export default function CmsBannerPage() {
               handleSelectOrder={handleSelectOrder}
               filterData={filterData}
               updateFilterData={updateFilterData}
+              orderOptions={[
+                "Alfabética A-Z",
+                "Alfabética Z-A", 
+                "Mais recente",
+                "Mais antiga"
+              ]}
             />
             <CMS.TableBody>
               {paginatedBanners.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-center">
                   {paginatedBanners.map(banner => (
                     <Card
                       key={banner.id}
                       item={banner}
                       header
                       onDelete={() => handleDeleteBanner(banner.id)}
-                      onToggle={() => handleToggleBanner(banner.id)} // ✅ toggle funcional
+                      onToggle={() => handleToggleBanner(banner.id)}
                     />
                   ))}
                 </div>
               ) : (
-                <p>Nenhum banner encontrado.</p>
+                <div className="text-center py-8">
+                  <p className="text-gray-500 text-lg">
+                    {banners.length === 0 
+                      ? "Nenhum banner cadastrado." 
+                      : "Nenhum banner encontrado para sua busca."}
+                  </p>
+                </div>
               )}
             </CMS.TableBody>
-            <CMS.TableFooter
-              postsData={banners}
-              pageSize={pageSize}
-              onPageChange={setCurrentPage}
-            />
+            {sortedBanners.length > pageSize && (
+              <CMS.TableFooter
+                postsData={sortedBanners}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+              />
+            )}
           </CMS.Table>
         </CMS.Body>
       </div>

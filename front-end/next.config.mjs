@@ -58,7 +58,8 @@ const nextConfig = {
               // Permitir todas as origens HTTPS para imagens (resolve 404s)
               "img-src 'self' data: blob: https: http:",
               "font-src 'self' data:",
-              "connect-src 'self' https:",
+
+              "connect-src 'self' https: http://localhost:4000 ws://localhost:3000" + (isDev ? " ws://localhost:*" : ""),
               "frame-ancestors 'none'",
             ].join("; "),
           },

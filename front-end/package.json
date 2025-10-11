@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@ant-design/compatible": "^5.1.4",
+    "@ant-design/icons-svg": "^4.4.2",
     "@babel/runtime": "^7.28.4",
     "antd": "^5.27.4",
     "antd-style": "^3.7.1",
