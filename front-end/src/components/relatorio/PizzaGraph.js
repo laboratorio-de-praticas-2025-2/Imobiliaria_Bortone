@@ -65,17 +65,9 @@ export default function RentalByRegion({ data, label, className }) {
       }
     }
   }, [data]);
-  return (
-    <div
-      className={`group h-full !w-full flex items-center rounded-xl px-4 pt-4 !bg-[#eef0f9] shadow-none`}
-    >
-      <div className="grid grid-col content-evenly w-full h-full">
-        <span className="text-lg font-bold lg:text-center text-[#273668] ">
-          {label}
-        </span>
-
-        <div className="items-center justify-items-center w-full h-full">
-          <div className={`mx-auto ${className}`} style={{ width: '300px', height: '300px' }}>
+  return (    
+        <div className="items-start justify-items-start w-full m-0 p-0">
+          <div style={{ width: '200px', height: '200px' }} className={className}>
             <Doughnut 
               ref={chartRef}
               data={data} 

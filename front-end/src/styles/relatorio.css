@@ -64,7 +64,14 @@ header {
   font-weight: bold;
   margin: 40px 0;
 }
- 
+
+.label-item{
+  font-size: 20px !important;
+  font-weight: semibold !important;
+  margin-top: 32px !important;
+  margin-left: 32px !important;
+}
+
 .card-container {
   display: flex;
   flex-direction: column;  
