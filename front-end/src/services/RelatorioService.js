@@ -1,5 +1,5 @@
 import "dotenv/config";
-const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+const url = process.env.NEXT_PUBLIC_API_URL || "https://imobiliaria-bortone.onrender.com";
 
 // Pega os dados de um relatório específico
 export async function getRelatorioData(tipo) {

@@ -533,9 +533,13 @@ export default function ChatModal({ onClose, isLoggedIn }) {
         };
 
         socket.onclose = (event) => {
-          console.log("❌ WebSocket fechado:", {
-            code: event.code,
-            reason: event.reason,
+
+          console.log("❌ WebSocket fechado:", { code: event.code, reason: event.reason });
+          console.log("🔍 Estado da conexão antes do fechamento:", {
+            readyState: socket.readyState,
+            isConnected: isConnected,
+            reconnectAttempts: reconnectAttempts,
+            userData: userData
           });
           setIsConnected(false);
           stopHeartbeat();
@@ -547,6 +551,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
             !noReconnectCodes.includes(event.code) &&
             reconnectAttempts < maxReconnectAttempts
           ) {
+
             reconnectAttempts++;
             setConnectionStatus("reconnecting");
             const delay = Math.min(

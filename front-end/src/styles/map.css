@@ -228,7 +228,7 @@
 
 .button-text {
   font-family: "Glacial Indifference";
-  font-size: 1.2rem;
+  font-size: 12px;
   font-weight: 700;
 }
 .menu-label {
@@ -371,19 +371,19 @@
 }
 
 /* Estilo para clusters pequenos */
-.marker-cluster-small {
+.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
   background-color: #304383 !important;
   border-radius: 50%;
   box-shadow: 0 0 8px rgba(48, 67, 131, 0.4);
   transition: transform 0.2s ease;
 }
 
-.marker-cluster-small:hover {
+.marker-cluster-small:hover, .marker-cluster-medium:hover, .marker-cluster-large:hover {
   transform: scale(1.1);
 }
 
 /* Estilo interno do número */
-.marker-cluster-small div {
+.marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
   background-color: #304383 !important;
   color: #fff !important;
   font-weight: 600;
