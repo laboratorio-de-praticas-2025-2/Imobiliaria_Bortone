@@ -11,10 +11,11 @@ import {  Form as FormAntd } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
-import axios from "axios";
+import SplashScreen from "@/components/SplashScreen";
 import { uploadPublicidadeImage } from "@/services/netlifyUploadService";
 import { apiClient } from "@/utils/apiClient";
 import { buildImageUrl } from "@/utils/imageUtils";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
 
 export default function EditarPublicidadePage() {
   const params = useParams(); 
@@ -25,9 +26,12 @@ export default function EditarPublicidadePage() {
   const [publicidade, setPublicidade] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [formValues, setFormValues] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { submitForm, isLoading } = useFormSubmit();
 
   const loadPublicidade = useCallback(async () => {
     try {
+      setLoading(true);
       const response = await apiClient.get(`/publicidade/${id}`);
       if (response.status === 200) {
         setPublicidade(response.data);
@@ -40,8 +44,10 @@ export default function EditarPublicidadePage() {
           conteudo: response.data.conteudo,
         });
       }
+      setLoading(false);
     } catch {
       console.log("Erro ao carregar publicidade");
+      setLoading(false);
     }
   }, [id, form]);
 
@@ -57,8 +63,9 @@ export default function EditarPublicidadePage() {
   };
 
   const onConfirm = async () => {
-    if (formValues.titulo && formValues.conteudo) {
-      try {
+    await submitForm(
+      formValues,
+      async (validatedValues) => {
         console.log('=== FRONT-END DEBUG ===');
         console.log('fileList:', fileList);
         console.log('fileList.length:', fileList.length);
@@ -66,7 +73,7 @@ export default function EditarPublicidadePage() {
           console.log('fileList[0]:', fileList[0]);
           console.log('fileList[0].originFileObj:', fileList[0].originFileObj);
         }
-        console.log('formValues:', formValues);
+        console.log('validatedValues:', validatedValues);
         console.log('publicidade:', publicidade);
         console.log('=======================');
         
@@ -76,8 +83,8 @@ export default function EditarPublicidadePage() {
         if (fileList.length > 0 && fileList[0].originFileObj) {
           url_imagem = await uploadPublicidadeImage(
             fileList[0].originFileObj,
-            formValues.titulo,
-            formValues.conteudo,
+            validatedValues.titulo,
+            validatedValues.conteudo,
             publicidade.usuario_id.toString(),
             publicidade.ativo
           );
@@ -88,8 +95,8 @@ export default function EditarPublicidadePage() {
 
         // Enviar dados para o backend sem arquivo
         const publicidadeData = {
-          titulo: formValues.titulo,
-          conteudo: formValues.conteudo,
+          titulo: validatedValues.titulo,
+          conteudo: validatedValues.conteudo,
           usuario_id: publicidade.usuario_id,
           ativo: publicidade.ativo,
           url_imagem
@@ -100,23 +107,27 @@ export default function EditarPublicidadePage() {
         const response = await apiClient.put(`/publicidade/${id}`, publicidadeData);
         
         if (response.status === 200) {
-          alert("Publicidade atualizada com sucesso!");
+          setIsConfirmModalVisible(false);
+          router.push("/admin/cms-publicidades");
+          return response.data;
+        }
+      },
+      {
+        requiredFields: ['titulo', 'conteudo'],
+        successMessage: "Publicidade atualizada com sucesso!",
+        onSuccess: () => {
           setIsConfirmModalVisible(false);
           router.push("/admin/cms-publicidades");
         }
-      } catch (error) {
-        console.log("Erro ao atualizar a publicidade:", error);
       }
-    } else {
-      alert("Preencha todos os campos!");
-    }
+    );
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Edit Failed:", errorInfo);
   };
 
-  if (!publicidade) return <div>Carregando...</div>;
+  if (loading) return <SplashScreen />;
 
   return (
     <>
@@ -208,6 +219,7 @@ export default function EditarPublicidadePage() {
                   text="Publicar"
                   onClick={() => setIsConfirmModalVisible(true)}
                   icon={<UploadOutlined />}
+                  loading={isLoading}
                 />
               </div>
             </div>

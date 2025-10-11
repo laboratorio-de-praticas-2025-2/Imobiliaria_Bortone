@@ -9,20 +9,27 @@ export default function initWebSocket(server) {
     "http://localhost:3000",
     "http://localhost:3001", 
     "https://imobiliaria-bortone.vercel.app",
-    // Adicionar outras origens permitidas em produção
+    // Padrões Vercel para branches
+    "https://imobiliaria-bortone-git-",
+    "https://imobiliaria-bortone-",
   ];
 
   const wss = new WebSocketServer({ server });
   wss.on("connection", (ws, req) => {
     const origin = req.headers.origin;
+    console.log(`🔌 Nova conexão WebSocket - Origin: ${origin}`);
     
     // Em desenvolvimento, permitir qualquer origem local
     const isDevelopment = process.env.NODE_ENV === 'development';
     const isOriginAllowed = isDevelopment || 
       !origin || 
-      ALLOWED_ORIGINS.some(allowedOrigin => origin.startsWith(allowedOrigin));
+      ALLOWED_ORIGINS.some(allowedOrigin => {
+        // Permitir exata ou que comece com (para URLs do Vercel)
+        return origin === allowedOrigin || origin.startsWith(allowedOrigin);
+      });
     
     if (!isOriginAllowed) {
+      console.log(`❌ Origin não permitida: ${origin}`);
       ws.close(1008, "Origin não permitida");
       return;
     }
@@ -31,6 +38,16 @@ export default function initWebSocket(server) {
     ws.isAlive = true;
     ws.on("pong", () => {
       ws.isAlive = true;
+    });
+
+    // Log de fechamento para debug
+    ws.on("close", (code, reason) => {
+      console.log(`🔌 WebSocket fechado - Código: ${code}, Razão: ${reason}, Usuário: ${ws.userData?.id || 'desconhecido'}`);
+    });
+
+    // Log de erros para debug
+    ws.on("error", (error) => {
+      console.log(`🚨 Erro no WebSocket - Usuário: ${ws.userData?.id || 'desconhecido'}, Erro: ${error.message}`);
     });
 
     // Para teste: permitir conexão sem JWT se for modo de desenvolvimento
@@ -57,24 +74,27 @@ export default function initWebSocket(server) {
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log(`✅ Token válido para usuário ID: ${decoded.id}, Nível: ${decoded.nivel}`);
       ws.userData = decoded;
       handleConnection(ws);
     } catch (error) {
+      console.log(`❌ Erro na verificação do token: ${error.message}`);
       ws.close(4002, "Token inválido");
     }
   });
 
-  // Heartbeat: enviar ping a cada 15 minutos
+  // Heartbeat: enviar ping a cada 30 segundos
   setInterval(() => {
     wss.clients.forEach((ws) => {
       if (ws.isAlive === false) {
+        console.log("🔌 Terminando conexão WebSocket inativa");
         ws.terminate();
         return;
       }
       ws.isAlive = false;
       ws.ping();
     });
-  }, 900000); // 15 minutos
+  }, 30000); // 30 segundos
 
   console.log("✅ WebSocket inicializado");
 };

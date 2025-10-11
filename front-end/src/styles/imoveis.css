@@ -200,19 +200,21 @@
   font-weight: lighter;
   display: flex;
   align-items: end;
+  gap: 10px;
 }
 
 .btn1 {
   background-color: #304383;
-  width: 23%;
   height: 60px;
   border-radius: 5cap;
   color: white;
   margin-bottom: 2%;
   margin-left: 2.8%;
+  padding: 0 40px;
   cursor: pointer;
   font-family: "Glacial Indifference", sans-serif;
   font-weight: normal;
+  white-space: nowrap;
 }
 
 .Dbotoes button {
@@ -226,7 +228,6 @@
   border-radius: 5cap;
   border-color: #304383;
   border-width: 0.2cap;
-  margin-bottom: 2%;
   cursor: pointer;
   font-family: "Glacial Indifference", sans-serif;
   font-weight: normal;
@@ -547,26 +548,30 @@
 
   .Gimovel {
     position: absolute;
-    bottom: -70%; /* fixa no fundo do pai */
+    bottom: -60%; /* fixa no fundo do pai */
     left: 5%; /* alinhamento horizontal */
     font-size: 20px;
   }
 
-  .btn1 {
-    width: 320px;
-    height: 60px;
-    margin-left: 5%;
-  }
   .Dbotoes {
-    margin-top: 5%;
+    margin-top: 30%;
+    margin-left: 3%;
     position: absolute;
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    gap:0;
   }
 
   .Dbotoes button {
     margin-right: 4%;
   }
 
-  .btn2 {
+  .btn1 {
+    margin-left:-1%;
+  }
+
+  .btn2, .btn1 {
     width: 242px;
     height: 60px;
   }
@@ -702,6 +707,13 @@
     height: 0px;
   }
 }
+
+@media (max-width: 1020px) {
+  .Dbotoes {
+    margin-top: 15%;
+  }
+}
+
 /* Bolinhas da paginação */
 .image-carroussel-imoveis .swiper-pagination-bullet {
   background-color: #edecec !important; /* cor normal */

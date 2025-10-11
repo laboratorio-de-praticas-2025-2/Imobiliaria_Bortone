@@ -2,13 +2,21 @@
 
 import { useFilters } from "@/context/FiltersContext";
 import { ConfigProvider, Slider } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function PriceRange({ children, type }) {
-  const { updateFilters } = useFilters();
+  const { filters, updateFilters } = useFilters();
   const [values, setValues] = useState([25000, 1000000]);
 
+  // Sincroniza os valores com o contexto de filtros
+  useEffect(() => {
+    if (filters[type]?.preco) {
+      setValues(filters[type].preco);
+    }
+  }, [filters, type]);
+
   const handlePriceChange = (newValues) => {
+    console.log(`PriceRange: Alterando preço para ${type}:`, newValues);
     setValues(newValues);
 
     // Atualiza os filtros no contexto

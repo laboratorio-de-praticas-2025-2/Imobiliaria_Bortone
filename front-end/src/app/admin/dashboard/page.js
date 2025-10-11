@@ -11,6 +11,7 @@ import { FaCheckSquare } from "react-icons/fa";
 import LineGraph from "@/components/dash/LineGraph";
 import { useEffect, useState } from "react";
 import { getDashboardData } from "@/services/dashboardService";
+// import DebugAuth from "@/components/DebugAuth"; // Temporário para debug
 export default function Dashboard() {
 
   const [dados, setDados] = useState(null);
@@ -23,8 +24,12 @@ export default function Dashboard() {
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, []);
-  if (loading) return <p>Carregando...</p>;
-  if (!dados) return <p>Erro ao carregar</p>;
+
+  const semDados =
+    !dados ||
+    !dados.imoveis ||
+    Object.keys(dados.imoveis).length === 0 ||
+    !dados.usuarios;
 
   // Dados para o gráfico de setores
   const data = dados?.vendasRecentes
@@ -77,201 +82,351 @@ export default function Dashboard() {
 
   return (
     <>
+      {/* <DebugAuth /> */}
       <Sidebar />
       <div className="md:ml-20">
         <CMS.Body title={"Dashboard"}>
           {/* Aparente em telas grandes: */}
-          <div className="hidden xl:block">
-            <div className="grid grid-cols-7 p-7 w-full gap-6">
-              <div className="grid grid-rows-5 col-span-2 gap-6">
-                <div className="row-span-2">
-                  <PizzaGraph
-                    label={"Venda nos últimos 30 dias"}
-                    data={data}
-                    options={options}
-                  />
+          { semDados ? (
+          <div className="flex justify-center items-center h-[60vh] text-gray-500">
+            Nenhum dado disponível no momento.
+          </div>
+          ) : (
+            <>
+            <div className="hidden xl:block">
+              <div className="grid grid-cols-7 p-7 w-full gap-6">
+                <div className="grid grid-rows-5 col-span-2 gap-6">
+                  <div className="row-span-2">
+                    <PizzaGraph
+                      label={"Venda nos últimos 30 dias"}
+                      data={data}
+                      options={options}
+                      loading={loading}
+                    />
+                  </div>
+
+                  <div className="grid grid-rows-3 row-span-3 content-between gap-6 h-full">
+                    <Card
+                      name={"usuarios_cadastrados"}
+                      label={"Total de usuários cadastrados"}
+                      value={dados.usuarios.total}
+                      labelCol={{ span: 24 }}
+                      icon={
+                        <FaUserPlus className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                      }
+                      loading={loading}
+                    />
+
+                    <Card
+                      name={"usuarios_administradores"}
+                      label={"Usuários administradores"}
+                      value={dados.usuarios.administradores}
+                      labelCol={{ span: 24 }}
+                      icon={
+                        <FaUserPen className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                      }
+                      loading={loading}
+                    />
+
+                    <Card
+                      name={"casas_visitantes"}
+                      label={"Usuários visitantes"}
+                      value={dados.usuarios.visitantes}
+                      labelCol={{ span: 24 }}
+                      icon={
+                        <FaUser className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                      }
+                      loading={loading}
+                    />
+                  </div>
                 </div>
-
-                <div className="grid grid-rows-3 row-span-3 content-between gap-6 h-full">
-                  <Card
-                    name={"usuarios_cadastrados"}
-                    label={"Total de usuários cadastrados"}
-                    value={dados.usuarios.total}
-                    labelCol={{ span: 24 }}
-                    icon={
-                      <FaUserPlus className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
-                    }
-                  />
-
-                  <Card
-                    name={"usuarios_administradores"}
-                    label={"Usuários administradores"}
-                    value={dados.usuarios.administradores}
-                    labelCol={{ span: 24 }}
-                    icon={
-                      <FaUserPen className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
-                    }
-                  />
-
-                  <Card
-                    name={"casas_visitantes"}
-                    label={"Usuários visitantes"}
-                    value={dados.usuarios.visitantes}
-                    labelCol={{ span: 24 }}
-                    icon={
-                      <FaUser className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
-                    }
-                  />
+                <div className="grid grid-rows-5 col-span-5 gap-6">
+                  <div className="grid grid-rows-7 row-span-2 gap-6">
+                    <div className="grid grid-cols-2 row-span-4  gap-6">
+                      <Card
+                        name={"vendas"}
+                        label={"Total de imóveis disponíveis para venda"}
+                        className={"!text-3xl"}
+                        value={dados.imoveis.porNegociacao.venda}
+                        labelCol={{ span: 24 }}
+                        icon={
+                          <PiCoinsFill className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                        }
+                        loading={loading}
+                      />
+                      <Card
+                        name={"locacoes"}
+                        label={"Total de imóveis disponíveis para locações"}
+                        className={"!text-3xl"}
+                        value={dados.imoveis.porNegociacao.locacao}
+                        labelCol={{ span: 24 }}
+                        icon={
+                          <MdOutlineBedroomParent className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                        }
+                        loading={loading}
+                      />
+                    </div>
+                    <div className="grid grid-cols-4 row-span-3 gap-6">
+                      <div className="">
+                        <Card
+                          name={"imoveis_disponiveis"}
+                          label={"Total de imóveis disponíveis"}
+                          value={dados.imoveis.total}
+                          labelCol={{ span: 24 }}
+                          className={"!text-lg"}
+                          icon={
+                            <FaCheckSquare className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
+                          }
+                          loading={loading}
+                        />
+                      </div>
+                      <div className="">
+                        <Card
+                          name={"apartamentos_disponiveis"}
+                          label={"Apartamentos disponíveis"}
+                          value={dados.imoveis.porTipo.apartamentos}
+                          labelCol={{ span: 24 }}
+                          className={"!text-lg"}
+                          icon={
+                            <BsFillBuildingFill className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
+                          }
+                          loading={loading}
+                        />
+                      </div>
+                      <div className="">
+                        <Card
+                          name={"casas_disponiveis"}
+                          label={"Casas disponíveis"}
+                          value={dados.imoveis.porTipo.casas}
+                          labelCol={{ span: 24 }}
+                          className={"!text-lg"}
+                          icon={
+                            <FaHouseChimney className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
+                          }
+                          loading={loading}
+                        />
+                      </div>
+                      <div className="">
+                        <Card
+                          name={"terrenos_disponiveis"}
+                          label={"Terrenos disponíveis"}
+                          value={dados.imoveis.porTipo.terrenos}
+                          labelCol={{ span: 24 }}
+                          className={"!text-lg"}
+                          icon={
+                            <MdTerrain className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                          }
+                          loading={loading}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row-span-3">
+                    {/* Passa os dados dos alugueis como propriedade pro componente */}
+                    <LineGraph
+                      alugueisPorMes={dados.alugueisPorMes}
+                      loading={loading}
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="grid grid-rows-5 col-span-5 gap-6">
-                <div className="grid grid-rows-7 row-span-2 gap-6">
-                  <div className="grid grid-cols-2 row-span-4  gap-6">
+            </div>
+            <div className="hidden md:block xl:hidden pb-10">
+              <div className="grid grid-flow-row h-fit gap-6">
+                <div className="grid grid-cols-2 h-fit gap-6">
+                  <div className="">
+                    {" "}
+                    <PizzaGraph
+                      label={"Venda nos últimos 30 dias"}
+                      className={"p-6"}
+                      data={data}
+                      options={options}
+                      loading={loading}
+                    />
+                  </div>
+                  <div className="grid grid-rows-2 h-[220px] gap-6">
                     <Card
                       name={"vendas"}
                       label={"Total de imóveis disponíveis para venda"}
-                      className={"!text-3xl"}
+                      className={"!text-xl"}
                       value={dados.imoveis.porNegociacao.venda}
                       labelCol={{ span: 24 }}
                       icon={
                         <PiCoinsFill className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                       }
+                      loading={loading}
                     />
                     <Card
                       name={"locacoes"}
                       label={"Total de imóveis disponíveis para locações"}
-                      className={"!text-3xl"}
+                      className={"!text-xl"}
                       value={dados.imoveis.porNegociacao.locacao}
                       labelCol={{ span: 24 }}
                       icon={
                         <MdOutlineBedroomParent className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                       }
+                      loading={loading}
                     />
                   </div>
-                  <div className="grid grid-cols-4 row-span-3 gap-6">
-                    <div className="">
-                      <Card
-                        name={"imoveis_disponiveis"}
-                        label={"Total de imóveis disponíveis"}
-                        value={dados.imoveis.total}
-                        labelCol={{ span: 24 }}
-                        className={"!text-lg"}
-                        icon={
-                          <FaCheckSquare className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
-                        }
-                      />
-                    </div>
-                    <div className="">
-                      <Card
-                        name={"apartamentos_disponiveis"}
-                        label={"Apartamentos disponíveis"}
-                        value={dados.imoveis.porTipo.apartamentos}
-                        labelCol={{ span: 24 }}
-                        className={"!text-lg"}
-                        icon={
-                          <BsFillBuildingFill className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
-                        }
-                      />
-                    </div>
-                    <div className="">
-                      <Card
-                        name={"casas_disponiveis"}
-                        label={"Casas disponíveis"}
-                        value={dados.imoveis.porTipo.casas}
-                        labelCol={{ span: 24 }}
-                        className={"!text-lg"}
-                        icon={
-                          <FaHouseChimney className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
-                        }
-                      />
-                    </div>
-                    <div className="">
-                      <Card
-                        name={"terrenos_disponiveis"}
-                        label={"Terrenos disponíveis"}
-                        value={dados.imoveis.porTipo.terrenos}
-                        labelCol={{ span: 24 }}
-                        className={"!text-lg"}
-                        icon={
-                          <MdTerrain className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
-                        }
-                      />
-                    </div>
+                </div>
+                <div className="grid grid-cols-3 h-[100px] gap-6">
+                  <div className="col-span-1">
+                    {" "}
+                    <Card
+                      name={"imoveis_disponiveis"}
+                      label={"Total de imóveis disponíveis"}
+                      value={dados.imoveis.total}
+                      labelCol={{ span: 24 }}
+                      className={"!text-lg"}
+                      icon={
+                        <FaCheckSquare className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
+                      }
+                      loading={loading}
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    {" "}
+                    <Card
+                      name={"apartamentos_disponiveis"}
+                      label={"Apartamentos disponíveis"}
+                      value={dados.imoveis.porTipo.apartamentos}
+                      labelCol={{ span: 24 }}
+                      className={"!text-xl"}
+                      icon={
+                        <BsFillBuildingFill className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
+                      }
+                      loading={loading}
+                    />
                   </div>
                 </div>
-                <div className="row-span-3">
-                  {/* Passa os dados dos alugueis como propriedade pro componente */}
-                  <LineGraph alugueisPorMes={dados.alugueisPorMes} />
+                <div className="grid grid-cols-2 h-[100px] gap-6">
+                  {" "}
+                  <Card
+                    name={"casas_disponiveis"}
+                    label={"Casas disponíveis"}
+                    value={dados.imoveis.porTipo.casas}
+                    labelCol={{ span: 24 }}
+                    className={"!text-xl"}
+                    icon={
+                      <FaHouseChimney className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
+                    }
+                    loading={loading}
+                  />{" "}
+                  <Card
+                    name={"terrenos_disponiveis"}
+                    label={"Terrenos disponíveis"}
+                    value={dados.imoveis.porTipo.terrenos}
+                    labelCol={{ span: 24 }}
+                    className={"!text-xl"}
+                    icon={
+                      <MdTerrain className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                    }
+                    loading={loading}
+                  />
+                </div>
+                <div className="">
+                  {" "}
+                  <LineGraph
+                    alugueisPorMes={dados.alugueisPorMes}
+                    loading={loading}
+                  />
+                </div>
+                <div className="grid grid-cols-2 h-[100px] gap-6">
+                  {" "}
+                  <Card
+                    name={"usuarios_cadastrados"}
+                    label={"Total de usuários cadastrados"}
+                    value={dados.usuarios.total}
+                    labelCol={{ span: 24 }}
+                    className={"!text-xl"}
+                    icon={
+                      <FaUserPlus className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                    }
+                    loading={loading}
+                  />
+                  <Card
+                    name={"usuarios_administradores"}
+                    label={"Usuários administradores"}
+                    value={dados.usuarios.administradores}
+                    labelCol={{ span: 24 }}
+                    className={"!text-xl"}
+                    icon={
+                      <FaUserPen className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                    }
+                    loading={loading}
+                  />
+                </div>
+                <div className="h-[100px]">
+                  {" "}
+                  <Card
+                    name={"casas_visitantes"}
+                    label={"Usuários visitantes"}
+                    value={dados.usuarios.visitantes}
+                    labelCol={{ span: 24 }}
+                    className={"!text-xl"}
+                    icon={
+                      <FaUser className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                    }
+                    loading={loading}
+                  />
                 </div>
               </div>
             </div>
-          </div>
-          {/* Aparente em telas médias: */}
-          <div className="hidden md:block xl:hidden pb-10">
-            <div className="grid grid-flow-row h-fit gap-6">
-              <div className="grid grid-cols-2 h-fit gap-6">
+            <div className="block md:hidden  pb-10">
+              <div className="grid grid-flow-row h-fit gap-6">
                 <div className="">
-                  {" "}
                   <PizzaGraph
                     label={"Venda nos últimos 30 dias"}
                     className={"p-6"}
                     data={data}
                     options={options}
+                    loading={loading}
                   />
-                </div>
-                <div className="grid grid-rows-2 h-[220px] gap-6">
-                  <Card
-                    name={"vendas"}
-                    label={"Total de imóveis disponíveis para venda"}
-                    className={"!text-xl"}
-                    value={dados.imoveis.porNegociacao.venda}
-                    labelCol={{ span: 24 }}
-                    icon={
-                      <PiCoinsFill className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
-                    }
-                  />
-                  <Card
-                    name={"locacoes"}
-                    label={"Total de imóveis disponíveis para locações"}
-                    className={"!text-xl"}
-                    value={dados.imoveis.porNegociacao.locacao}
-                    labelCol={{ span: 24 }}
-                    icon={
-                      <MdOutlineBedroomParent className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
-                    }
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-3 h-[100px] gap-6">
-                <div className="col-span-1">
-                  {" "}
-                  <Card
-                    name={"imoveis_disponiveis"}
-                    label={"Total de imóveis disponíveis"}
-                    value={dados.imoveis.total}
-                    labelCol={{ span: 24 }}
-                    className={"!text-lg"}
-                    icon={
-                      <FaCheckSquare className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
-                    }
-                  />
-                </div>
-                <div className="col-span-2">
-                  {" "}
-                  <Card
-                    name={"apartamentos_disponiveis"}
-                    label={"Apartamentos disponíveis"}
-                    value={dados.imoveis.porTipo.apartamentos}
-                    labelCol={{ span: 24 }}
-                    className={"!text-xl"}
-                    icon={
-                      <BsFillBuildingFill className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
-                    }
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 h-[100px] gap-6">
-                {" "}
+                </div>{" "}
+                <Card
+                  name={"vendas"}
+                  label={"Número total de vendas"}
+                  className={"!text-xl"}
+                  value={dados.imoveis.porNegociacao.venda}
+                  labelCol={{ span: 24 }}
+                  icon={
+                    <PiCoinsFill className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                  }
+                  loading={loading}
+                />
+                <Card
+                  name={"locacoes"}
+                  label={"Número total de locações"}
+                  className={"!text-xl"}
+                  value={dados.imoveis.porNegociacao.locacao}
+                  labelCol={{ span: 24 }}
+                  icon={
+                    <MdOutlineBedroomParent className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                  }
+                  loading={loading}
+                />
+                <Card
+                  name={"imoveis_disponiveis"}
+                  label={"Total de imóveis disponíveis"}
+                  value={dados.imoveis.total}
+                  labelCol={{ span: 24 }}
+                  className={"!text-lg"}
+                  icon={
+                    <FaCheckSquare className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
+                  }
+                  loading={loading}
+                />
+                <Card
+                  name={"apartamentos_disponiveis"}
+                  label={"Apartamentos disponíveis"}
+                  value={dados.imoveis.porTipo.apartamentos}
+                  labelCol={{ span: 24 }}
+                  className={"!text-xl"}
+                  icon={
+                    <BsFillBuildingFill className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
+                  }
+                  loading={loading}
+                />{" "}
                 <Card
                   name={"casas_disponiveis"}
                   label={"Casas disponíveis"}
@@ -279,8 +434,9 @@ export default function Dashboard() {
                   labelCol={{ span: 24 }}
                   className={"!text-xl"}
                   icon={
-                    <FaHouseChimney className="text-[var(--primary)] text-5xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
+                    <FaHouseChimney className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
                   }
+                  loading={loading}
                 />{" "}
                 <Card
                   name={"terrenos_disponiveis"}
@@ -289,16 +445,14 @@ export default function Dashboard() {
                   labelCol={{ span: 24 }}
                   className={"!text-xl"}
                   icon={
-                    <MdTerrain className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                    <MdTerrain className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                   }
+                  loading={loading}
+                />{" "}
+                <LineGraph
+                  alugueisPorMes={dados.alugueisPorMes}
+                  loading={loading}
                 />
-              </div>
-              <div className="">
-                {" "}
-                <LineGraph alugueisPorMes={dados.alugueisPorMes} />
-              </div>
-              <div className="grid grid-cols-2 h-[100px] gap-6">
-                {" "}
                 <Card
                   name={"usuarios_cadastrados"}
                   label={"Total de usuários cadastrados"}
@@ -306,8 +460,9 @@ export default function Dashboard() {
                   labelCol={{ span: 24 }}
                   className={"!text-xl"}
                   icon={
-                    <FaUserPlus className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                    <FaUserPlus className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                   }
+                  loading={loading}
                 />
                 <Card
                   name={"usuarios_administradores"}
@@ -316,128 +471,25 @@ export default function Dashboard() {
                   labelCol={{ span: 24 }}
                   className={"!text-xl"}
                   icon={
-                    <FaUserPen className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                    <FaUserPen className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                   }
-                />
-              </div>
-              <div className="h-[100px]">
-                {" "}
+                  loading={loading}
+                />{" "}
                 <Card
-                  name={"casas_visitantes"}
+                  name={"usuarios_visitantes"}
                   label={"Usuários visitantes"}
                   value={dados.usuarios.visitantes}
                   labelCol={{ span: 24 }}
                   className={"!text-xl"}
                   icon={
-                    <FaUser className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                    <FaUser className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                   }
+                  loading={loading}
                 />
               </div>
             </div>
-          </div>
-          <div className="block md:hidden  pb-10">
-            <div className="grid grid-flow-row h-fit gap-6">
-              <div className="">
-                <PizzaGraph
-                  label={"Venda nos últimos 30 dias"}
-                  className={"p-6"}
-                  data={data}
-                  options={options}
-                />
-              </div>{" "}
-              <Card
-                name={"vendas"}
-                label={"Número total de vendas"}
-                className={"!text-xl"}
-                value={dados.imoveis.porNegociacao.venda}
-                labelCol={{ span: 24 }}
-                icon={
-                  <PiCoinsFill className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
-                }
-              />
-              <Card
-                name={"locacoes"}
-                label={"Número total de locações"}
-                className={"!text-xl"}
-                value={dados.imoveis.porNegociacao.locacao}
-                labelCol={{ span: 24 }}
-                icon={
-                  <MdOutlineBedroomParent className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
-                }
-              />
-              <Card
-                name={"imoveis_disponiveis"}
-                label={"Total de imóveis disponíveis"}
-                value={dados.imoveis.total}
-                labelCol={{ span: 24 }}
-                className={"!text-lg"}
-                icon={
-                  <FaCheckSquare className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
-                }
-              />
-              <Card
-                name={"apartamentos_disponiveis"}
-                label={"Apartamentos disponíveis"}
-                value={dados.imoveis.porTipo.apartamentos}
-                labelCol={{ span: 24 }}
-                className={"!text-xl"}
-                icon={
-                  <BsFillBuildingFill className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
-                }
-              />{" "}
-              <Card
-                name={"casas_disponiveis"}
-                label={"Casas disponíveis"}
-                value={dados.imoveis.porTipo.casas}
-                labelCol={{ span: 24 }}
-                className={"!text-xl"}
-                icon={
-                  <FaHouseChimney className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl group-hover:text-white transition-colors" />
-                }
-              />{" "}
-              <Card
-                name={"terrenos_disponiveis"}
-                label={"Terrenos disponíveis"}
-                value={dados.imoveis.porTipo.terrenos}
-                labelCol={{ span: 24 }}
-                className={"!text-xl"}
-                icon={
-                  <MdTerrain className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
-                }
-              />{" "}
-              <LineGraph alugueisPorMes={dados.alugueisPorMes} />
-              <Card
-                name={"usuarios_cadastrados"}
-                label={"Total de usuários cadastrados"}
-                value={dados.usuarios.total}
-                labelCol={{ span: 24 }}
-                className={"!text-xl"}
-                icon={
-                  <FaUserPlus className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
-                }
-              />
-              <Card
-                name={"usuarios_administradores"}
-                label={"Usuários administradores"}
-                value={dados.usuarios.administradores}
-                labelCol={{ span: 24 }}
-                className={"!text-xl"}
-                icon={
-                  <FaUserPen className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
-                }
-              />{" "}
-              <Card
-                name={"usuarios_visitantes"}
-                label={"Usuários visitantes"}
-                value={dados.usuarios.visitantes}
-                labelCol={{ span: 24 }}
-                className={"!text-xl"}
-                icon={
-                  <FaUser className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
-                }
-              />
-            </div>
-          </div>
+            </>
+          )}
         </CMS.Body>
       </div>
     </>

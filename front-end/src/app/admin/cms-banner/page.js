@@ -6,9 +6,8 @@ import CMS from "@/components/cms/table";
 import { useEffect, useState } from "react";
 import { FaImage } from "react-icons/fa6";
 import { buildImageUrl } from "@/utils/imageUtils";
-
-// URL base do backend
-const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+import SplashScreen from "@/components/SplashScreen";
+import { apiClient } from "@/utils/apiClient";
 
 // Normaliza valor ativo (0 ou 1)
 const normalizeAtivo = (value) => {
@@ -26,13 +25,8 @@ const getImageUrl = (urlImagem) => {
 // Chama backend para alternar status do banner
 const toggleStatus = async (id) => {
   try {
-    const res = await fetch(`${BACKEND_BASE_URL}/banner/toggle/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-    });
-    if (!res.ok) throw new Error("Erro ao atualizar status no servidor.");
-    const data = await res.json();
-    return data;
+    const response = await apiClient.put(`/banner/toggle/${id}`);
+    return response.data;
   } catch (error) {
     console.error("Erro ao alterar status no backend:", error);
     throw error;
@@ -55,9 +49,8 @@ export default function CmsBannerPage() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${BACKEND_BASE_URL}/banner`);
-      if (!res.ok) throw new Error(`Erro ${res.status}: ${res.statusText}`);
-      const data = await res.json();
+      const response = await apiClient.get("/banner");
+      const data = response.data;
       const bannersProcessados = data.map(b => ({
         ...b,
         ativo: normalizeAtivo(b.ativo),
@@ -74,11 +67,7 @@ export default function CmsBannerPage() {
 
   const handleDeleteBanner = async (bannerId) => {
     try {
-      const res = await fetch(`${BACKEND_BASE_URL}/banner/${bannerId}`, { method: "DELETE" });
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({ message: "Erro desconhecido" }));
-        throw new Error(errorData.message);
-      }
+      await apiClient.delete(`/banner/${bannerId}`);
       setBanners(prev => prev.filter(b => b.id !== bannerId));
     } catch (err) {
       console.error(err);
@@ -108,13 +97,7 @@ export default function CmsBannerPage() {
   const updateFilterData = (newData) => setFilterData(prev => ({ ...prev, ...newData }));
   const handleRetry = () => fetchBanners();
 
-  if (loading) return <div>Carregando banners...</div>;
-  if (error)
-    return (
-      <div>
-        Erro: {error} <button onClick={handleRetry}>Tentar Novamente</button>
-      </div>
-    );
+  if (loading) return <SplashScreen />;
 
   return (
     <>
@@ -133,19 +116,24 @@ export default function CmsBannerPage() {
             />
             <CMS.TableBody>
               {paginatedBanners.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-center">
                   {paginatedBanners.map(banner => (
-                    <Card
-                      key={banner.id}
-                      item={banner}
-                      header
-                      onDelete={() => handleDeleteBanner(banner.id)}
-                      onToggle={() => handleToggleBanner(banner.id)} // ✅ toggle funcional
-                    />
+                    <div key={banner.id} className="relative">
+                      <Card
+                        item={banner}
+                        header
+                        onDelete={() => handleDeleteBanner(banner.id)}
+                        onToggle={() => handleToggleBanner(banner.id)}
+                      />
+                 
+                    </div>
                   ))}
                 </div>
               ) : (
-                <p>Nenhum banner encontrado.</p>
+                <div className="text-center py-8">
+                  <p className="text-gray-500 text-lg">Nenhum banner encontrado.</p>
+                  <p className="text-gray-400 text-sm mt-2">Clique em "Novo Banner" para criar seu primeiro banner.</p>
+                </div>
               )}
             </CMS.TableBody>
             <CMS.TableFooter

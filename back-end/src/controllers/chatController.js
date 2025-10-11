@@ -8,6 +8,12 @@ export function handleConnection(ws) {
   let role = null;
   let currentId = null;
 
+  // Debug inicial
+  console.log('🔍 NODE_ENV:', process.env.NODE_ENV);
+  console.log('🔑 JWT_SECRET definido:', !!process.env.JWT_SECRET);
+  console.log('👥 Usuários conectados:', Object.keys(chatService.users).length);
+  console.log('🤖 Agentes conectados:', Object.keys(chatService.agents).length);
+
   ws.on("message", (msg) => {
     let data;
     try {
@@ -30,20 +36,24 @@ export function handleConnection(ws) {
         const roleMap = { 0: "agent", 1: "user" };
         role = roleMap[decoded.nivel];
         currentId = decoded.id;
-      }
-
-      // Conexão inicial
+      }      // Conexão inicial
       if (data.type === "connect") {
         let decoded;
-        
+
         // Modo de teste com usuários fixos
         if (ws.userData) {
           decoded = ws.userData;
         } else {
-          decoded = chatService.verifyToken(data.token);
-          if (!decoded) {
-            ws.close(1008, "Token inválido");
-            return;
+          // Se já temos userData do websocket.js, usar ao invés de verificar novamente
+          if (ws.userData) {
+            decoded = ws.userData;
+          } else {
+            decoded = chatService.verifyToken(data.token);
+            if (!decoded) {
+              console.log("❌ Token inválido na conexão:", data.token?.substring(0, 20) + "...");
+              ws.close(4002, "Token inválido");
+              return;
+            }
           }
         }
 
@@ -71,6 +81,18 @@ export function handleConnection(ws) {
           // No modo de desenvolvimento, permitir conexão mesmo sem agentes online
           const isDevelopment = process.env.NODE_ENV === 'development';
           
+          // Verificar limite de usuários ANTES de outras verificações
+          const maxUsers = isDevelopment ? 10 : 20;
+          if (Object.keys(chatService.users).length >= maxUsers) {
+            console.log(`❌ Limite de usuários atingido: ${Object.keys(chatService.users).length}/${maxUsers}`);
+            chatService.send(ws, {
+              type: "error",
+              msg: "Limite de usuários simultâneos atingido. Tente novamente mais tarde.",
+            });
+            setTimeout(() => ws.close(4003, "Limite de usuários atingido"), 1000);
+            return;
+          }
+          
           if (!isDevelopment) {
             const horarioResultado = dentroHorario();
             const temAgentes = Object.keys(chatService.agents).length > 0;
@@ -88,17 +110,6 @@ export function handleConnection(ws) {
               });
               // Não fechar conexão, permitir deixar mensagem
             }
-          }
-
-          // Limite maior para desenvolvimento, menor para produção
-          const maxUsers = isDevelopment ? 10 : 20;
-          if (Object.keys(chatService.users).length >= maxUsers) {
-            chatService.send(ws, {
-              type: "status",
-              msg: "Limite de usuários simultâneos atingido. Tente novamente mais tarde.",
-            });
-            ws.close();
-            return;
           }
 
           chatService.users[currentId] = {
@@ -183,8 +194,17 @@ export function handleConnection(ws) {
         }
       }
 
+      // Ping/Pong para manter conexão ativa
+      if (data.type === "ping") {
+        chatService.send(ws, { 
+          type: "pong", 
+          timestamp: data.timestamp || Date.now() 
+        });
+        return;
+      }
+
       // Mensagens
-  if (data.type === "message") {
+      if (data.type === "message") {
         //Garantir que a mensagem é uma string e não vazia
         if (typeof data.text !== "string" || data.text.trim() === "") {
           chatService.send(ws, { type: "error", msg: "Mensagem Inválida." });

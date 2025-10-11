@@ -14,6 +14,15 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  // Capturar parâmetro de redirecionamento
+  const getRedirectPath = () => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('redirect') || '/';
+    }
+    return '/';
+  };
+
   const onFinish = async (values) => {
     setLoading(true);
 
@@ -45,8 +54,22 @@ export default function LoginPage() {
       console.log("💾 DEBUG LOGIN - Dados salvos no localStorage:", savedUserInfo);
       console.log("💾 DEBUG LOGIN - Nível salvo:", savedUserInfo.nivel, typeof savedUserInfo.nivel);
 
+      // Redirecionamento baseado no parâmetro redirect ou nível do usuário
+      const redirectPath = getRedirectPath();
+      const userLevel = parseInt(savedUserInfo.nivel ?? 1);
+
+      let finalRedirect = redirectPath;
+      
+      // Se tentou acessar admin mas não é admin, redirecionar para home
+      if (redirectPath.includes('/admin') && userLevel !== 0) {
+        message.warning('Você não tem permissão para acessar a área administrativa.');
+        finalRedirect = '/';
+      }
+
+      console.log(`🔄 Redirecionando para: ${finalRedirect}`);
+
       setTimeout(() => {
-        router.push("/");
+        router.push(finalRedirect);
       }, 1000);
 
     } catch (error) {

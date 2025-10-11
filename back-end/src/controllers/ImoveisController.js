@@ -104,6 +104,11 @@ export const getByNegociacao = async (req, res) => {
 
 export const getFilteredImoveis = async (req, res) => {
     try {
+      // Parâmetros de paginação
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 50; // Default 50 para manter compatibilidade
+      const offset = (page - 1) * limit;
+
       const filters = {
         tipo_negociacao: req.query.tipo_negociacao,
         tipo: req.query.tipo,
@@ -165,6 +170,7 @@ export const getFilteredImoveis = async (req, res) => {
       );
       
       res.status(200).json(result);
+
     } catch (error) {
       console.error("Erro ao buscar imóveis com filtros:", error);
       res.status(500).json({ error: "Erro interno do servidor." });

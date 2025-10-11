@@ -153,6 +153,8 @@ export default function CmsUserPage() {
       const endpoint = `/imoveis?${queryParams.toString()}`;
       console.log("Fetching data from endpoint:", `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`);
       const response = await apiClient.get(endpoint);
+
+      
       console.log("API Response Data:", response.data);      
       if (response.data && Array.isArray(response.data.entities)) {
         setImoveis(response.data.entities);
@@ -161,6 +163,7 @@ export default function CmsUserPage() {
           totalPages: response.data.totalPages,
           currentPage: response.data.currentPage,
         });
+
       } else {
         console.warn("API did not return the expected paginated object, received:", response.data);
         setImoveis([]); 

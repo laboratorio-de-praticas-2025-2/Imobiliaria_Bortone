@@ -10,7 +10,6 @@ import "dotenv/config";
 export default function ImoveisPage() {
   // SEO para página de imóveis
   useSEO(getSEOConfig("/imoveis"));
-  const [imoveis, setImoveis] = useState([]);
 
   return (
     <FilterDataProvider>
@@ -21,6 +20,8 @@ export default function ImoveisPage() {
 
 function ImoveisPageContent() {
   const [imoveis, setImoveis] = useState([]);
+
+  
   const [currentPage, setCurrentPage] = useState(1)
   const [pagination, setPagination] = useState({
     totalCount: 0,
@@ -31,8 +32,12 @@ function ImoveisPageContent() {
   });
   
   
+
   const { filterData } = useFilterData();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const itemsPerPage = 12;
+  
+
   
   // Function to normalize data before sending to API
   const normalizeForAPI = (data) => {
@@ -85,10 +90,13 @@ function ImoveisPageContent() {
       
       console.log("Frontend - Final params being sent:", params);
       console.log("Frontend - URL being called:", url);
+
+      
       const response = await fetch(url, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
+
       const data = await response.json();
       console.log(data)
       console.log("Fetching URL:", url);
@@ -106,13 +114,25 @@ function ImoveisPageContent() {
       });
 
       
-      setCurrentPage(page); // ✅ Save current page
+      setCurrentPage(page); 
+
     } catch (error) {
       console.error("Erro ao carregar imóveis:", error);
+      setImoveis([]);
+      setTotalCount(0);
+    } finally {
+      setLoading(false);
     }
   };
 
+  const loadMore = () => {
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    handleGetImoveis(nextPage, true);
+  };
+
   useEffect(() => {
+    
     handleGetImoveis(1);
   }, [filterData]);
 
@@ -123,6 +143,7 @@ function ImoveisPageContent() {
   searchedCity={filterData.citySearch}
   />;
   
+
 }
 
 

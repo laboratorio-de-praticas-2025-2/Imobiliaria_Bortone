@@ -1,26 +1,28 @@
 # Banco de dados (MySQL)
 
+> [!WARNING]
+> **Aviso:** Se você estiver utilizando a rede da Fatec, a conexão com o banco de dados pode falhar devido a restrições de rede.
+
 ## 📝 Recomendações Gerais:
 - As estruturas e relações de tabelas deste banco **não devem ser alteradas** sem a autorização do time de dados.
 - No ambiente de <i><b>desenvolvimento</b></i>, todos os usuários possuem acesso liberado para inserções e remoções de dados. Caso necessário, esses acessos poderão ser limitados...
 - Recomendamos que o desenvolvimento seja iniciado sempre pelo banco local, pois ele oferece maior liberdade para testes e inserções de dados, menor latência nas consultas e a possibilidade de trabalhar com dados inconsistentes ou incompletos sem impacto no ambiente principal ou de desenvolvimento.
 
+## Versões
+- O banco de dados em produção está rodando na versão ```10.11.13-MariaDB```.
+
+- ⚠️ Atenção: ao executar queries localmente, podem surgir erros ou alertas caso a versão MySQL/MariaDB utilizada no ambiente local seja mais recente do que a versão do banco hospedado. Isso acontece devido a diferenças de sintaxe, funções e comportamentos entre versões distintas dos SGBDs. Sugerimos 
+
 ## Últimas Mudanças 
 
-- *Banco foi Populado com dados de exemplo!*
-- Adição do atributo ```tipo_negociacao``` na tabela IMOVEIS
-- Adição do atributo ```ativo``` na tabela BANNER_INDEX
-- Adição do atributo ```ativo``` na tabela PUBLICIDADE
-- Atualização do atributo ```status``` na tabela IMOVEIS para aceitar os valores 
-    - ```disponivel``` - ```indisponivel``` - ```vendido``` - ```locado```
-- Adição do atributo ```data_update_status``` na tabela IMOVEIS
-    - Esse atributo é populado por um trigger sempre que o atributo ```status``` é modificado 
+- Adição do atributo *data_cadastro* na tabela *usuario*
+- Adição de tabela *agendamentos*
+- Adição de views e procedures para time de Dashboard e Reports
 
 ## Diagrama:
 ![imagem do diagrama](../assets/imoveis_diagrama.mmd.png)
 
 ## Estrutura:
-
 
 
 ??? note "USUARIO"
@@ -30,13 +32,14 @@
     | nome           | VARCHAR(100)                      | Nome completo do usuário           |
     | email          | VARCHAR(100)                      | E-mail do usuário (deve ser único) |
     | senha          | VARCHAR(255)                      | Senha criptografada                |
-    | nivel          | TINYINT(1)                        | Nível de acesso do usuário, 0 = administrador, 1 = visitante         |
+    | nivel          | TINYINT(1)                        | Nível de acesso do usuário, 0 = administrador, 1 = visitante |
     | celular        | VARCHAR(20)                       | Número de celular do usuário       |
+    | ativo          | TINYINT(1)                        | Status do usuário (0 = inativo, 1 = ativo) |
+    | data_cadastro  | TIMESTAMP                         | Data de cadastro (UTC)             |
 
 
 
 *Tabela para armazenar os dados de um usuário cadastrado.*
-
 
 
 
@@ -59,7 +62,8 @@
     | longitude     | DECIMAL(10,7)     | Longitude da localização                 |
     | usuario_id    | INT(11)           | ID do usuário que cadastrou o imóvel (Apenas administradores cadastram imóveis)    |
     | tipo_negociacao     | ENUM('venda', 'aluguel') | Tipo de proposta do imóvel (Está disponível para venda ou aluguel) - Em caso de um imóvel ser oferecido como ambas opções deve-se cadastrar duas vezes e conectá-lo com a mesma tabela de casa ou de terreno |
-    | data_update_status  | TIMESTAMP | Campo guarda a data da ocorrência de update no atributo status do imóvel. Exemplo: Ao atualizar para "vendido" vai ficar registrado que foi vendido no dia do update, o mesmo funciona se mudar para locado, disponivel ou indisponivel (A atualização do campo DATA_UPDATE_STATUS é feita de forma automática no banco por meio de um trigger que observa o campo STATUS)
+    | data_update_status  | TIMESTAMP | Campo guarda a data da ocorrência de update no atributo status do imóvel. Exemplo: Ao atualizar para "vendido" vai ficar registrado que foi vendido no dia do update, o mesmo funciona se mudar para locado, disponivel ou indisponivel (A atualização do campo DATA_UPDATE_STATUS é feita de forma automática no banco por meio de um trigger que observa o campo STATUS) |
+    | visibilidade_preco | TINYINT(1) | Exibição do preço (0 = oculto, 1 = visível) |
 
 
 
@@ -218,6 +222,31 @@
 
 
 *Tabela para armazenar as postagens do blog*
+
+??? note "AGENDAMENTOS"
+
+    Com a implementação desta tabela, o fluxo de agendamento de visitas foi otimizado. Veja como funciona:
+    
+        - **Login Obrigatório:** Para agendar uma visita, **o usuário precisa estar logado**. Se um usuário não logado tentar agendar, será automaticamente redirecionado para a tela de login.
+        - **Dados Automáticos:** Uma vez logado, os dados pessoais do usuário já serão puxados do seu cadastro, não sendo necessário preenchê-los novamente.
+        - **Campo de Mensagem:** O campo `mensagem` (comentário) permanece para que o usuário possa incluir informações importantes, como sua preferência de período (manhã/tarde) e disponibilidade de horários para a imobiliária.
+        - **Status "Concluído":** O atributo `concluido` serve para o controle interno da imobiliária:
+            - **Não Concluído (0):** É o status padrão. Significa que a visita foi marcada, mas ainda não aconteceu ou que o usuário não compareceu na data agendada.
+            - **Concluído (1):** Um administrador altera o status para "concluído" apenas quando a visita é efetivamente realizada com sucesso.
+
+    | Nome da Coluna | Tipo de Dado | Descrição |
+    |----------------|--------------|-----------|
+    | id | INT(11) | Identificador único do agendamento |
+    | id_usuario | INT(11) | ID do usuário que fez o agendamento |
+    | data_marcada | DATETIME | Data e hora marcada para o agendamento |
+    | data_create | DATETIME | Data de criação do agendamento (automática) |
+    | id_imovel | INT(11) | ID do imóvel relacionado ao agendamento |
+    | mensagem | TEXT | Mensagem adicional do usuário |
+    | concluido | TINYINT(1) | Status do agendamento (0 = não concluído, 1 = concluído) |
+
+
+
+*Tabela para armazenar os agendamentos e interesses de agendamentos*
 
 ## Ambientes
 

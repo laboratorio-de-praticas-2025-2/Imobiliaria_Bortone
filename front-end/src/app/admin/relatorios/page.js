@@ -11,11 +11,28 @@ import { exportRelatorioToPdf } from "@/utils/pdfUtils";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { useReactToPrint } from "react-to-print";
 
+// Funções auxiliares para compartilhamento
+const generatePdfAsBlob = async (element) => {
+  const { exportRelatorioToPdfAsBlobDOM } = await import("@/utils/pdfUtils");
+  return await exportRelatorioToPdfAsBlobDOM(element);
+};
+
+const downloadPdfBlob = (blob, fileName) => {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
 export default function TableRelatorio() {
   const [toast, setToast] = useState(null);
   const showToast = (fileName, action) => {
     setToast({ fileName, action });
-    setTimeout(() => setToast(null), 3000);
+    setTimeout(() => setToast(null), 2000);
   };
 
   const [loading, setLoading] = useState(false); // Para PDF
@@ -108,24 +125,40 @@ export default function TableRelatorio() {
   };
 
   const handleShare = async () => {
-    const fileUrl = "/relatorios/Relatorio-Exemplo.pdf";
-    const fileName = "Relatorio-Exemplo.pdf";
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Compartilhar PDF",
-          text: `Confira o relatório: ${fileName}`,
-          url: fileUrl,
-        });
-        message.success("PDF compartilhado com sucesso!");
-      } catch (err) {
-        message.error("Falha ao compartilhar o PDF");
+    try {
+      if (!componentToPrintRef.current) throw new Error("Ref não encontrado");
+      
+      const fileName = record ? `${record.pdfNome}.pdf` : "Relatorio.pdf";
+
+      // Gera o PDF como blob (snapshot idêntico ao preview)
+      const pdfBlob = await generatePdfAsBlob(componentToPrintRef.current);
+
+      // Preferir compartilhar ARQUIVO via Web Share API
+      if (navigator.share && navigator.canShare) {
+        try {
+          const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title: "Relatório - Imobiliária Bortone",
+              text: `Confira o relatório: ${fileName}`,
+              files: [file]
+            });
+            showToast(fileName, "Compartilhamento concluído");
+            return;
+          }
+        } catch (shareErr) {
+          console.warn('Falha ao compartilhar arquivo, aplicando fallback:', shareErr);
+        }
       }
-    } else {
-      navigator.clipboard.writeText(window.location.origin + fileUrl);
-      message.info("Link copiado para a área de transferência!");
+
+      // Fallback definitivo: baixar o arquivo quando não houver suporte a compartilhar arquivos
+      downloadPdfBlob(pdfBlob, fileName);
+      message.info("Dispositivo não suporta compartilhar arquivos. PDF baixado.");
+      showToast(fileName, "PDF baixado para compartilhar");
+    } catch (error) {
+      console.error('Erro ao compartilhar PDF:', error);
+      message.error("Falha ao compartilhar o PDF");
     }
-    showToast("Relatorio-Exemplo.pdf", "Compartilhamento concluído");
   };
 
   const handlePrint = useReactToPrint({

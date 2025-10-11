@@ -12,6 +12,7 @@ import "@/styles/cms.css";
 import "leaflet/dist/leaflet.css";
 import Script from "next/script";
 import ChatWrapper from "@/components/chat/chatWrapper";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export default function RootLayout({ children }) {
   return (
@@ -40,7 +41,7 @@ export default function RootLayout({ children }) {
         <meta property="og:description" content="A sua imobiliária de confiança" />
         <meta property="og:site_name" content="Imobiliária Bortone" />
         <meta property="og:locale" content="pt_BR" />
-        <meta property="og:url" content="https://imobiliaria-bortone.netlify.app" />
+        <meta property="og:url" content="https://imobiliaria-bortone.vercel.app" />
         
         {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
@@ -70,14 +71,15 @@ export default function RootLayout({ children }) {
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "Imobiliária Bortone",
-            "url": "https://imobiliaria-bortone.netlify.app",
-            "logo": "https://imobiliaria-bortone.netlify.app/favicon.ico"
+            "url": "https://imobiliaria-bortone.vercel.app",
+            "logo": "https://imobiliaria-bortone.vercel.app/favicon.ico"
           }
         `}</Script>
       </head>
       <body className="antialiased">
         {children}
         <ChatWrapper />
+        <SpeedInsights />
       </body>
     </html>
   );
