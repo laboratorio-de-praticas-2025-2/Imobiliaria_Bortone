@@ -13,7 +13,6 @@ import { setSocketManager } from './utils/socketHelper.js';
 import { errorHandler } from "./middlewares/errorHandler.js";
 import "./models/Associations.js";
 
-// Importar todas as rotas
 import healthRouter from "./routes/healthRouter.js";
 import socketRoutes from './routes/socketRoutes.js';
 import blogRoutes from "./routes/blogRoutes.js";
@@ -49,8 +48,6 @@ app.use(express.urlencoded({ extended: false }));
 // Servir arquivos estáticos
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
-// Rotas - COMENTA TODAS EXCETO SIMULADOR:
-
 app.use('/', recomendacaoRouter);
 app.use("/api/socket", socketRoutes);
 app.use('/banner', bannerRoutes);
@@ -73,7 +70,7 @@ app.use('/images', express.static(path.join(__dirname, '../../front-end/public/i
 app.use(errorHandler);
 
 // ----------------------
-// Banco de dados - COMENTA TAMBÉM:
+// Banco de dados 
 // ----------------------
 connection
   .authenticate()
