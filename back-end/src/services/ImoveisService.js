@@ -153,6 +153,10 @@ export const getFilteredEntities = async (filters, filterMappings, include = [],
   try {
     const where = {};
     const casaWhere = {};
+    
+    // Debug logging
+    console.log("Service - Received filters:", filters);
+    console.log("Service - Filter mappings:", filterMappings);
 
 
     const handlePlusFilter = (value, field) => {
@@ -190,8 +194,14 @@ export const getFilteredEntities = async (filters, filterMappings, include = [],
 
          if (['quartos', 'banheiros', 'vagas'].includes(mapping.field)) {
           if (filterValue) {
-            if (!handlePlusFilter(filterValue, mapping.field)) {
-              // If not a "+" case, use exact match
+            if (mapping.type === 'plus') {
+              // Handle + filters (4+ should be >= 4)
+              if (!handlePlusFilter(filterValue, mapping.field)) {
+                // If not a "+" case, use exact match
+                casaWhere[mapping.field] = parseInt(filterValue, 10);
+              }
+            } else {
+              // Regular exact match
               casaWhere[mapping.field] = parseInt(filterValue, 10);
             }
           }
@@ -204,6 +214,7 @@ export const getFilteredEntities = async (filters, filterMappings, include = [],
       } else if (mapping.type === 'exact') {
         if (filterValue !== undefined) {
           where[mapping.field] = filterValue;
+          console.log(`Service - Applied exact filter: ${mapping.field} = ${filterValue}`);
         }
       } else if (mapping.type === 'range') {
         if (minValue !== undefined && maxValue !== undefined) {
@@ -242,6 +253,7 @@ export const getFilteredEntities = async (filters, filterMappings, include = [],
     }
 
     console.log("Service - Final order configuration:", order);
+    console.log("Service - Final where clause:", where);
 
     // Handle pagination
     const page = parseInt(pagination.page) || 1;

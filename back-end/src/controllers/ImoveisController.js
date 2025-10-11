@@ -107,13 +107,14 @@ export const getFilteredImoveis = async (req, res) => {
       const filters = {
         tipo_negociacao: req.query.tipo_negociacao,
         tipo: req.query.tipo,
+        status: req.query.status,
         minPreco: req.query.minPreco ? parseFloat(req.query.minPreco) : undefined,
         maxPreco: req.query.maxPreco ? parseFloat(req.query.maxPreco) : undefined,
         minArea: req.query.minArea ? parseInt(req.query.minArea) : undefined,
         maxArea: req.query.maxArea ? parseInt(req.query.maxArea) : undefined,
-        quartos: req.query.quartos ? parseInt(req.query.quartos) : undefined,
-        banheiros: req.query.banheiros ? parseInt(req.query.banheiros) : undefined,
-        vagas: req.query.vagas ? parseInt(req.query.vagas) : undefined,
+        quartos: req.query.quartos,
+        banheiros: req.query.banheiros,
+        vagas: req.query.vagas,
         searchTerm: req.query.searchTerm,
         citySearchTerm: req.query.citySearchTerm,
       };
@@ -121,11 +122,12 @@ export const getFilteredImoveis = async (req, res) => {
       const filterMappings = {
         tipo_negociacao: { field: 'tipo_negociacao', type: 'exact' },
         tipo: { field: 'tipo', type: 'exact' },
+        status: { field: 'status', type: 'exact' },
         preco: { field: 'preco', type: 'range' },
         area: { field: 'area', type: 'range' },
-        quartos: { field: 'quartos', type: 'exact', model: 'casa' },
-        banheiros: { field: 'banheiros', type: 'exact', model: 'casa' },
-        vagas: { field: 'vagas', type: 'exact', model: 'casa' },
+        quartos: { field: 'quartos', type: 'plus', model: 'casa' },
+        banheiros: { field: 'banheiros', type: 'plus', model: 'casa' },
+        vagas: { field: 'vagas', type: 'plus', model: 'casa' },
         searchTerm: { field: 'endereco', type: 'search' },
         citySearchTerm: { field: 'cidade', type: 'search' },
       };
@@ -149,9 +151,9 @@ export const getFilteredImoveis = async (req, res) => {
       }
       
       // Debug logging
-      console.log("Ordering parameters received:", ordering);
-      console.log("Pagination parameters received:", pagination);
-      console.log("Query parameters:", req.query);
+      console.log("Controller - Query parameters:", req.query);
+      console.log("Controller - Filters object:", filters);
+      console.log("Controller - Status filter value:", req.query.status);
 
       const result = await ImoveisService.getFilteredEntities(
         filters, 

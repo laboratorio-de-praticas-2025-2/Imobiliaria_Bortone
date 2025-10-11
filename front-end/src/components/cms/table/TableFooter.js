@@ -45,6 +45,7 @@ export default function TableFooter({
           pageSize={pageSize}
           total={total}
           onChange={handleChange}
+          showSizeChanger={false}
           itemRender={(_, type, originalElement) => {
             if (type === "prev") return <span>&lt; Anterior</span>;
             if (type === "next") return <span>Próximo &gt;</span>;

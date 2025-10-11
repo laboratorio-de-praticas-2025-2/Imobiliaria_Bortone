@@ -34,6 +34,17 @@ function ImoveisPageContent() {
   const { filterData } = useFilterData();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   
+  // Function to normalize data before sending to API
+  const normalizeForAPI = (data) => {
+    if (typeof data === 'string') {
+      // Remove accents from status values
+      return data
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+    }
+    return data;
+  };
+  
   const handleGetImoveis = async (page = 1) => {
     try {
       const params = {};
@@ -42,6 +53,7 @@ function ImoveisPageContent() {
          
           if (['quartos', 'banheiros', 'vagas'].includes(key)) {
           if (value && typeof value === 'string') {
+            // Keep the + values as strings for proper backend handling
             params[key] = value;
           }
         } else if (key === 'citySearch') {
@@ -52,15 +64,27 @@ function ImoveisPageContent() {
             value !== "" &&
             value !== "null"
           ) {
-            params[key] = value;
+            // Normalize status field to remove accents
+            if (key === 'status') {
+              params[key] = normalizeForAPI(value);
+            } else {
+              params[key] = value;
+            }
           }
         });
       }
       params.page = page.toString();
 
-      const queryParams = new URLSearchParams(params).toString();
-
-      const url = `${apiUrl}/imoveis${queryParams ? `?${queryParams}` : ""}`; 
+      
+      const query = new URLSearchParams({
+        //Paginação: padrão alterado de 10 pra 12
+        pagination: "12", 
+        ...params,        
+      });
+      const url = `${apiUrl}/imoveis?${query.toString()}`;
+      
+      console.log("Frontend - Final params being sent:", params);
+      console.log("Frontend - URL being called:", url);
       const response = await fetch(url, {
         method: "GET",
         headers: { "Content-Type": "application/json" },

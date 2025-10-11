@@ -25,9 +25,12 @@ const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
 export default function CriarImovelPage() {
   const [form] = FormAntd.useForm();
   const [fileList, setFileList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const onFinish = async (values) => {
+    
+  setIsLoading(true);
     try {
       const imovelData = {
         usuario_id: 1,
@@ -101,7 +104,9 @@ export default function CriarImovelPage() {
     } catch (error) {
       console.error("Erro ao cadastrar imóvel:", error);
       alert("Erro ao cadastrar imóvel. Tente novamente.");
-    }
+    } finally {
+    setIsLoading(false); // re-enable button
+  }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -534,7 +539,7 @@ export default function CriarImovelPage() {
                   {/* passa a instância do form para o MapPick */}
                   <MapPick form={form} />
                 </div>
-                <FormButton text="Cadastrar" icon={<LuHousePlus />} />
+                <FormButton text="Cadastrar" icon={<LuHousePlus />} disabled={isLoading} />
               </div>
             </div>
           </Form.FormBody>

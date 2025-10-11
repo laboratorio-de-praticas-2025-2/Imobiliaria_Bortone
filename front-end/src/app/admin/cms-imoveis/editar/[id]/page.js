@@ -356,6 +356,8 @@ export default function EditarImovelPage({ params }) {
       console.log('Dados sendo enviados para atualização:', updateData);
       console.log('usuario_id do imóvel original:', imovel.usuario_id);
       
+      
+      setLoading(true);
       await axios.put(`${apiUrl}/imoveis/${id}`, updateData);
       
       // Gerenciar imagens
@@ -367,6 +369,8 @@ export default function EditarImovelPage({ params }) {
     } catch (error) {
       console.error("Erro ao atualizar imóvel:", error);
       // Aqui você pode adicionar uma notificação de erro para o usuário
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -715,7 +719,7 @@ export default function EditarImovelPage({ params }) {
                   {/* passa a instância do form para o MapPick */}
                   <MapPick form={form} />
                 </div>
-                <FormButton text="Salvar Alterações" />
+                <FormButton text="Salvar Alterações" disabled={loading || isConfirmModalVisible} />
               </div>
             </div>
           </Form.FormBody>

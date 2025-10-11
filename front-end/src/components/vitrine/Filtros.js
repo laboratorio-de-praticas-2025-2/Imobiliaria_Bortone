@@ -10,11 +10,23 @@ const optionsBuy = ["Comprar", "Alugar"];
 const optionsRooms = ["1", "2", "3", "+4"];
 const optionsBathrooms = ["1", "2", "3", "+4"];
 
+// Mapping for display vs backend values
+const buyDisplayMapping = {
+  "Comprar": "venda",
+  "Alugar": "aluguel"
+};
+
+const buyBackendMapping = {
+  "venda": "Comprar",
+  "aluguel": "Alugar"
+};
+
 export default function Filtros() {
     const { filterData, updateFilterData } = useFilterData();
 
     const handleSelectBuy = (option) => {
-      updateFilterData({ tipo_negociacao: option === "Comprar" ? "venda" : "aluguel" });
+      const backendValue = buyDisplayMapping[option];
+      updateFilterData({ tipo_negociacao: backendValue });
     };
 
     const handleSelectRooms = (option) => {
@@ -46,7 +58,7 @@ export default function Filtros() {
               />
               <DropdownFilter
                 options={optionsBuy}
-                selected={filterData.tipo_negociacao || "Comprar"}
+                selected={buyBackendMapping[filterData.tipo_negociacao] || "Comprar"}
                 handleSelect={handleSelectBuy}
                 classname={"w-32"}
               />

@@ -1,9 +1,25 @@
 "use client";
 import { useFilterData } from "@/context/FilterDataContext";
 import { PiMapPinFill } from "react-icons/pi";
+import { useState } from "react";
 
 export default function LocationInput() {
   const { updateFilterData } = useFilterData();
+  const [inputValue, setInputValue] = useState("");
+
+  const handleSearch = () => {
+    updateFilterData({ citySearch: inputValue });
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  const handleBlur = () => {
+    handleSearch();
+  };
 
   return (
     <div className="w-[23vw]">
@@ -14,13 +30,12 @@ export default function LocationInput() {
         {/* Input com valor inicial */}
         <input
           type="text"
-          // placeholder="Registro, São Paulo, Brasil"
-          // placeholder="Registro"
+          placeholder="Buscar por cidade..."
+          value={inputValue}
           className="w-full rounded-3xl pl-10 pr-4 py-2 bg-[#EEF0F9] border-0 !text-[var(--primary)] !placeholder-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
-          onChange={(e) => {
-            if (onSelect) onSelect(e.target.value);
-          }}
-          
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onBlur={handleBlur}
         />
       </div>
     </div>

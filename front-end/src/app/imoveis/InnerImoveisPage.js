@@ -28,7 +28,7 @@ export default function InnerImoveisPage({ imoveis, pagination, onPageChange, se
           {pagination?.totalCount ?? qtdImoveis} imóveis disponíveis
         </p>
         <p className="text-xl text-[var(--primary)] font-bold">
-          {searchedCity ? `para venda em ${searchedCity}` : ''}
+          {searchedCity ? `em ${searchedCity}` : ''}
         </p>
       </div>
       <div className="pb-11 md:px-17 sm:px-3 px-0 flex justify-center">
