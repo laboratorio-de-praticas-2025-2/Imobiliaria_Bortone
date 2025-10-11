@@ -55,7 +55,7 @@ export default function PropriedadesSelecionadas() {
 
   return (
     <div className="px-4 md:px-16 py-7 flex gap-7 flex-col">
-      <div className="flex flex-row justify-between">
+      <div className="flex md:flex-row flex-col justify-between">
         <p className="lemon-milk md:text-3xl text-xl text-[var(--primary)]">
           IMÓVEIS SELECIONADOS PARA VOCÊ
         </p>
