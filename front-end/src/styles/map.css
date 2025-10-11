@@ -33,7 +33,7 @@
   background-color: #fff;
   padding: clamp(8px, 2vw, 12px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
+  z-index: 10000;
   pointer-events: none;
   width: clamp(160px, 40vw, 290px);   /* encolhe até 160px, cresce até 290px */
   height: clamp(120px, 30vh, 230px);  /* encolhe até 120px, cresce até 230px */
@@ -43,11 +43,16 @@
 /* extra para telas com escala alta / DPR alto (ex.: 150% do Windows) */
 @media (min-resolution: 1.5dppx), (min-device-pixel-ratio: 1.5) {
   .hover-card {
-    padding: clamp(5px, 1.4vw, 8px);
     width: min(86vw, 230px);
     height: auto;
     max-width: 230px;
-    max-height: 180px;
+  }
+}
+@media (min-resolution: 1.2dppx), (min-device-pixel-ratio: 1.2) {
+  .hover-card {
+    width: min(86vw, 230px);
+    height: auto;
+    max-width: 230px;
   }
 }
 
