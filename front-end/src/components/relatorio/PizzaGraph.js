@@ -75,8 +75,6 @@ export default function RentalByRegion({ data, label, className }) {
               plugins={[drawLabelsInSlices]}
             />
           </div>
-        </div>
-      </div>
-    </div>
+        </div>      
   );
 }

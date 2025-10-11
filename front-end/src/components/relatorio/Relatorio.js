@@ -14,7 +14,7 @@ import React from "react";
 
 export default function Relatorio({ data, secoes = [] }) {
   let pageNumber = 1;
-  
+
   // Debug: verificar dados recebidos
   console.log("Dados recebidos no Relatorio:", data);
 
@@ -653,9 +653,10 @@ export default function Relatorio({ data, secoes = [] }) {
             cutout: "0%",
           },
         ],
-      } : { labels: [], datasets: [] };
+      }
+    : { labels: [], datasets: [] };
 
-      const dataVendasPorTipo = data?.vendas?.vendasPorTipo
+  const dataVendasPorTipo = data?.vendas?.vendasPorTipo
     ? {
         labels: Object.keys(data.vendas.vendasPorTipo),
         datasets: [
@@ -666,24 +667,26 @@ export default function Relatorio({ data, secoes = [] }) {
             cutout: "0%",
           },
         ],
-      } : { labels: [], datasets: [] };
+      }
+    : { labels: [], datasets: [] };
 
-  const distribuicaoImoveisPorPreco =   data?.imoveis?.porFaixaDePreco
-  ? {
-    labels: [
-      "até R$300.000",
-      "entre R$300.000 e R$600.000",
-      "maior que R$600.000",
-    ],
-    datasets: [
-      {
-        data: Object.values(data.imoveis.porFaixaDePreco),
-        backgroundColor: ["#118C4F", "#F1EB9C", "#FF7276"],
-        borderWidth: 1,
-        cutout: "0%",
-      },
-    ],
-  } : { labels: [], datasets: [] };
+  const distribuicaoImoveisPorPreco = data?.imoveis?.porFaixaDePreco
+    ? {
+        labels: [
+          "até R$300.000",
+          "entre R$300.000 e R$600.000",
+          "maior que R$600.000",
+        ],
+        datasets: [
+          {
+            data: Object.values(data.imoveis.porFaixaDePreco),
+            backgroundColor: ["#118C4F", "#F1EB9C", "#FF7276"],
+            borderWidth: 1,
+            cutout: "0%",
+          },
+        ],
+      }
+    : { labels: [], datasets: [] };
 
   // Safety check to ensure data exists
   if (!data) {
@@ -702,7 +705,12 @@ export default function Relatorio({ data, secoes = [] }) {
         >
           <div>
             <header className="flex items-center gap-4 mb-4">
-              <Image src={logo.src} alt="Logo Bortone" width={180} height={50} />
+              <Image
+                src={logo.src}
+                alt="Logo Bortone"
+                width={180}
+                height={50}
+              />
             </header>
             <h2 className="main-title text-center mb-6">Sumário Executivo</h2>
             <div className="mb-6">
@@ -1169,67 +1177,33 @@ export default function Relatorio({ data, secoes = [] }) {
 
   return (
     <div data-report-data={dataAttribute}>
-      {/* Página Imóveis */}
-      {data?.imoveis && (
-        <div className="page">
-          <header>
-            <Image
-              src="/images/LogoAzul.svg"
-              alt="Logo Bortone"
-              width={180}
-              height={50}
-            />
-            <div className="header-meta">Emitido em: {currDate}</div>
-          </header>
-          <div>
-            <h1 className="main-title">Relatório - Imobiliária Bortone</h1>
-            <h2 className="title">Imóveis</h2>
-          </div>
+      {/* CAPA */}
+      <div className="page flex flex-col justify-between items-center relative bg-white text-[#010101]">
+        {/* Logo e nome do grupo */}
+        <div className="flex flex-col items-center mt-12 mb-8">
+          <Image
+            src={logo.src}
+            alt="Logo Grupo Bortone"
+            width={180}
+            height={50}
+            className="mb-2"
+          />
+        </div>
 
-          <div className="card-container">
-            <div className="grid grid-cols-2 content-between gap-6 h-full">
-              <Card
-                name={"imoveis_disponiveis"}
-                label={"Total de imóveis disponíveis"}
-                value={data.imoveis?.totalImoveis || 0}
-                labelCol={{ span: 24 }}
-                className={"!text-lg"}
-                icon={
-                  <FaCheckSquare className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl" />
-                }
-              />
-              <Card
-                name={"apartamentos_disponiveis"}
-                label={"Apartamentos disponíveis"}
-                value={data.imoveis?.totalApartamentos || 0}
-                labelCol={{ span: 24 }}
-                className={"!text-lg"}
-                icon={
-                  <BsFillBuildingFill className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl" />
-                }
-              />
-            </div>
-            <div className="grid grid-cols-2 content-between gap-6 h-full">
-              <Card
-                name={"casas_disponiveis"}
-                label={"Casas disponíveis"}
-                value={data.imoveis?.totalCasas || 0}
-                labelCol={{ span: 24 }}
-                className={"!text-lg"}
-                icon={
-                  <FaHouseChimney className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl" />
-                }
-              />
-              <Card
-                name={"terrenos_disponiveis"}
-                label={"Terrenos disponíveis"}
-                value={data.imoveis?.totalTerrenos || 0}
-                labelCol={{ span: 24 }}
-                className={"!text-lg"}
-                icon={
-                  <MdTerrain className="text-[var(--primary)] text-4xl md:text-3xl lg:text-4xl" />
-                }
-              />
+        <div>
+          <h1 className="text-4xl md:text-5xl text-center leading-[2.8rem] !font-extrabold">
+            Relatório Estratégico
+            <br />
+            Imobiliária Bortone
+          </h1>
+
+          <div className="text-center mt-20 mb-2">
+            <div className="!font-semibold text-base">Período Analisado</div>
+            <div className="font-semibold text-lg">
+              {/* Ajuste para pegar o período do relatório, se disponível */}
+              {data?.periodoInicio && data?.periodoFim
+                ? `${data.periodoInicio} - ${data.periodoFim}`
+                : "01/01/2025 - 04/09/2025"}
             </div>
           </div>
         </div>

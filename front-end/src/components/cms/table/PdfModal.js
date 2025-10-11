@@ -40,7 +40,7 @@ export default function PdfModal({
                 max-h-[600px]:scale-50
                 h-[297mm] w-[210mm] shadow-lg 
                 [&_.page]:m-0 [&_.page]:p-[15mm] [&_.page]:box-border
-                [&_.page:first-child]:block [&_.page:first-child]:h-full                
+                [&_.page:first-child]:h-full                
                 [&_.page:not(:first-child)]:invisible"
                 >
                   <div ref={componentToPrintRef}>
