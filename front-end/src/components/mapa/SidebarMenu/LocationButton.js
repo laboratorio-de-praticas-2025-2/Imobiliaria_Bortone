@@ -16,7 +16,7 @@ export default function LocationButton({ label, onClick, active }) {
       type="text"
     >
       <Flex vertical justify="center" align="center">
-        <span className="font-semibold button-text text-xs md:text-sm text-center px-1 leading-tight">
+        <span className="font-semibold !text-[12px] text-center px-1 leading-tight">
           {label}
         </span>
       </Flex>

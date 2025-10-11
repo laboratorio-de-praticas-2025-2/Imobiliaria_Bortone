@@ -1,17 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import "leaflet/dist/leaflet.css";
-import React from "react";
-import { Suspense, useMemo, useRef, useState } from "react";
 import { handleImgError } from "@/utils/imageFallback";
 import { buildImageUrl } from "@/utils/imageUtils";
-import Image from "next/image";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import React, { useMemo, useRef, useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import ImovelMarker from "./ImovelMarker";
 import LocationButton from "./LocationButton";
-import L from "leaflet";
-import MarkerClusterGroup from "react-leaflet-cluster";
 
 // Corrige o caminho dos ícones padrão do Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -43,10 +41,21 @@ function ZoomButtons() {
   );
 }
 
-export default function MapView({ imoveis }) {
+export default function MapView({ imoveis, alwaysShowCard = true }) {
   const [hoverImovel, setHoverImovel] = useState(null);
   const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 });
   const hoverTimeoutRef = useRef(null);
+
+  const initialImovel = imoveis && imoveis.length > 0 ? imoveis[0] : null;
+  const displayedImovel = hoverImovel || (alwaysShowCard ? initialImovel : null);
+
+  const preco =
+    displayedImovel?.preco === null || displayedImovel?.preco === undefined
+      ? "Valor Oculto"
+      : Number(displayedImovel.preco).toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
 
   const handleHover = (imovel, map) => {
     // Limpa qualquer timeout pendente
@@ -108,7 +117,6 @@ export default function MapView({ imoveis }) {
       }}
     >
       <MapContainer
-        key={mapKey} // força remount se os imóveis mudarem
         center={[-23.5, -46.6]}
         zoom={13}
         scrollWheelZoom={true}
@@ -131,7 +139,7 @@ export default function MapView({ imoveis }) {
               .filter(imovel => imovel.latitude && imovel.longitude) // Só renderiza imóveis com coordenadas válidas
               .map((imovel) => (
                 <ImovelMarker
-                  key={`${imovel.id}-${mapKey}`}
+                  key={imovel.id}
                   imovel={imovel}
                   icon={casaIcon}
                   onHover={handleHover}
@@ -154,30 +162,33 @@ export default function MapView({ imoveis }) {
         </div>
       </MapContainer>
 
-      {hoverImovel && (
+      {displayedImovel && (
         <div
           className="hover-card"
-          style={{
-            left: `${cardPosition.x + 3.5}px`,
-            top: `${cardPosition.y - 45}px`,
-          }}
+          style={
+            hoverImovel
+              ? { left: `${cardPosition.x + 3.5}px`, top: `${cardPosition.y - 45}px`, position: "absolute" }
+              : { right: "20px", top: "20px", position: "absolute" }
+          }
         >
           <img
             src={buildImageUrl(
-              (hoverImovel.imagens && hoverImovel.imagens.length > 0 && hoverImovel.imagens[0].url_imagem) ||
-              hoverImovel.imagem,
-              'imovel',
-              '/imovel1.png'
+              (displayedImovel.imagens && displayedImovel.imagens.length > 0 && displayedImovel.imagens[0].url_imagem) ||
+                displayedImovel.imagem,
+              "imovel",
+              "/imovel1.png"
             )}
             alt="Imagem do imóvel"
             className="w-full h-32 object-cover mb-2 rounded"
             onError={handleImgError}
           />
+
           <a className="card-preco">
-            <p>R$ {hoverImovel.preco.toLocaleString()}</p>
+            <p>{preco}</p>
           </a>
+
           <a className="card-text">
-            {hoverImovel.tipo} - {hoverImovel.endereco}
+            {displayedImovel.tipo} - {displayedImovel.endereco}
           </a>
         </div>
       )}
