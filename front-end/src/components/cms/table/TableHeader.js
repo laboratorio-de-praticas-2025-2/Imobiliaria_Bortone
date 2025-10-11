@@ -7,7 +7,6 @@ import PesquisaAvancadaUser from "./pesquisaavancada/PesquisaAvancada";
 import PesquisaAvancada from "@/components/cms/form/PesquisaAvancada";
 const { Search } = Input;
 
-// Default ordering options for backward compatibility
 const defaultOptionsOrder = ["Ordem alfabetica", "Data de inclusão"];
 
 export default function TableHeader({
@@ -22,7 +21,7 @@ export default function TableHeader({
   newButton = true,
   onAdvancedFilter,
   onAdvancedSearch,
-  optionsOrder = defaultOptionsOrder, // Allow custom ordering options
+  optionsOrder = defaultOptionsOrder, // Permite ordens customizadas
 }) {
   return (
     <div

@@ -3,13 +3,12 @@ import { Pagination } from "antd";
 import { useEffect } from "react";
 
 export default function TableFooter({
-  postsData, // For backward compatibility (client-side pagination)
-  totalItems, // For server-side pagination
-  pageSize = 10, // Default to 10 if not provided
+  postsData, // Pra compatibilidade com paginação client-side 
+  totalItems, // Pra compatibilidade com paginação server-side
+  pageSize = 10, //Default
   currentPage,
   onPageChange,
 }) {
-  // Determine the total number of items
   const total = totalItems ?? postsData?.length ?? 0;
 
   const handleChange = (page) => {
@@ -22,7 +21,6 @@ export default function TableFooter({
     }
   }, [total]);
 
-  // Calculate display range
   const calculateRange = () => {
     if (!total || total === 0) return { start: 0, end: 0 };
 

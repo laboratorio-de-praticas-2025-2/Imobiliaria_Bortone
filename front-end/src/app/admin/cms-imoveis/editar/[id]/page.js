@@ -31,7 +31,6 @@ export default function EditarImovelPage({ params }) {
   const [fileList, setFileList] = useState([]);
   const [originalImages, setOriginalImages] = useState([]);
 
-  // estados / seleções (usados pelos DropdownField do layout)
   const [tipoSelecionado, setTipoSelecionado] = useState("Selecione o Tipo");
   const [statusSelecionado, setStatusSelecionado] =
     useState("Selecione o status");
@@ -117,12 +116,12 @@ export default function EditarImovelPage({ params }) {
         }
         setImovel(found);
 
-        // Fetch images for the imovel
+
         try {
           const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
           const imagesData = imagesResponse.data;
 
-          // Process and set the fileList with improved error handling
+          
           console.log('DEBUG EDITAR: imagesData from API:', imagesData);
           console.log('DEBUG EDITAR: apiUrl:', apiUrl);
           
@@ -131,7 +130,7 @@ export default function EditarImovelPage({ params }) {
             setFileList([]);
             setOriginalImages([]);
           } else {
-            // Process images only if we have valid data
+            
             const formattedImages = imagesData.map((image, index) => {
               try {
                 // Validação básica do objeto imagem
@@ -158,7 +157,6 @@ export default function EditarImovelPage({ params }) {
                   };
                 }
                 
-                // Garantir que a URL relativa esteja correta
                 if (!cleanImageUrl.startsWith('/')) {
                   cleanImageUrl = `/${cleanImageUrl}`;
                 }
@@ -172,7 +170,7 @@ export default function EditarImovelPage({ params }) {
                 console.log('  - URL final:', fullUrl);
                 
                 return {
-                  uid: `image-${image.id}-${index}`, // Unique identifier mais robusto
+                  uid: `image-${image.id}-${index}`,
                   name: image.url_imagem.split('/').pop() || `image-${image.id}`,
                   status: 'done',
                   url: fullUrl,
@@ -184,7 +182,7 @@ export default function EditarImovelPage({ params }) {
                 console.error(`DEBUG EDITAR: Erro ao processar imagem ${index}:`, error, image);
                 return null;
               }
-            }).filter(Boolean); // Remove entradas nulas
+            }).filter(Boolean); 
             
             console.log('DEBUG EDITAR: formattedImages processadas:', formattedImages);
             setFileList(formattedImages);
@@ -196,14 +194,13 @@ export default function EditarImovelPage({ params }) {
           setOriginalImages([]);
         }
 
-        // preencher seleções locais (para os DropdownField customizados)
+        
         setTipoSelecionado(found.tipo ?? "Selecione o Tipo");
         setStatusSelecionado(found.status ?? "Selecione o status");
         setCitiesSelecionado(found.cidade ?? "Selecione a cidade");
         setSelectedState(found.estado ?? "Selecione o estado");
-        // Only set casa properties if casa exists and tipo is not terreno
+        
         if (found.casa && found.tipo && found.tipo.toLowerCase() !== "terreno") {
-          // Convert 5 to "5+" for display
           const formatValue = (value) => {
             if (value >= 5) return "5+";
             return String(value);
@@ -215,13 +212,13 @@ export default function EditarImovelPage({ params }) {
           );
           setSelectedParking(found.casa.vagas ? formatValue(found.casa.vagas) : "Quantidade");
         } else {
-          // Set default values for terreno or when casa doesn't exist
+          
           setSelectedBedrooms("Quantidade");
           setSelectedBathrooms("Quantidade");
           setSelectedParking("Quantidade");
         }
 
-        // setar valores do form Antd
+        
         form.setFieldsValue({
           tipo: found.tipo ?? undefined,
           status: found.status ?? undefined,
@@ -231,7 +228,6 @@ export default function EditarImovelPage({ params }) {
           area: found.area ?? undefined,
           preco: found.preco ?? undefined,
           endereco: found.endereco ?? undefined,
-          // Only set casa properties if casa exists
           quartos: found.casa?.quartos ?? undefined,
           banheiros: found.casa?.banheiros ?? undefined,
           vagas: found.casa?.vagas ?? undefined,
@@ -240,8 +236,7 @@ export default function EditarImovelPage({ params }) {
           possui_jardim: found.casa?.possui_jardim ? "sim" : "nao",
           latitude: found.latitude ?? undefined,
           longitude: found.longitude ?? undefined,
-          // imagens: found.imagens ?? [], // se UploadImovel aceitar
-          // latitude, longitude nulos no mock
+          
         });
       } catch (error) {
         console.error("Erro ao carregar imóvel:", error);
@@ -264,21 +259,16 @@ export default function EditarImovelPage({ params }) {
 
   const handleImageChanges = async () => {
     try {
-      // Obter IDs das imagens originais (só se existirem)
       const originalImageIds = Array.isArray(originalImages) ? originalImages.map(img => img.id) : [];
       
-      // Obter IDs das imagens atuais (apenas as originais que ainda estão presentes)
       const currentOriginalIds = fileList
         .filter(file => file.isOriginal)
         .map(file => file.originalId);
       
-      // Encontrar imagens que foram removidas
       const imagesToDelete = originalImageIds.filter(id => !currentOriginalIds.includes(id));
       
-      // Encontrar imagens que foram adicionadas (não são originais)
       const newImages = fileList.filter(file => !file.isOriginal && file.originFileObj);
       
-      // Deletar imagens removidas
       for (const imageId of imagesToDelete) {
         try {
           await axios.delete(`${apiUrl}/imagemimovel/${imageId}`);
@@ -288,17 +278,14 @@ export default function EditarImovelPage({ params }) {
         }
       }
       
-      // Fazer upload de novas imagens
       for (const newImage of newImages) {
         try {
-        // Upload via Netlify
         const imageUrl = await uploadImovelImage(
           newImage.originFileObj,
           id,
           newImage.name || 'Imagem do imóvel'
         );
 
-        // Salvar referência da imagem no backend
         const response = await axios.post(`${apiUrl}/imagemimovel`, {
           imovel_id: id,
           url_imagem: imageUrl,
@@ -307,7 +294,7 @@ export default function EditarImovelPage({ params }) {
           headers: {
             'Content-Type': 'application/json',
           },
-        });          // The API should return the filename (not full URL) for database storage
+        });          
           console.log(`Imagem ${newImage.name} enviada com sucesso. Filename: ${response.data.url_imagem}`);
         } catch (error) {
           console.error(`Erro ao fazer upload da imagem ${newImage.name}:`, error);
@@ -320,7 +307,6 @@ export default function EditarImovelPage({ params }) {
     }
   };
 
-    // Add this helper function at the top of your file
   const normalizeText = (text) => {
     return text
       .toLowerCase()
@@ -331,12 +317,10 @@ export default function EditarImovelPage({ params }) {
   const onConfirm = async () => {
     try {
 
-    // Normalize status to lowercase before sending
     const normalizedStatus = statusSelecionado !== "Selecione o status" 
       ? normalizeText(statusSelecionado)
       : undefined;
 
-      // Atualizar dados do imóvel
       const updateData = {
         ...formValues,
         tipo: tipoSelecionado !== "Selecione o Tipo" ? tipoSelecionado : undefined,
@@ -349,7 +333,6 @@ export default function EditarImovelPage({ params }) {
         murado: formValues.possui_muro === "sim",
         possui_piscina: formValues.possui_piscina === "sim",
         possui_jardim: formValues.possui_jardim === "sim",
-        // Manter o usuario_id original do imóvel
         usuario_id: imovel.usuario_id,
       };
 
@@ -360,7 +343,6 @@ export default function EditarImovelPage({ params }) {
       setLoading(true);
       await axios.put(`${apiUrl}/imoveis/${id}`, updateData);
       
-      // Gerenciar imagens
       await handleImageChanges();
       
       console.log("Imóvel atualizado com sucesso!");
@@ -368,7 +350,6 @@ export default function EditarImovelPage({ params }) {
       window.location.href = "/admin/cms-imoveis";
     } catch (error) {
       console.error("Erro ao atualizar imóvel:", error);
-      // Aqui você pode adicionar uma notificação de erro para o usuário
     } finally {
       setLoading(false);
     }
@@ -395,7 +376,7 @@ export default function EditarImovelPage({ params }) {
             form={form}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            initialValues={{}} // usamos form.setFieldsValue quando carregado
+            initialValues={{}} 
           >
             <div className=" flex flex-col sm:flex-row w-full gap-6">
               <div className="sm:w-[35%] flex flex-col gap-6 items-start ">
@@ -440,8 +421,7 @@ export default function EditarImovelPage({ params }) {
                   </FormAntd.Item>
                 </div>
 
-                {/* Se o UploadImovel suportar inicialização por prop, poderia receber imovel.imagens.
-                    Aqui apenas renderiza o componente; ajuste conforme sua implementação do UploadImovel. */}
+                
                 <UploadImovel className={"!w-full"} fileList={fileList} setFileList={setFileList} />
 
                 <TextAreaField

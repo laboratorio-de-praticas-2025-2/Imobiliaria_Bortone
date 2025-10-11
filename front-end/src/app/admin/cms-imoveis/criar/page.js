@@ -94,7 +94,7 @@ export default function CriarImovelPage() {
             );
           } catch (uploadError) {
             console.error("Erro no upload da imagem:", uploadError);
-            throw uploadError; // Re-throw para ser capturado no catch principal
+            throw uploadError;  //Re-throw para ser capturado no catch principal
           }
         }
         
@@ -105,7 +105,7 @@ export default function CriarImovelPage() {
       console.error("Erro ao cadastrar imóvel:", error);
       alert("Erro ao cadastrar imóvel. Tente novamente.");
     } finally {
-    setIsLoading(false); // re-enable button
+    setIsLoading(false); 
   }
   };
 

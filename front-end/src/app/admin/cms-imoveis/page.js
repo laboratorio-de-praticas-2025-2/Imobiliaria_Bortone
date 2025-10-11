@@ -112,7 +112,6 @@ export default function CmsUserPage() {
       queryParams.append("page", currentPage);
       queryParams.append("pagination", pageSize);
       
-      // Handle ordering parameters
       if (filterData.order) {
         const orderMapping = {
           "Ordem alfabética": { orderBy: "endereco", orderDirection: "ASC" },
@@ -324,14 +323,12 @@ export default function CmsUserPage() {
       ...prev,
       searchTerm: value || null,
       advancedSearch: false,
-      // Keep the current order if it exists
     }));
   };
   const handleSelectOrder = (value) => {
     setFilterData((prev) => ({
       ...prev,
       order: value === "Ordenar por" ? null : value,
-      // Don't reset advancedSearch when changing order
     }));
   };
   const updateFilterData = (newData) => {
@@ -348,7 +345,6 @@ export default function CmsUserPage() {
       ...filters,
       searchTerm: null, 
       advancedSearch: true, 
-      // Keep the current order if it exists
     }));
   };
 
@@ -393,7 +389,7 @@ export default function CmsUserPage() {
                 columns={columns}
                 dataSource={imoveis}
                 rowKey="id"
-                pagination={true}
+                pagination={false}
                 className={styles.customTable}
                 scroll={{ x: "max-content" }}
                  rowClassName={(record) => (record.status === "indisponivel" ? "opacity-50" : "")}
