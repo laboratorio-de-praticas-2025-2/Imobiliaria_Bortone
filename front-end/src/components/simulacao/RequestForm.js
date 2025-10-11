@@ -1,6 +1,7 @@
 import { Card, Button, Input, Slider, ConfigProvider } from "antd";
 import { simularFinanciamento } from "@/services/simulacaoService";
-import { useState } from "react";
+import { useState, useContext } from "react"; 
+import { SimulacaoContext } from "./Filter"; 
 
 export default function RequestForm() {
   const [parcelas, setParcelas] = useState(20);
@@ -9,9 +10,11 @@ export default function RequestForm() {
   const [resultado, setResultado] = useState(null);
   const [carregando, setCarregando] = useState(false);
 
+  const { propertyType, modalidade } = useContext(SimulacaoContext);
+
   const handleInputChange = (e) => {
-    const value = Math.max(1, Math.min(32, Number(e.target.value))); // Limita entre 1-32
-    setParcelas(value || 1); // Caso seja inválido, define 1
+    const value = Math.max(1, Math.min(32, Number(e.target.value))); 
+    setParcelas(value || 1); 
   };
 
   const handleSimular = async () => {
@@ -21,13 +24,13 @@ export default function RequestForm() {
     }
 
     setCarregando(true);
-    
+
     const dados = {
-      tipo: "imovel",
+      tipo: propertyType, 
       valorImovel: Number(valorImovel),
       entrada: Number(valorEntrada),
       parcelas: Number(parcelas),
-      modalidade: "price"
+      modalidade: modalidade 
     };
 
     const resultadoApi = await simularFinanciamento(dados);
@@ -50,7 +53,7 @@ export default function RequestForm() {
         <div className="grid h-fit bg-white grid-rows-1 justify-items-center content-evenly gap-4 sm:gap-4 xxl:gap-12 pt-7 text-center py-4 rounded-b-2xl">
           <div className="w-3xs">
             <label className="text-[14px] font-bold text-[var(--primary)]  ">
-              Valor da parcela:
+              Valor do imóvel: {/* MUDAR DE "parcela" para "imóvel" */}
             </label>
             <Input
               type="number"

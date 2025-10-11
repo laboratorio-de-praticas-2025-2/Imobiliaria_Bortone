@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
 import { Button, Col, Row } from "antd";
 
+
+export const SimulacaoContext = createContext();
+
 export default function Filter() {
-  const [simulationType, setSimulationType] = useState("financiamento");
-  const [propertyType, setPropertyType] = useState("casa");
+
+  const { propertyType, setPropertyType, modalidade, setModalidade } = useContext(SimulacaoContext);
 
   return (
     <div className="flex justify-center w-full pt-20">
@@ -17,25 +20,25 @@ export default function Filter() {
                 </p>
                 <div>
                   <Button
-                    onClick={() => setSimulationType("financiamento")}
+                    onClick={() => setModalidade("price")} // MODIFICADO
                     className={`!px-6 !py-6 !font-bold !rounded-l-xl justify-center w-35  !rounded-none ${
-                      simulationType === "financiamento"
+                      modalidade === "price" // MODIFICADO
                         ? "!bg-[var(--primary)] !text-white"
                         : "!bg-white !text-[var(--primary)]"
                     }`}
                   >
-                    Financiamento
+                    PRICE
                   </Button>
 
                   <Button
-                    onClick={() => setSimulationType("aluguel")}
+                    onClick={() => setModalidade("sac")} // MODIFICADO
                     className={`!px-6 !py-6 !font-bold !rounded-r-xl w-35 !rounded-none ${
-                      simulationType === "aluguel"
+                      modalidade === "sac" // MODIFICADO
                         ? "!bg-[var(--primary)] !text-white"
                         : "!bg-white !text-[var(--primary)]"
                     }`}
                   >
-                    Aluguel
+                    SAC
                   </Button>
                 </div>
               </div>
@@ -47,18 +50,18 @@ export default function Filter() {
                 </p>
                 <div>
                   <Button
-                    onClick={() => setPropertyType("casa")}
+                    onClick={() => setPropertyType("imovel")} // MODIFICADO
                     className={`!px-6 !py-6 !font-bold  !rounded-l-xl w-35 !rounded-none ${
-                      propertyType === "casa"
+                      propertyType === "imovel" // MODIFICADO
                         ? "!bg-[var(--primary)] !text-white"
                         : "!bg-white !text-[var(--primary)]"
                     }`}
                   >
-                    Casa
+                    Imóvel
                   </Button>
 
                   <Button
-                    onClick={() => setPropertyType("terreno")}
+                    onClick={() => setPropertyType("terreno")} // MODIFICADO
                     className={`!px-6 !py-6 !font-bold !rounded-r-xl w-35 !rounded-none ${
                       propertyType === "terreno"
                         ? "!bg-[var(--primary)] !text-white"
