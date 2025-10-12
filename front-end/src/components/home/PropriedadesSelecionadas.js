@@ -19,12 +19,10 @@ export default function PropriedadesSelecionadas() {
 
     const fetchRecomendacoes = async () => {
       try {
-        console.log("🏠 Buscando recomendações do Render...");
         const params = userInfo ? { usuario_id: userInfo.id } : { limit: 20 };
 
         const res = await apiClient.get("/recomendacoes", { params });
 
-        console.log("📊 Recomendações recebidas:", res.data.data?.length || 0);
         setImoveis(res.data.data || []);
       } catch (err) {
         console.error("❌ Erro detalhado ao buscar recomendações:", {
@@ -50,7 +48,6 @@ export default function PropriedadesSelecionadas() {
 
 
   useEffect(() => {
-    console.log("Imóveis recomendados:", imoveis);
   }, [imoveis]);
 
   return (

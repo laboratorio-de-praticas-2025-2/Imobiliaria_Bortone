@@ -15,7 +15,6 @@ import dayjs from "dayjs";
 export default function Relatorio({ data, secoes = [], dateRange }) {
   let pageNumber = 1;
 
-  console.log("Dados recebidos no Relatorio:", data);
 
   // Se não vier array de seções ou vier vazio, renderiza todas as seções
   const todasSecoes = [

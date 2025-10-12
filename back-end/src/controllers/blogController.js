@@ -2,13 +2,10 @@ import blogService from "../services/blogService.js";
 
 export const createArtigo = async (req, res) => {
   try {
-    console.log("=== BACK-END DEBUG BLOG ===");
-    console.log("req.body:", req.body);
-    console.log("===========================");
+  
 
     const { titulo, conteudo, usuario_id, url_imagem } = req.body;
 
-    console.log("url_imagem recebida:", url_imagem);
 
     const usuarioIdNumber = parseInt(usuario_id, 10);
 
@@ -39,7 +36,6 @@ export const getAllArtigos = async (req, res) => {
   try {
     const { titulo, usuario_id, ordenarPor, direcao, page, limit } = req.query;
 
-    console.log("Query params recebidos (BLOG):", { titulo, usuario_id, ordenarPor, direcao, page, limit });
 
     const resultado = await blogService.getAllArtigos({
       titulo,
@@ -80,10 +76,6 @@ export const getArtigoById = async (req, res) => {
 
 export const updateArtigo = async (req, res) => {
   try {
-    console.log("=== UPDATE DEBUG BLOG ===");
-    console.log("req.body:", req.body);
-    console.log("req.params:", req.params);
-    console.log("=========================");
 
     const { id } = req.params;
     const { titulo, conteudo, usuario_id, url_imagem } = req.body;
@@ -111,7 +103,6 @@ export const updateArtigo = async (req, res) => {
       updateData.url_imagem = url_imagem;
     }
 
-    console.log("updateData (BLOG):", updateData);
 
     const artigoAtualizado = await blogService.updateArtigo(Number(id), updateData);
 

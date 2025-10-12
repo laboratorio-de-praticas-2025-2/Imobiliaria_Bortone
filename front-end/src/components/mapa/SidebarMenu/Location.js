@@ -15,7 +15,6 @@ export default function Location() {
   // Sincronizar com o contexto de filtros quando ele mudar
   useEffect(() => {
     const currentLocalizacao = filters.terreno?.localizacao || [];
-    console.log('Location: Sincronizando com contexto:', currentLocalizacao);
     setSelectedOptions(currentLocalizacao);
   }, [filters.terreno?.localizacao]);
 
@@ -34,7 +33,6 @@ export default function Location() {
           const data = await response.json();
           if (data.success && data.data) {
             setCidades(data.data);
-            console.log("Cidades carregadas:", data.data);
           }
         } else {
           console.error("Erro ao buscar cidades:", response.statusText);
@@ -58,7 +56,6 @@ export default function Location() {
 
       // Atualiza os filtros no contexto
       updateFilters("terreno", { localizacao: updatedOptions });
-      console.log("Cidades selecionadas:", updatedOptions);
       return updatedOptions;
     });
   };

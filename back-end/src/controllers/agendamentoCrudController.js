@@ -74,8 +74,6 @@ export const listForUser = async (req, res) => {
       offset,
     });
 
-    console.log('📊 Agendamentos do usuário encontrados:', count);
-    console.log('🔍 Primeiro agendamento do usuário (exemplo):', JSON.stringify(rows[0], null, 2));
 
     return res.status(200).json({ data: rows, total: count, page, limit, totalPages: Math.ceil(count / limit) });
   } catch (error) {
@@ -115,8 +113,6 @@ export const listAll = async (req, res) => {
       offset,
     });
 
-    console.log('📊 Agendamentos encontrados:', count);
-    console.log('🔍 Primeiro agendamento (exemplo):', JSON.stringify(rows[0], null, 2));
 
     return res.status(200).json({ data: rows, total: count, page, limit, totalPages: Math.ceil(count / limit) });
   } catch (error) {

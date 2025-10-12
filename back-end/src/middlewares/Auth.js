@@ -15,6 +15,7 @@ const Authorization = (req, res, next) => {
         req.loggedUser = {
           id: data.id,
           email: data.email,
+          nivel: data.nivel,
         };
         next();
       }

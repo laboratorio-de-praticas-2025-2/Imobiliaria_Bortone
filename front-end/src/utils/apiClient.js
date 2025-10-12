@@ -35,28 +35,10 @@ apiClient.interceptors.request.use(
 // Interceptor de resposta para tratar erros
 apiClient.interceptors.response.use(
   (response) => {
-    console.log('✅ API Success:', {
-      method: response.config?.method?.toUpperCase(),
-      url: response.config?.url,
-      status: response.status,
-      dataLength: Array.isArray(response.data) ? response.data.length : 'objeto'
-    });
     return response;
   },
   async (error) => {
-    console.error('❌ API Error detalhado:', {
-      message: error.message,
-      code: error.code,
-      name: error.name,
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      url: error.config?.url,
-      method: error.config?.method,
-      baseURL: error.config?.baseURL,
-      responseData: error.response?.data,
-      headers: error.config?.headers
-    });
-    
+     
     return Promise.reject(error);
   }
 );

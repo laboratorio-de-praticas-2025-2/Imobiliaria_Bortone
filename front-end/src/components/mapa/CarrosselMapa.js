@@ -5,7 +5,6 @@ import { handleImgError } from "@/utils/imageFallback";
 import Card from "./CardMapa";
 
 export default function CarrosselMapa({ imoveis }) {
-  console.log(`CarrosselMapa renderizando com ${imoveis?.length || 0} imóveis:`, imoveis?.map(i => ({ id: i.id, tipo: i.tipo, cidade: i.cidade })));
   
   const carouselRef = useRef(null);
   const sheetRef = useRef(null);

@@ -26,7 +26,6 @@ export default function CardMapa({ imovel }) {
       return;
     }
     
-    console.log(`Navegando para /imoveis/${imovel.id}`);
     router.push(`/imoveis/${imovel.id}`);
   };
 
@@ -64,7 +63,6 @@ export default function CardMapa({ imovel }) {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              console.log("Botão carrinho clicado para imóvel:", imovel.id);
               // Aqui você pode implementar a ação do carrinho
             }}
             className="flex items-center justify-center rounded p-1 transition duration-200 ease-in-out hover:scale-110 hover:brightness-110"
@@ -74,7 +72,6 @@ export default function CardMapa({ imovel }) {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              console.log("Botão chat clicado para imóvel:", imovel.id);
               // Aqui você pode implementar a ação do chat
             }}
             className="flex items-center justify-center rounded p-1 transition duration-200 ease-in-out hover:scale-110 hover:brightness-110"

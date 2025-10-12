@@ -2,7 +2,6 @@
 import { Table } from "antd";
 import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
-import { mockImoveis } from "@/mock/imoveis";
 import { useEffect, useState } from "react";
 import { LuHousePlus } from "react-icons/lu";
 import { BiPencil } from "react-icons/bi";
@@ -67,7 +66,6 @@ export default function CmsUserPage() {
       
       setImoveis(prev => prev.filter(imovel => imovel.id !== imovelToDelete));
       
-      console.log("Imóvel deletado com sucesso!");
       setIsConfirmModalVisible(false);
       setImovelToDelete(null);
     } catch (error) {
@@ -94,7 +92,6 @@ export default function CmsUserPage() {
         )
       );
       
-      console.log(`Status do imóvel ${id} alterado para: ${newStatus}`);
     } catch (error) {
       console.error("Erro ao alterar status do imóvel:", error);
     }
@@ -127,9 +124,7 @@ export default function CmsUserPage() {
       }
 
       const endpoint = `/imoveis?${queryParams.toString()}`;
-      console.log("Fetching data from endpoint:", `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`);
       const response = await apiClient.get(endpoint);
-      console.log("API Response Data:", response.data);
       
       // A API retorna {data: [imóveis]} então precisamos acessar response.data.data
       const imoveisData = response.data.data || response.data;
@@ -304,7 +299,6 @@ export default function CmsUserPage() {
   const updateFilterData = (newData) => {
     setFilterData((prev) => {
       const newState = { ...prev, ...newData };
-      console.log("FilterData after update:", newState);
       return newState;
     });
   };

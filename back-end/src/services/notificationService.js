@@ -26,7 +26,6 @@ class NotificationService {
   // Função com a finalidade é acionar o SocketManager para o envio das notificações.
   async dispararAlertaNovoImovel(novoImovel) {
     const startTime = Date.now();
-    console.log(`[NotificationService] Iniciando processamento para imóvel ID: ${novoImovel?.id}`);
 
     // Validação de entrada - previne erros e garante integridade
     if (!novoImovel || typeof novoImovel !== 'object') {
@@ -63,7 +62,6 @@ class NotificationService {
       throw new Error('Coordenadas geográficas devem ser números válidos');
     }
 
-    console.log(`[NotificationService] Parâmetros: Preço: R$${novoImovel.preco}, Área: ${novoImovel.area}m², Tipo: ${novoImovel.tipo_negociacao}`);
 
     const { tipo_negociacao, status } = novoImovel;
     const preco = precoNumerico; 
@@ -116,22 +114,14 @@ class NotificationService {
         },
       });
 
-      console.log(`[NotificationService] Encontradas ${recomendacoes.length} recomendações baseadas em histórico`);
 
       const imovelSorteado = await this._buscarImovelPopular();
 
-      if (imovelSorteado) {
-        console.log(`[NotificationService] Imóvel popular selecionado: ID ${imovelSorteado.id}`);
-      } else {
-        console.log(`[NotificationService] Nenhum imóvel popular encontrado para broadcast`);
-      }
 
       // Enviar notificações via Socket.IO
       const notificacoesSent = await this._enviarNotificacoes(recomendacoes, novoImovel, imovelSorteado);
 
       const executionTime = Date.now() - startTime;
-      console.log(`[NotificationService] Processamento concluído em ${executionTime}ms`);
-      console.log(`[NotificationService] Resultados: ${recomendacoes.length} usuários identificados, ${notificacoesSent.recomendacoes} notificações personalizadas enviadas`);
 
       return {
         recomendacoes,
@@ -141,8 +131,6 @@ class NotificationService {
       }
     } catch (error) {
       const executionTime = Date.now() - startTime;
-      console.error(`[NotificationService] ERRO após ${executionTime}ms:`, error.message);
-      console.error(`[NotificationService] Stack trace:`, error.stack);
       throw new Error(`Erro ao processar notificações: ${error.message}`);
     }
   }
@@ -151,11 +139,9 @@ class NotificationService {
   async _buscarImovelPopular() {
     // Verificar cache para manter consistência do imóvel popular
     if (this.popularPropertyCache && this.cacheExpiry && Date.now() < this.cacheExpiry) {
-      console.log('[NotificationService] Usando imóvel popular do cache');
       return this.popularPropertyCache;
     }
 
-    console.log(`[NotificationService] Buscando imóvel popular entre os top ${NotificationService.TOP_PROPERTIES_LIMIT}`);
 
     try {
       // 1) pegar os 10 imoveis mais populares
@@ -170,11 +156,8 @@ class NotificationService {
       });
 
       if (imoveisPopulares.length === 0) {
-        console.log(`[NotificationService] Nenhum imóvel popular encontrado`);
         return null;
       }
-
-      console.log(`[NotificationService] ${imoveisPopulares.length} imóveis populares encontrados`);
 
       // 2) sortear 1 desses 10
       const sorteado = imoveisPopulares[
@@ -184,12 +167,10 @@ class NotificationService {
       // 3) buscar dados completos
       const imovelSorteado = await Imovel.findByPk(sorteado.imovel_id);
 
-      console.log(`[NotificationService] Imóvel sorteado: ID ${imovelSorteado.id} com ${sorteado.dataValues.total} visitas`);
 
       // Atualizar cache para manter consistência
       this.popularPropertyCache = imovelSorteado;
       this.cacheExpiry = Date.now() + NotificationService.CACHE_DURATION;
-      console.log(`[NotificationService] Cache do imóvel popular atualizado (válido por ${NotificationService.CACHE_DURATION / 60000} minutos)`);
 
       return imovelSorteado;
     } catch (error) {
@@ -201,12 +182,7 @@ class NotificationService {
   // Função para enviar notificações via Socket.IO - SEM REDUNDÂNCIAS
   async _enviarNotificacoes(recomendacoes, novoImovel, imovelSorteado) {
 
-      console.log('🎯 _enviarNotificacoes INICIADO');
-    console.log('📊 Parâmetros recebidos:', {
-        recomendacoes: recomendacoes?.length || 0,
-        novoImovel: novoImovel?.id,
-        imovelSorteado: imovelSorteado?.id
-    });
+   
 
     const notificacoesSent = {
       recomendacoes: 0,
@@ -217,7 +193,6 @@ class NotificationService {
       // 1. NOTIFICAÇÕES PERSONALIZADAS (baseadas em recomendações) - UMA SÓ VEZ
       if (recomendacoes && recomendacoes.length > 0) {
         const usuariosIds = [...new Set(recomendacoes.map(r => r.usuario_id))];
-        console.log(`[NotificationService] Enviando recomendações personalizadas para ${usuariosIds.length} usuários: ${usuariosIds.join(', ')}`);
 
         const resultados = sendToMultipleUsers(usuariosIds, 'nova_recomendacao', {
           type: 'personalized_recommendation',
@@ -234,12 +209,10 @@ class NotificationService {
         });
 
         notificacoesSent.recomendacoes = resultados.filter(r => r.sent).length;
-        console.log(`[NotificationService] ${notificacoesSent.recomendacoes} notificações personalizadas enviadas com sucesso`);
       }
 
       // 2. BROADCAST DE IMÓVEL POPULAR (para usuários sem histórico) - UMA SÓ VEZ
       if (imovelSorteado) {
-        console.log(`🔥 ENVIANDO BROADCAST para imóvel popular:`, imovelSorteado.id);
 
         const broadcastResult = broadcastNotification('imovel_popular', {
           type: 'popular_property',
@@ -256,11 +229,9 @@ class NotificationService {
         });
 
         notificacoesSent.broadcast = broadcastResult;
-      console.log(`🚀 Broadcast resultado:`, broadcastResult ? '✅ SUCESSO' : '❌ FALHOU');
       } else {
             console.log('ℹ️ Nenhum imóvel popular encontrado para broadcast');
         }
- console.log('🎯 _enviarNotificacoes FINALIZADO:', notificacoesSent);
         return notificacoesSent;
     } catch (error) {
       console.error("❌ ERRO em _enviarNotificacoes:", error.message);
@@ -294,7 +265,6 @@ class NotificationService {
           }
         });
 
-        console.log(`Notificações de alteração de preço enviadas para ${results.filter(r => r.sent).length} usuários`);
         return results;
       }
     } catch (error) {
@@ -313,7 +283,6 @@ class NotificationService {
         data: dadosAgendamento
       });
 
-      console.log(`[NotificationService] Notificação de agendamento ${result ? 'enviada' : 'falhou'} para usuário ${userId}`);
       return result;
     } catch (error) {
       console.error('[NotificationService] Erro ao notificar agendamento:', error.message);

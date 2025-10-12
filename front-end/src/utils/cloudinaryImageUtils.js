@@ -95,10 +95,6 @@ function extractCloudinaryPublicId(url) {
 export function buildImageUrl(imageUrl, type = 'default', options = {}) {
   const { fallback = '/404.png', cloudinaryOptions = {} } = options;
 
-  // Log para debug (apenas em desenvolvimento)
-  if (process.env.NODE_ENV === 'development') {
-    console.log('🖼️ buildImageUrl:', { imageUrl, type, options });
-  }
 
   // Se não há imagem, retorna fallback
   if (!imageUrl || imageUrl.trim() === '') {
@@ -110,7 +106,6 @@ export function buildImageUrl(imageUrl, type = 'default', options = {}) {
 
   // 1. PRIORIDADE: URLs do Cloudinary - retorna diretamente (já otimizadas)
   if (isCloudinaryUrl(cleanImageUrl)) {
-    console.log('✅ URL do Cloudinary detectada:', cleanImageUrl);
     return cleanImageUrl;
   }
 
@@ -118,7 +113,6 @@ export function buildImageUrl(imageUrl, type = 'default', options = {}) {
   if (cleanImageUrl.startsWith('http://') || 
       cleanImageUrl.startsWith('https://') || 
       cleanImageUrl.startsWith('data:')) {
-    console.log('✅ URL absoluta externa:', cleanImageUrl);
     return cleanImageUrl;
   }
 
@@ -136,11 +130,6 @@ export function buildImageUrl(imageUrl, type = 'default', options = {}) {
     // Construir URL do Cloudinary
     const cloudinaryUrl = buildCloudinaryUrl(publicId, cloudinaryOptions);
     
-    console.log('🌟 URL do Cloudinary construída:', {
-      original: cleanImageUrl,
-      publicId,
-      cloudinaryUrl
-    });
 
     return cloudinaryUrl;
   }
@@ -149,7 +138,6 @@ export function buildImageUrl(imageUrl, type = 'default', options = {}) {
   const apiUrl = getApiBaseUrl();
   if (apiUrl) {
     const backendUrl = `${apiUrl}/images/${getImageFolder(type)}/${cleanImageUrl}`;
-    console.log('🔄 Fallback para backend:', backendUrl);
     return backendUrl;
   }
 

@@ -18,6 +18,8 @@ export function middleware(req) {
                 return NextResponse.redirect(new URL('/admin/cms-publicacoes', req.url));
             } else if (pathname.includes('/cms-banner/')) {
                 return NextResponse.redirect(new URL('/admin/cms-banner', req.url));
+            } else if (pathname.includes('/cms-agendamentos/')) {
+                return NextResponse.redirect(new URL('/admin/cms-agendamentos', req.url));
             } else {
                 // Para qualquer outra rota admin com undefined, redirecionar para dashboard
                 return NextResponse.redirect(new URL('/admin/dashboard', req.url));

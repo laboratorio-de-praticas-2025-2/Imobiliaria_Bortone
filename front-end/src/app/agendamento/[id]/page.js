@@ -55,21 +55,16 @@ const validateField = {
 };
 
 const enviarAgendamento = async (appointment) => {
-  console.log('🚀 Iniciando envio de agendamento...');
-  console.log('📋 Dados do agendamento:', appointment);
   
   if (!API_URL) throw new Error("NEXT_PUBLIC_API_URL não configurada");
   
-  console.log('🌐 URL da API:', `${API_URL}/agendamentos/schedule`);
   
   const res = await fetch(`${API_URL}/agendamentos/schedule`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ appointment }),
   });
-  
-  console.log('📡 Resposta da API - Status:', res.status);
-  
+    
   if (!res.ok) {
     const txt = await res.text().catch(() => "");
     console.error('❌ Erro na resposta:', res.status, txt);
@@ -77,7 +72,6 @@ const enviarAgendamento = async (appointment) => {
   }
   
   const result = await res.json();
-  console.log('✅ Resposta da API:', result);
   return result;
 };
 
@@ -132,7 +126,6 @@ export default function Agendamento() {
   // Preenchimento automático dos dados do usuário
   useEffect(() => {
     if (user && form) {
-      console.log('👤 Preenchendo dados do usuário:', user);
       form.setFieldsValue({
         nome: user.nome || '',
         email: user.email || '',
@@ -142,8 +135,6 @@ export default function Agendamento() {
   }, [user, form]);
 
   const onFinish = async (values) => {
-    console.log('📝 Iniciando processo de agendamento...');
-    console.log('🔍 Valores do formulário:', values);
     
     if (submitting) return; // Prevenir múltiplos submits
     
@@ -155,7 +146,6 @@ export default function Agendamento() {
       const telefone = (values?.telefone || "").trim();
       const cidadeEstado = (values?.cidade_estado || "").trim();
 
-      console.log('✅ Dados processados:', { nome, email, telefone, cidadeEstado });
 
       const nameError = validateField.name(nome);
       if (nameError) {
@@ -200,10 +190,8 @@ export default function Agendamento() {
         visitPeriod: "A combinar", // Campo obrigatório para o back-end
       };
 
-      console.log('📦 Objeto appointment criado:', appointment);
 
       await enviarAgendamento(appointment);
-      console.log('🎉 Agendamento enviado com sucesso!');
       
       message.success("Agendamento enviado com sucesso!");
       
@@ -296,7 +284,6 @@ export default function Agendamento() {
                 form={form}
                 name="basic"
                 onFinish={(values) => {
-                  console.log('🚀 Form onFinish disparado com valores:', values);
                   onFinish(values);
                 }}
                 onFinishFailed={(errorInfo) => {
@@ -355,7 +342,6 @@ export default function Agendamento() {
                       loading={submitting}
                       disabled={submitting}
                       onClick={() => {
-                        console.log('🔘 Botão "Agendar Visita" clicado!');
                         if (!submitting) {
                           form.submit();
                         }

@@ -9,6 +9,25 @@ import ConfirmModal from "@/components/cms/ConfirmModal";
 import { createStyles } from "antd-style";
 import { apiClient } from "@/utils/apiClient";
 
+// Dados mockados para fallback em caso de erro de API
+const mockedAgendamentos = [
+  {
+    id: 1,
+    imovel: {
+      endereco: "Rua Exemplo, 123",
+      cidade: "São Paulo"
+    },
+    usuario: {
+      nome: "Usuário Exemplo",
+      email: "exemplo@email.com",
+      celular: "(11) 99999-9999"
+    },
+    data_marcada: new Date().toISOString(),
+    data_inclusao: new Date().toISOString(),
+    mensagem: "Interesse no imóvel"
+  }
+];
+
 const useStyle = createStyles(({ css, token }) => {
   const { antCls } = token;
   return {
@@ -34,7 +53,8 @@ export default function Page() {
   const [filterData, setFilterData] = useState({ order: null });
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const { styles } = useStyle();
 
   const [deleteId, setDeleteId] = useState(null);
@@ -124,22 +144,29 @@ export default function Page() {
   ];
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     async function fetchAgendamentos() {
       try {
         setLoading(true);
+        
+        console.log('🔍 [cms-agendamentos] Iniciando busca de agendamentos...');
+        console.log('🔍 [cms-agendamentos] URL da API:', process.env.NEXT_PUBLIC_API_URL);
+        console.log('🔍 [cms-agendamentos] NODE_ENV:', process.env.NODE_ENV);
         
         // Debug da autenticação
         const authToken = localStorage.getItem('authToken');
         const userInfo = localStorage.getItem('userInfo');
         const parsedUserInfo = userInfo ? JSON.parse(userInfo) : null;
         
-        console.log('🔐 Debug Auth:', { 
-          tokenExists: !!authToken, 
-          tokenPrefix: authToken?.substring(0, 20) + '...',
-          userInfo: parsedUserInfo,
-          userLevel: parsedUserInfo?.nivel,
-          isAdmin: parsedUserInfo?.nivel === 0
-        });
+        console.log('🔍 [cms-agendamentos] Token presente:', !!authToken);
+        console.log('🔍 [cms-agendamentos] UserInfo presente:', !!userInfo);
+        console.log('🔍 [cms-agendamentos] Nível do usuário:', parsedUserInfo?.nivel);
+        
         
         if (!authToken) {
           throw new Error('Token de autenticação não encontrado');
@@ -149,42 +176,37 @@ export default function Page() {
           throw new Error(`Usuário não é admin (nível ${parsedUserInfo?.nivel})`);
         }
         
-        console.log('📡 Fazendo requisição para /agendamentos...');
         let response;
         
         try {
           // Tentar buscar todos os agendamentos (admin)
+          console.log('🔍 [cms-agendamentos] Tentando buscar todos os agendamentos...');
           response = await apiClient.get("/agendamentos");
-          console.log('✅ Resposta de /agendamentos (admin):', response.data);
+          console.log('✅ [cms-agendamentos] Sucesso ao buscar agendamentos:', response.data);
         } catch (adminError) {
+          console.log('⚠️ [cms-agendamentos] Erro ao buscar todos agendamentos:', adminError.response?.status, adminError.message);
           if (adminError.response?.status === 403) {
-            console.log('⚠️ Acesso negado para /agendamentos, tentando /agendamentos/me...');
             // Se não for admin, buscar apenas os próprios agendamentos
+            console.log('🔍 [cms-agendamentos] Tentando buscar agendamentos pessoais...');
             response = await apiClient.get("/agendamentos/me");
-            console.log('✅ Resposta de /agendamentos/me:', response.data);
+            console.log('✅ [cms-agendamentos] Sucesso ao buscar agendamentos pessoais:', response.data);
           } else {
             throw adminError;
           }
         }
         
         const agendamentosData = response.data.data || response.data || [];
-        console.log('📊 Total de agendamentos:', agendamentosData.length);
-        console.log('🔍 Primeiro agendamento:', agendamentosData[0]);
-        console.log('👤 Dados do usuário do primeiro:', agendamentosData[0]?.usuario);
-        console.log('🏠 Dados do imóvel do primeiro:', agendamentosData[0]?.imovel);
-        if (agendamentosData[0]?.imovel) {
-          console.log('🏠 Campos do imóvel:', {
-            id: agendamentosData[0].imovel.id,
-            endereco: agendamentosData[0].imovel.endereco,
-            cidade: agendamentosData[0].imovel.cidade,
-            tipo: agendamentosData[0].imovel.tipo,
-            preco: agendamentosData[0].imovel.preco
-          });
-        }
         
-        setAgendamentos(Array.isArray(agendamentosData) ? agendamentosData : []);
-        setAllAgendamentos(Array.isArray(agendamentosData) ? agendamentosData : []);
+        console.log('🔍 [cms-agendamentos] Dados recebidos:', agendamentosData);
+        console.log('🔍 [cms-agendamentos] É array?', Array.isArray(agendamentosData));
+        console.log('🔍 [cms-agendamentos] Quantidade:', agendamentosData.length);
+        
+        const validData = Array.isArray(agendamentosData) ? agendamentosData : [];
+        setAgendamentos(validData);
+        setAllAgendamentos(validData);
         setLoading(false);
+        
+        console.log('✅ [cms-agendamentos] Dados carregados com sucesso!', validData.length, 'itens');
       } catch (err) {
         console.error("❌ Erro detalhado ao buscar agendamentos:", {
           status: err.response?.status,
@@ -193,12 +215,13 @@ export default function Page() {
           message: err.message
         });
         
-        // Se erro 401, tentar usar dados mockados temporariamente
-        if (err.response?.status === 401) {
-          console.warn('⚠️ Erro 401 - usando dados mockados temporariamente');
+        // Se erro 401 ou problemas de conexão, tentar usar dados mockados temporariamente
+        if (err.response?.status === 401 || !err.response) {
+          console.warn('⚠️ Erro de API - usando dados mockados temporariamente:', err.message);
           setAgendamentos(mockedAgendamentos);
           setAllAgendamentos(mockedAgendamentos);
         } else {
+          console.error('❌ Erro da API que não permite fallback:', err.response?.status, err.message);
           setAgendamentos([]);
           setAllAgendamentos([]);
         }
@@ -206,7 +229,14 @@ export default function Page() {
       }
     }
     fetchAgendamentos();
-  }, []);  let orderedAgendamentos = [...agendamentos];
+  }, [mounted]);
+
+  // Não renderizar até que o componente esteja montado
+  if (!mounted) {
+    return <SplashScreen />;
+  }
+
+  let orderedAgendamentos = [...agendamentos];
   if (filterData.order === "Ordem alfabetica") {
     orderedAgendamentos.sort((a, b) => {
       if (!a.pergunta) return 1;

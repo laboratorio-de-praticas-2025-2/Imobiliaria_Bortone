@@ -43,7 +43,6 @@ export default function Mapa() {
         return;
       }
       
-      console.log("Carregando imóveis iniciais...");
       const response = await fetch(`${apiUrl}/mapa/busca`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -51,11 +50,9 @@ export default function Mapa() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Imóveis carregados:", data);
         if (data.success && data.data) {
           setImoveisCarrossel(data.data);
           setImoveisMapa(data.data);
-          console.log(`${data.data.length} imóveis carregados inicialmente`);
         } else {
           console.warn("API retornou sucesso mas sem dados");
         }
@@ -68,7 +65,6 @@ export default function Mapa() {
   };
 
   const onSearch = async (value) => {
-    console.log("Buscando imóveis para:", value);
     const endereco = {
       endereco: value,
     };
@@ -82,7 +78,6 @@ export default function Mapa() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         if (data) {
           // Atualize os estados com os dados retornados da API
           setImoveisCarrossel(data.propriedades.carrossel || []);
