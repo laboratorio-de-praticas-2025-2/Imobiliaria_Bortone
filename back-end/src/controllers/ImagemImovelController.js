@@ -5,7 +5,6 @@ export const createImageReference = async (req, res) => {
   try {
     const { imovel_id, url_imagem, descricao } = req.body;
 
-    console.log("Create image reference request body:", { imovel_id, url_imagem, descricao });
 
     if (!imovel_id || !url_imagem) {
       return res.status(400).json({ error: "Campos obrigatórios: imovel_id e url_imagem." });
@@ -17,7 +16,6 @@ export const createImageReference = async (req, res) => {
       descricao: descricao || "Imagem do imóvel",
     });
     
-    console.log("Referência de imagem salva com sucesso:", novaImagem);
     res.status(201).json(novaImagem);
   } catch (error) {
     console.error("Erro ao salvar referência da imagem no banco:", error);
@@ -39,7 +37,6 @@ export const deleteImage = async (req, res) => {
 
     // Extrair o nome do arquivo da URL para eventual limpeza no Netlify
     const filename = path.basename(imagem.url_imagem);
-    console.log("Deletando imagem:", { id, filename, url_imagem: imagem.url_imagem });
 
     // Deletar o registro do banco (o arquivo físico agora é responsabilidade do Netlify)
     const deleted = await ImagemImovelService.deleteImagem(id);
@@ -100,7 +97,6 @@ export const createImageFromUrl = async (req, res) => {
       descricao: descricao || "Imagem do imóvel",
     });
 
-    console.log("Imagem criada com sucesso:", novaImagem);
     res.status(201).json(novaImagem);
   } catch (error) {
     console.error("Erro ao criar imagem:", error);

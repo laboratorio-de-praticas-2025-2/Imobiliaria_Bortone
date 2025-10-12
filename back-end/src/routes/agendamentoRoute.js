@@ -19,12 +19,8 @@ agendamentoRoutes.use((req, res, next) => {
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Content-Security-Policy', "default-src 'self'");
   
-  // Rate limiting por IP
-  const clientIP = req.ip || req.connection?.remoteAddress || "unknown";
-  const userAgent = req.get('User-Agent') || '';
+ 
   
-  // Log de requisições para auditoria
-  console.log(`[AUDIT] ${new Date().toISOString()} - IP: ${clientIP} - ${req.method} ${req.path} - UA: ${userAgent.substring(0, 100)}`);
   
   next();
 });

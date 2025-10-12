@@ -9,6 +9,25 @@ import ConfirmModal from "@/components/cms/ConfirmModal";
 import { createStyles } from "antd-style";
 import { apiClient } from "@/utils/apiClient";
 
+// Dados mockados para fallback em caso de erro de API
+const mockedAgendamentos = [
+  {
+    id: 1,
+    imovel: {
+      endereco: "Rua Exemplo, 123",
+      cidade: "São Paulo"
+    },
+    usuario: {
+      nome: "Usuário Exemplo",
+      email: "exemplo@email.com",
+      celular: "(11) 99999-9999"
+    },
+    data_marcada: new Date().toISOString(),
+    data_inclusao: new Date().toISOString(),
+    mensagem: "Interesse no imóvel"
+  }
+];
+
 const useStyle = createStyles(({ css, token }) => {
   const { antCls } = token;
   return {
@@ -133,13 +152,6 @@ export default function Page() {
         const userInfo = localStorage.getItem('userInfo');
         const parsedUserInfo = userInfo ? JSON.parse(userInfo) : null;
         
-        console.log('🔐 Debug Auth:', { 
-          tokenExists: !!authToken, 
-          tokenPrefix: authToken?.substring(0, 20) + '...',
-          userInfo: parsedUserInfo,
-          userLevel: parsedUserInfo?.nivel,
-          isAdmin: parsedUserInfo?.nivel === 0
-        });
         
         if (!authToken) {
           throw new Error('Token de autenticação não encontrado');
@@ -149,38 +161,21 @@ export default function Page() {
           throw new Error(`Usuário não é admin (nível ${parsedUserInfo?.nivel})`);
         }
         
-        console.log('📡 Fazendo requisição para /agendamentos...');
         let response;
         
         try {
           // Tentar buscar todos os agendamentos (admin)
           response = await apiClient.get("/agendamentos");
-          console.log('✅ Resposta de /agendamentos (admin):', response.data);
         } catch (adminError) {
           if (adminError.response?.status === 403) {
-            console.log('⚠️ Acesso negado para /agendamentos, tentando /agendamentos/me...');
             // Se não for admin, buscar apenas os próprios agendamentos
             response = await apiClient.get("/agendamentos/me");
-            console.log('✅ Resposta de /agendamentos/me:', response.data);
           } else {
             throw adminError;
           }
         }
         
         const agendamentosData = response.data.data || response.data || [];
-        console.log('📊 Total de agendamentos:', agendamentosData.length);
-        console.log('🔍 Primeiro agendamento:', agendamentosData[0]);
-        console.log('👤 Dados do usuário do primeiro:', agendamentosData[0]?.usuario);
-        console.log('🏠 Dados do imóvel do primeiro:', agendamentosData[0]?.imovel);
-        if (agendamentosData[0]?.imovel) {
-          console.log('🏠 Campos do imóvel:', {
-            id: agendamentosData[0].imovel.id,
-            endereco: agendamentosData[0].imovel.endereco,
-            cidade: agendamentosData[0].imovel.cidade,
-            tipo: agendamentosData[0].imovel.tipo,
-            preco: agendamentosData[0].imovel.preco
-          });
-        }
         
         setAgendamentos(Array.isArray(agendamentosData) ? agendamentosData : []);
         setAllAgendamentos(Array.isArray(agendamentosData) ? agendamentosData : []);

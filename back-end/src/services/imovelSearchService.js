@@ -103,10 +103,8 @@ export const buscarImoveis = async (data) => {
 };
 
 export const buscarMapa = async (data) => {
-  console.log(data); // Verifique os dados recebidos
 
   try {
-    console.log("Dados recebidos:", data); // Verifique no console o que foi recebido
 
     // 🔹 Filtros principais de Imóvel
     let tipoFilter = {};
@@ -252,10 +250,7 @@ export const buscarMapa = async (data) => {
       throw new Error("Imóveis não encontrados ou dados inválidos.");
     }
 
-    console.log(
-      "Imóveis retornados do banco:",
-      JSON.stringify(PropriedadesMapa, null, 2)
-    );
+
 
     // Organiza os imóveis para o CarrosselMapa
     const imoveisParaCarrossel = organizarImoveisCarrossel(PropriedadesMapa);
@@ -263,8 +258,7 @@ export const buscarMapa = async (data) => {
     // Organiza os imóveis para o MapView
     const imoveisParaMapView = organizarImoveisMapView(PropriedadesMapa);
 
-    console.log(JSON.stringify(imoveisParaCarrossel, null, 2));
-    console.log(JSON.stringify(imoveisParaMapView, null, 2));
+
 
     // Retorna as duas listas organizadas
     return {

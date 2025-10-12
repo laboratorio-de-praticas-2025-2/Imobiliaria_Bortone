@@ -222,7 +222,6 @@ export const sendScheduleConfirmation = async (req, res) => {
           ativo: 1
         });
         
-        console.log(`✅ Novo usuário criado: ${usuario.id} - ${usuario.email}`);
       } else {
         // Se usuário existe, atualizar nome e telefone se fornecidos
         if (name && name !== usuario.nome) {
@@ -233,7 +232,6 @@ export const sendScheduleConfirmation = async (req, res) => {
         }
         await usuario.save();
         
-        console.log(`✅ Usuário existente atualizado: ${usuario.id} - ${usuario.email}`);
       }
 
       // Criar registro de agendamento no banco
@@ -251,11 +249,9 @@ export const sendScheduleConfirmation = async (req, res) => {
         concluido: 0
       };
       
-      console.log('📝 Dados do agendamento a serem salvos:', agendamentoData);
       
       agendamentoSalvo = await Agendamento.create(agendamentoData);
 
-      console.log(`✅ Agendamento salvo no banco: ID ${agendamentoSalvo.id} para usuário ${usuario.id} (${usuario.email})`);
       
     } catch (dbError) {
       console.error('❌ Erro ao salvar agendamento no banco:', dbError);
@@ -271,7 +267,6 @@ export const sendScheduleConfirmation = async (req, res) => {
         text,
         html
       });
-      console.log('✅ Email de confirmação enviado com sucesso');
     } catch (emailError) {
       console.error('❌ Erro ao enviar email de confirmação:', emailError.message);
       // Continuar mesmo se o email falhar

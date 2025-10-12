@@ -20,13 +20,11 @@ export default function Dashboard() {
 
   // Busca os dados da rota /Dashboard
   useEffect(() => {
-    console.log("Dashboard: Iniciando busca de dados...");
     setLoading(true);
     setError(null);
     
     getDashboardData()
       .then((res) => {
-        console.log("Dashboard: Dados recebidos com sucesso", res);
         setDados(res);
       })
       .catch((err) => {
@@ -34,7 +32,6 @@ export default function Dashboard() {
         setError(err.message || "Erro ao carregar dados");
       })
       .finally(() => {
-        console.log("Dashboard: Finalizado carregamento");
         setLoading(false);
       });
   }, []);

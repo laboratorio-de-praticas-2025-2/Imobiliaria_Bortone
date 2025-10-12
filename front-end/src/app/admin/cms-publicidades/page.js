@@ -175,16 +175,11 @@ export default function CmsPublicidadePage() {
   };
 
   const handleSelectOrder = (value) => {
-    console.log("=== ORDENAÇÃO SELECIONADA ===");
-    console.log("Valor selecionado:", value);
-    console.log("filterData antes:", filterData);
     setFilterData((prev) => {
       const newFilterData = { ...prev, order: value };
-      console.log("filterData depois:", newFilterData);
       return newFilterData;
     });
     setCurrentPage(1);
-    console.log("=============================");
   };
 
   const updateFilterData = (newData) => {
@@ -192,7 +187,6 @@ export default function CmsPublicidadePage() {
   };
 
   const handlePageChange = (newPage) => {
-    console.log("Mudando para página:", newPage);
     setCurrentPage(newPage);
   };
 

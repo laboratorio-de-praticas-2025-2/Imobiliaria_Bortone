@@ -24,13 +24,11 @@ export default function CadastroPage() {
       senha: values.password,
     };
     try {
-      console.log("📡 Enviando cadastro para o back-end...", dados);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/user/register`,
         dados
       );
       
-      console.log("✅ Resposta do servidor:", response.data);
       message.success(response.data.message || "Conta criada com sucesso!");
       
       setTimeout(() => {
@@ -56,7 +54,6 @@ export default function CadastroPage() {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("❌ Falha no formulário:", errorInfo);
   };
   
   return (

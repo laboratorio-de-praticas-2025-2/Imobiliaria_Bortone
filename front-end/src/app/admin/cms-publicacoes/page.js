@@ -36,15 +36,8 @@ export default function CmsBlogPage() {
     }
   };
 
-  console.log(
-    "CmsBlogPage carregado, currentPage:",
-    currentPage,
-    "filterData:",
-    filterData
-  );
 
   useEffect(() => {
-    console.log("useEffect chamando loadPublicacoes");
     loadPublicacoes();
   }, []);
 
@@ -123,18 +116,11 @@ export default function CmsBlogPage() {
         params.toString() ? "?" + params.toString() : ""
       }`;
 
-      // Debug completo
-      console.log("=== DEBUG LOAD PUBLICACOES ===");
-      console.log("Variável de ambiente NEXT_PUBLIC_API_URL:", apiUrl);
-      console.log("Endpoint usado:", endpoint);
-      console.log("URL completa:", fullUrl);
-      console.log("Parâmetros:", Object.fromEntries(params));
-      console.log("==============================");
+
 
       const response = await axios.get(fullUrl);
 
-      console.log("Status da resposta:", response.status);
-      console.log("Dados recebidos:", response.data);
+
 
       if (response.status === 200) {
         // Verifica se a resposta tem estrutura de paginação ou é array direto

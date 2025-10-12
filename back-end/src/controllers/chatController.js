@@ -8,12 +8,6 @@ export function handleConnection(ws) {
   let role = null;
   let currentId = null;
 
-  // Debug inicial
-  console.log("🔍 NODE_ENV:", process.env.NODE_ENV);
-  console.log("🔑 JWT_SECRET definido:", !!process.env.JWT_SECRET);
-  console.log("👥 Usuários conectados:", Object.keys(chatService.users).length);
-  console.log("🤖 Agentes conectados:", Object.keys(chatService.agents).length);
-
   ws.on("message", (msg) => {
     let data;
     try {
@@ -43,7 +37,6 @@ export function handleConnection(ws) {
         // Sempre usar ws.userData que foi definido no websocket.js durante a conexão inicial
         if (ws.userData) {
           decoded = ws.userData;
-          console.log("✅ Usando userData do WebSocket:", { id: decoded.id, nivel: decoded.nivel, nome: decoded.nome });
         } else {
           // Se já temos userData do websocket.js, usar ao invés de verificar novamente
           if (ws.userData) {
@@ -51,15 +44,10 @@ export function handleConnection(ws) {
           } else {
             decoded = chatService.verifyToken(data.token);
             if (!decoded) {
-              console.log(
-                "❌ Token inválido na conexão:",
-                data.token?.substring(0, 20) + "..."
-              );
               ws.close(4002, "Token inválido");
               return;
             }
           }
-          console.log("⚠️ Usando token do cliente (userData não estava presente)");
         }
 
         const roleMap = {
@@ -72,18 +60,7 @@ export function handleConnection(ws) {
 
         // Priorizar nome do token, depois o nome enviado pelo cliente
         const nomeUsuario =
-          decoded.nome || data.nome || decoded.email || `Usuario ${currentId}`;
-
-        // Log detalhado para debug
-        console.log(
-          `🔍 Conexão chat - ID: ${currentId}, Nome: "${nomeUsuario}", Nível: ${decoded.nivel}, Role: ${role}`,
-          {
-            tokenNome: decoded.nome,
-            dataNome: data.nome,
-            email: decoded.email,
-            nomeEscolhido: nomeUsuario,
-          }
-        );
+          decoded.nome || data.nome || decoded.email || `Usuario ${currentId}`;        
 
         // Usuário
         if (role === "user") {
@@ -93,11 +70,7 @@ export function handleConnection(ws) {
           // Verificar limite de usuários ANTES de outras verificações
           const maxUsers = isDevelopment ? 10 : 20;
           if (Object.keys(chatService.users).length >= maxUsers) {
-            console.log(
-              `❌ Limite de usuários atingido: ${
-                Object.keys(chatService.users).length
-              }/${maxUsers}`
-            );
+          
             chatService.send(ws, {
               type: "error",
               msg: "Limite de usuários simultâneos atingido. Tente novamente mais tarde.",

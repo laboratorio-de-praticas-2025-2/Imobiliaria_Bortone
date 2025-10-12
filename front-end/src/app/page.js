@@ -63,7 +63,6 @@ export default function Home() {
                        sessionStorage.getItem('navigatedFromAdmin') === 'true';
     
     if (isFromAdmin) {
-      console.log('🔄 Detectada navegação do admin, limpando estados...');
       
       // Limpar flag
       sessionStorage.removeItem('navigatedFromAdmin');
@@ -74,7 +73,6 @@ export default function Home() {
       }, 100);
     }
     
-    console.log('🏠 Página Home carregada/recarregada');
   }, []);
 
   // Mostrar splash screen apenas na primeira visita

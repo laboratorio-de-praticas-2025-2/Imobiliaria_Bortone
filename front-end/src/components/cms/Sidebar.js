@@ -5,7 +5,6 @@ import { IoClose, IoMenu } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 import SidebarNav from "./SidebarNav";
 import Link from "next/link";
-import { usersMock } from "@/mock/users"; // Certifique-se que o caminho do import está correto
 import { handleLogout } from "@/utils/auth";
 
 export default function Sidebar() {

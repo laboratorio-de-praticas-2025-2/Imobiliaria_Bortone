@@ -30,7 +30,6 @@ function ImoveisPageContent() {
   const handleGetImoveis = async (page = 1, append = false) => {
     try {
       setLoading(true);
-      console.log("Chamando API com filtros:", filterData);
       
       const params = new URLSearchParams({
         ...filterData,
@@ -45,7 +44,6 @@ function ImoveisPageContent() {
       });
       
       const result = await response.json();
-      console.log(result);
       
       if (result.data && Array.isArray(result.data)) {
         if (append) {
