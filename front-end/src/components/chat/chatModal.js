@@ -396,7 +396,10 @@ export default function ChatModal({ onClose, isLoggedIn }) {
                 null;
 
               const ts = payload?.timestamp ?? data?.timestamp ?? Date.now();
-              const fromMe = fromId && fromId === userData.userId;
+              // Comparação robusta para identificar se a mensagem foi enviada por este usuário
+              // Aceita números e strings, e trata null/undefined corretamente
+              const fromMe =
+                fromId != null && String(fromId) === String(userData.userId);
 
               const newMsg = createMessage(
                 ts,
@@ -408,42 +411,73 @@ export default function ChatModal({ onClose, isLoggedIn }) {
               console.log("➕ Adicionando mensagem normalizada:", newMsg);
               setMessages((prev) => [...prev, newMsg]);
 
-              // --- Alertas: tocar som e notificação ---
+              // --- NOTIFICAÇÕES (som + browser) para agente e cliente ---
               try {
-                // Se o usuário for agente, ele deve ouvir notificações de novas mensagens de usuários
-                const isMessageFromUser =
-                  !fromMe && (!fromId || fromId !== userData.userId);
+                // Não notificar se a mensagem foi enviada por este usuário
+                if (fromMe) return;
 
-                // Tocar som para qualquer mensagem nova que não seja enviada por este usuário (evita tocar para mensagens que eu enviei)
-                if (!fromMe) playPopDing();
+                // Tentar garantir que o AudioContext esteja ativo (ajuda com políticas de autoplay)
+                try {
+                  if (typeof window !== "undefined") {
+                    if (
+                      window._bortone_audio_ctx &&
+                      window._bortone_audio_ctx.state === "suspended"
+                    ) {
+                      window._bortone_audio_ctx.resume().catch(() => {});
+                    }
+                  }
+                } catch (e) {
+                  // não bloqueia alertas
+                }
 
-                // Mostrar notificação para agentes quando receberem mensagem de usuário (e não estiver com a janela do chat em foco)
-                if (userData.isAgent && isMessageFromUser) {
-                  ensureNotificationPermission().then((granted) => {
-                    if (!granted) return;
-                    showBrowserNotification(
-                      `Nova mensagem de ${
-                        payload?.fromName || payload?.nome || "usuário"
-                      }`,
-                      {
-                        body: text.trim().slice(0, 120),
-                        tag: `chat-${fromId || ts}`,
-                        renotify: true,
+                // Tocar som (Web Audio helper existente)
+                try {
+                  playPopDing();
+                } catch (e) {
+                  // se falhar, tentar tocar um som via elemento Audio se disponível
+                  try {
+                    if (typeof window !== "undefined") {
+                      if (!window._bortone_fallback_audio) {
+                        // tom simples gerado como data-uri (curto beep) não é trivial — evitar assets novos
+                        // então simplesmente criar um Audio vazio para tentar disparar alguma reprodução
+                        window._bortone_fallback_audio = new Audio();
                       }
-                    );
-                  });
+                      window._bortone_fallback_audio.play?.().catch(() => {});
+                    }
+                  } catch (e2) {}
                 }
 
-                // Se for usuário final e receber resposta do suporte enquanto a aba não estiver visível
-                if (!userData.isAgent && !fromMe) {
-                  ensureNotificationPermission().then((granted) => {
-                    if (!granted) return;
-                    showBrowserNotification("Resposta do suporte", {
-                      body: text.trim().slice(0, 120),
-                      tag: `chat-support-${ts}`,
+                // Mostrar notificação de browser para ambos (agente e cliente) quando permissão concedida
+                ensureNotificationPermission().then((granted) => {
+                  if (!granted) return;
+
+                  const shortBody = text.trim().slice(0, 120);
+
+                  if (userData.isAgent) {
+                    // Agente recebe notificação sobre mensagens de usuários
+                    const title = `Nova mensagem de ${
+                      payload?.fromName ||
+                      payload?.nome ||
+                      `Usuário ${fromId || "desconhecido"}`
+                    }`;
+                    showBrowserNotification(title, {
+                      body: shortBody,
+                      tag: `chat-from-${fromId || "unknown"}`,
+                      renotify: true,
                     });
+                    return;
+                  }
+
+                  // Cliente recebe notificação sobre respostas do suporte/atendente
+                  const agentLabel =
+                    payload?.fromName || payload?.nome || "Suporte";
+                  const title = `Resposta de ${agentLabel}`;
+                  showBrowserNotification(title, {
+                    body: shortBody,
+                    tag: `chat-support-${ts}`,
+                    renotify: true,
                   });
-                }
+                });
               } catch (e) {
                 console.warn("Erro ao disparar alertas:", e);
               }
@@ -533,13 +567,15 @@ export default function ChatModal({ onClose, isLoggedIn }) {
         };
 
         socket.onclose = (event) => {
-
-          console.log("❌ WebSocket fechado:", { code: event.code, reason: event.reason });
+          console.log("❌ WebSocket fechado:", {
+            code: event.code,
+            reason: event.reason,
+          });
           console.log("🔍 Estado da conexão antes do fechamento:", {
             readyState: socket.readyState,
             isConnected: isConnected,
             reconnectAttempts: reconnectAttempts,
-            userData: userData
+            userData: userData,
           });
           setIsConnected(false);
           stopHeartbeat();
@@ -551,7 +587,6 @@ export default function ChatModal({ onClose, isLoggedIn }) {
             !noReconnectCodes.includes(event.code) &&
             reconnectAttempts < maxReconnectAttempts
           ) {
-
             reconnectAttempts++;
             setConnectionStatus("reconnecting");
             const delay = Math.min(
@@ -626,6 +661,29 @@ export default function ChatModal({ onClose, isLoggedIn }) {
   const handleSend = () => {
     const messageText = newMessage.trim();
     if (!messageText || !ws || !isConnected) return;
+
+    // Tentar garantir que o AudioContext esteja ativo (ajuda com políticas de autoplay)
+    try {
+      if (typeof window !== "undefined") {
+        // Cria e resume um AudioContext silencioso se necessário
+        if (!window._bortone_audio_ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            try {
+              window._bortone_audio_ctx = new AudioContext();
+              if (window._bortone_audio_ctx.state === "suspended") {
+                window._bortone_audio_ctx.resume().catch(() => {});
+              }
+            } catch (e) {}
+          }
+        } else if (window._bortone_audio_ctx.state === "suspended") {
+          window._bortone_audio_ctx.resume().catch(() => {});
+        }
+      }
+    } catch (e) {
+      // Não falhar o envio apenas por problema de audio
+      console.warn("Falha ao inicializar AudioContext:", e);
+    }
 
     let payload = { type: "message", text: messageText };
 
@@ -761,7 +819,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
             </h2>
             <p className="text-xs text-white/80">
               {connectionStatus === "connected" && "🟢 Online"}
-              {connectionStatus === "connecting" && "� Conectando..."}
+              {connectionStatus === "connecting" && " Conectando..."}
               {connectionStatus === "reconnecting" && "🟡 Reconectando..."}
               {connectionStatus === "disconnected" && "🔴 Desconectado"}
               {" • " + userData.nome}
@@ -840,7 +898,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
                 <span className="text-yellow-600">🟡 Conectando...</span>
               )}
               {connectionStatus === "reconnecting" && (
-                <span className="text-yellow-600">� Reconectando...</span>
+                <span className="text-yellow-600"> Reconectando...</span>
               )}
               {connectionStatus === "disconnected" && (
                 <span className="text-red-600">🔴 Desconectado</span>

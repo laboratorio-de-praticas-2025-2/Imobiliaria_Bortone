@@ -12,7 +12,6 @@ import "@/styles/cms.css";
 import "leaflet/dist/leaflet.css";
 import Script from "next/script";
 import ChatWrapper from "@/components/chat/chatWrapper";
-import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export default function RootLayout({ children }) {
   return (
@@ -79,7 +78,6 @@ export default function RootLayout({ children }) {
       <body className="antialiased">
         {children}
         <ChatWrapper />
-        <SpeedInsights />
       </body>
     </html>
   );
