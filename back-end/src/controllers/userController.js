@@ -2,7 +2,7 @@ import userService from "../services/userServices.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-const JWTSecret = "bortonesecret";
+const JWTSecret = process.env.JWT_SECRET || "bortonesecret";
 
 const createUser = async (req, res) => {
   try {

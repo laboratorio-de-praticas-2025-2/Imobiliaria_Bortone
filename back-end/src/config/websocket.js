@@ -68,18 +68,39 @@ export default function initWebSocket(server) {
 
     // Autenticação JWT obrigatória
     if (!token) {
+      console.log("❌ Token não fornecido na URL");
       ws.close(4001, "Token JWT obrigatório");
       return;
     }
 
+    // Debug: verificar se JWT_SECRET está definido
+    if (!process.env.JWT_SECRET) {
+      console.error("❌ ERRO CRÍTICO: JWT_SECRET não está definido no ambiente!");
+      ws.close(4002, "Configuração inválida do servidor");
+      return;
+    }
+
+    console.log(`🔍 Tentando verificar token (primeiros 30 chars): ${token.substring(0, 30)}...`);
+    console.log(`🔍 JWT_SECRET definido: ${!!process.env.JWT_SECRET}`);
+
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(`✅ Token válido para usuário ID: ${decoded.id}, Nível: ${decoded.nivel}`);
+      console.log(`✅ Token válido para usuário ID: ${decoded.id}, Email: ${decoded.email}, Nível: ${decoded.nivel}`);
       ws.userData = decoded;
       handleConnection(ws);
     } catch (error) {
       console.log(`❌ Erro na verificação do token: ${error.message}`);
-      ws.close(4002, "Token inválido");
+      console.log(`🔍 Tipo de erro: ${error.name}`);
+      if (error.name === 'TokenExpiredError') {
+        console.log(`⏰ Token expirou em: ${error.expiredAt}`);
+        ws.close(4002, "Token expirado");
+      } else if (error.name === 'JsonWebTokenError') {
+        console.log(`🔍 Mensagem de erro JWT: ${error.message}`);
+        ws.close(4002, "Token inválido");
+      } else {
+        console.log(`🔍 Erro desconhecido: ${error.stack}`);
+        ws.close(4002, "Erro ao validar token");
+      }
     }
   });
 
