@@ -342,7 +342,13 @@ export default function Mapa() {
             <div className="Ibotao">
               <Link
                 className="SimComp_botao !text-sm md:!text-xl"
-                href={`/simulacao?valor=${imovelAtual?.preco || 0}`}
+                href={{
+                  pathname: '/simulacao',
+                  query: {
+                    valor: imovelAtual?.preco ?? 0,
+                    imovelId: imovelAtual?.id ?? id
+                  }
+                }}
               >
                 Simular{" "}
                 <span className="hidden md:flex">&nbsp;financiamento</span>

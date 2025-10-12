@@ -1,10 +1,10 @@
 import { Card, Button, Input, Slider, ConfigProvider } from "antd";
 import { simularFinanciamento } from "@/services/simulacaoService";
-import { useState, useContext, useEffect } from "react"; 
+import { useState, useContext, useEffect, Suspense } from "react"; 
 import { SimulacaoContext } from "./Filter"; 
 import { useSearchParams } from "next/navigation";
 
-export default function RequestForm() {
+function RequestFormContent() {
   const searchParams = useSearchParams();
   const [parcelas, setParcelas] = useState(20);
   const [valorEntrada, setValorEntrada] = useState('');
@@ -222,5 +222,21 @@ export default function RequestForm() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function RequestForm() {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center w-full">
+        <div className="lg:w-sm 2xl:w-md w-[85vw] shadow-xl rounded-b-2xl">
+          <div className="bg-[var(--primary)] text-white rounded-t-2xl p-5 text-center">
+            <p className="form font-semibold">Carregando formulário...</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <RequestFormContent />
+    </Suspense>
   );
 };

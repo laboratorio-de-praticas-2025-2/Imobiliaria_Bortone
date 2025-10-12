@@ -1,9 +1,9 @@
 "use client";
 import { Slider, ConfigProvider, Button, Input } from "antd";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function Form() {
+function FormContent() {
   const searchParams = useSearchParams();
   const [value, setValue] = useState(100000);
 
@@ -25,8 +25,11 @@ export default function Form() {
   }, [searchParams]);
 
   const handleClick = () => {
-    // Passa o valor atual para a próxima página também
-    window.location.href = `/simulacao/simulador?valor=${value}`;
+    // Passa o valor atual e o imovelId (se existir) para a próxima página
+    const imovelId = searchParams.get('imovelId');
+    const query = new URLSearchParams({ valor: String(value) });
+    if (imovelId) query.set('imovelId', imovelId);
+    window.location.href = `/simulacao/simulador?${query.toString()}`;
   };
 
   // Função para formatar o valor como moeda brasileira
@@ -104,5 +107,19 @@ export default function Form() {
         </Button>
       </div>
     </div>
+  );
+}
+
+export default function Form() {
+  return (
+    <Suspense fallback={
+      <div className="justify-self-center lg:pb-10">
+        <div className="md:w-110 lg:h-85 bg-white p-7 md:p-10 rounded-3xl relative z-20 text-center">
+          <p className="text-[var(--primary)]">Carregando...</p>
+        </div>
+      </div>
+    }>
+      <FormContent />
+    </Suspense>
   );
 }
