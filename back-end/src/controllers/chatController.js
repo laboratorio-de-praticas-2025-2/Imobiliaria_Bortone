@@ -231,6 +231,20 @@ export function handleConnection(ws) {
           return;
         }
 
+        // === FILTRO DE SPAM: impedir flood de mensagens por usuário (< 3 segundos) ===
+        const RATE_LIMIT_MS = 3000; // 3 segundos
+        if (role === "user" && chatService.users[currentId]) {
+          const lastMsgAt = chatService.users[currentId].lastMessageAt || 0;
+          const now = Date.now();
+          if (now - lastMsgAt < RATE_LIMIT_MS) {
+            chatService.send(ws, {
+              type: "status",
+              msg: "Aguarde 3 segundos antes de enviar outra mensagem.",
+            });
+            return;
+          }
+        }
+
         let newMsg;
 
         if (role === "user") {
@@ -248,6 +262,11 @@ export function handleConnection(ws) {
 
           // Atualizar atividade do usuário
           chatService.updateUserActivity(currentId);
+
+          // Registrar timestamp da última mensagem para o rate-limit
+          if (chatService.users[currentId]) {
+            chatService.users[currentId].lastMessageAt = Date.now();
+          }
 
           // No modo de desenvolvimento, enviar mensagem para todos os outros usuários conectados
           const isDevelopment = process.env.NODE_ENV === 'development';
