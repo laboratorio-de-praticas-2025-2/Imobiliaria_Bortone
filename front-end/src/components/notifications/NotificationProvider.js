@@ -4,7 +4,6 @@ import { useNotifications } from "@/hooks/useNotifications";
 import { Toaster } from "react-hot-toast";
 
 export default function NotificationProvider() {
-  console.log("🔥 NotificationProvider renderizando...");
   // Hook funciona aqui porque é componente de cliente
   try {
     useNotifications();

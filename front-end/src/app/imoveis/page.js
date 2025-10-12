@@ -54,6 +54,7 @@ function ImoveisPageContent() {
   const handleGetImoveis = useCallback(async (page = 1) => {
     setLoading(true);
     try {
+      
       const params = {};
       if (filterData && typeof filterData === "object") {
         Object.entries(filterData).forEach(([key, value]) => {
@@ -82,6 +83,7 @@ function ImoveisPageContent() {
       }
       params.page = page.toString();
 
+      
       
       const query = new URLSearchParams({
         //Paginação: padrão alterado de 10 pra 12
@@ -114,6 +116,7 @@ function ImoveisPageContent() {
         hasNextPage: data.hasNextPage ?? false,
         hasPrevPage: data.hasPrevPage ?? false,
       });
+
 
       
       setCurrentPage(page); 

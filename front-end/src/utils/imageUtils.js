@@ -35,9 +35,7 @@ function getApiBaseUrl() {
   
   const cleanUrl = rawApiUrl.replace(/\/api\/?$/, '').replace(/\/$/, '');
   
-  if (process.env.NODE_ENV === 'development') {
-    console.log('🌐 API Base URL:', { raw: rawApiUrl, clean: cleanUrl });
-  }
+ 
   
   return cleanUrl;
 }
@@ -59,9 +57,7 @@ function getImageFolder(type) {
   
   const folder = folders[type] || folders.default;
   
-  if (process.env.NODE_ENV === 'development') {
-    console.log('📁 Pasta determinada:', { type, folder });
-  }
+
   
   return folder;
 }

@@ -13,20 +13,15 @@ class SocketService {
 
   async connect() {
     if (typeof window === "undefined") {
-      console.log("🚫 SSR detectado - não conectando socket");
       return;
     }
     if (this.socket && this.socket.connected) return;
 
     try {
-      console.log("🔗 Conectando no navegador:", SOCKET_URL);
-
       const token =
         typeof window !== "undefined"
           ? localStorage.getItem("token") || sessionStorage.getItem("token")
           : null;
-      console.log("🔍 Token encontrado:", !!token);
-
       const socketModule = await import("socket.io-client");
       // Compatível com diferentes formatos de exportação (named `io`, default export, or module itself)
       const io = socketModule.io || socketModule.default || socketModule;

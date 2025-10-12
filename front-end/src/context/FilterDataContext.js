@@ -18,7 +18,6 @@ export function FilterDataProvider({ children }) {
 
   useEffect(() => {
     async function fetchData() {
-      console.log("Chamando API com filtros:", filterData);
     }
     fetchData();
   }, [filterData]);

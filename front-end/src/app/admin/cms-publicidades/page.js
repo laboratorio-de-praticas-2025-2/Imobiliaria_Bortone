@@ -24,22 +24,6 @@ export default function CmsPublicidadePage() {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const buildQueryParams = useCallback(() => {
-    const params = new URLSearchParams();
-    if (filterData.order) {
-      if (filterData.order === "Ordem alfabetica") {
-        params.append("ordenarPor", "alfabetica");
-        params.append("direcao", "ASC");
-      } else if (filterData.order === "Data de inclusão") {
-        params.append("ordenarPor", "data");
-        params.append("direcao", "DESC");
-      }
-    }
-    params.append("page", currentPage.toString());
-    params.append("limit", "12");
-    return params;
-  }, [filterData.order, currentPage]);
-
   const loadPublicidades = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -58,11 +42,19 @@ export default function CmsPublicidadePage() {
       params.append("page", String(currentPage));
       params.append("limit", String(pagination.itemsPerPage));
 
+      console.log('🔍 Carregando publicidades com parâmetros:', params.toString());
+
       const url = `${process.env.NEXT_PUBLIC_API_URL}/publicidade${
         params.toString() ? "?" + params.toString() : ""
       }`;
 
-      const response = await axios.get(url);
+      const authToken = localStorage.getItem('authToken');
+      const response = await axios.get(url, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
       if (response.status === 200) {
         // Garantir que sempre temos um array
         let publicidadesData = [];
@@ -99,7 +91,60 @@ export default function CmsPublicidadePage() {
     } finally {
       setIsLoading(false);
     }
-  }, [buildQueryParams]);
+  }, [filterData.order, currentPage, pagination.itemsPerPage]);
+
+  // Função para deletar uma publicidade específica
+  const deletePublicidade = useCallback(async (id) => {
+    try {
+      console.log('🗑️ Deletando publicidade:', id);
+      const authToken = localStorage.getItem('authToken');
+      
+      const response = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      
+      console.log('✅ Publicidade deletada com sucesso');
+      await loadPublicidades(); // Recarregar lista
+      return true;
+    } catch (error) {
+      console.error('❌ Erro ao deletar publicidade:', error);
+      throw error;
+    }
+  }, [loadPublicidades]);
+
+  // Função para alternar status ativo/inativo
+  const togglePublicidade = useCallback(async (id, currentStatus) => {
+    try {
+      console.log('🔄 Alternando status da publicidade:', id, 'Status atual:', currentStatus);
+      const authToken = localStorage.getItem('authToken');
+      
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`,
+        {
+          ativo: !currentStatus
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      
+      console.log('✅ Status alterado com sucesso');
+      await loadPublicidades(); // Recarregar lista
+      return true;
+    } catch (error) {
+      console.error('❌ Erro ao alterar status da publicidade:', error);
+      throw error;
+    }
+  }, [loadPublicidades]);
 
   useEffect(() => {
     loadPublicidades();
@@ -175,16 +220,11 @@ export default function CmsPublicidadePage() {
   };
 
   const handleSelectOrder = (value) => {
-    console.log("=== ORDENAÇÃO SELECIONADA ===");
-    console.log("Valor selecionado:", value);
-    console.log("filterData antes:", filterData);
     setFilterData((prev) => {
       const newFilterData = { ...prev, order: value };
-      console.log("filterData depois:", newFilterData);
       return newFilterData;
     });
     setCurrentPage(1);
-    console.log("=============================");
   };
 
   const updateFilterData = (newData) => {
@@ -192,7 +232,6 @@ export default function CmsPublicidadePage() {
   };
 
   const handlePageChange = (newPage) => {
-    console.log("Mudando para página:", newPage);
     setCurrentPage(newPage);
   };
 
@@ -239,8 +278,8 @@ export default function CmsPublicidadePage() {
                       item={publicidade}
                       href_cms="publicidades"
                       header={true}
-                      onDelete={loadPublicidades}
-                      onToggle={loadPublicidades}
+                      onDelete={() => deletePublicidade(publicidade.id)}
+                      onToggle={() => togglePublicidade(publicidade.id, publicidade.ativo === 1)}
                     />
                   ))}
                 </div>

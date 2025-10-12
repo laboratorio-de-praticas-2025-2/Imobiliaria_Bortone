@@ -145,7 +145,6 @@ export const getRecomendacoesByUserId = async (usuario_id) => {
     let imoveisRecomendados = []; // Inicializa a lista de recomendações // Se o usuário não tiver NENHUM histórico, busca populares e pula para o tratamento.
 
     if (_.isEmpty(imoveisVisitados)) {
-      console.log("Usuário sem histórico. Retornando imóveis populares.");
       imoveisRecomendados = await getImoveisPopulares();
     } else {
       // Extrai os IDs dos imóveis visitados para evitar recomendá-los novamente.
@@ -184,9 +183,7 @@ export const getRecomendacoesByUserId = async (usuario_id) => {
 
       // Segunda tentativa (fallback): se a primeira falhar, suaviza a busca
       if (_.isEmpty(imoveisRecomendados)) {
-        console.log(
-          "Nenhuma recomendação encontrada com filtros estritos. Expandindo a busca..."
-        );
+       
 
         // Remove os filtros de preço, cidade e estado, mantendo apenas o tipo
         let filtrosExpandidos = {
@@ -202,9 +199,7 @@ export const getRecomendacoesByUserId = async (usuario_id) => {
 
       // Terceira tentativa (fallback final): se a busca expandida também falhar
       if (_.isEmpty(imoveisRecomendados)) {
-        console.log(
-          "Nenhuma recomendação encontrada com filtros expandidos. Retornando populares."
-        );
+        
         imoveisRecomendados = await getImoveisPopulares(idsImoveisVisitados);
       }
     }

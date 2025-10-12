@@ -16,7 +16,6 @@ class FaqService {
       const newFaq = await Faq.create({ pergunta, resposta, usuario_id });
       return newFaq;
     } catch (error) {
-      console.log("Erro ao criar FAQ:", error);
       throw error;
     }
   }

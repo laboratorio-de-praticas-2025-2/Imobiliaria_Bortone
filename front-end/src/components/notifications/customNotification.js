@@ -10,24 +10,8 @@ export default function CustomNotification({
   onViewNow,
   onClose,
 }) {
-  // 🔍 DEBUG: Vamos ver exatamente o que está chegando
-  console.log("🔥 CustomNotification - Props recebidas:", {
-    toast,
-    imovel,
-    tipo,
-  });
-  try {
-    console.log(
-      "🔥 CustomNotification - imovel completo:",
-      JSON.stringify(imovel, null, 2)
-    );
-  } catch (err) {
-    console.log(
-      "🔥 CustomNotification - imovel completo: [unserializable]",
-      err
-    );
-  }
-  console.log("🔥 CustomNotification - imovel.property:", imovel?.property);
+  
+
 
   // Extrair dados do imóvel - tentando várias formas
   const title = imovel?.title || "Imóvel em Destaque";
@@ -36,11 +20,7 @@ export default function CustomNotification({
   // Tenta várias formas de acessar os dados da propriedade
   const property = imovel?.property || imovel?.imovel || imovel?.data || imovel;
 
-  console.log("🔥 CustomNotification - property extraída:", property);
-  console.log(
-    "🔥 CustomNotification - keys do property:",
-    Object.keys(property || {})
-  );
+
 
   // Formatação de dados com fallbacks mais robustos
   const preco = property?.preco || property?.valor || property?.price;
@@ -61,13 +41,7 @@ export default function CustomNotification({
     property?.tipo_negociacao || property?.tipo || property?.type || "venda";
   const id = property?.id || property?.imovel_id;
 
-  console.log("🔥 CustomNotification - Dados processados:", {
-    precoFormatado,
-    areaFormatada,
-    endereco,
-    tipoNegociacao,
-    id,
-  });
+
 
 
   // Imagem placeholder ou URL real (você pode implementar lógica para buscar imagem)

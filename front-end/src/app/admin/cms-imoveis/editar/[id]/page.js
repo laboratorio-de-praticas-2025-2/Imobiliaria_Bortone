@@ -117,6 +117,7 @@ export default function EditarImovelPage({ params }) {
         setImovel(found);
 
 
+
         try {
           const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
           const imagesData = imagesResponse.data;
@@ -176,6 +177,7 @@ export default function EditarImovelPage({ params }) {
                 return null;
               }
             }).filter(Boolean); 
+
             
             // console.log('DEBUG EDITAR: formattedImages processadas:', formattedImages);
             setFileList(formattedImages);
@@ -191,7 +193,7 @@ export default function EditarImovelPage({ params }) {
         setStatusSelecionado(found.status ?? "Selecione o status");
         setCitiesSelecionado(found.cidade ?? "Selecione a cidade");
         setSelectedState(found.estado ?? "Selecione o estado");
-        
+  
         if (found.casa && found.tipo && found.tipo.toLowerCase() !== "terreno") {
           const formatValue = (value) => {
             if (value >= 5) return "5+";
@@ -209,6 +211,7 @@ export default function EditarImovelPage({ params }) {
           setSelectedBathrooms("Quantidade");
           setSelectedParking("Quantidade");
         }
+
 
         
         form.setFieldsValue({
@@ -265,7 +268,10 @@ export default function EditarImovelPage({ params }) {
       for (const imageId of imagesToDelete) {
         try {
           await axios.delete(`${apiUrl}/imagemimovel/${imageId}`);
+
+          
           // console.log(`Imagem ${imageId} deletada com sucesso`);
+
         } catch (error) {
           // console.error(`Erro ao deletar imagem ${imageId}:`, error);
         }
@@ -287,8 +293,10 @@ export default function EditarImovelPage({ params }) {
           headers: {
             'Content-Type': 'application/json',
           },
+
         });          
           // console.log(`Imagem ${newImage.name} enviada com sucesso. Filename: ${response.data.url_imagem}`);
+
         } catch (error) {
           console.error(`Erro ao fazer upload da imagem ${newImage.name}:`, error);
         }
@@ -331,14 +339,17 @@ export default function EditarImovelPage({ params }) {
         usuario_id: imovel.usuario_id,
       };
 
+
       
       
       setLoading(true);
       await axios.put(`${apiUrl}/imoveis/${id}`, updateData);
       
       await handleImageChanges();
+
       
       // console.log("Imóvel atualizado com sucesso!");
+
       setIsConfirmModalVisible(false);
       window.location.href = "/admin/cms-imoveis";
     } catch (error) {

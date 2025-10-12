@@ -16,7 +16,6 @@ export default function PriceRange({ children, type }) {
   }, [filters, type]);
 
   const handlePriceChange = (newValues) => {
-    console.log(`PriceRange: Alterando preço para ${type}:`, newValues);
     setValues(newValues);
 
     // Atualiza os filtros no contexto

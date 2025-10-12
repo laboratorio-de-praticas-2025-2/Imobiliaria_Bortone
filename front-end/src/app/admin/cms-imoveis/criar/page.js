@@ -75,7 +75,9 @@ export default function CriarImovelPage() {
         longitude: values.longitude,
       };
 
+
       // console.log(tipoSelecionado)
+
 
       let specificData = {};
 
@@ -112,7 +114,6 @@ export default function CriarImovelPage() {
         ...(tipoSelecionado.toLowerCase() === "terreno" ? specificData : {}),
       };
       
-      console.log("Dados sendo enviados para API:", finalData);
       
       const response = await apiClient.post('/imoveis', finalData);
       
@@ -120,7 +121,9 @@ export default function CriarImovelPage() {
       if (response.status === 201) {
         const imovelId = response.data.id;
 
+
         // console.log("Arquivos selecionados:", fileList);
+
 
         for (const file of fileList) {
           try {

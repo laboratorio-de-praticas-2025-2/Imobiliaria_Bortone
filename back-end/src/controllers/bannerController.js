@@ -91,11 +91,9 @@ const toggleBannerStatus = async (req, res) => {
   const { id } = req.params;
 
   try {
-    console.log(`[toggleBannerStatus] id=${id}`);
 
     // Busca banner
     const banner = await BannerService.getById(Number(id));
-    console.log(`[toggleBannerStatus] before ativo=`, banner.ativo);
 
     // Alterna status
     const current = banner.ativo === 1 || banner.ativo === "1" || banner.ativo === true || banner.ativo === "true";
@@ -109,7 +107,6 @@ const toggleBannerStatus = async (req, res) => {
       novoStatus
     );
 
-    console.log(`[toggleBannerStatus] after ativo=`, updated.ativo);
 
     return res.status(200).json({
       message: "Status atualizado com sucesso",
@@ -117,7 +114,6 @@ const toggleBannerStatus = async (req, res) => {
       banner: updated
     });
   } catch (error) {
-    console.error("[toggleBannerStatus] erro:", error);
     if (error.message === "Banner não encontrado") {
       return res.status(404).json({ error: error.message });
     }

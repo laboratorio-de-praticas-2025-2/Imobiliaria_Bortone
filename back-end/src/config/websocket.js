@@ -40,15 +40,7 @@ export default function initWebSocket(server) {
       ws.isAlive = true;
     });
 
-    // Log de fechamento para debug
-    ws.on("close", (code, reason) => {
-      console.log(`🔌 WebSocket fechado - Código: ${code}, Razão: ${reason}, Usuário: ${ws.userData?.id || 'desconhecido'}`);
-    });
 
-    // Log de erros para debug
-    ws.on("error", (error) => {
-      console.log(`🚨 Erro no WebSocket - Usuário: ${ws.userData?.id || 'desconhecido'}, Erro: ${error.message}`);
-    });
 
     // Para teste: permitir conexão sem JWT se for modo de desenvolvimento
     const urlParams = new URLSearchParams(req.url.split('?')[1]);
@@ -80,12 +72,9 @@ export default function initWebSocket(server) {
       return;
     }
 
-    console.log(`🔍 Tentando verificar token (primeiros 30 chars): ${token.substring(0, 30)}...`);
-    console.log(`🔍 JWT_SECRET definido: ${!!process.env.JWT_SECRET}`);
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(`✅ Token válido para usuário ID: ${decoded.id}, Email: ${decoded.email}, Nível: ${decoded.nivel}`);
       ws.userData = decoded;
       handleConnection(ws);
     } catch (error) {
