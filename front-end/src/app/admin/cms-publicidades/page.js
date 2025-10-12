@@ -24,59 +24,6 @@ export default function CmsPublicidadePage() {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  // Função para deletar uma publicidade específica
-  const deletePublicidade = useCallback(async (id) => {
-    try {
-      console.log('🗑️ Deletando publicidade:', id);
-      const authToken = localStorage.getItem('authToken');
-      
-      const response = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      
-      console.log('✅ Publicidade deletada com sucesso');
-      await loadPublicidades(); // Recarregar lista
-      return true;
-    } catch (error) {
-      console.error('❌ Erro ao deletar publicidade:', error);
-      throw error;
-    }
-  }, [loadPublicidades]);
-
-  // Função para alternar status ativo/inativo
-  const togglePublicidade = useCallback(async (id, currentStatus) => {
-    try {
-      console.log('🔄 Alternando status da publicidade:', id, 'Status atual:', currentStatus);
-      const authToken = localStorage.getItem('authToken');
-      
-      const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`,
-        {
-          ativo: !currentStatus
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      
-      console.log('✅ Status alterado com sucesso');
-      await loadPublicidades(); // Recarregar lista
-      return true;
-    } catch (error) {
-      console.error('❌ Erro ao alterar status da publicidade:', error);
-      throw error;
-    }
-  }, [loadPublicidades]);
-
   const loadPublicidades = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -145,6 +92,59 @@ export default function CmsPublicidadePage() {
       setIsLoading(false);
     }
   }, [filterData.order, currentPage, pagination.itemsPerPage]);
+
+  // Função para deletar uma publicidade específica
+  const deletePublicidade = useCallback(async (id) => {
+    try {
+      console.log('🗑️ Deletando publicidade:', id);
+      const authToken = localStorage.getItem('authToken');
+      
+      const response = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      
+      console.log('✅ Publicidade deletada com sucesso');
+      await loadPublicidades(); // Recarregar lista
+      return true;
+    } catch (error) {
+      console.error('❌ Erro ao deletar publicidade:', error);
+      throw error;
+    }
+  }, [loadPublicidades]);
+
+  // Função para alternar status ativo/inativo
+  const togglePublicidade = useCallback(async (id, currentStatus) => {
+    try {
+      console.log('🔄 Alternando status da publicidade:', id, 'Status atual:', currentStatus);
+      const authToken = localStorage.getItem('authToken');
+      
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/publicidade/${id}`,
+        {
+          ativo: !currentStatus
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      
+      console.log('✅ Status alterado com sucesso');
+      await loadPublicidades(); // Recarregar lista
+      return true;
+    } catch (error) {
+      console.error('❌ Erro ao alterar status da publicidade:', error);
+      throw error;
+    }
+  }, [loadPublicidades]);
 
   useEffect(() => {
     loadPublicidades();

@@ -173,7 +173,10 @@ export default function Page() {
         }
         
         if (parsedUserInfo?.nivel !== 0) {
-          throw new Error(`Usuário não é admin (nível ${parsedUserInfo?.nivel})`);
+          const error = new Error(`Usuário não é admin (nível ${parsedUserInfo?.nivel})`);
+          error.name = 'AuthorizationError';
+          error.userLevel = parsedUserInfo?.nivel;
+          throw error;
         }
         
         let response;
@@ -208,20 +211,36 @@ export default function Page() {
         
         console.log('✅ [cms-agendamentos] Dados carregados com sucesso!', validData.length, 'itens');
       } catch (err) {
-        console.error("❌ Erro detalhado ao buscar agendamentos:", {
-          status: err.response?.status,
-          statusText: err.response?.statusText,
-          data: err.response?.data,
-          message: err.message
-        });
+        // Diferentes tipos de erro requerem logging diferente
+        if (err.response) {
+          // Erro de resposta HTTP da API
+          console.error("❌ Erro detalhado ao buscar agendamentos (API):", {
+            status: err.response.status,
+            statusText: err.response.statusText,
+            data: err.response.data,
+            message: err.message,
+            url: err.config?.url
+          });
+        } else {
+          // Erro customizado ou de rede
+          console.error("❌ Erro detalhado ao buscar agendamentos:", {
+            name: err.name,
+            message: err.message,
+            stack: err.stack
+          });
+        }
         
-        // Se erro 401 ou problemas de conexão, tentar usar dados mockados temporariamente
-        if (err.response?.status === 401 || !err.response) {
+        // Tratar diferentes tipos de erro
+        if (err.name === 'AuthorizationError') {
+          console.warn('⚠️ Erro de autorização - usuário não é admin:', err.message);
+          setAgendamentos([]);
+          setAllAgendamentos([]);
+        } else if (err.response?.status === 401 || !err.response) {
           console.warn('⚠️ Erro de API - usando dados mockados temporariamente:', err.message);
           setAgendamentos(mockedAgendamentos);
           setAllAgendamentos(mockedAgendamentos);
         } else {
-          console.error('❌ Erro da API que não permite fallback:', err.response?.status, err.message);
+          console.error('❌ Erro da API que não permite fallback:', err.response?.status || 'N/A', err.message);
           setAgendamentos([]);
           setAllAgendamentos([]);
         }
