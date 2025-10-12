@@ -3,11 +3,33 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import { Navigation } from "swiper/modules";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useEffect, useState } from "react";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
-const slides = [
+const apiURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
+// Função helper para construir URL de imagem corretamente
+const getImageUrl = (urlImagem) => {
+  if (!urlImagem) return null;
+  
+  // Se já é uma URL completa, retorna como está
+  if (urlImagem.startsWith("http://") || urlImagem.startsWith("https://")) {
+    return urlImagem;
+  }
+  
+  // Se começa com /, é um caminho absoluto do backend
+  if (urlImagem.startsWith("/")) {
+    return `${apiURL}${urlImagem}`;
+  }
+  
+  // Se não tem /, assume que é apenas o nome do arquivo
+  return `${apiURL}/uploads/${urlImagem}`;
+};
+
+// Slides padrão como fallback
+const defaultSlides = [
   { id: 1, url: "/images/slide1.png" },
   { id: 2, url: "/images/slide2.png" },
   { id: 3, url: "/images/slide3.png" },
@@ -17,6 +39,82 @@ const slides = [
 ];
 
 export default function HeaderSlider() {
+  const [slides, setSlides] = useState(defaultSlides);
+  const [loading, setLoading] = useState(true);
+
+  // Função para buscar banners ativos do backend
+  const fetchActiveBanners = async () => {
+    try {
+      setLoading(true);
+      
+      console.log("🎠 Buscando banners ativos para carrossel...");
+
+      const response = await fetch(`${apiURL}/banner`);
+      if (!response.ok) {
+        throw new Error(`Erro ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      console.log("📊 Dados recebidos do backend:", data);
+      
+      // Validação básica dos dados
+      if (!Array.isArray(data)) {
+        throw new Error("Dados recebidos não são um array");
+      }
+      
+      // Filtra apenas banners ativos
+      const bannersAtivos = data.filter(banner => banner.ativo === 1);
+      console.log(`✅ Banners ativos encontrados: ${bannersAtivos.length}`);
+      
+      if (bannersAtivos.length > 0) {
+        // Converte banners para formato de slides
+        const slidesFromBanners = bannersAtivos.map(banner => ({
+          id: banner.id,
+          url: getImageUrl(banner.url_imagem),
+          alt: banner.descricao || `Banner ${banner.id}`,
+          originalUrl: banner.url_imagem
+        }));
+        
+        // Log das URLs processadas
+        slidesFromBanners.forEach((slide, index) => {
+          console.log(`🖼️ Slide ${index + 1}:`, {
+            id: slide.id,
+            original: slide.originalUrl,
+            processed: slide.url
+          });
+        });
+        
+        setSlides(slidesFromBanners);
+        console.log("🎉 Carrossel atualizado com banners ativos!");
+      } else {
+        console.log("⚠️ Nenhum banner ativo encontrado, usando slides padrão");
+        setSlides(defaultSlides);
+      }
+      
+    } catch (error) {
+      console.error("❌ Erro ao buscar banners ativos:", error);
+      console.log("🔄 Usando slides padrão como fallback");
+      setSlides(defaultSlides);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchActiveBanners();
+  }, []);
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="relative w-full">
+        <div className="w-[90%] mx-auto h-[195px] bg-gray-200 rounded-xl flex items-center justify-center">
+          <div className="text-gray-500">Carregando banners...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full">
       <Swiper
@@ -41,10 +139,16 @@ export default function HeaderSlider() {
             <div className="rounded-xl overflow-hidden w-full max-w-[28rem]">
               <Image
                 src={slide.url}
-                alt={`Imóvel ${index + 1}`}
+                alt={slide.alt || `Imóvel ${index + 1}`}
                 width={407}
                 height={195}
                 className="w-full h-auto object-cover"
+                onError={(e) => {
+                  // Silenciar logs de erro para banners antigos (localhost:4000)
+                  // console.error("❌ Erro ao carregar imagem:", slide.url);
+                  // Fallback para imagem padrão se houver erro
+                  e.target.src = "/404.png";
+                }}
               />
             </div>
           </SwiperSlide>

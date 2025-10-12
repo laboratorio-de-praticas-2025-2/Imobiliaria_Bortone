@@ -48,7 +48,7 @@ export default function Filter() {
                 <p className="font-bold text-[14px] text-[var(--primary)] pb-3">
                   Escolha o tipo de imóvel:
                 </p>
-                <div>
+                <div className="flex flex-row">
                   <Button
                     onClick={() => setPropertyType("imovel")} // MODIFICADO
                     className={`!px-6 !py-6 !font-bold  !rounded-l-xl w-35 !rounded-none ${
@@ -72,8 +72,6 @@ export default function Filter() {
                   </Button>
                 </div>
               </div>
-            </Col>
-          </Row>
         </div>
         <div className=" text-xs text-[var(--primary)] mt-4 hidden lg:block ">
           Descubra de forma rápida o valor do imóvel que você deseja adquirir ou

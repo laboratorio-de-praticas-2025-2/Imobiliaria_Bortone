@@ -13,6 +13,7 @@ import { setSocketManager } from './utils/socketHelper.js';
 import { errorHandler } from "./middlewares/errorHandler.js";
 import "./models/Associations.js";
 
+// Importar todas as rotas
 import healthRouter from "./routes/healthRouter.js";
 import socketRoutes from './routes/socketRoutes.js';
 import blogRoutes from "./routes/blogRoutes.js";
@@ -38,6 +39,13 @@ const __dirname = path.dirname(__filename);
 // Criar servidor HTTP
 const server = createServer(app);
 
+// Inicializar SocketManager
+const socketManager = new SocketManager(server);
+
+// Tornar socketManager disponível globalmente
+app.set('socketManager', socketManager);
+setSocketManager(socketManager);
+
 // ----------------------
 // Middlewares
 // ----------------------
@@ -47,6 +55,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Servir arquivos estáticos
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
+// Rotas
 
 app.use('/', recomendacaoRouter);
 app.use("/api/socket", socketRoutes);
@@ -69,8 +79,11 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
 app.use(errorHandler);
 
+// Inicializar WebSocket
+initWebSocket(server);
+
 // ----------------------
-// Banco de dados 
+// Banco de dados
 // ----------------------
 connection
   .authenticate()

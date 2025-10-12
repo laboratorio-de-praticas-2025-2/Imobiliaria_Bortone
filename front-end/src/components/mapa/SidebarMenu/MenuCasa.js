@@ -7,17 +7,17 @@ import Options from './Options';
 import PropertySize from './PropertySize';
 import SettingsButtons from './SettingsButtons';
 
-export default function MenuCasa({ activeType, setActiveType }) {
+export default function MenuCasa({ activeType, setActiveType, setImoveisMapa, setImoveisCarrossel }) {
   return (
     <div className="grid h-full">
       <div>
-        <PropertyType activeType={activeType} setActiveType={setActiveType} />
+        <PropertyType activeType={activeType} setActiveType={setActiveType}  />
         <PriceRange type="casa">Faixa de preço</PriceRange>
         <RoomsNumber />
 
         <Options />
         <PropertySize type="casa">Tamanho da Propriedade</PropertySize>
-        <SettingsButtons type={"casa"} />
+        <SettingsButtons type={"casa"} setImoveisMapa={setImoveisMapa} setImoveisCarrossel={setImoveisCarrossel}  />
       </div>
     </div>
   );

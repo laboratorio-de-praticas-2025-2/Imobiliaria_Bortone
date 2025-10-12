@@ -1,5 +1,4 @@
 import express from "express";
-
 const healthRouter = express.Router();
 
 // --- Rota de Verificação de Saúde ---
