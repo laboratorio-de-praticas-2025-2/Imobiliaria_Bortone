@@ -3,6 +3,7 @@ import Casa from './Casa.js';
 import Terreno from './Terreno.js';
 import Usuario from './Usuario.js';
 import ImagemImovel from './ImagemImovel.js';
+import Agendamento from './Agendamento.js';
 
 // 🔹 Imovel ↔ Casa (1:1)
 Imovel.hasOne(Casa, { 
@@ -44,4 +45,24 @@ ImagemImovel.belongsTo(Imovel, {
     as: 'imoveis'
 });
 
-export { Imovel, Casa, Terreno, Usuario, ImagemImovel };
+// 🔹 Agendamento ↔ Usuario (N:1)
+Usuario.hasMany(Agendamento, {
+    foreignKey: 'id_usuario',
+    as: 'agendamentos'
+});
+Agendamento.belongsTo(Usuario, {
+    foreignKey: 'id_usuario',
+    as: 'usuario'
+});
+
+// 🔹 Agendamento ↔ Imovel (N:1)
+Imovel.hasMany(Agendamento, {
+    foreignKey: 'id_imovel',
+    as: 'agendamentos'
+});
+Agendamento.belongsTo(Imovel, {
+    foreignKey: 'id_imovel',
+    as: 'imovel'
+});
+
+export { Imovel, Casa, Terreno, Usuario, ImagemImovel, Agendamento };

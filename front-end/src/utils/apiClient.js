@@ -15,6 +15,23 @@ export const apiClient = axios.create({
   maxRedirects: 5,
 });
 
+// Interceptor de requisição para incluir automaticamente o token de autenticação
+apiClient.interceptors.request.use(
+  (config) => {
+    // Verificar se estamos no lado do cliente (browser)
+    if (typeof window !== 'undefined') {
+      const authToken = localStorage.getItem('authToken');
+      if (authToken) {
+        config.headers.Authorization = `Bearer ${authToken}`;
+      }
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Interceptor de resposta para tratar erros
 apiClient.interceptors.response.use(
   (response) => {
