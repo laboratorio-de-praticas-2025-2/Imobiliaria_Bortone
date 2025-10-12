@@ -5,6 +5,8 @@ import {
   sendScheduleConfirmation,
   sendPropertyNotification,
 } from "../controllers/agendamentoController.js";
+import * as AgendamentoCrud from "../controllers/agendamentoCrudController.js";
+import Auth from "../middlewares/Auth.js";
 
 const agendamentoRoutes = express.Router();
 
@@ -61,5 +63,14 @@ agendamentoRoutes.post("/agendar", sendScheduleConfirmation);
 
 // Rota para notificação de novos imóveis relacionada a agendamento
 agendamentoRoutes.post("/property-notification", sendPropertyNotification);
+
+// CRUD de Agendamentos (requer autenticação)
+agendamentoRoutes.post("/", Auth.Authorization, AgendamentoCrud.create);
+agendamentoRoutes.get("/me", Auth.Authorization, AgendamentoCrud.listForUser);
+// Lista geral (apenas admin)
+agendamentoRoutes.get("/", Auth.Authorization, AgendamentoCrud.listAll);
+agendamentoRoutes.get("/:id", Auth.Authorization, AgendamentoCrud.getById);
+agendamentoRoutes.patch("/:id", Auth.Authorization, AgendamentoCrud.update);
+agendamentoRoutes.delete("/:id", Auth.Authorization, AgendamentoCrud.remove);
 
 export default agendamentoRoutes;
