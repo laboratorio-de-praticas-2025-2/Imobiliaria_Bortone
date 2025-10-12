@@ -122,7 +122,7 @@ class ReportService {
 
     const QUERY_DISTRIBUICAO_IMOVEIS_TIPO = `SELECT * FROM estatisticasImoveisDistribuicaoPorTipo;`;
 
-    const QUERY_TABELA_IMOVEIS_ACESSOS = `SELECT I.id, COUNT(RI.id) AS quantidade_acessos, I.tipo, I.preco, I.visibilidade_preco, I.area,
+    const QUERY_TABELA_IMOVEIS_ACESSOS = `SELECT I.id, COUNT(RI.id) AS quantidade_acessos, I.tipo, I.preco, CASE WHEN I.visibilidade_preco = 1 THEN 'Visível' ELSE 'Oculto' END AS visibilidade_preco, I.area,
       I.endereco
       FROM imoveis I
         LEFT JOIN
@@ -195,8 +195,8 @@ class ReportService {
       WHERE A.data_create >= :data_inicio AND A.data_create <= :data_fim;
     `;
 
-    const QUERY_TABELA_AGENDAMENTOS = `SELECT A.data_create, A.data_marcada, U.email, 
-      U.data_cadastro AS data_cadastro_usuario, I.tipo, I.endereco  
+    const QUERY_TABELA_AGENDAMENTOS = `SELECT A.id AS id_agendamento, TO_CHAR(A.data_create, 'DD/MM/YYYY HH24:MI') AS data_create, TO_CHAR(A.data_marcada, 'DD/MM/YYYY HH24:MI') AS data_marcada, U.email, 
+    TO_CHAR(U.data_cadastro, 'DD/MM/YYYY') AS data_cadastro_usuario, I.tipo, I.endereco  
       FROM agendamentos A 
         INNER JOIN usuario U 
 	        ON U.id = A.id_usuario 
@@ -248,8 +248,7 @@ class ReportService {
       agendamentosAntigoUsuarios:
         Number(estatisticasAgendamento.agendamento_antigos_usuarios) || 0,
       taxaConversao: taxaConversao,
-      evolucaoMensalAgendamentoEUsuario:
-        evolucaoMensalAgendamentoEUsuario,
+      evolucaoMensalAgendamentoEUsuario: evolucaoMensalAgendamentoEUsuario,
       tabelaAgendamentos: tabelaAgendamentos || [],
     };
   }
@@ -260,7 +259,7 @@ class ReportService {
     const QUERY_TOTAL = `SELECT count(*) AS total FROM imoveis WHERE status = 'vendido' AND data_update_status >= :data_inicio AND data_update_status <= :data_fim;`;
     const QUERY_DISTRIBUICAO_TIPO = `CALL estatisticasVendasIntervalo(:data_inicio, :data_fim);`;
     const QUERY_EVOLUCAO_MENSAL = `CALL estatisticasVendasMes(:data_inicio, :data_fim);`;
-    const QUERY_REGISTRO_DADOS = `SELECT id, data_update_status, endereco, tipo, preco, CASE WHEN visibilidade_preco = 1 THEN 'Visível' ELSE 'Oculto' END AS visibilidade_preco, area FROM imoveis WHERE STATUS = 'vendido' AND data_update_status BETWEEN :data_inicio AND :data_fim ORDER BY data_update_status DESC;`;
+    const QUERY_REGISTRO_DADOS = `SELECT id, TO_CHAR(data_update_status, 'DD/MM/YYYY') AS data_update_status, endereco, tipo, preco, CASE WHEN visibilidade_preco = 1 THEN 'Visível' ELSE 'Oculto' END AS visibilidade_preco, area FROM imoveis WHERE STATUS = 'vendido' AND data_update_status BETWEEN :data_inicio AND :data_fim ORDER BY data_update_status DESC;`;
 
     const [
       total,
@@ -324,7 +323,7 @@ class ReportService {
     const QUERY_TOTAL = `SELECT count(*) AS total FROM imoveis WHERE status = 'locado' AND data_update_status >= :data_inicio AND data_update_status <= :data_fim;`;
     const QUERY_DISTRIBUICAO_TIPO = `CALL estatisticasLocacoesIntervalo(:data_inicio, :data_fim);`;
     const QUERY_EVOLUCAO_MENSAL = `CALL estatisticasLocacoesMes(:data_inicio, :data_fim);`;
-    const QUERY_REGISTRO_DADOS = `SELECT id, data_update_status, endereco, tipo, preco, CASE WHEN visibilidade_preco = 1 THEN 'Visível' ELSE 'Oculto' END AS visibilidade_preco, area FROM imoveis WHERE STATUS = 'locado' AND data_update_status BETWEEN :data_inicio AND :data_fim ORDER BY data_update_status DESC;`;
+    const QUERY_REGISTRO_DADOS = `SELECT id, TO_CHAR(data_update_status, 'DD/MM/YYYY') AS data_update_status, endereco, tipo, preco , CASE WHEN visibilidade_preco = 1 THEN 'Visível' ELSE 'Oculto' END AS visibilidade_preco, area FROM imoveis WHERE STATUS = 'locado' AND data_update_status BETWEEN :data_inicio AND :data_fim ORDER BY data_update_status DESC;`;
 
     const [
       total,
@@ -375,7 +374,7 @@ class ReportService {
     );
 
     return {
-      totaLocacoes: total[0]?.total || 0,
+      totalLocacoes: total[0]?.total || 0,
       distribuicaoTipo: distribuicaoTipo,
       evolucaoMensal: evolucaoMensal,
       tabelaLocacoes: tabelaLocacoes,

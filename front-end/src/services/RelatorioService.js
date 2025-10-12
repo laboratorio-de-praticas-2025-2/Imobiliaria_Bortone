@@ -3,7 +3,7 @@ const url =
   process.env.NEXT_PUBLIC_API_URL || "https://imobiliaria-bortone.onrender.com";
 
 // Pega os dados de um relatório específico
-export async function getRelatorioData(data_inicio, data_fim, secoes = []) {
+export async function getRelatorioData(secoes = [], data_inicio = null, data_fim = null) {
   console.log("Buscando dados do relatório: ", secoes, "URL:", url);
 
   const params = new URLSearchParams();

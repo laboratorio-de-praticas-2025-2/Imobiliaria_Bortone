@@ -15,548 +15,19 @@ import React from "react";
 export default function Relatorio({ data, secoes = [] }) {
   let pageNumber = 1;
 
-  // Debug: verificar dados recebidos
   console.log("Dados recebidos no Relatorio:", data);
 
   // Se não vier array de seções ou vier vazio, renderiza todas as seções
   const todasSecoes = [
     "SUMARIO_EXECUTIVO",
     "JORNADA_CLIENTE",
-    "ESTOQUE_IMOBILIARIO",
+    "ANALISE_ESTOQUE_IMOBILIARIO",
     "DESEMPENHO_VENDAS",
     "DESEMPENHO_LOCACOES",
   ];
 
   const secoesParaRenderizar =
     secoes && secoes.length > 0 ? secoes : todasSecoes;
-
-  //MOCKAR TUDO
-  if (!data.desempenhoVendas) {
-    data.desempenhoVendas = {};
-  }
-  if (!data.desempenhoLocacoes) {
-    data.desempenhoLocacoes = {};
-  }
-  if (!data.estoqueImobiliario) {
-    data.estoqueImobiliario = {};
-  }
-  if (!data.jornadaCliente) {
-    data.jornadaCliente = {};
-  }
-
-  // Mock do campo distribuicaoTipo de desemepenhoVendas
-  data.desempenhoVendas.distribuicaoTipo = [
-    { tipo: "Apartamento", quantidade: 1, porcentagem: 20 },
-    { tipo: "Casa", quantidade: 0, porcentagem: 0 },
-    { tipo: "Terreno", quantidade: 4, porcentagem: 80 },
-  ];
-
-  // Mock do campo distribuicaoTipo de desempenhoLocacoes
-  data.desempenhoLocacoes.distribuicaoTipo = [
-    { tipo: "Apartamento", quantidade: 10, porcentagem: 10 },
-    { tipo: "Casa", quantidade: 70, porcentagem: 80 },
-    { tipo: "Terreno", quantidade: 20, porcentagem: 20 },
-  ];
-
-  data.desempenhoVendas.tabelaVendas = [
-    {
-      id: 1,
-      data_update_status: "2025-09-01T01:00:00.000Z",
-      endereco: "Rua T, 567",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 2,
-      data_update_status: "2025-08-17T01:00:00.000Z",
-      endereco: "Rua V, 890",
-      tipo: "Terreno",
-      preco: "135000.00",
-      visibilidade_preco: "Visível",
-      area: 400,
-    },
-    {
-      id: 3,
-      data_update_status: "2025-08-14T01:00:00.000Z",
-      endereco: "Rua Paraguai, 012",
-      tipo: "Apartamento",
-      preco: "245000.00",
-      visibilidade_preco: "Visível",
-      area: 68,
-    },
-    {
-      id: 4,
-      data_update_status: "2025-07-27T01:00:00.000Z",
-      endereco: "Rua R, 345",
-      tipo: "Terreno",
-      preco: "95000.00",
-      visibilidade_preco: "Visível",
-      area: 200,
-    },
-    {
-      id: 5,
-      data_update_status: "2025-07-22T01:00:00.000Z",
-      endereco: "Rua J, 678",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 6,
-      data_update_status: "2025-09-01T01:00:00.000Z",
-      endereco: "Rua T, 567",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 7,
-      data_update_status: "2025-08-17T01:00:00.000Z",
-      endereco: "Rua V, 890",
-      tipo: "Terreno",
-      preco: "135000.00",
-      visibilidade_preco: "Visível",
-      area: 400,
-    },
-    {
-      id: 8,
-      data_update_status: "2025-08-14T01:00:00.000Z",
-      endereco: "Rua Paraguai, 012",
-      tipo: "Apartamento",
-      preco: "245000.00",
-      visibilidade_preco: "Visível",
-      area: 68,
-    },
-    {
-      id: 9,
-      data_update_status: "2025-07-27T01:00:00.000Z",
-      endereco: "Rua R, 345",
-      tipo: "Terreno",
-      preco: "95000.00",
-      visibilidade_preco: "Visível",
-      area: 200,
-    },
-    {
-      id: 10,
-      data_update_status: "2025-07-22T01:00:00.000Z",
-      endereco: "Rua J, 678",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 11,
-      data_update_status: "2025-09-01T01:00:00.000Z",
-      endereco: "Rua T, 567",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 12,
-      data_update_status: "2025-08-17T01:00:00.000Z",
-      endereco: "Rua V, 890",
-      tipo: "Terreno",
-      preco: "135000.00",
-      visibilidade_preco: "Visível",
-      area: 400,
-    },
-    {
-      id: 13,
-      data_update_status: "2025-08-14T01:00:00.000Z",
-      endereco: "Rua Paraguai, 012",
-      tipo: "Apartamento",
-      preco: "245000.00",
-      visibilidade_preco: "Visível",
-      area: 68,
-    },
-    {
-      id: 14,
-      data_update_status: "2025-07-27T01:00:00.000Z",
-      endereco: "Rua R, 345",
-      tipo: "Terreno",
-      preco: "95000.00",
-      visibilidade_preco: "Visível",
-      area: 200,
-    },
-    {
-      id: 15,
-      data_update_status: "2025-07-22T01:00:00.000Z",
-      endereco: "Rua J, 678",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 16,
-      data_update_status: "2025-09-01T01:00:00.000Z",
-      endereco: "Rua T, 567",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 17,
-      data_update_status: "2025-08-17T01:00:00.000Z",
-      endereco: "Rua V, 890",
-      tipo: "Terreno",
-      preco: "135000.00",
-      visibilidade_preco: "Visível",
-      area: 400,
-    },
-    {
-      id: 18,
-      data_update_status: "2025-08-14T01:00:00.000Z",
-      endereco: "Rua Paraguai, 012",
-      tipo: "Apartamento",
-      preco: "245000.00",
-      visibilidade_preco: "Visível",
-      area: 68,
-    },
-    {
-      id: 19,
-      data_update_status: "2025-07-27T01:00:00.000Z",
-      endereco: "Rua R, 345",
-      tipo: "Terreno",
-      preco: "95000.00",
-      visibilidade_preco: "Visível",
-      area: 200,
-    },
-    {
-      id: 20,
-      data_update_status: "2025-07-22T01:00:00.000Z",
-      endereco: "Rua J, 678",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 21,
-      data_update_status: "2025-09-01T01:00:00.000Z",
-      endereco: "Rua T, 567",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 22,
-      data_update_status: "2025-08-17T01:00:00.000Z",
-      endereco: "Rua V, 890",
-      tipo: "Terreno",
-      preco: "135000.00",
-      visibilidade_preco: "Visível",
-      area: 400,
-    },
-    {
-      id: 23,
-      data_update_status: "2025-08-14T01:00:00.000Z",
-      endereco: "Rua Paraguai, 012",
-      tipo: "Apartamento",
-      preco: "245000.00",
-      visibilidade_preco: "Visível",
-      area: 68,
-    },
-    {
-      id: 24,
-      data_update_status: "2025-07-27T01:00:00.000Z",
-      endereco: "Rua R, 345",
-      tipo: "Terreno",
-      preco: "95000.00",
-      visibilidade_preco: "Visível",
-      area: 200,
-    },
-    {
-      id: 25,
-      data_update_status: "2025-07-22T01:00:00.000Z",
-      endereco: "Rua J, 678",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 26,
-      data_update_status: "2025-09-01T01:00:00.000Z",
-      endereco: "Rua T, 567",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 27,
-      data_update_status: "2025-08-17T01:00:00.000Z",
-      endereco: "Rua V, 890",
-      tipo: "Terreno",
-      preco: "135000.00",
-      visibilidade_preco: "Visível",
-      area: 400,
-    },
-    {
-      id: 28,
-      data_update_status: "2025-08-14T01:00:00.000Z",
-      endereco: "Rua Paraguai, 012",
-      tipo: "Apartamento",
-      preco: "245000.00",
-      visibilidade_preco: "Visível",
-      area: 68,
-    },
-    {
-      id: 29,
-      data_update_status: "2025-07-27T01:00:00.000Z",
-      endereco: "Rua R, 345",
-      tipo: "Terreno",
-      preco: "95000.00",
-      visibilidade_preco: "Visível",
-      area: 200,
-    },
-    {
-      id: 30,
-      data_update_status: "2025-07-22T01:00:00.000Z",
-      endereco: "Rua J, 678",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 31,
-      data_update_status: "2025-09-01T01:00:00.000Z",
-      endereco: "Rua T, 567",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 32,
-      data_update_status: "2025-08-17T01:00:00.000Z",
-      endereco: "Rua V, 890",
-      tipo: "Terreno",
-      preco: "135000.00",
-      visibilidade_preco: "Visível",
-      area: 400,
-    },
-    {
-      id: 33,
-      data_update_status: "2025-08-14T01:00:00.000Z",
-      endereco: "Rua Paraguai, 012",
-      tipo: "Apartamento",
-      preco: "245000.00",
-      visibilidade_preco: "Visível",
-      area: 68,
-    },
-    {
-      id: 34,
-      data_update_status: "2025-07-27T01:00:00.000Z",
-      endereco: "Rua R, 345",
-      tipo: "Terreno",
-      preco: "95000.00",
-      visibilidade_preco: "Visível",
-      area: 200,
-    },
-    {
-      id: 35,
-      data_update_status: "2025-07-22T01:00:00.000Z",
-      endereco: "Rua J, 678",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 36,
-      data_update_status: "2025-09-01T01:00:00.000Z",
-      endereco: "Rua T, 567",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-    {
-      id: 37,
-      data_update_status: "2025-08-17T01:00:00.000Z",
-      endereco: "Rua V, 890",
-      tipo: "Terreno",
-      preco: "135000.00",
-      visibilidade_preco: "Visível",
-      area: 400,
-    },
-    {
-      id: 38,
-      data_update_status: "2025-08-14T01:00:00.000Z",
-      endereco: "Rua Paraguai, 012",
-      tipo: "Apartamento",
-      preco: "245000.00",
-      visibilidade_preco: "Visível",
-      area: 68,
-    },
-    {
-      id: 39,
-      data_update_status: "2025-07-27T01:00:00.000Z",
-      endereco: "Rua R, 345",
-      tipo: "Terreno",
-      preco: "95000.00",
-      visibilidade_preco: "Visível",
-      area: 200,
-    },
-    {
-      id: 40,
-      data_update_status: "2025-07-22T01:00:00.000Z",
-      endereco: "Rua J, 678",
-      tipo: "Terreno",
-      preco: "125000.00",
-      visibilidade_preco: "Visível",
-      area: 350,
-    },
-  ];
-
-  data.desempenhoVendas.evolucaoMensal = [
-    {
-      mes: "2025-07",
-      Apartamento: 0,
-      Casa: 0,
-      Terreno: 2,
-    },
-    {
-      mes: "2025-08",
-      Apartamento: 1,
-      Casa: 0,
-      Terreno: 1,
-    },
-    {
-      mes: "2025-09",
-      Apartamento: 0,
-      Casa: 0,
-      Terreno: 1,
-    },
-    {
-      mes: "2025-10",
-      Apartamento: 0,
-      Casa: 0,
-      Terreno: 0,
-    },
-    {
-      mes: "2025-11",
-      Apartamento: 0,
-      Casa: 0,
-      Terreno: 0,
-    },
-  ];
-
-  data.desempenhoLocacoes.evolucaoMensal = [
-    {
-      mes: "2025-07",
-      Apartamento: 0,
-      Casa: 0,
-      Terreno: 2,
-    },
-    {
-      mes: "2025-08",
-      Apartamento: 1,
-      Casa: 0,
-      Terreno: 1,
-    },
-    {
-      mes: "2025-09",
-      Apartamento: 0,
-      Casa: 0,
-      Terreno: 1,
-    },
-    {
-      mes: "2025-10",
-      Apartamento: 0,
-      Casa: 0,
-      Terreno: 0,
-    },
-    {
-      mes: "2025-11",
-      Apartamento: 0,
-      Casa: 0,
-      Terreno: 0,
-    },
-  ];
-
-  data.jornadaCliente.evolucaoMensal = [
-    {
-      mes: "2025-08",
-      quantidadeAgendamentos: 20,
-      quantidadeNovosUsuarios: 10,
-    },
-    {
-      mes: "2025-09",
-      quantidadeAgendamentos: 5,
-      quantidadeNovosUsuarios: 10,
-    },
-    {
-      mes: "2025-10",
-      quantidadeAgendamentos: 12,
-      quantidadeNovosUsuarios: 14,
-    },
-  ];
-
-  data.estoqueImobiliario.resumo = {
-    totalImoveis: 5,
-    totalDisponivel: 3,
-    totalLocado: 1,
-    totalVendido: 1,
-    distribuicaoImoveisPreco: [
-      {
-        faixa: "-300k",
-        quantidade: 51,
-        porcentagem: 60,
-      },
-      {
-        faixa: "300-600",
-        quantidade: 32,
-        porcentagem: 37.65,
-      },
-      {
-        faixa: "+600",
-        quantidade: 2,
-        porcentagem: 2.35,
-      },
-    ],
-    distribuicaoImoveisTipo: [
-      { tipo_imovel: "Apartamento", quantidade: 12 },
-      { tipo_imovel: "Casa", quantidade: 14 },
-      { tipo_imovel: "Terreno", quantidade: 10 },
-    ],
-    totalPrecoVisivel: 4,
-    totalPrecoOculto: 1,
-  };
-
-  data.estoqueImobiliario.imoveisMaisAcessados = [
-    //Todos os imóveis ordenados pela quantidade de acesso DESC
-    {
-      id_imovel: "xx",
-      quantidade_acesso: "xx",
-      endereco: "xx",
-      tipo: "xx",
-      preco: "xx",
-      visibilidade: "xx",
-      tamanho: "xx",
-    },
-    {
-      id_imovel: "xx",
-      quantidade_acesso: "xx",
-      endereco: "xx",
-      tipo: "xx",
-      preco: "xx",
-      visibilidade: "xx",
-      tamanho: "xx",
-    },
-  ];
 
   const desempenhoVendasDistribuicaoTipo = data?.desempenhoVendas
     ?.distribuicaoTipo
@@ -594,15 +65,15 @@ export default function Relatorio({ data, secoes = [] }) {
       }
     : { labels: [], datasets: [] };
 
-  const estoqueImobiliarioDistribuicaoFaixaPreco = data?.estoqueImobiliario
-    ?.resumo?.distribuicaoImoveisPreco
+  const estoqueImobiliarioDistribuicaoFaixaPreco = data?.analiseEstoque
+    ?.distribuicaoPorPreco
     ? {
-        labels: data.estoqueImobiliario.resumo.distribuicaoImoveisPreco.map(
-          (item) => item.faixa
+        labels: data.analiseEstoque.distribuicaoPorPreco.map(
+          (item) => item.faixaPreco
         ),
         datasets: [
           {
-            data: data.estoqueImobiliario.resumo.distribuicaoImoveisPreco.map(
+            data: data.analiseEstoque.distribuicaoPorPreco.map(
               (item) => item.quantidade
             ),
             backgroundColor: ["#118C4F", "#F1EB9C", "#FF7276"],
@@ -613,15 +84,15 @@ export default function Relatorio({ data, secoes = [] }) {
       }
     : { labels: [], datasets: [] };
 
-  const estoqueImobiliarioDistribuicaoTipo = data?.estoqueImobiliario?.resumo
-    ?.distribuicaoImoveisTipo
+  const estoqueImobiliarioDistribuicaoTipo = data?.analiseEstoque
+    ?.distribuicaoPorTipo
     ? {
-        labels: data.estoqueImobiliario.resumo.distribuicaoImoveisTipo.map(
-          (item) => item.tipo_imovel
+        labels: data.analiseEstoque.distribuicaoPorTipo.map(
+          (item) => item.tipo
         ),
         datasets: [
           {
-            data: data.estoqueImobiliario.resumo.distribuicaoImoveisTipo.map(
+            data: data.analiseEstoque.distribuicaoPorTipo.map(
               (item) => item.quantidade
             ),
             backgroundColor: ["#243B7B", "#F39C12", "#E74C3C"],
@@ -656,20 +127,6 @@ export default function Relatorio({ data, secoes = [] }) {
       }
     : { labels: [], datasets: [] };
 
-  const dataVendasPorTipo = data?.vendas?.vendasPorTipo
-    ? {
-        labels: Object.keys(data.vendas.vendasPorTipo),
-        datasets: [
-          {
-            data: Object.values(data.vendas.vendasPorTipo),
-            backgroundColor: ["#243B7B", "#F39C12", "#E74C3C"],
-            borderWidth: 1,
-            cutout: "0%",
-          },
-        ],
-      }
-    : { labels: [], datasets: [] };
-
   const distribuicaoImoveisPorPreco = data?.imoveis?.porFaixaDePreco
     ? {
         labels: [
@@ -688,7 +145,6 @@ export default function Relatorio({ data, secoes = [] }) {
       }
     : { labels: [], datasets: [] };
 
-  // Safety check to ensure data exists
   if (!data) {
     return <div>Carregando dados do relatório...</div>;
   }
@@ -716,23 +172,29 @@ export default function Relatorio({ data, secoes = [] }) {
             <div className="mb-6">
               <h3 className="font-bold text-lg mb-2">KPIs de Vendas:</h3>
               <ul className="list-disc ml-8 mb-4">
-                <li>
+                <li className="!text-lg">
                   <span className="font-semibold">
                     Valor Geral de Vendas (VGV):
                   </span>{" "}
                   <span className="text-sm">
-                    [Soma do valor de todos os imóveis vendidos no período]
+                    {" "}
+                    [{data?.sumarioExecutivo?.totalVendas || "..."}]
                   </span>
                 </li>
-                <li>
-                  <span className="font-semibold">Total de Vendas:</span>{" "}
+                <li className="!text-lg">
+                  <span className="font-semibold">
+                    Quantidade Total de Vendas:
+                  </span>{" "}
                   <span className="text-sm">
-                    [Contagem de imóveis vendidos]
+                    [{data?.sumarioExecutivo?.valorGeralVendas || "..."}]
                   </span>
                 </li>
-                <li>
+                <li className="!text-lg">
                   <span className="font-semibold">Ticket Médio por Venda:</span>{" "}
-                  <span className="text-sm">[VGV / Total de Vendas]</span>
+                  <span className="text-sm">
+                    [ (data?.sumarioExecutivo?.valorGeralVendas /
+                    data?.sumarioExecutivo?.totalVendas || 0).toFixed(2) ]
+                  </span>
                 </li>
               </ul>
               <hr className="my-4 border-gray-400" />
@@ -740,25 +202,25 @@ export default function Relatorio({ data, secoes = [] }) {
                 KPIs de Leads e Engajamento:
               </h3>
               <ul className="list-disc ml-8">
-                <li>
+                <li className="!text-lg">
                   <span className="font-semibold">
                     Novos Agendamentos Criados:
                   </span>{" "}
                   <span className="text-sm">
-                    [Contagem de agendamentos.id WHERE data_criacao no período]
+                    [{data?.sumarioExecutivo?.totalAgendamentosCriados || "..."}
+                    ]
                   </span>
                 </li>
-                <li>
+                <li className="!text-lg">
                   <span className="font-semibold">
                     Novos Usuários Cadastrados que realizaram agendamentos:
                   </span>{" "}
                   <span className="text-sm">
-                    [Contagem de usuario.id WHERE data_cadastro no período e tem
-                    agendamento marcado]
+                    [
+                    {data?.sumarioExecutivo
+                      ?.totalAgendamentosCriadosPorNovosUsuarios || "..."}
+                    ]
                   </span>
-                </li>
-                <li>
-                  <span className="font-semibold">xxxxxxxxxxxxxx</span>
                 </li>
               </ul>
             </div>
@@ -783,57 +245,114 @@ export default function Relatorio({ data, secoes = [] }) {
         "Tabela Detalhada de Agendamentos",
       ],
       render: () => (
-        <div className="page" id="jornada-cliente">
-          <header>
-            <Image src={logo.src} alt="Logo Bortone" width={180} height={50} />
-          </header>
-          <div className="text-center">
-            <h2 className="main-title">Jornada do Cliente:</h2>
-          </div>
-          <div>
-            <h3 className="title">Resumo dos Dados:</h3>
-            <p className="label-item">
-              Usuários Cadastrados no Período:{" "}
-              <span>
-                {data?.jornadaCliente?.resumo?.novosUsuarios || "..."}
-              </span>
-            </p>
-            <p className="label-item">
-              Agendamentos Criados por novos Usuários:{" "}
-              <span>
-                {data?.jornadaCliente?.resumo?.agendamentosNovosUsuarios ||
-                  "..."}
-              </span>
-            </p>
-            <p className="label-item">
-              Agendamentos Criados por Usuários Antigos{" "}
-              <span>
-                {data?.jornadaCliente?.resumo?.agendamentosAntigosUsuarios ||
-                  "..."}
-              </span>
-            </p>
-            <p className="label-item">
-              Taxa de Conversao de Agendamentos por Novos Usuários:{" "}
-              <span>
-                {data?.jornadaCliente?.resumo?.taxaConversao || "..."}
-              </span>
-            </p>
-          </div>
-          <div>
-            <h3 className="title">Relação - Novos Usuários e Agendamentos:</h3>
-            {data.jornadaCliente?.evolucaoMensal ? (
-              <LineGraph
-                label=""
-                graphData={data.jornadaCliente.evolucaoMensal}
+        <>
+          <div className="page" id="jornada-cliente">
+            <header>
+              <Image
+                src={logo.src}
+                alt="Logo Bortone"
+                width={180}
+                height={50}
               />
-            ) : (
-              <p>Sem registro de Dados de Evolução Mensal.</p>
-            )}
+            </header>
+            <div className="text-center">
+              <h2 className="main-title">Jornada do Cliente:</h2>
+            </div>
+            <div>
+              <h3 className="title">Resumo dos Dados:</h3>
+              <ul className="list-disc ml-8 mb-4">
+                <li className="!text-lg">
+                  <span className="font-semibold">
+                    Usuários Cadastrados no Período:
+                  </span>{" "}
+                  <span className="text-md">
+                    [{data?.jornadaCliente?.novosUsuarios || "..."}]
+                  </span>
+                </li>
+                <li className="!text-lg">
+                  <span className="font-semibold">
+                    Agendamentos Criados por novos Usuários:
+                  </span>{" "}
+                  <span className="text-md">
+                    [{data?.jornadaCliente?.agendamentosNovosUsuarios || "..."}]
+                  </span>
+                </li>
+                <li className="!text-lg">
+                  <span className="font-semibold">
+                    Agendamentos Criados por Usuários Antigos:
+                  </span>{" "}
+                  <span className="text-md">
+                    [{data?.jornadaCliente?.agendamentosAntigoUsuarios || "..."}
+                    ]
+                  </span>
+                </li>
+                <li className="!text-lg">
+                  <span className="font-semibold">
+                    Taxa de Conversao de Agendamentos por Novos Usuários:
+                  </span>{" "}
+                  <span className="text-md">
+                    [{data?.jornadaCliente?.taxaConversao || "..."}]
+                  </span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="title">
+                Relação - Novos Usuários e Agendamentos:
+              </h3>
+              {data.jornadaCliente?.evolucaoMensalAgendamentoEUsuario ? (
+                <LineGraph
+                  label=""
+                  graphData={
+                    data.jornadaCliente.evolucaoMensalAgendamentoEUsuario
+                  }
+                />
+              ) : (
+                <p>Sem registro de Dados de Evolução Mensal.</p>
+              )}
+            </div>
           </div>
-        </div>
+          <div className="page" id="jornada-cliente-tabela">
+            <header>
+              <Image
+                src={logo.src}
+                alt="Logo Bortone"
+                width={180}
+                height={50}
+              />
+            </header>
+            <div className="text-center">
+              <div>
+                <h3 className="title">Resumo dos Dados:</h3>
+              </div>
+              <div>
+                <TableRelatorio
+                  className="min-w-full border-separate border-spacing-0"
+                  title=""
+                  data={data?.jornadaCliente?.tabelaAgendamentos}
+                  headers={[
+                    {
+                      key: "id_agendamento",
+                      label: "ID Agendamento",
+                      align: "left",
+                    },
+                    { key: "data_marcada", label: "Data Marcada" },
+                    {
+                      key: "data_cadastro_usuario",
+                      label: "Data Cadastro Usuário",
+                    },
+                    { key: "email", label: "Email" },
+                    { key: "endereco", label: "Endereço do Imóvel" },
+                    { key: "tipo", label: "Tipo" },
+                  ]}
+                />
+              </div>
+            </div>
+          </div>
+        </>
       ),
     },
-    ESTOQUE_IMOBILIARIO: {
+    ANALISE_ESTOQUE_IMOBILIARIO: {
       title: "Análise de Estoque Imobiliário",
       subtitles: [
         "Resumo do Estoque",
@@ -853,49 +372,117 @@ export default function Relatorio({ data, secoes = [] }) {
               />
             </header>
             <div className="text-center">
-              <h2 className="main-title">Análise de Estoque Imobiliário</h2>
+              <h2 className="main-title !m-0">
+                Análise de Estoque Imobiliário
+              </h2>
               <span>
                 Essa seção abrange análises além do intervalo de período
                 selecionado!
               </span>
             </div>
             <div>
-              <h3 className="title"> Resumo do Estoque:</h3>
-              <p className="label-item">
-                Total de Imóveis Disponíveis:{" "}
-                <span>
-                  {data?.estoqueImobiliario?.resumo?.totalDisponivel ||
-                    "Não foi possível resgatar os dados!"}
-                </span>
-              </p>
-              <p className="label-item">
-                Distribuição de imóveis por faixa de preço:{" "}
-              </p>
-              <PizzaGraph
-                label={""}
-                className={"w-[450px] h-[300px] !ms-12"}
-                data={estoqueImobiliarioDistribuicaoFaixaPreco}
-              />
-              <p className="label-item">Distribuição de imóveis por tipo: </p>
-              <PizzaGraph
-                label={""}
-                className={"w-[450px] h-[300px] !ms-12"}
-                data={estoqueImobiliarioDistribuicaoTipo}
-              />
-              <p className="label-item">
-                Imóveis com Preço Visível:{" "}
-                <span>
-                  {data?.estoqueImobiliario?.resumo?.totalPrecoVisivel ||
-                    "Não foi possível resgatar os dados!"}
-                </span>
-              </p>
-              <p className="label-item">
-                Imóveis com Preço Oculto:{" "}
-                <span>
-                  {data?.estoqueImobiliario?.resumo?.totalPrecoOculto ||
-                    "Não foi possível resgatar os dados!"}
-                </span>
-              </p>
+              <h3 className="title !m-0 !mt-2"> Resumo do Estoque:</h3>
+              <ul className="list-disc ml-8 mt-2">
+                <li className="!text-lg">
+                  <span className="font-semibold">Total de Imóveis:</span>{" "}
+                  <span className="text-md">
+                    [
+                    {data?.analiseEstoque?.estatisticas[0]?.total_imoveis ||
+                      "..."}
+                    ]
+                  </span>
+                </li>
+                <li className="!text-lg">
+                  <span className="font-semibold">
+                    Total de Imóveis Disponíveis:
+                  </span>{" "}
+                  <span className="text-md">
+                    [
+                    {data?.analiseEstoque?.estatisticas[0]
+                      ?.total_imoveis_disponiveis || "..."}
+                    ]
+                  </span>
+                </li>
+                <li className="!text-lg">
+                  <span className="font-semibold">
+                    Total de Imóveis Locados:
+                  </span>{" "}
+                  <span className="text-md">
+                    [
+                    {data?.analiseEstoque?.estatisticas[0]
+                      ?.total_imoveis_locados || "..."}
+                    ]
+                  </span>
+                </li>
+                <li className="!text-lg">
+                  <span className="font-semibold">
+                    Total de Imóveis Vendidos:
+                  </span>{" "}
+                  <span className="text-md">
+                    [
+                    {data?.analiseEstoque?.estatisticas[0]
+                      ?.total_imoveis_vendidos || "..."}
+                    ]
+                  </span>
+                </li>
+                <li className="!text-lg">
+                  <span className="font-semibold">
+                    Total de Imóveis Vendidos:
+                  </span>{" "}
+                  <span className="text-md">
+                    [
+                    {data?.analiseEstoque?.estatisticas[0]
+                      ?.total_imoveis_vendidos || "..."}
+                    ]
+                  </span>
+                </li>
+                <li className="!text-lg">
+                  <span className="font-semibold">
+                    Imóveis com Preço Visível:
+                  </span>{" "}
+                  <span className="text-md">
+                    [
+                    {data?.analiseEstoque?.estatisticas[0]
+                      ?.total_preco_visivel || "..."}
+                    ]
+                  </span>
+                </li>
+                <li className="!text-lg">
+                  <span className="font-semibold">
+                    Imóveis com Preço Oculto:
+                  </span>{" "}
+                  <span className="text-md">
+                    [
+                    {data?.analiseEstoque?.estatisticas[0]
+                      ?.total_preco_oculto || "..."}
+                    ]
+                  </span>
+                </li>
+                <li className="!text-lg">
+                  <span className="font-semibold">
+                    Distribuição de imóveis por faixa de preço:
+                  </span>{" "}
+                  <div>
+                    <PizzaGraph
+                      label={""}
+                      className={"!ms-12"}
+                      data={estoqueImobiliarioDistribuicaoFaixaPreco}
+                    />
+                  </div>
+                </li>
+                <li className="!text-lg">
+                  <span className="font-semibold">
+                    Distribuição de imóveis por tipo:
+                  </span>{" "}
+                  <div>
+                    <PizzaGraph
+                      label={""}
+                      className={"!ms-12"}
+                      data={estoqueImobiliarioDistribuicaoTipo}
+                    />
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
           <div className="page" id="estoque-imobiliario-tabela">
@@ -908,34 +495,24 @@ export default function Relatorio({ data, secoes = [] }) {
               />
             </header>
             <div>
-              <h3 className="title">Tabela Detalhada de Vendas:</h3>
+              <h3 className="title">Imóveis Mais Acessados no Site:</h3>
             </div>
             <TableRelatorio
               className="min-w-full border-separate border-spacing-0"
               title=""
-              data={data?.estoqueImobiliario?.imoveisMaisAcessados}
+              data={data?.analiseEstoque?.tabelaAcessos}
               headers={[
-                { key: "id_imovel", label: "ID", align: "center" },
+                { key: "id", label: "ID", align: "center" },
                 { key: "quantidade_acessos", label: "Quantidade Acessos" },
-                { key: "endereco", label: "Endereço" },
                 { key: "tipo", label: "Tipo" },
-                {
-                  key: "preco",
-                  label: "Preço",
-                  align: "center",
-                  render: (value) =>
-                    value?.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }),
-                },
-                { key: "visibilidade", label: "Visibilidade Preço" },
+                { key: "visibilidade_preco", label: "Visibilidade Preço" },
                 {
                   key: "area",
                   label: "Área",
                   align: "center",
                   render: (value) => (value ? `${value} m²` : "-"),
                 },
+                { key: "endereco", label: "Endereço" },
               ]}
             />
           </div>
@@ -964,20 +541,29 @@ export default function Relatorio({ data, secoes = [] }) {
               <h2 className="main-title">Desempenho de Vendas</h2>
               <h3 className="title"> Resumo de Vendas:</h3>
               <div>
-                <p className="label-item">
-                  Total em Vendas:{" "}
-                  <span>R$ {data?.desempenhoVendas?.total || "XX"}</span>
-                </p>
-                <p className="label-item">Distribuição das Vendas por Tipo:</p>
-                {desempenhoVendasDistribuicaoTipo ? (
-                  <PizzaGraph
-                    label={""}
-                    className={"w-[450px] h-[300px] !ms-12"}
-                    data={desempenhoVendasDistribuicaoTipo}
-                  />
-                ) : (
-                  <p className="!ms-4">Não Houveram Vendas No período</p>
-                )}
+                <ul className="list-disc ml-8 mb-4">
+                  <li className="!text-lg">
+                    <span className="font-semibold">Total de Vendas:</span>{" "}
+                    <span className="text-md">
+                      [{data?.desempenhoVendas?.totalVendas || "..."}]
+                    </span>
+                  </li>
+                  <li className="!text-lg">
+                    <span className="font-semibold">Distribuição das Vendas por Tipo:</span>{" "}
+                    <div>
+                      {" "}
+                      {desempenhoVendasDistribuicaoTipo ? (
+                        <PizzaGraph
+                          label={""}
+                          className={"w-[450px] h-[300px] !ms-12"}
+                          data={desempenhoVendasDistribuicaoTipo}
+                        />
+                      ) : (
+                        <p className="!ms-4">Não Houveram Vendas No período</p>
+                      )}
+                    </div>
+                  </li>
+                </ul>                
               </div>
             </div>
             <div>
@@ -1010,6 +596,11 @@ export default function Relatorio({ data, secoes = [] }) {
               data={data?.desempenhoVendas?.tabelaVendas}
               headers={[
                 { key: "id", label: "ID", align: "center" },
+                {
+                  key: "data_update_status",
+                  label: "Data de Venda",
+                  align: "center",
+                },
                 { key: "tipo", label: "Tipo do Imóvel" },
                 { key: "endereco", label: "Endereco" },
                 {
@@ -1017,12 +608,12 @@ export default function Relatorio({ data, secoes = [] }) {
                   label: "Preço",
                   align: "right",
                   render: (value) =>
-                    value?.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }),
+                    `R$ ${Number(value).toLocaleString("pt-BR", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}`,
                 },
-                { key: "visibilidade_preco", label: "Visibilidade do Preço" },
+                { key: "visibilidade_preco", label: "Visibilidade Preço" },
                 {
                   key: "area",
                   label: "Área",
@@ -1057,22 +648,31 @@ export default function Relatorio({ data, secoes = [] }) {
               <h2 className="main-title">Desempenho de Locações</h2>
               <h3 className="title"> Resumo de Locações:</h3>
               <div>
-                <p className="label-item">
-                  Total em Locações:{" "}
-                  <span>R$ {data?.desempenhoLocacoes?.total || "XX"}</span>
-                </p>
-                <p className="label-item">
-                  Distribuição das Locações por Tipo:
-                </p>
-                {desempenhoLocacoesDistribuicaoTipo.length > 0 ? (
-                  <PizzaGraph
-                    label={""}
-                    className={"w-[450px] h-[300px] !ms-12"}
-                    data={desempenhoLocacoesDistribuicaoTipo}
-                  />
-                ) : (
-                  <p>Não Houveram Locações No período</p>
-                )}
+                <ul className="list-disc ml-8 mb-4">
+                  <li className="!text-lg">
+                    <span className="font-semibold">Total de Locações:</span>{" "}
+                    <span className="text-md">
+                      [{data?.desempenhoLocacoes?.totalLocacoes || "..."}]
+                    </span>
+                  </li>
+                  <li className="!text-lg">
+                    <span className="font-semibold">
+                      Distribuição das Locações por Tipo:
+                    </span>{" "}
+                    <div>
+                      {desempenhoLocacoesDistribuicaoTipo ? (
+                        <PizzaGraph
+                          label={""}
+                          className={"w-[450px] h-[300px] !ms-12"}
+                          data={desempenhoLocacoesDistribuicaoTipo}
+                        />
+                      ) : (
+                        <p>Não Houveram Locações No período</p>
+                      )}
+                    </div>
+                  </li>
+                </ul>
+                <p className="label-item"></p>
               </div>
             </div>
             <div>
@@ -1105,6 +705,11 @@ export default function Relatorio({ data, secoes = [] }) {
               data={data?.desempenhoLocacoes?.tabelaLocacoes}
               headers={[
                 { key: "id", label: "ID", align: "center" },
+                {
+                  key: "data_update_status",
+                  label: "Data de Locação",
+                  align: "center",
+                },
                 { key: "tipo", label: "Tipo do Imóvel" },
                 { key: "endereco", label: "Endereco" },
                 {
@@ -1112,12 +717,12 @@ export default function Relatorio({ data, secoes = [] }) {
                   label: "Preço",
                   align: "right",
                   render: (value) =>
-                    value?.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }),
+                    `R$ ${Number(value).toLocaleString("pt-BR", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}`,
                 },
-                { key: "visibilidade_preco", label: "Visibilidade do Preço" },
+                { key: "visibilidade_preco", label: "Visibilidade Preço" },
                 {
                   key: "area",
                   label: "Área",

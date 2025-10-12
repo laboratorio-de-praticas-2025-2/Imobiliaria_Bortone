@@ -70,11 +70,11 @@ export default function TableRelatorio() {
     },
     {
       title: "Ação",
-      dataIndex: "tipo",
-      key: "tipo",
+      dataIndex: "nome",
+      key: "nome",
       render: (text, record) => (
         <button
-          className="bg-[var(--primary)] !text-white font-bold py-2 px-4 rounded-full"
+          className="bg-[var(--primary)] !text-white font-bold py-2 px-4 rounded-full cursor-pointer"
           onClick={() => gerarPDF(record)}
         >
           Gerar PDF
@@ -99,7 +99,7 @@ export default function TableRelatorio() {
     setLoading(true);
     setPdfReady(false);
 
-    getRelatorioData(record.tipo)
+    getRelatorioData(record.secoes)
       .then((res) => {
         setReportData(res);
         setRecord(record);
@@ -186,6 +186,7 @@ export default function TableRelatorio() {
             onPrint={handlePrint}
             toast={toast}
             reportData={reportData}
+            secoes={record?.secoes || []}
             record={record}
             componentToPrintRef={componentToPrintRef}
           />
