@@ -11,8 +11,9 @@ import PizzaGraph from "./PizzaGraph";
 import logo from "@/../public/images/LogoAzul.svg";
 import TableRelatorio from "@/components/relatorio/TableRelatorio.js";
 import React from "react";
+import dayjs from "dayjs";
 
-export default function Relatorio({ data, secoes = [] }) {
+export default function Relatorio({ data, secoes = [], dateRange }) {
   let pageNumber = 1;
 
   console.log("Dados recebidos no Relatorio:", data);
@@ -177,8 +178,16 @@ export default function Relatorio({ data, secoes = [] }) {
                     Valor Geral de Vendas (VGV):
                   </span>{" "}
                   <span className="text-sm">
-                    {" "}
-                    [{data?.sumarioExecutivo?.totalVendas || "..."}]
+                    [
+                    {data?.sumarioExecutivo?.totalVendas
+                      ? Number(
+                          data?.sumarioExecutivo?.totalVendas
+                        ).toLocaleString("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        })
+                      : "..."}
+                    ]
                   </span>
                 </li>
                 <li className="!text-lg">
@@ -186,14 +195,26 @@ export default function Relatorio({ data, secoes = [] }) {
                     Quantidade Total de Vendas:
                   </span>{" "}
                   <span className="text-sm">
-                    [{data?.sumarioExecutivo?.valorGeralVendas || "..."}]
+                    [{data?.sumarioExecutivo?.valorGeralVendas ?? "..."}]
                   </span>
                 </li>
                 <li className="!text-lg">
                   <span className="font-semibold">Ticket Médio por Venda:</span>{" "}
                   <span className="text-sm">
-                    [ (data?.sumarioExecutivo?.valorGeralVendas /
-                    data?.sumarioExecutivo?.totalVendas || 0).toFixed(2) ]
+                    {(() => {
+                      // CONVERTA EXPLICITAMENTE PARA NÚMEROS
+                      const totalVendas =
+                        Number(data?.sumarioExecutivo?.valorGeralVendas) || 0;
+                      const valorGeral =
+                        Number(data?.sumarioExecutivo?.totalVendas) || 0;
+                      const ticketMedio =
+                        totalVendas > 0 ? valorGeral / totalVendas : 0;                     
+
+                      return ticketMedio.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      });
+                    })()}
                   </span>
                 </li>
               </ul>
@@ -207,7 +228,7 @@ export default function Relatorio({ data, secoes = [] }) {
                     Novos Agendamentos Criados:
                   </span>{" "}
                   <span className="text-sm">
-                    [{data?.sumarioExecutivo?.totalAgendamentosCriados || "..."}
+                    [{data?.sumarioExecutivo?.totalAgendamentosCriados ?? "..."}
                     ]
                   </span>
                 </li>
@@ -218,7 +239,7 @@ export default function Relatorio({ data, secoes = [] }) {
                   <span className="text-sm">
                     [
                     {data?.sumarioExecutivo
-                      ?.totalAgendamentosCriadosPorNovosUsuarios || "..."}
+                      ?.totalAgendamentosCriadosPorNovosUsuarios ?? "..."}
                     ]
                   </span>
                 </li>
@@ -266,7 +287,7 @@ export default function Relatorio({ data, secoes = [] }) {
                     Usuários Cadastrados no Período:
                   </span>{" "}
                   <span className="text-md">
-                    [{data?.jornadaCliente?.novosUsuarios || "..."}]
+                    [{data?.jornadaCliente?.novosUsuarios ?? "..."}]
                   </span>
                 </li>
                 <li className="!text-lg">
@@ -274,7 +295,7 @@ export default function Relatorio({ data, secoes = [] }) {
                     Agendamentos Criados por novos Usuários:
                   </span>{" "}
                   <span className="text-md">
-                    [{data?.jornadaCliente?.agendamentosNovosUsuarios || "..."}]
+                    [{data?.jornadaCliente?.agendamentosNovosUsuarios ?? "..."}]
                   </span>
                 </li>
                 <li className="!text-lg">
@@ -282,7 +303,7 @@ export default function Relatorio({ data, secoes = [] }) {
                     Agendamentos Criados por Usuários Antigos:
                   </span>{" "}
                   <span className="text-md">
-                    [{data?.jornadaCliente?.agendamentosAntigoUsuarios || "..."}
+                    [{data?.jornadaCliente?.agendamentosAntigoUsuarios ?? "..."}
                     ]
                   </span>
                 </li>
@@ -291,7 +312,7 @@ export default function Relatorio({ data, secoes = [] }) {
                     Taxa de Conversao de Agendamentos por Novos Usuários:
                   </span>{" "}
                   <span className="text-md">
-                    [{data?.jornadaCliente?.taxaConversao || "..."}]
+                    [{data?.jornadaCliente?.taxaConversao ?? "..."}]
                   </span>
                 </li>
               </ul>
@@ -323,7 +344,7 @@ export default function Relatorio({ data, secoes = [] }) {
             </header>
             <div className="text-center">
               <div>
-                <h3 className="title">Resumo dos Dados:</h3>
+                <h3 className="title">Tabela Detalhada de Agendamentos:</h3>
               </div>
               <div>
                 <TableRelatorio
@@ -463,11 +484,15 @@ export default function Relatorio({ data, secoes = [] }) {
                     Distribuição de imóveis por faixa de preço:
                   </span>{" "}
                   <div>
-                    <PizzaGraph
-                      label={""}
-                      className={"!ms-12"}
-                      data={estoqueImobiliarioDistribuicaoFaixaPreco}
-                    />
+                    {estoqueImobiliarioDistribuicaoFaixaPreco ? (
+                      <PizzaGraph
+                        label={""}
+                        className={"!ms-12"}
+                        data={estoqueImobiliarioDistribuicaoFaixaPreco}
+                      />
+                    ) : (
+                      <p>Não há itens para exibir.</p>
+                    )}
                   </div>
                 </li>
                 <li className="!text-lg">
@@ -475,11 +500,15 @@ export default function Relatorio({ data, secoes = [] }) {
                     Distribuição de imóveis por tipo:
                   </span>{" "}
                   <div>
-                    <PizzaGraph
-                      label={""}
-                      className={"!ms-12"}
-                      data={estoqueImobiliarioDistribuicaoTipo}
-                    />
+                    {estoqueImobiliarioDistribuicaoTipo ? (
+                      <PizzaGraph
+                        label={""}
+                        className={"!ms-12"}
+                        data={estoqueImobiliarioDistribuicaoTipo}
+                      />
+                    ) : (
+                      <p>Não há itens para exibir.</p>
+                    )}
                   </div>
                 </li>
               </ul>
@@ -549,7 +578,9 @@ export default function Relatorio({ data, secoes = [] }) {
                     </span>
                   </li>
                   <li className="!text-lg">
-                    <span className="font-semibold">Distribuição das Vendas por Tipo:</span>{" "}
+                    <span className="font-semibold">
+                      Distribuição das Vendas por Tipo:
+                    </span>{" "}
                     <div>
                       {" "}
                       {desempenhoVendasDistribuicaoTipo ? (
@@ -563,7 +594,7 @@ export default function Relatorio({ data, secoes = [] }) {
                       )}
                     </div>
                   </li>
-                </ul>                
+                </ul>
               </div>
             </div>
             <div>
@@ -806,9 +837,8 @@ export default function Relatorio({ data, secoes = [] }) {
             <div className="!font-semibold text-base">Período Analisado</div>
             <div className="font-semibold text-lg">
               {/* Ajuste para pegar o período do relatório, se disponível */}
-              {data?.periodoInicio && data?.periodoFim
-                ? `${data.periodoInicio} - ${data.periodoFim}`
-                : "01/01/2025 - 04/09/2025"}
+              {dayjs(dateRange.startDate).format("DD/MM/YYYY")} -{" "}
+              {dayjs(dateRange.endDate).format("DD/MM/YYYY")}
             </div>
           </div>
         </div>

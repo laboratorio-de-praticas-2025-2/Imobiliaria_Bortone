@@ -11,7 +11,12 @@ export async function getRelatorioData(secoes = [], data_inicio = null, data_fim
     params.append("data_inicio", data_inicio);
     params.append("data_fim", data_fim);
   }
-  if (secoes && secoes.length > 0) params.append("secoes", secoes.join(","));
+
+   if (secoes && Array.isArray(secoes) && secoes.length > 0) {
+    params.append('secoes', secoes.join(','));
+  } else if (typeof secoes === 'string' && secoes) {    
+    params.append('secoes', secoes);
+  }  
 
   const fullUrl = `${url}/relatorios?${params.toString()}`;
 

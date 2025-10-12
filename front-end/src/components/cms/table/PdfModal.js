@@ -6,6 +6,7 @@ import Relatorio from "@/components/relatorio/Relatorio.js";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { exportRelatorioToPdfV2 } from "@/utils/pdfUtilsV2";
+import dayjs from "dayjs";
 
 export default function PdfModal({
   loading,
@@ -15,10 +16,10 @@ export default function PdfModal({
   onShare,
   onPrint,
   toast,
-  reportData,
-  secoes,
+  reportData,  
   record,
-  componentToPrintRef
+  componentToPrintRef,
+  dateRange
 }) {
   return (
     (loading || pdfReady) && (
@@ -45,7 +46,7 @@ export default function PdfModal({
                 [&_.page:not(:first-child)]:invisible"
                 >
                   <div ref={componentToPrintRef}>
-                    <Relatorio data={reportData} secoes={secoes} />
+                    <Relatorio data={reportData} secoes={record.secoes} dateRange={dateRange} />
                   </div>
                 </div>
               </div>
@@ -68,7 +69,12 @@ export default function PdfModal({
                     {record?.pdfNome || 'Relatorio'}.pdf
                   </p>
                   <div className="flex gap-6">
-                    
+                    {dateRange && (
+                      <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+                        <strong>Período: </strong>
+                        {dayjs(dateRange.startDate).format('DD/MM/YYYY')} - {dayjs(dateRange.endDate).format('DD/MM/YYYY')}
+                      </div>
+                    )}
                   </div>
                   <div className="flex gap-3 mt-7 justify-between">
                     <button
