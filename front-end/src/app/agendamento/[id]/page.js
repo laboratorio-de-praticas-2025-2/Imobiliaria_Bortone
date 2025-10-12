@@ -18,7 +18,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const REGEX_PATTERNS = {
   email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
   phone: /^\(?\d{2}\)?\s?9?\d{4}-?\d{4}$/,
-  name: /^[a-zA-ZÀ-ÿ\s]{2,50}$/,
+  name: /^.{2,50}$/, // Aceita qualquer caractere, apenas limita o tamanho
   cityState: /^[a-zA-ZÀ-ÿ\s\/,-]{2,100}$/
 };
 
@@ -40,8 +40,8 @@ const validateField = {
   },
   name: (value) => {
     if (!value) return "Nome é obrigatório";
-    if (!REGEX_PATTERNS.name.test(value)) {
-      return "Nome deve conter apenas letras e espaços (2-50 caracteres)";
+    if (value.trim().length < 2 || value.trim().length > 50) {
+      return "Nome deve ter entre 2 e 50 caracteres";
     }
     return null;
   },
@@ -55,17 +55,30 @@ const validateField = {
 };
 
 const enviarAgendamento = async (appointment) => {
+  console.log('🚀 Iniciando envio de agendamento...');
+  console.log('📋 Dados do agendamento:', appointment);
+  
   if (!API_URL) throw new Error("NEXT_PUBLIC_API_URL não configurada");
+  
+  console.log('🌐 URL da API:', `${API_URL}/agendamentos/schedule`);
+  
   const res = await fetch(`${API_URL}/agendamentos/schedule`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ appointment }),
   });
+  
+  console.log('📡 Resposta da API - Status:', res.status);
+  
   if (!res.ok) {
     const txt = await res.text().catch(() => "");
+    console.error('❌ Erro na resposta:', res.status, txt);
     throw new Error(`Erro ao agendar: ${res.status} ${txt}`);
   }
-  return res.json();
+  
+  const result = await res.json();
+  console.log('✅ Resposta da API:', result);
+  return result;
 };
 
 export default function Agendamento() {
@@ -74,6 +87,7 @@ export default function Agendamento() {
   const id = params?.id;
   const [imovel, setImovel] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [form] = Form.useForm();
   
   // Hook de autenticação
@@ -128,23 +142,52 @@ export default function Agendamento() {
   }, [user, form]);
 
   const onFinish = async (values) => {
+    console.log('📝 Iniciando processo de agendamento...');
+    console.log('🔍 Valores do formulário:', values);
+    
+    if (submitting) return; // Prevenir múltiplos submits
+    
     try {
+      setSubmitting(true);
+      
       const nome = (values?.nome || "").trim();
       const email = (values?.email || "").trim();
       const telefone = (values?.telefone || "").trim();
       const cidadeEstado = (values?.cidade_estado || "").trim();
 
+      console.log('✅ Dados processados:', { nome, email, telefone, cidadeEstado });
+
       const nameError = validateField.name(nome);
-      if (nameError) return message.error(nameError);
+      if (nameError) {
+        console.error('❌ Erro no nome:', nameError);
+        message.error(nameError);
+        setSubmitting(false);
+        return;
+      }
 
       const emailError = validateField.email(email);
-      if (emailError) return message.error(emailError);
+      if (emailError) {
+        console.error('❌ Erro no email:', emailError);
+        message.error(emailError);
+        setSubmitting(false);
+        return;
+      }
 
       const phoneError = validateField.phone(telefone);
-      if (phoneError) return message.error(phoneError);
+      if (phoneError) {
+        console.error('❌ Erro no telefone:', phoneError);
+        message.error(phoneError);
+        setSubmitting(false);
+        return;
+      }
 
       const cityStateError = validateField.cityState(cidadeEstado);
-      if (cityStateError) return message.error(cityStateError);
+      if (cityStateError) {
+        console.error('❌ Erro na cidade/estado:', cityStateError);
+        message.error(cityStateError);
+        setSubmitting(false);
+        return;
+      }
 
       const cleanPhone = telefone.replace(/\D/g, "");
       const appointment = {
@@ -154,13 +197,25 @@ export default function Agendamento() {
         propertyAddress: imovel?.endereco || "",
         propertyId: imovel?.id,
         notes: [cidadeEstado, values?.comentario].filter(Boolean).join(" | "),
+        visitPeriod: "A combinar", // Campo obrigatório para o back-end
       };
 
+      console.log('📦 Objeto appointment criado:', appointment);
+
       await enviarAgendamento(appointment);
+      console.log('🎉 Agendamento enviado com sucesso!');
+      
       message.success("Agendamento enviado com sucesso!");
+      
+      // Aguardar um momento para o usuário ver a mensagem
+      setTimeout(() => {
+        router.push(`/imoveis/${id}`);
+      }, 1500);
+      
     } catch (e) {
-      console.error(e);
+      console.error('💥 Erro no agendamento:', e);
       message.error("Falha ao enviar agendamento. Tente novamente.");
+      setSubmitting(false);
     }
   };
 
@@ -240,7 +295,13 @@ export default function Agendamento() {
               <Form
                 form={form}
                 name="basic"
-                onFinish={onFinish}
+                onFinish={(values) => {
+                  console.log('🚀 Form onFinish disparado com valores:', values);
+                  onFinish(values);
+                }}
+                onFinishFailed={(errorInfo) => {
+                  console.error('❌ Form onFinishFailed:', errorInfo);
+                }}
                 autoComplete="off"
                 requiredMark={true}
                 layout="vertical"
@@ -287,7 +348,19 @@ export default function Agendamento() {
                   />
 
                   <div className="flex justify-start">
-                    <FormButton text="Agendar Visita" className="!flex !sm:hidden" />
+                    <FormButton 
+                      text={submitting ? "Agendando..." : "Agendar Visita"}
+                      className="!flex" 
+                      htmlType="submit"
+                      loading={submitting}
+                      disabled={submitting}
+                      onClick={() => {
+                        console.log('🔘 Botão "Agendar Visita" clicado!');
+                        if (!submitting) {
+                          form.submit();
+                        }
+                      }}
+                    />
                   </div>
                 </div>
               </Form>

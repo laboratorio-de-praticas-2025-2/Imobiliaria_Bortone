@@ -39,7 +39,14 @@ const __dirname = path.dirname(__filename);
 const server = createServer(app);
 
 // Inicializar SocketManager
-const socketManager = new SocketManager(server);
+const socketManager = new SocketManager();
+
+socketManager.io.engine.on("connection_error", (err) => {
+  console.log("🚨 Socket connection error:", err.req?.url || 'URL não disponível');
+  console.log("🚨 Socket error code:", err.code);
+  console.log("🚨 Socket error message:", err.message);
+  console.log("🚨 Socket error context:", err.context);
+});
 
 // Tornar socketManager disponível globalmente
 app.set('socketManager', socketManager);
@@ -60,7 +67,7 @@ app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 app.use('/', recomendacaoRouter);
 app.use("/api/socket", socketRoutes);
 app.use('/banner', bannerRoutes);
-app.use('/user', userRoutes );
+app.use('/user', userRoutes);
 app.use("/search", searchRouter);
 app.use("/agendamentos", agendamentoRouter);
 app.use("/health", healthRouter);
@@ -80,6 +87,9 @@ app.use(errorHandler);
 // Inicializar WebSocket
 initWebSocket(server);
 
+// Log de configuração JWT para debug
+console.log("🔑 JWT_SECRET configurado:", process.env.JWT_SECRET ? "✅ Sim" : "❌ Não (usando fallback)");
+console.log("🔑 JWT_SECRET primeiros 10 chars:", process.env.JWT_SECRET ? process.env.JWT_SECRET.substring(0, 10) + "..." : "N/A");
 
 // ----------------------
 // Banco de dados

@@ -2,6 +2,7 @@ import Casa from "../models/Casa.js";
 import Terreno from "../models/Terreno.js";
 import ImagemImovel from "../models/ImagemImovel.js";
 import * as ImoveisService from "../services/ImoveisService.js";
+import NotificationService from "../services/notificationService.js";
 
 const extractEntityData = (body) => {
     const {
@@ -227,6 +228,22 @@ export const create = async (req, res) => {
     try {
       const { imovelData, casaData } = extractEntityData(req.body);
       const newImovel = await ImoveisService.create(imovelData, casaData);
+
+      setImmediate(async () => {
+      try{
+        console.log("🔍 Iniciando sistema de notificações...");
+        const notificationService = new NotificationService();
+        console.log("✅ NotificationService criado");
+        const resultado = await notificationService.dispararAlertaNovoImovel(newImovel);
+        console.log("📊 Resultado do disparo:", resultado);
+        console.log(`✅ Notificações enviadas para o imóvel ${newImovel.id}`);
+      } catch(notificationError){
+        console.error("❌ Erro ao enviar notificações:", notificationError.message);
+        console.error("🔍 Stack completo:", notificationError.stack);
+        console.error("🔍 Tipo do erro:", notificationError.constructor.name);
+      }
+      });
+
       res.status(201).json(newImovel);
     } catch (error) {
       console.error("Erro ao criar imóvel:", error);

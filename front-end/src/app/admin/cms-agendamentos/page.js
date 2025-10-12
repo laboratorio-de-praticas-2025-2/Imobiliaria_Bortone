@@ -7,36 +7,7 @@ import { useEffect, useState } from "react";
 import { IoMdTrash } from "react-icons/io";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import { createStyles } from "antd-style";
-
-const mockedAgendamentos = [
-  {
-    id: 1,
-    imovel: "Apartamento no Centro",
-    nome: "João Silva",
-    email: "joao.silva@example.com",
-    telefone: "1234-5678",
-    cidade_estado: "São Paulo/SP",
-    comentario: "Gostaria de agendar uma visita."
-  },
-  {
-    id: 2,
-    imovel: "Casa na Praia",
-    nome: "Maria Oliveira",
-    email: "maria.oliveira@example.com",
-    telefone: "9876-5432",
-    cidade_estado: "Rio de Janeiro/RJ",
-    comentario: "Tenho interesse em saber mais sobre este imóvel."
-  },
-  {
-    id: 3,
-    imovel: "Chácara em Atibaia",
-    nome: "Carlos Pereira",
-    email: "carlos.pereira@example.com",
-    telefone: "4567-8901",
-    cidade_estado: "São Paulo/SP",
-    comentario: "Gostaria de agendar uma visita."
-  }
-];
+import { apiClient } from "@/utils/apiClient";
 
 const useStyle = createStyles(({ css, token }) => {
   const { antCls } = token;
@@ -73,20 +44,20 @@ export default function Page() {
   };
 
   const onConfirmDelete = async () => {
-    // try {
-    //   setLoading(true);
-    //   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    //   await axios.delete(`${apiUrl}/user/faq/${deleteId}`);
-    //   setUsers((prev) => prev.filter((u) => u.id !== deleteId));
-    //   setIsConfirmModalVisible(false);
-    //   setDeleteId(null);
-    //   setLoading(false);
-    // } catch (err) {
-    //   console.error("Erro ao deletar a pergunta:", err);
-    //   setIsConfirmModalVisible(false);
-    //   setDeleteId(null);
-    //   setLoading(false);
-    // }
+    try {
+      setLoading(true);
+      await apiClient.delete(`/agendamentos/${deleteId}`);
+      setAgendamentos((prev) => prev.filter((a) => a.id !== deleteId));
+      setAllAgendamentos((prev) => prev.filter((a) => a.id !== deleteId));
+      setIsConfirmModalVisible(false);
+      setDeleteId(null);
+      setLoading(false);
+    } catch (err) {
+      console.error("Erro ao deletar agendamento:", err);
+      setIsConfirmModalVisible(false);
+      setDeleteId(null);
+      setLoading(false);
+    }
   };
 
   const columns = [
@@ -99,31 +70,40 @@ export default function Page() {
       title: "Imóvel",
       dataIndex: "imovel",
       key: "imovel",
+      render: (imovel) => {
+        if (!imovel) return "N/A";
+        const parts = [];
+        if (imovel.endereco) parts.push(imovel.endereco);
+        if (imovel.cidade) parts.push(imovel.cidade);
+        return parts.length > 0 ? parts.join(" - ") : "Sem endereço";
+      },
     },
     {
       title: "Nome",
-      dataIndex: "nome",
+      dataIndex: ["usuario", "nome"],
       key: "nome",
     },
     {
       title: "Email",
-      dataIndex: "email",
+      dataIndex: ["usuario", "email"],
       key: "email",
     },
     {
       title: "Telefone",
-      dataIndex: "telefone",
+      dataIndex: ["usuario", "celular"],
       key: "telefone",
     },
     {
-      title: "Cidade/Estado",
-      dataIndex: "cidade_estado",
-      key: "cidade_estado",
+      title: "Data Marcada",
+      dataIndex: "data_marcada",
+      key: "data_marcada",
+      render: (data) => data ? new Date(data).toLocaleString('pt-BR') : "N/A",
     },
     {
-      title: "Comentário",
-      dataIndex: "comentario",
-      key: "comentario",
+      title: "Mensagem",
+      dataIndex: "mensagem",
+      key: "mensagem",
+      render: (texto) => texto || "N/A",
     },
     {
       title: "Ações",
@@ -144,26 +124,89 @@ export default function Page() {
   ];
 
   useEffect(() => {
-    // async function fetchAgendamentos() {
-    //   try {
-    //     setLoading(true);
-    //     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    //     const res = await axios.get(`${apiUrl}/user/faq`);
-    //     setAgendamentos(Array.isArray(res.data) ? res.data : []);
-    //     setAllAgendamentos(Array.isArray(res.data) ? res.data : []);
-    //     setLoading(false);
-    //   } catch (err) {
-    //     console.error("Erro ao buscar respostas:", err);
-    //     setAgendamentos([]);
-    //     setAllAgendamentos([]);
-    //     setLoading(false);
-    //   }
-    // }
-    // fetchAgendamentos();
-    setAgendamentos(mockedAgendamentos);
-  }, []);
-
-  let orderedAgendamentos = [...agendamentos];
+    async function fetchAgendamentos() {
+      try {
+        setLoading(true);
+        
+        // Debug da autenticação
+        const authToken = localStorage.getItem('authToken');
+        const userInfo = localStorage.getItem('userInfo');
+        const parsedUserInfo = userInfo ? JSON.parse(userInfo) : null;
+        
+        console.log('🔐 Debug Auth:', { 
+          tokenExists: !!authToken, 
+          tokenPrefix: authToken?.substring(0, 20) + '...',
+          userInfo: parsedUserInfo,
+          userLevel: parsedUserInfo?.nivel,
+          isAdmin: parsedUserInfo?.nivel === 0
+        });
+        
+        if (!authToken) {
+          throw new Error('Token de autenticação não encontrado');
+        }
+        
+        if (parsedUserInfo?.nivel !== 0) {
+          throw new Error(`Usuário não é admin (nível ${parsedUserInfo?.nivel})`);
+        }
+        
+        console.log('📡 Fazendo requisição para /agendamentos...');
+        let response;
+        
+        try {
+          // Tentar buscar todos os agendamentos (admin)
+          response = await apiClient.get("/agendamentos");
+          console.log('✅ Resposta de /agendamentos (admin):', response.data);
+        } catch (adminError) {
+          if (adminError.response?.status === 403) {
+            console.log('⚠️ Acesso negado para /agendamentos, tentando /agendamentos/me...');
+            // Se não for admin, buscar apenas os próprios agendamentos
+            response = await apiClient.get("/agendamentos/me");
+            console.log('✅ Resposta de /agendamentos/me:', response.data);
+          } else {
+            throw adminError;
+          }
+        }
+        
+        const agendamentosData = response.data.data || response.data || [];
+        console.log('📊 Total de agendamentos:', agendamentosData.length);
+        console.log('🔍 Primeiro agendamento:', agendamentosData[0]);
+        console.log('👤 Dados do usuário do primeiro:', agendamentosData[0]?.usuario);
+        console.log('🏠 Dados do imóvel do primeiro:', agendamentosData[0]?.imovel);
+        if (agendamentosData[0]?.imovel) {
+          console.log('🏠 Campos do imóvel:', {
+            id: agendamentosData[0].imovel.id,
+            endereco: agendamentosData[0].imovel.endereco,
+            cidade: agendamentosData[0].imovel.cidade,
+            tipo: agendamentosData[0].imovel.tipo,
+            preco: agendamentosData[0].imovel.preco
+          });
+        }
+        
+        setAgendamentos(Array.isArray(agendamentosData) ? agendamentosData : []);
+        setAllAgendamentos(Array.isArray(agendamentosData) ? agendamentosData : []);
+        setLoading(false);
+      } catch (err) {
+        console.error("❌ Erro detalhado ao buscar agendamentos:", {
+          status: err.response?.status,
+          statusText: err.response?.statusText,
+          data: err.response?.data,
+          message: err.message
+        });
+        
+        // Se erro 401, tentar usar dados mockados temporariamente
+        if (err.response?.status === 401) {
+          console.warn('⚠️ Erro 401 - usando dados mockados temporariamente');
+          setAgendamentos(mockedAgendamentos);
+          setAllAgendamentos(mockedAgendamentos);
+        } else {
+          setAgendamentos([]);
+          setAllAgendamentos([]);
+        }
+        setLoading(false);
+      }
+    }
+    fetchAgendamentos();
+  }, []);  let orderedAgendamentos = [...agendamentos];
   if (filterData.order === "Ordem alfabetica") {
     orderedAgendamentos.sort((a, b) => {
       if (!a.pergunta) return 1;
