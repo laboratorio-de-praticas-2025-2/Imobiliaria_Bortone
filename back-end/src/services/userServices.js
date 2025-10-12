@@ -6,7 +6,6 @@ class UserService {
       const newUser = await User.create({ nome, email, senha, nivel, celular });
       return newUser;
     } catch (error) {
-      console.log("Erro ao criar usuário:", error);
       throw error;
     }
   }
@@ -17,7 +16,6 @@ class UserService {
       const newUser = await User.create({ nome, email, senha, nivel, celular });
       return newUser;
     } catch (error) {
-      console.log("Erro ao criar usuário CMS:", error);
       throw error;
     }
   }
@@ -27,7 +25,6 @@ class UserService {
       const users = await User.findAll({ where: { ativo: 1 } });
       return users;
     } catch (error) {
-      console.log("Erro ao buscar usuários:", error);
       throw error;
     }
   }
@@ -37,7 +34,6 @@ class UserService {
       const user = await User.findByPk(id);
       return user;
     } catch (error) {
-      console.log(`Erro ao buscar usuário com ID ${id}:`, error);
       throw error;
     }
   }
@@ -50,7 +46,6 @@ class UserService {
       );
       return updatedRows;
     } catch (error) {
-      console.log(`Erro ao atualizar usuário com ID ${id}:`, error);
       throw error;
     }
   }
@@ -64,7 +59,6 @@ class UserService {
 
       return deletedRows;
     } catch (error) {
-      console.log(`Erro ao desativar usuário com ID ${id}:`, error);
       throw error;
     }
   }
@@ -74,7 +68,6 @@ class UserService {
       const user = await User.findOne({ where: { email } });
       return user;
     } catch (error) {
-      console.log("Erro ao buscar usuário:", error);
       throw error;
     }
   }

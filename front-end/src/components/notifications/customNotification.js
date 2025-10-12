@@ -17,12 +17,11 @@ export default function CustomNotification({
     tipo,
   });
 
+
   // Extrair dados do imóvel
   const title = imovel?.title || "Imóvel em Destaque";
   const message = imovel?.message || "Confira este imóvel interessante!";
   const property = imovel?.property || imovel?.imovel || imovel?.data || imovel;
-
-  console.log("🔥 CustomNotification - property extraída:", property);
 
   // Formatação de dados
   const preco = property?.preco || property?.valor || property?.price;
@@ -43,13 +42,7 @@ export default function CustomNotification({
     property?.tipo_negociacao || property?.tipo || property?.type || "venda";
   const id = property?.id || property?.imovel_id;
 
-  console.log("🔥 CustomNotification - Dados processados:", {
-    precoFormatado,
-    areaFormatada,
-    endereco,
-    tipoNegociacao,
-    id,
-  });
+
 
   // Imagem
   const imagemUrl = property?.imagem_url || "/images/casa.png";

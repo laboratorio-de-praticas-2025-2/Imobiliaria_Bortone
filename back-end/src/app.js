@@ -29,6 +29,7 @@ import imagemImovelRoutes from "./routes/imagemImovelRoutes.js";
 import dashboardRouter from "./routes/dashboardRoutes.js";
 import bannerRoutes from './routes/bannerRoutes.js';
 import publicidadeRoutes from "./routes/publicidadeRoutes.js";
+import simuladorRoutes from "./routes/simuladorRoutes.js";
 
 const app = express();
 
@@ -79,6 +80,7 @@ app.use("/publicacoes", blogRoutes);
 app.use('/imoveis', imoveisRouter);
 app.use('/imagemImovel', imagemImovelRoutes);
 app.use('/publicidade', publicidadeRoutes);
+app.use('/simulador', simuladorRoutes);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
@@ -87,9 +89,6 @@ app.use(errorHandler);
 // Inicializar WebSocket
 initWebSocket(server);
 
-// Log de configuração JWT para debug
-console.log("🔑 JWT_SECRET configurado:", process.env.JWT_SECRET ? "✅ Sim" : "❌ Não (usando fallback)");
-console.log("🔑 JWT_SECRET primeiros 10 chars:", process.env.JWT_SECRET ? process.env.JWT_SECRET.substring(0, 10) + "..." : "N/A");
 
 // ----------------------
 // Banco de dados

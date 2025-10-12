@@ -5,16 +5,15 @@ import { IoClose, IoMenu } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 import SidebarNav from "./SidebarNav";
 import Link from "next/link";
-import { usersMock } from "@/mock/users"; // Certifique-se que o caminho do import está correto
 import { handleLogout } from "@/utils/auth";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
 
   // Estados e variáveis para o botão do usuário
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const user = usersMock[0] || null;
-  const isLoggedIn = !!user;
+  const { isLoggedIn, user } = useAuth();
   const buttonHeightPX = 40;
   const bottomRadius = "20px";
   const delays = ["0ms", "60ms", "120ms"];

@@ -65,6 +65,16 @@ Agendamento.belongsTo(Usuario, {
     as: 'usuario'
 });
 
+// 🔹 Agendamento ↔ Imovel (N:1)
+Imovel.hasMany(Agendamento, {
+    foreignKey: 'id_imovel',
+    as: 'agendamentos'
+});
+Agendamento.belongsTo(Imovel, {
+    foreignKey: 'id_imovel',
+    as: 'imovel'
+});
+
 
 export { Imovel, Casa, Terreno, Usuario, ImagemImovel, RecomendacaoImovel, Agendamento };
 

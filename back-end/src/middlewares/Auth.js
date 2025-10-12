@@ -19,6 +19,7 @@ console.log('🔍 [AUTH] Tipo do ID:', typeof data.id);
         req.loggedUser = {
           id: data.id,
           email: data.email,
+          nivel: data.nivel,
         };
         next();
       }

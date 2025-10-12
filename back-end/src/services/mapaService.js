@@ -197,7 +197,6 @@ class MapaService {
 
       // Filtro por cidades (múltiplas)
       if (filtros.cidades && filtros.cidades.length > 0) {
-        console.log('Aplicando filtro de cidades:', filtros.cidades);
         whereClause.cidade = { [Op.in]: filtros.cidades };
       }
 

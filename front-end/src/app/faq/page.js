@@ -22,7 +22,6 @@ const fetchFaq = async () => {
     const response = await apiClient.get('/faq');
     setFaqData(response.data);
    }catch(error){
-    console.log("Erro ao buscar FAQ:", error);
     setFaqData([])
    }
   };

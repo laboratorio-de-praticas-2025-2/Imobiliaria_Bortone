@@ -100,10 +100,7 @@ export default function MapView({ imoveis, alwaysShowCard = true }) {
     return imoveis.map(i => i.id).sort().join('-');
   }, [imoveis]);
 
-  console.log(`MapView renderizando com ${imoveis?.length || 0} imóveis`, { 
-    mapKey, 
-    imoveisInfo: imoveis?.map(i => ({ id: i.id, tipo: i.tipo, cidade: i.cidade })) 
-  });
+
 
   return (
     <div 

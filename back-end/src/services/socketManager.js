@@ -7,10 +7,6 @@ dotenv.config({ path: fileURLToPath(new URL('../../.env', import.meta.url)) });
 
 class SocketManager {
     constructor() {
-        console.log("🔧 Inicializando SocketManager...");
-        console.log("🌐 FRONTEND_URL:", process.env.FRONTEND_URL || "http://localhost:3000");
-        console.log("🔍 JWT_SECRET carregado:", process.env.JWT_SECRET ? 'SIM' : 'NÃO');
-        console.log("🔍 Valor JWT_SECRET:", process.env.JWT_SECRET?.substring(0, 10) + '...');
 
         this.httpServer = createServer();
 
@@ -22,8 +18,6 @@ class SocketManager {
                 credentials: true
             }
         });
-
-        console.log("✅ SocketManager criado com path: /notifications/");
 
         const SOCKET_PORT = process.env.SOCKET_PORT || 4001;
         this.httpServer.listen(SOCKET_PORT, () => {
@@ -47,25 +41,17 @@ class SocketManager {
                     socket.userId = 'anonymous_' + socket.id;
                     socket.userRole = 'guest';
                     socket.isAuthenticated = false;
-                    console.log(`🔓 Usuário anônimo conectado: ${socket.userId}`);
                     return next();
                 }
-
-                // ✅ ADICIONAR logs de debug do token:
                 console.log('🔍 Token recebido (primeiros 50 chars):', token.substring(0, 50));
-                console.log('🔍 Token completo:', token);
                 console.log('🔍 Tamanho do token:', token.length);
-                console.log('🔍 JWT_SECRET usado:', process.env.JWT_SECRET);
 
 
                 const decoded = jwt.verify(token, process.env.JWT_SECRET);
-                // const decoded = jwt.decode(token);
-                //  console.log('✅ Token válido decodificado:', { id: decoded.id, role: decoded.role });
 
                 socket.userId = String(decoded.id);
                 socket.userRole = decoded.role || 'user';
                 socket.isAuthenticated = true;
-                console.log(`🔐 Usuário autenticado conectado: ${socket.userId}`);
 
                 next();
             } catch (error) {
@@ -150,7 +136,6 @@ class SocketManager {
 
             // Desconexão
             socket.on('disconnect', (reason) => {
-                console.log(`Usuário ${socket.userId} desconectado: ${reason}`);
 
                 // Notificar salas que o usuário estava
                 const userRooms = this.userRooms.get(String(socket.userId)) || new Set();
@@ -267,9 +252,11 @@ class SocketManager {
 
     // ✅ Broadcast público (autenticados + anônimos)
     broadcastPublic(event, data) {
+
         console.log(`🚀 broadcastPublic CHAMADO: evento=${event}`);
         console.log(`🚀 Dados:`, JSON.stringify(data, null, 2));
         console.log(`🚀 Usuários conectados:`, this.connectedUsers.size);
+
         this.io.to('public_notifications').emit(event, {
             ...data,
             timestamp: new Date().toISOString()

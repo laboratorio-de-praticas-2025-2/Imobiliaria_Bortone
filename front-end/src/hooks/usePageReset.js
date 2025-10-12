@@ -19,7 +19,6 @@ export function usePageReset() {
       const referrer = sessionStorage.getItem('lastAdminPage');
       
       if (referrer && referrer.includes('/admin')) {
-        console.log('🔄 Detectada navegação de volta do admin, limpando states...');
         
         // Limpar cache do sessionStorage relacionado ao admin
         sessionStorage.removeItem('lastAdminPage');

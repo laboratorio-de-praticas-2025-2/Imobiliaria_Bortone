@@ -20,8 +20,7 @@ class BlogService {
 
   async getAllArtigos(params) {
     try {
-      console.log("=== BLOG SERVICE DEBUG ===");
-      console.log("Parâmetros recebidos:", params);
+
 
       const optionsArtigos = {};
 
@@ -31,25 +30,20 @@ class BlogService {
             [Op.like]: `%${params.titulo}%`,
           },
         };
-        console.log("Filtro por título aplicado:", params.titulo);
       }
 
       if (params?.usuario_id) {
         optionsArtigos.where = optionsArtigos.where || {};
         optionsArtigos.where.usuario_id = params.usuario_id;
-        console.log("Filtro por usuário aplicado:", params.usuario_id);
       }
 
       const ordem = params?.direcao === "DESC" ? "DESC" : "ASC";
       if (params?.ordenarPor === "data") {
         optionsArtigos.order = [["data_publicacao", ordem]];
-        console.log("Ordenação aplicada por data:", ordem);
       } else if (params?.ordenarPor === "alfabetica") {
         optionsArtigos.order = [["titulo", ordem]];
-        console.log("Ordenação alfabética aplicada:", ordem);
       } else {
         optionsArtigos.order = [["data_publicacao", "DESC"]];
-        console.log("Ordenação padrão aplicada (data DESC)");
       }
 
       const page = parseInt(params?.page) || 1;
@@ -59,18 +53,11 @@ class BlogService {
       optionsArtigos.limit = limit;
       optionsArtigos.offset = offset;
 
-      console.log("Paginação - Página:", page, "Limite:", limit, "Offset:", offset);
-      console.log("Options finais:", JSON.stringify(optionsArtigos, null, 2));
-
       const result = await Blog.findAndCountAll(optionsArtigos);
 
       const totalItems = result.count;
       const totalPages = Math.ceil(totalItems / limit);
       const artigos = result.rows;
-
-      console.log("Artigos encontrados:", artigos.length);
-      console.log("Total de registros:", totalItems);
-      console.log("Total de páginas:", totalPages);
 
       return {
         data: artigos,

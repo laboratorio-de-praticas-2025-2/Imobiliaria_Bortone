@@ -16,7 +16,6 @@ import NotificationProvider from "@/components/notifications/NotificationProvide
 // import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export default function RootLayout({ children }) {
-    console.log("🔥 Layout renderizando...");
   return (
     <html lang="pt-br">
       <head>

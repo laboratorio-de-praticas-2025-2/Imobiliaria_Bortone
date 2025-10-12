@@ -92,7 +92,6 @@ function endUserSession(userId, reason = "disconnect") {
     // Atualizar lista de usuários para agentes
     broadcastAgentsList();
 
-    console.log(`Usuário ${userData.nome} (${userId}) desconectado: ${reason}`);
   }
 }
 

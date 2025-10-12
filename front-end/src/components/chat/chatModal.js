@@ -218,7 +218,6 @@ export default function ChatModal({ onClose, isLoggedIn }) {
 
   // Função para selecionar usuário e solicitar histórico
   const selectUser = (userId) => {
-    console.log("🎯 Selecionando usuário:", userId);
     setSelectedUser(userId);
 
     // Limpar mensagens antigas exceto a inicial
@@ -227,7 +226,6 @@ export default function ChatModal({ onClose, isLoggedIn }) {
     // Solicitar histórico do usuário selecionado
     if (ws && isConnected) {
       const payload = { type: "getHistory", userId: userId };
-      console.log("📤 Solicitando histórico:", payload);
       ws.send(JSON.stringify(payload));
     }
   };
@@ -265,12 +263,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
       return;
     }
 
-    console.log("✅ Dados de usuário para conexão:", {
-      userId: userData.userId,
-      nome: userData.nome,
-      nivel: userData.nivel,
-      isAgent: userData.isAgent,
-    });
+   
 
     // Mensagem inicial baseada no tipo de usuário
     const initialText = userData.isAgent
@@ -298,7 +291,6 @@ export default function ChatModal({ onClose, isLoggedIn }) {
 
           // Se não recebemos pong há mais de 60 segundos, considerar conexão morta
           if (now - lastPongTime > 60000) {
-            console.log("❌ Conexão considerada morta - não recebeu pong");
             socket.close(1000, "Heartbeat timeout");
             return;
           }
@@ -329,11 +321,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
 
     const connect = () => {
       const wsUrl = `${getWebSocketUrl()}?token=${userData.token}`;
-      console.log(
-        `🔌 Tentando conectar WebSocket (tentativa ${
-          reconnectAttempts + 1
-        }): ${wsUrl}`
-      );
+      
 
       setConnectionStatus("connecting");
 
@@ -342,7 +330,6 @@ export default function ChatModal({ onClose, isLoggedIn }) {
         setWs(socket);
 
         socket.onopen = () => {
-          console.log("✅ WebSocket conectado com sucesso");
           setIsConnected(true);
           setConnectionStatus("connected");
           reconnectAttempts = 0;
@@ -365,7 +352,6 @@ export default function ChatModal({ onClose, isLoggedIn }) {
             nome: userData.nome,
             nivel: userData.nivel,
           };
-          console.log("📤 Enviando mensagem de conexão:", connectMessage);
           socket.send(JSON.stringify(connectMessage));
         };
 
@@ -373,8 +359,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
           try {
             const raw = event.data;
             const data = JSON.parse(raw);
-            console.log("📨 Mensagem recebida (raw):", raw);
-            console.log("📨 Mensagem recebida (obj):", data);
+
 
             const type = data.type || data.event || data.action;
 
@@ -417,7 +402,6 @@ export default function ChatModal({ onClose, isLoggedIn }) {
                 ts
               );
 
-              console.log("➕ Adicionando mensagem normalizada:", newMsg);
               setMessages((prev) => [...prev, newMsg]);
 
               // --- NOTIFICAÇÕES (som + browser) para agente e cliente ---
@@ -520,7 +504,6 @@ export default function ChatModal({ onClose, isLoggedIn }) {
                   );
                 });
 
-              console.log("📜 Histórico normalizado:", mapped);
 
               setMessages((prev) => {
                 const header = prev.filter((msg) => msg.id === 1);
@@ -577,11 +560,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
               const latency = data.timestamp
                 ? Date.now() - data.timestamp
                 : null;
-              console.log(
-                `🏓 Pong recebido do servidor${
-                  latency ? ` (latência: ${latency}ms)` : ""
-                }`
-              );
+             
             }
           } catch (e) {
             console.error("❌ Falha ao processar mensagem WS:", e, event.data);
@@ -589,16 +568,6 @@ export default function ChatModal({ onClose, isLoggedIn }) {
         };
 
         socket.onclose = (event) => {
-          console.log("❌ WebSocket fechado:", {
-            code: event.code,
-            reason: event.reason,
-          });
-          console.log("🔍 Estado da conexão antes do fechamento:", {
-            readyState: socket.readyState,
-            isConnected: isConnected,
-            reconnectAttempts: reconnectAttempts,
-            userData: userData,
-          });
           setIsConnected(false);
           stopHeartbeat();
 
@@ -615,9 +584,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
               1000 * Math.pow(2, reconnectAttempts - 1),
               10000
             );
-            console.log(
-              `🔄 Tentando reconectar em ${delay}ms (código: ${event.code})`
-            );
+            
 
             setMessages((prev) => [
               ...prev,
@@ -730,16 +697,13 @@ export default function ChatModal({ onClose, isLoggedIn }) {
         return;
       }
       payload.to = selectedUser;
-      console.log("📤 AGENTE enviando para usuário:", selectedUser);
     }
 
     try {
-      console.log("📤 Enviando payload:", payload);
       ws.send(JSON.stringify(payload));
 
       // Adicionar mensagem enviada imediatamente
       const sentMessage = createMessage(Date.now(), "user", messageText);
-      console.log("➕ Adicionando mensagem enviada:", sentMessage);
       setMessages((prev) => [...prev, sentMessage]);
       setNewMessage("");
     } catch (e) {
@@ -763,7 +727,6 @@ export default function ChatModal({ onClose, isLoggedIn }) {
 
   // Debug: Adicionar logs para monitorar mensagens
   useEffect(() => {
-    console.log("🔍 Estado atual das mensagens:", messages);
   }, [messages]);
 
   // Função para redirecionar para login

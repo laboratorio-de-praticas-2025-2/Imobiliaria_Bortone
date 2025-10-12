@@ -27,13 +27,11 @@ export function FiltersProvider({ children }) {
   const [filters, setFilters] = useState(INITIAL_FILTERS);
 
   const updateFilters = (type, newFilters) => {
-    console.log(`FiltersContext: Atualizando filtros para ${type}:`, newFilters);
     setFilters((prevFilters) => {
       const updatedFilters = {
         ...prevFilters,
         [type]: { ...prevFilters[type], ...newFilters },
       };
-      console.log(`FiltersContext: Filtros atualizados:`, updatedFilters[type]);
       return updatedFilters;
     });
   };
@@ -44,7 +42,6 @@ export function FiltersProvider({ children }) {
   };
 
   const removeFilters = () => {
-    console.log('FiltersContext: Removendo todos os filtros');
     setFilters(INITIAL_FILTERS);
   };
 

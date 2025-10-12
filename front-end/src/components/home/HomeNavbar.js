@@ -28,8 +28,6 @@ export default function HomeNavbar({ className }) {
     if (authToken && userInfo) {
       try {
         const parsedUser = JSON.parse(userInfo);
-        console.log("🔍 Dados do usuário carregados:", parsedUser);
-        console.log("🔍 Nível do usuário:", parsedUser.nivel, "Tipo:", typeof parsedUser.nivel);
         setUser(parsedUser);
         setIsLoggedIn(true);
       } catch (error) {

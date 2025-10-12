@@ -4,7 +4,6 @@ const url =
 
 // Pega os dados de um relatório específico
 export async function getRelatorioData(secoes = [], data_inicio = null, data_fim = null) {
-  console.log("Buscando dados do relatório: ", secoes, "URL:", url);
 
   const params = new URLSearchParams();
   if (data_inicio && data_fim) {
@@ -25,7 +24,6 @@ export async function getRelatorioData(secoes = [], data_inicio = null, data_fim
     cache: "no-store",
   });
 
-  console.log("Resposta da API:", res.status, res.statusText);
 
   if (!res.ok) {
     const errorText = await res.text();
@@ -36,20 +34,17 @@ export async function getRelatorioData(secoes = [], data_inicio = null, data_fim
   }
 
   const jsonData = await res.json();
-  console.log("Dados recebidos:", jsonData);
   return jsonData;
 }
 
 // Pega a lista de todos os relatórios
 export async function getAllRelatorios() {
-  console.log("Buscando lista de relatórios, URL:", url);
 
   const res = await fetch(`${url}/relatorios/listar`, {
     method: "GET",
     cache: "no-store",
   });
 
-  console.log("Resposta da API (lista):", res.status, res.statusText);
 
   if (!res.ok) {
     const errorText = await res.text();
