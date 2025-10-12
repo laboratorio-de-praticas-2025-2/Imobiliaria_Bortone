@@ -103,7 +103,7 @@ export default function Home() {
 
         <div className="flex-shrink-0 w-full md:w-[20%]">
           <div className="pt-10">
-            <PublicidadeCarousel />
+            <PublicidadeCarousel startIndex={0} />
           </div>
         </div>
       </div>

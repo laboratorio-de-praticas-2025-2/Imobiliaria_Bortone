@@ -8,7 +8,7 @@ export default function HomeFooter() {
   return (
     <footer className="home-footer relative md:pt-20 ">
       <div className="w-full md:px-16 md:py-7 px-4">
-        <PublicidadeCarousel />
+        <PublicidadeCarousel startIndex={1} />
       </div>
       <div className="home-footer-content flex md:flex-row flex-col md:justify-between justify-end gap-14 px-16 py-7 text-white items-end md:pb-28">
         <Flex vertical gap="large">
