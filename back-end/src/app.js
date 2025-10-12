@@ -29,6 +29,7 @@ import imagemImovelRoutes from "./routes/imagemImovelRoutes.js";
 import dashboardRouter from "./routes/dashboardRoutes.js";
 import bannerRoutes from './routes/bannerRoutes.js';
 import publicidadeRoutes from "./routes/publicidadeRoutes.js";
+import simuladorRoutes from "./routes/simuladorRoutes.js";
 
 const app = express();
 
@@ -79,6 +80,7 @@ app.use("/publicacoes", blogRoutes);
 app.use('/imoveis', imoveisRouter);
 app.use('/imagemImovel', imagemImovelRoutes);
 app.use('/publicidade', publicidadeRoutes);
+app.use('/simulador', simuladorRoutes);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
