@@ -2,7 +2,7 @@ import Casa from "../models/Casa.js";
 import Terreno from "../models/Terreno.js";
 import ImagemImovel from "../models/ImagemImovel.js";
 import * as ImoveisService from "../services/ImoveisService.js";
-import NotificationService from "../services/NotificationService.js";
+import NotificationService from "../services/notificationService.js";
 
 const extractEntityData = (body) => {
     const {
