@@ -16,6 +16,8 @@ export default function DropdownFilter({
 }) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
+  
+  console.log("DropdownFilter - selected:", selected);
 
   useHandleClickOutside(dropdownRef, () => setOpen(false));
 
@@ -55,7 +57,6 @@ export default function DropdownFilter({
                 key={option}
                 onClick={() => {
                   handleSelect(option);
-                  setSelected(option);
                   setOpen(false);
                 }}
                 className={`px-4 py-2 !text-[var(--primary)] rounded-2xl hover:bg-[#EEF0F9] text-left ${
