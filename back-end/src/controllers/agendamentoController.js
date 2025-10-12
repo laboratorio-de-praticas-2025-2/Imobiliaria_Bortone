@@ -1,4 +1,7 @@
 import * as agendamentoService from '../services/agendamentoService.js';
+import Agendamento from '../models/Agendamento.js';
+import Usuario from '../models/Usuario.js';
+import bcrypt from 'bcrypt';
 
 // Validação de entrada robusta
 const validateEmailInput = (input) => {
@@ -199,18 +202,100 @@ export const sendScheduleConfirmation = async (req, res) => {
       });
     }
 
-    const result = await agendamentoService.sendScheduleConfirmation({
-      appointment,
-      subject,
-      text,
-      html
-    });
+    // NOVA FUNCIONALIDADE: Salvar agendamento no banco de dados
+    let agendamentoSalvo = null;
+    try {
+      // Buscar ou criar usuário com base no email
+      let usuario = await Usuario.findOne({ where: { email: email } });
+      
+      if (!usuario) {
+        // Se usuário não existe, criar um novo usuário temporário
+        // Senha temporária será definida quando o usuário se cadastrar
+        const senhaTemporaria = await bcrypt.hash('temp_' + Date.now(), 10);
+        
+        usuario = await Usuario.create({
+          nome: name,
+          email: email,
+          senha: senhaTemporaria,
+          nivel: 1, // usuário comum
+          celular: phone || null,
+          ativo: 1
+        });
+        
+        console.log(`✅ Novo usuário criado: ${usuario.id} - ${usuario.email}`);
+      } else {
+        // Se usuário existe, atualizar nome e telefone se fornecidos
+        if (name && name !== usuario.nome) {
+          usuario.nome = name;
+        }
+        if (phone && phone !== usuario.celular) {
+          usuario.celular = phone;
+        }
+        await usuario.save();
+        
+        console.log(`✅ Usuário existente atualizado: ${usuario.id} - ${usuario.email}`);
+      }
 
-    res.json({
-      success: true,
-      message: "Agendamento confirmado e e-mails enviados com sucesso",
-      data: result
-    });
+      // Criar registro de agendamento no banco
+      // Usar data atual + 7 dias como data_marcada padrão se não especificada
+      const dataAgendamento = appointment.date && appointment.time 
+        ? new Date(`${appointment.date}T${appointment.time}`)
+        : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 dias a partir de agora
+
+      const agendamentoData = {
+        id_usuario: usuario.id,
+        data_marcada: dataAgendamento,
+        data_create: new Date(),
+        id_imovel: propertyId ? parseInt(propertyId) : null,
+        mensagem: `${notes || ''}\nPeríodo preferido: ${visitPeriod}\nTelefone: ${phone || 'Não informado'}`.trim(),
+        concluido: 0
+      };
+      
+      console.log('📝 Dados do agendamento a serem salvos:', agendamentoData);
+      
+      agendamentoSalvo = await Agendamento.create(agendamentoData);
+
+      console.log(`✅ Agendamento salvo no banco: ID ${agendamentoSalvo.id} para usuário ${usuario.id} (${usuario.email})`);
+      
+    } catch (dbError) {
+      console.error('❌ Erro ao salvar agendamento no banco:', dbError);
+      // Continuar com o envio de email mesmo se houver erro no banco
+    }
+
+    // Tentar enviar email, mas não falhar se houver erro
+    let emailResult = null;
+    try {
+      emailResult = await agendamentoService.sendScheduleConfirmation({
+        appointment,
+        subject,
+        text,
+        html
+      });
+      console.log('✅ Email de confirmação enviado com sucesso');
+    } catch (emailError) {
+      console.error('❌ Erro ao enviar email de confirmação:', emailError.message);
+      // Continuar mesmo se o email falhar
+    }
+
+    // Resposta de sucesso baseada no que foi salvo
+    if (agendamentoSalvo) {
+      res.json({
+        success: true,
+        message: emailResult ? 
+          "Agendamento confirmado, salvo no banco e e-mail enviado com sucesso" : 
+          "Agendamento salvo com sucesso (email não enviado)",
+        data: {
+          agendamento: {
+            id: agendamentoSalvo.id,
+            data_marcada: agendamentoSalvo.data_marcada,
+            id_imovel: agendamentoSalvo.id_imovel
+          },
+          email: emailResult || null
+        }
+      });
+    } else {
+      throw new Error("Falha ao salvar agendamento no banco de dados");
+    }
   } catch (error) {
     console.error('Erro ao enviar confirmação de agendamento:', error);
     // Não expor detalhes internos em produção

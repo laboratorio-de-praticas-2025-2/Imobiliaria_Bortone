@@ -162,8 +162,7 @@ export function buildImageUrl(imageUrl, type = 'default', options = {}) {
  * Obtém a URL base da API (mantido para compatibilidade)
  */
 function getApiBaseUrl() {
-  const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || 
-    (process.env.NODE_ENV !== 'production' ? 'http://localhost:4000' : '');
+  const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://imobiliaria-bortone.onrender.com';
   
   if (!rawApiUrl) return '';
   

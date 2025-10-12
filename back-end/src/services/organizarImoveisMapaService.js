@@ -9,11 +9,13 @@ export const organizarImoveisMapView = (imoveis) => {
         cidade: imovel.cidade,
         estado: imovel.estado,
         preco: imovel.preco,
+        area: imovel.area,
+        murado: imovel.murado || false,
         latitude: imovel.latitude,
         longitude: imovel.longitude,
         imagem:
-          imovel.imagem_imovel && imovel.imagem_imovel.length > 0
-            ? imovel.imagem_imovel[0].url_imagem
+          imovel.imagem_imovels && imovel.imagem_imovels.length > 0
+            ? imovel.imagem_imovels[0].url_imagem
             : null, // Primeira imagem ou null
       };
     }
@@ -28,14 +30,14 @@ export const organizarImoveisMapView = (imoveis) => {
       preco: imovel.preco,
       latitude: imovel.latitude,
       longitude: imovel.longitude,
-      quartos: imovel.casa.quartos,
-      banheiros: imovel.casa.banheiros,
-      vagas: imovel.casa.vagas,
-      possui_piscina: imovel.casa.possui_piscina,
-      possui_jardim: imovel.casa.possui_jardim,
+      quartos: imovel.casa?.quartos || 0,
+      banheiros: imovel.casa?.banheiros || 0,
+      vagas: imovel.casa?.vagas || 0,
+      possui_piscina: imovel.casa?.possui_piscina || false,
+      possui_jardim: imovel.casa?.possui_jardim || false,
       imagem:
-        imovel.imagem_imovel && imovel.imagem_imovel.length > 0
-          ? imovel.imagem_imovel[0].url_imagem
+        imovel.imagem_imovels && imovel.imagem_imovels.length > 0
+          ? imovel.imagem_imovels[0].url_imagem
           : null, // Primeira imagem ou null
     };
   });
