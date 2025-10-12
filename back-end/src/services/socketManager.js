@@ -43,14 +43,13 @@ class SocketManager {
                     socket.isAuthenticated = false;
                     return next();
                 }
+                console.log('🔍 Token recebido (primeiros 50 chars):', token.substring(0, 50));
+                console.log('🔍 Tamanho do token:', token.length);
 
-                
 
+                const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-                    // const decoded = jwt.verify(token, process.env.JWT_SECRET);
-                const decoded = jwt.decode(token);
-
-                socket.userId = decoded.id;
+                socket.userId = String(decoded.id);
                 socket.userRole = decoded.role || 'user';
                 socket.isAuthenticated = true;
 
@@ -69,17 +68,23 @@ class SocketManager {
     // Configurar manipuladores de eventos
     setupEventHandlers() {
         this.io.on('connection', (socket) => {
+            console.log(`🔗 Nova conexão socket: ${socket.id}`);
+            console.log(`🔍 Auth recebido na conexão:`, socket.handshake.auth);
+            console.log(`🔍 UserId setado pelo middleware:`, socket.userId);
             const authStatus = socket.isAuthenticated ? '🔐 autenticado' : '🔓 anônimo';
-        
-        socket.join('public_notifications');
+            console.log(`Usuário conectado: ${socket.userId} (${socket.userRole}) - ${authStatus}`);
+
+            console.log(`🏠 Juntando socket ${socket.id} à sala 'public_notifications'`);
+            socket.join('public_notifications');
+            console.log(`✅ Socket ${socket.id} entrou na sala 'public_notifications'`);
 
             // Registrar usuário conectado
-            this.connectedUsers.set(socket.userId, socket);
-            this.userRooms.set(socket.userId, new Set());
+            this.connectedUsers.set(String(socket.userId), socket);
+            this.userRooms.set(String(socket.userId), new Set());
 
             // Juntar-se a sala do usuário (só para autenticados)
             if (socket.isAuthenticated) {
-                socket.join(`user_${socket.userId}`);
+                socket.join(`user_${String(socket.userId)}`);
 
                 // Juntar-se a salas baseadas no papel do usuário
                 if (socket.userRole === 'admin' || socket.userRole === 'corretor') {
@@ -98,7 +103,8 @@ class SocketManager {
             // Eventos personalizados
             socket.on('join_room', (roomName) => {
                 socket.join(roomName);
-                this.userRooms.get(socket.userId).add(roomName);
+                this.userRooms.get(String(socket.userId)).add(roomName);
+                console.log(`Usuário ${socket.userId} entrou na sala: ${roomName}`);
 
                 // Notificar outros na sala
                 socket.to(roomName).emit('user_joined', {
@@ -110,7 +116,8 @@ class SocketManager {
 
             socket.on('leave_room', (roomName) => {
                 socket.leave(roomName);
-                this.userRooms.get(socket.userId).delete(roomName);
+                this.userRooms.get(String(socket.userId)).delete(roomName);
+                console.log(`Usuário ${socket.userId} saiu da sala: ${roomName}`);
 
                 // Notificar outros na sala
                 socket.to(roomName).emit('user_left', {
@@ -131,7 +138,7 @@ class SocketManager {
             socket.on('disconnect', (reason) => {
 
                 // Notificar salas que o usuário estava
-                const userRooms = this.userRooms.get(socket.userId) || new Set();
+                const userRooms = this.userRooms.get(String(socket.userId)) || new Set();
                 userRooms.forEach(room => {
                     socket.to(room).emit('user_disconnected', {
                         userId: socket.userId,
@@ -140,8 +147,8 @@ class SocketManager {
                     });
                 });
 
-                this.connectedUsers.delete(socket.userId);
-                this.userRooms.delete(socket.userId);
+                this.connectedUsers.delete(String(socket.userId));
+                this.userRooms.delete(String(socket.userId));
             });
 
             // Tratamento de erros
@@ -158,7 +165,12 @@ class SocketManager {
 
     // Enviar mensagem para usuário específico
     sendToUser(userId, event, data) {
-        const socket = this.connectedUsers.get(userId);
+        const userIdStr = String(userId);
+        console.log(`🎯 [sendToUser] Tentando enviar para usuário ${userIdStr}`);
+        console.log(`🎯 [sendToUser] Usuários conectados:`, Array.from(this.connectedUsers.keys()));
+        console.log(`🎯 [sendToUser] Usuário ${userIdStr} está conectado?`, this.connectedUsers.has(userIdStr));
+
+        const socket = this.connectedUsers.get(userIdStr);
         if (socket && socket.connected) {
             socket.emit(event, {
                 ...data,
@@ -168,7 +180,7 @@ class SocketManager {
         }
 
         // Tentar enviar para a sala do usuário caso não esteja na lista de conectados
-        const sent = this.io.to(`user_${userId}`).emit(event, {
+        this.io.to(`user_${userIdStr}`).emit(event, {
             ...data,
             timestamp: new Date().toISOString()
         });
@@ -240,10 +252,16 @@ class SocketManager {
 
     // ✅ Broadcast público (autenticados + anônimos)
     broadcastPublic(event, data) {
+
+        console.log(`🚀 broadcastPublic CHAMADO: evento=${event}`);
+        console.log(`🚀 Dados:`, JSON.stringify(data, null, 2));
+        console.log(`🚀 Usuários conectados:`, this.connectedUsers.size);
+
         this.io.to('public_notifications').emit(event, {
             ...data,
             timestamp: new Date().toISOString()
         });
+        console.log(`✅ Evento ${event} enviado para sala 'public_notifications'`);
     }
 
     // ✅ Broadcast só para autenticados

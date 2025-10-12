@@ -1,11 +1,10 @@
 import express from 'express';
 import * as ImoveisController from "../controllers/ImoveisController.js";
+import Auth from "../middlewares/Auth.js";
 
 const router = express.Router();
 
-
-
-router.post("/", ImoveisController.create);
+router.post("/", Auth.Authorization, ImoveisController.create);
 
 router.get("/", ImoveisController.getFilteredImoveis);
 

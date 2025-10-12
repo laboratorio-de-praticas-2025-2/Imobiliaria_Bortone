@@ -13,7 +13,7 @@ import "leaflet/dist/leaflet.css";
 import Script from "next/script";
 import ChatWrapper from "@/components/chat/chatWrapper";
 import NotificationProvider from "@/components/notifications/NotificationProvider";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+// import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export default function RootLayout({ children }) {
   return (
@@ -81,7 +81,7 @@ export default function RootLayout({ children }) {
         {children}
         <ChatWrapper />
         <NotificationProvider />
-        <SpeedInsights />
+        {/* <SpeedInsights /> */}
       </body>
     </html>
   );

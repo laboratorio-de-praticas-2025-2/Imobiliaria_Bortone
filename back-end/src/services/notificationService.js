@@ -13,7 +13,7 @@ class NotificationService {
   // Constantes de configuração para tolerâncias de recomendação
   static PRICE_TOLERANCE = 0.3; // 30% de variação no preço
   static AREA_TOLERANCE = 0.3; // 30% de variação na área
-  static GEO_TOLERANCE = 0.05; // ~5km de raio geográfico
+  static GEO_TOLERANCE = 0.450; // ~50km de raio geográfico
   static DAYS_LOOKBACK = 30; // Considerar visitas dos últimos 30 dias
   static TOP_PROPERTIES_LIMIT = 10; // Top 10 imóveis mais populares
   static CACHE_DURATION = 30 * 60 * 1000; // Cache de 30 minutos
@@ -24,7 +24,9 @@ class NotificationService {
   }
 
   // Função com a finalidade é acionar o SocketManager para o envio das notificações.
-  async dispararAlertaNovoImovel(novoImovel) {
+  async dispararAlertaNovoImovel(novoImovel, user) {
+     console.log('🔍 [DEBUG] Usuário que está cadastrando:', user);
+    console.log('🔍 [DEBUG] ID do usuário logado:', user?.id);
     const startTime = Date.now();
 
     // Validação de entrada - previne erros e garante integridade
@@ -119,7 +121,7 @@ class NotificationService {
 
 
       // Enviar notificações via Socket.IO
-      const notificacoesSent = await this._enviarNotificacoes(recomendacoes, novoImovel, imovelSorteado);
+      const notificacoesSent = await this._enviarNotificacoes(recomendacoes, novoImovel, imovelSorteado, user);
 
       const executionTime = Date.now() - startTime;
 
@@ -180,10 +182,9 @@ class NotificationService {
   }
 
   // Função para enviar notificações via Socket.IO - SEM REDUNDÂNCIAS
-  async _enviarNotificacoes(recomendacoes, novoImovel, imovelSorteado) {
 
-   
-
+  async _enviarNotificacoes(recomendacoes, novoImovel, imovelSorteado, user) {
+  
     const notificacoesSent = {
       recomendacoes: 0,
       broadcast: false
@@ -192,7 +193,28 @@ class NotificationService {
     try {
       // 1. NOTIFICAÇÕES PERSONALIZADAS (baseadas em recomendações) - UMA SÓ VEZ
       if (recomendacoes && recomendacoes.length > 0) {
-        const usuariosIds = [...new Set(recomendacoes.map(r => r.usuario_id))];
+        const usuariosIds = [...new Set(recomendacoes.map(r => r.dataValues?.usuario_id || r.usuario_id))];
+            console.log('🔍 [DEBUG] UsuariosIds que deveriam receber:', usuariosIds);
+    console.log('🔍 [DEBUG] Seu ID (quem está cadastrando):', user?.id);
+    console.log('🔍 [DEBUG] Você está na lista de recomendações?', usuariosIds.includes(user?.id));
+
+        console.log(`[NotificationService] Enviando recomendações personalizadas para ${usuariosIds.length} usuários: ${usuariosIds.join(', ')}`);
+
+
+         // ✅ ADICIONAR DEBUG:
+    console.log('🔍 [DEBUG] UsuariosIds extraídos:', usuariosIds);
+    console.log('🔍 [DEBUG] Dados da notificação personalizada:', {
+        type: 'personalized_recommendation',
+        title: 'Nova Recomendação Personalizada',
+        message: 'Encontramos um imóvel que combina com seu perfil!',
+        property: {
+            id: novoImovel.id,
+            tipo_negociacao: novoImovel.tipo_negociacao,
+            preco: novoImovel.preco,
+            area: novoImovel.area,
+            endereco: novoImovel.endereco
+        }
+    });
 
         const resultados = sendToMultipleUsers(usuariosIds, 'nova_recomendacao', {
           type: 'personalized_recommendation',
@@ -207,6 +229,8 @@ class NotificationService {
             imagens: novoImovel.imagens
           }
         });
+          console.log('🔍 [DEBUG] Resultados do sendToMultipleUsers:', resultados);
+    console.log('🔍 [DEBUG] Notificações enviadas com sucesso:', resultados?.filter(r => r.sent).length);
 
         notificacoesSent.recomendacoes = resultados.filter(r => r.sent).length;
       }
@@ -237,8 +261,6 @@ class NotificationService {
       console.error("❌ ERRO em _enviarNotificacoes:", error.message);
       throw new Error("Erro ao enviar notificações em tempo real.");
     }
-
-    return notificacoesSent;
   }
 
   // Função para notificar alteração de preço
