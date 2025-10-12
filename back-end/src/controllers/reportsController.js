@@ -38,40 +38,50 @@ class ReportController {
 
   async listarTiposRelatorios(req, res) {
     try {
-      const tiposRelatorios = [
+      const ListaRelatorios = [
         {
-          nome: "Relatório Geral",
-          tipo: "geral",
-          pdfNome: "Relatorio-Geral"
+          nome: "Relatório Estratégico Geral",
+          pdfNome: "Relatorio-Estrategico-Geral-Imobiliaria-Bortone",
+          secoes: [
+            REPORTS_SECOES.SUMARIO_EXECUTIVO,
+            REPORTS_SECOES.JORNADA_CLIENTE,
+            REPORTS_SECOES.ANALISE_ESTOQUE,
+            REPORTS_SECOES.DESEMPENHO_VENDAS,
+            REPORTS_SECOES.DESEMPENHO_LOCACOES,
+          ],
         },
         {
-          nome: "Relatório de Imóveis",
-          tipo: "imoveis", 
-          pdfNome: "Relatorio-Imoveis"
+          nome: "Relatório Estratégico de Estoque",
+          pdfNome: "Relatorio-Estrategico-Imoveis-Imobiliaria-Bortone",
+          secoes: [REPORTS_SECOES.ANALISE_ESTOQUE],
         },
         {
-          nome: "Relatório de Vendas",
-          tipo: "vendas",
-          pdfNome: "Relatorio-Vendas"
+          nome: "Relatório de Jornada do Cliente",
+          pdfNome: "Relatorio-Jornada-Cliente-Imobiliaria-Bortone",
+          secoes: [REPORTS_SECOES.JORNADA_CLIENTE],
         },
         {
-          nome: "Relatório de Aluguéis",
-          tipo: "alugueis",
-          pdfNome: "Relatorio-Alugueis"
+          nome: "Relatório de Desempenho de Vendas",
+          pdfNome: "Relatorio-Desempenho-Vendas-Imobiliaria-Bortone",
+          secoes: [REPORTS_SECOES.DESEMPENHO_VENDAS],
         },
         {
-          nome: "Relatório de Usuários",
-          tipo: "usuarios",
-          pdfNome: "Relatorio-Usuarios"
-        }
+          nome: "Relatório de Desempenho de Locações",
+          pdfNome: "Relatorio-Desempenho-Locacoes-Imobiliaria-Bortone",
+          secoes: [REPORTS_SECOES.DESEMPENHO_LOCACOES],
+        },
+        {
+          nome: "Relatório Estratégico - Resumo Executivo",
+          pdfNome:
+            "Relatorio-Estrategico-Sumario-Executivo-Imobiliaria-Bortone",
+          secoes: [REPORTS_SECOES.SUMARIO_EXECUTIVO],
+        },
       ];
 
-      res.json(tiposRelatorios);
+      res.json(ListaRelatorios);
     } catch (error) {
       console.error("Erro ao listar tipos de relatórios:", error);
-      res
-        .status(500)
-        .json({ error: "Erro ao listar tipos de relatórios" });
+      res.status(500).json({ error: "Erro ao listar tipos de relatórios" });
     }
   }
 }

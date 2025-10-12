@@ -9,9 +9,11 @@ const relatorioRouter = express.Router();
  *  - data_inicio: formato YYYY-MM-DD
  *  - data_fim: formato YYYY-MM-DD
  */
-relatorioRouter.get("/", ReportController.gerarDadosParaRelatorio); 
+    relatorioRouter.get("/", ReportController.gerarDadosParaRelatorio); 
 
-// /relatorios - lista os tipos de relatórios disponíveis
-relatorioRouter.get("/s", ReportController.listarTiposRelatorios);
+/**
+ * GET /relatorio/listar
+ */
+relatorioRouter.get("/listar", ReportController.listarTiposRelatorios);
 
 export default relatorioRouter;
