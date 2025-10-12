@@ -40,9 +40,10 @@ export function handleConnection(ws) {
       if (data.type === "connect") {
         let decoded;
 
-        // Modo de teste com usuários fixos
+        // Sempre usar ws.userData que foi definido no websocket.js durante a conexão inicial
         if (ws.userData) {
           decoded = ws.userData;
+          console.log("✅ Usando userData do WebSocket:", { id: decoded.id, nivel: decoded.nivel, nome: decoded.nome });
         } else {
           // Se já temos userData do websocket.js, usar ao invés de verificar novamente
           if (ws.userData) {
@@ -58,6 +59,7 @@ export function handleConnection(ws) {
               return;
             }
           }
+          console.log("⚠️ Usando token do cliente (userData não estava presente)");
         }
 
         const roleMap = {

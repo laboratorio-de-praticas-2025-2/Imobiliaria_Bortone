@@ -153,3 +153,17 @@ p {
   scrollbar-width: thin;
   scrollbar-color: #4C62AE #f1f1f1;
 }
+
+
+div.go4109123758 {
+  transform: unset !important;
+  top: unset !important;
+  left: unset !important;
+  position: relative !important;
+}
+
+div[data-rht-toaster] {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}

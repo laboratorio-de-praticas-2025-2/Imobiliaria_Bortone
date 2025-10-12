@@ -1,3 +1,4 @@
+"use client";
 // Sistema de URL de imagens com prioridade para Cloudinary
 // Este arquivo centraliza toda a lógica de URLs de imagens com fallback adequado
 
