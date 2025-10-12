@@ -133,8 +133,11 @@ export default function ChatModal({ onClose, isLoggedIn }) {
       userId: userData.userId,
       nome: userData.nome,
       nivel: userData.nivel,
-      isAgent: userData.isAgent
+      isAgent: userData.isAgent,
+      tokenPreview: userData.token?.substring(0, 30) + "..."
     });
+    
+    console.log("💡 Se houver erro 'Token inválido', faça logout e login novamente para obter um novo token.");
     
     // Mensagem inicial baseada no tipo de usuário
     const initialText = userData.isAgent
@@ -380,11 +383,26 @@ export default function ChatModal({ onClose, isLoggedIn }) {
             reconnectTimer = setTimeout(connect, delay);
           } else {
             setConnectionStatus("disconnected");
-            const errorMsg = event.code === 4001 ? "❌ Token de autenticação obrigatório." :
-                           event.code === 4002 ? "❌ Token de autenticação inválido." :
-                           event.code === 1008 ? "❌ Origem não permitida." :
-                           reconnectAttempts >= maxReconnectAttempts ? "❌ Não foi possível conectar ao servidor após várias tentativas." :
-                           "❌ Conexão encerrada.";
+            
+            let errorMsg;
+            if (event.code === 4002) {
+              errorMsg = "❌ Token de autenticação inválido ou expirado. Por favor, faça logout e login novamente.";
+              console.error("🔐 Token inválido detectado. Limpe o cache e faça novo login!");
+              
+              // Adicionar botão de logout na mensagem (se aplicável no seu design)
+              setTimeout(() => {
+                if (window.confirm("Seu token de autenticação está inválido. Deseja fazer logout agora para renovar?")) {
+                  localStorage.removeItem("authToken");
+                  localStorage.removeItem("userInfo");
+                  window.location.href = "/login";
+                }
+              }, 1000);
+            } else {
+              errorMsg = event.code === 4001 ? "❌ Token de autenticação obrigatório." :
+                         event.code === 1008 ? "❌ Origem não permitida." :
+                         reconnectAttempts >= maxReconnectAttempts ? "❌ Não foi possível conectar ao servidor após várias tentativas." :
+                         "❌ Conexão encerrada.";
+            }
             
             setMessages((prev) => [...prev, createMessage(Date.now(), "support", errorMsg)]);
           }

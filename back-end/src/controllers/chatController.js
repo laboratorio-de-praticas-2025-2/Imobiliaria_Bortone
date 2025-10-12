@@ -40,21 +40,19 @@ export function handleConnection(ws) {
       if (data.type === "connect") {
         let decoded;
 
-        // Modo de teste com usuários fixos
+        // Sempre usar ws.userData que foi definido no websocket.js durante a conexão inicial
         if (ws.userData) {
           decoded = ws.userData;
+          console.log("✅ Usando userData do WebSocket:", { id: decoded.id, nivel: decoded.nivel, nome: decoded.nome });
         } else {
-          // Se já temos userData do websocket.js, usar ao invés de verificar novamente
-          if (ws.userData) {
-            decoded = ws.userData;
-          } else {
-            decoded = chatService.verifyToken(data.token);
-            if (!decoded) {
-              console.log("❌ Token inválido na conexão:", data.token?.substring(0, 20) + "...");
-              ws.close(4002, "Token inválido");
-              return;
-            }
+          // Fallback: tentar verificar token se userData não existir
+          decoded = chatService.verifyToken(data.token);
+          if (!decoded) {
+            console.log("❌ Token inválido na conexão:", data.token?.substring(0, 20) + "...");
+            ws.close(4002, "Token inválido");
+            return;
           }
+          console.log("⚠️ Usando token do cliente (userData não estava presente)");
         }
 
         const roleMap = {
