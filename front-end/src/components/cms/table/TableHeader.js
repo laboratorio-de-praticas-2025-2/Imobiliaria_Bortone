@@ -7,7 +7,7 @@ import PesquisaAvancadaUser from "./pesquisaavancada/PesquisaAvancada";
 import PesquisaAvancada from "@/components/cms/form/PesquisaAvancada";
 const { Search } = Input;
 
-const optionsOrder = ["Ordem alfabetica", "Data de inclusão"];
+const defaultOptionsOrder = ["Ordem alfabetica", "Data de inclusão"];
 
 export default function TableHeader({
   onSearch,
@@ -22,6 +22,8 @@ export default function TableHeader({
   modalNewButton = false,
   onClick,
   onAdvancedFilter,
+  onAdvancedSearch,
+  optionsOrder = defaultOptionsOrder, // Permite ordens customizadas
 }) {
   return (
     <div
@@ -51,10 +53,11 @@ export default function TableHeader({
         )}
 
       <div className="flex md:gap-4 gap-2 items-center">
-        {type === "user" && (
-          <PesquisaAvancadaUser onAdvancedFilter={onAdvancedFilter} />
-        )}
-        {type === "imovel" && <PesquisaAvancada />}
+
+        {type === "user" && <PesquisaAvancadaUser onAdvancedFilter={onAdvancedFilter} />}
+        {type === "imovel" && <PesquisaAvancada filterData={filterData} updateFilterData={updateFilterData} onAdvancedSearch={onAdvancedSearch} />}
+
+
         <Search
           placeholder="Pesquisar"
           onSearch={onSearch}
