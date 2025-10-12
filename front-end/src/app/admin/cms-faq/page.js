@@ -11,30 +11,6 @@ import ConfirmModal from "@/components/cms/ConfirmModal";
 import { createStyles } from "antd-style";
 import FaqModal from "@/components/cms/FaqModal";
 
-const mockedAnswers = [
-  {
-    id: 1,
-    pergunta: "Como faço para criar uma conta?",
-    resposta: "Para criar uma conta, clique no botão 'Registrar' no canto superior direito e preencha o formulário com suas informações.",
-    id_usuario: 101,
-    ultima_atualizacao: "2024-01-15",
-  },
-  {
-    id: 2,
-    pergunta: "Esqueci minha senha. O que devo fazer?",
-    resposta: "Clique em 'Esqueci minha senha' na página de login e siga as instruções para redefinir sua senha.",
-    id_usuario: 102,
-    ultima_atualizacao: "2024-02-10",
-  },
-  {
-    id: 3,
-    pergunta: "Como posso entrar em contato com o suporte?",
-    resposta: "Você pode entrar em contato com o suporte através do formulário de contato na seção 'Ajuda' ou enviando um e-mail para suporte@exemplo.com.",
-    id_usuario: 103,
-    ultima_atualizacao: "2024-03-05",
-  },
-];
-
 const useStyle = createStyles(({ css, token }) => {
   const { antCls } = token;
   return {
@@ -65,6 +41,39 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const { styles } = useStyle();
 
+  // Função para buscar FAQs da API
+  const fetchAnswers = async () => {
+    try {
+      setLoading(true);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      const fullUrl = `${apiUrl}/faq`;
+      
+      const response = await fetch(fullUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors',
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const jsonData = await response.json();
+      const data = Array.isArray(jsonData) ? jsonData : [];
+      
+      setAnswers(data);
+      setAllAnswers(data);
+      setLoading(false);
+    } catch (err) {
+      console.error("Erro ao buscar FAQs:", err);
+      setAnswers([]);
+      setAllAnswers([]);
+      setLoading(false);
+    }
+  };
+
   const [deleteId, setDeleteId] = useState(null);
   const onDelete = (id) => {
     setDeleteId(id);
@@ -72,27 +81,35 @@ export default function Page() {
   };
 
   const handleEdit = (item) => {
-    setLoading(true);
     setEditingItem(item);
     setIsEditModalVisible(true);
-    setLoading(false);
   };
 
   const onConfirmDelete = async () => {
-    // try {
-    //   setLoading(true);
-    //   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    //   await axios.delete(`${apiUrl}/user/faq/${deleteId}`);
-    //   setUsers((prev) => prev.filter((u) => u.id !== deleteId));
-    //   setIsConfirmModalVisible(false);
-    //   setDeleteId(null);
-    //   setLoading(false);
-    // } catch (err) {
-    //   console.error("Erro ao deletar a pergunta:", err);
-    //   setIsConfirmModalVisible(false);
-    //   setDeleteId(null);
-    //   setLoading(false);
-    // }
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      
+      const response = await fetch(`${apiUrl}/faq/${deleteId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      // Recarregar dados da API após sucesso
+      await fetchAnswers();
+      setCurrentPage(1);
+      setIsConfirmModalVisible(false);
+      setDeleteId(null);
+    } catch (err) {
+      console.error("Erro ao deletar a pergunta:", err);
+      setIsConfirmModalVisible(false);
+      setDeleteId(null);
+    }
   };
 
   const columns = [
@@ -146,23 +163,7 @@ export default function Page() {
   ];
 
   useEffect(() => {
-    // async function fetchAnswers() {
-    //   try {
-    //     setLoading(true);
-    //     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    //     const res = await axios.get(`${apiUrl}/user/faq`);
-    //     setAnswers(Array.isArray(res.data) ? res.data : []);
-    //     setAllAnswers(Array.isArray(res.data) ? res.data : []);
-    //     setLoading(false);
-    //   } catch (err) {
-    //     console.error("Erro ao buscar respostas:", err);
-    //     setAnswers([]);
-    //     setAllAnswers([]);
-    //     setLoading(false);
-    //   }
-    // }
-    // fetchAnswers();
-    setAnswers(mockedAnswers);
+    fetchAnswers();
   }, []);
 
   let orderedAnswers = [...answers];
@@ -253,21 +254,63 @@ export default function Page() {
           isEdit
           data={editingItem}
           onClose={() => setIsEditModalVisible(false)}
-          onSave={(updatedItem) => {
-            setAnswers((prev) =>
-              prev.map((ans) => (ans.id === updatedItem.id ? updatedItem : ans))
-            );
-            setIsEditModalVisible(false);
+          onSave={async (updatedItem) => {
+            try {
+              const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+              const response = await fetch(`${apiUrl}/faq/${updatedItem.id}`, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  pergunta: updatedItem.pergunta,
+                  resposta: updatedItem.resposta,
+                  ultima_atualizacao: updatedItem.ultima_atualizacao,
+                }),
+              });
+
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+
+              // Recarregar dados da API após sucesso
+              await fetchAnswers();
+              setIsEditModalVisible(false);
+            } catch (err) {
+              console.error("Erro ao editar FAQ:", err);
+            }
           }}
         />
       )}
       {isCreateModalVisible && (
         <FaqModal
           onClose={() => setIsCreateModalVisible(false)}
-          onSave={(newItem) => {
-            setAnswers((prev) => [newItem, ...prev]);
-            setAllAnswers((prev) => [newItem, ...prev]);
-            setIsCreateModalVisible(false);
+          onSave={async (newItem) => {
+            try {
+              const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+              const usuarioId = JSON.parse(localStorage.getItem("userInfo"))?.id;
+              const response = await fetch(`${apiUrl}/faq`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  usuario_id: usuarioId,
+                  ...newItem,
+                }),
+              });
+
+              if (!response.ok) {
+                throw new Error(`Erro ao criar FAQ: ${response.status}`);
+              }
+
+              // Recarregar dados da API após sucesso
+              await fetchAnswers();
+              setCurrentPage(1);
+              setIsCreateModalVisible(false);
+            } catch (err) {
+              console.error("Erro ao criar FAQ: ", err);
+            }
           }}
         />
       )}
