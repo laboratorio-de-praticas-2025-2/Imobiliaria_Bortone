@@ -1,9 +1,11 @@
 import { Card, Button, Input, Slider, ConfigProvider } from "antd";
 import { simularFinanciamento } from "@/services/simulacaoService";
-import { useState, useContext } from "react"; 
+import { useState, useContext, useEffect } from "react"; 
 import { SimulacaoContext } from "./Filter"; 
+import { useSearchParams } from "next/navigation";
 
 export default function RequestForm() {
+  const searchParams = useSearchParams();
   const [parcelas, setParcelas] = useState(20);
   const [valorEntrada, setValorEntrada] = useState('');
   const [valorImovel, setValorImovel] = useState('');
@@ -11,6 +13,60 @@ export default function RequestForm() {
   const [carregando, setCarregando] = useState(false);
 
   const { propertyType, modalidade } = useContext(SimulacaoContext);
+  // Função para formatar valor em moeda brasileira
+  const formatCurrency = (valor) => {
+    if (!valor) return '';
+    const numero = typeof valor === 'string' ? parseFloat(valor.replace(/[^\d]/g, '')) : valor;
+    if (isNaN(numero)) return '';
+    
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(numero);
+  };
+
+  // Função para formatar valor sem símbolo de moeda (apenas com pontos e vírgulas)
+  const formatNumber = (valor) => {
+    if (!valor) return '';
+    const numero = typeof valor === 'string' ? parseFloat(valor.replace(/[^\d]/g, '')) : valor;
+    if (isNaN(numero)) return '';
+    
+    return new Intl.NumberFormat('pt-BR').format(numero);
+  };
+
+  // Função para remover formatação e retornar apenas números
+  const unformatCurrency = (valorFormatado) => {
+    if (!valorFormatado) return '';
+    return valorFormatado.replace(/[^\d]/g, '');
+  };
+
+  // Função para lidar com mudança no valor do imóvel
+  const handleValorImovelChange = (e) => {
+    const valor = unformatCurrency(e.target.value);
+    setValorImovel(valor);
+  };
+
+  // Função para lidar com mudança no valor de entrada
+  const handleValorEntradaChange = (e) => {
+    const valor = unformatCurrency(e.target.value);
+    setValorEntrada(valor);
+  };
+
+  // Captura o valor do query parameter quando o componente monta
+  useEffect(() => {
+    const valorFromURL = searchParams.get('valor');
+    
+    if (valorFromURL) {
+      const valorNumerico = parseInt(valorFromURL, 10);
+      
+      if (!isNaN(valorNumerico) && valorNumerico > 0) {
+        setValorImovel(valorNumerico.toString());
+        // Define automaticamente 20% do valor como entrada sugerida
+        const entradaSugerida = Math.round(valorNumerico * 0.2);
+        setValorEntrada(entradaSugerida.toString());
+      }
+    }
+  }, [searchParams]);
 
   const handleInputChange = (e) => {
     const value = Math.max(1, Math.min(32, Number(e.target.value))); 
@@ -53,14 +109,14 @@ export default function RequestForm() {
         <div className="grid h-fit bg-white grid-rows-1 justify-items-center content-evenly gap-4 sm:gap-4 xxl:gap-12 pt-7 text-center py-4 rounded-b-2xl">
           <div className="w-3xs">
             <label className="text-[14px] font-bold text-[var(--primary)]  ">
-              Valor do imóvel: {/* MUDAR DE "parcela" para "imóvel" */}
+              Valor do imóvel:
             </label>
             <Input
-              type="number"
+                type="text"
               placeholder="Digite aqui o valor"
-              step="0.01"
               className="rounded-lg mt-1 h-12 text-center shadow-md"
-              value={valorImovel} onChange={(e) => setValorImovel(e.target.value)}
+                value={formatCurrency(valorImovel)} 
+                onChange={handleValorImovelChange}
             />
           </div>
           <div className="w-3xs">
@@ -68,10 +124,11 @@ export default function RequestForm() {
               Valor de entrada:
             </label>
             <Input
-              type="number"
+                type="text"
               placeholder="Digite aqui o valor"
               className="rounded-lg mt-1 h-12 text-center shadow-md"
-              value={valorEntrada} onChange={(e) => setValorEntrada(e.target.value)}
+                value={formatCurrency(valorEntrada)} 
+                onChange={handleValorEntradaChange}
             />
           </div>
           <div className="w-2xs">
@@ -113,7 +170,9 @@ export default function RequestForm() {
           <div className="w-3xs">
             <span className="text-[var(--primary)] font-bold">
               Taxa de juros mensal:
-              <span className="text-[#919DC8]">valor</span>
+                <span className="text-[#919DC8] ml-2">
+                  {propertyType === 'terreno' || propertyType === 'TERRENO' ? '1,00%' : '0,94%'}
+                </span>
             </span>
           </div>
           <div className="w-2xs pb-5">
@@ -128,9 +187,36 @@ export default function RequestForm() {
           {resultado && (
             <div className="mt-4 p-4 bg-gray-50 rounded-lg border">
               <h3 className="font-bold text-[var(--primary)] mb-2">Resultado da Simulação:</h3>
-              <p><strong>Valor Financiado:</strong> R$ {resultado.valorFinanciado}</p>
-              <p><strong>Parcela:</strong> R$ {resultado.parcelaComJuros}</p>
-              <p><strong>Total a Pagar:</strong> R$ {resultado.totalComJuros}</p>
+                <div className="space-y-2">
+                  <p className="text-sm">
+                    <strong>Valor Financiado:</strong> 
+                    <span className="text-[var(--primary)] font-bold ml-2">
+                      {formatCurrency(resultado.valorFinanciado)}
+                    </span>
+                  </p>
+                  <p className="text-sm">
+                    <strong>Valor da Parcela:</strong> 
+                    <span className="text-[var(--primary)] font-bold ml-2">
+                      {formatCurrency(resultado.parcelaComJuros || resultado.primeiraParcela)}
+                    </span>
+                  </p>
+                  <p className=" text-[var(--primary)]text-sm">
+                    <strong>Total a Pagar:</strong> 
+                    <span className="text-[var(--primary)] font-bold ml-2">
+                      {formatCurrency(resultado.totalComJuros || resultado.totalPago)}
+                    </span>
+                  </p>
+                  {resultado.primeiraParcela && resultado.ultimaParcela && (
+                    <div className="mt-3 pt-2 border-t">
+                      <p className="text-xs text-gray-600">
+                        <strong>Primeira Parcela:</strong> {formatCurrency(resultado.primeiraParcela)}
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        <strong>Última Parcela:</strong> {formatCurrency(resultado.ultimaParcela)}
+                      </p>
+                    </div>
+                  )}
+                </div>
             </div>
 )}
         </div>

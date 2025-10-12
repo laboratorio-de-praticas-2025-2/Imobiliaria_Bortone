@@ -1,12 +1,33 @@
 "use client";
 import { Slider, ConfigProvider, Button, Input } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function Form() {
-  const handleClick = () => {
-    window.location.href = "/simulacao/simulador";
-  };
+  const searchParams = useSearchParams();
   const [value, setValue] = useState(100000);
+
+  // Captura o valor do query parameter quando o componente monta
+  useEffect(() => {
+    const valorFromURL = searchParams.get('valor');
+    
+    if (valorFromURL) {
+      const valorNumerico = parseInt(valorFromURL, 10);
+      
+      if (!isNaN(valorNumerico) && valorNumerico >= 20000 && valorNumerico <= 1000000) {
+        setValue(valorNumerico);
+      } else if (!isNaN(valorNumerico)) {
+        // Se o valor estiver fora do range, ajustar para o mais próximo
+        const valorAjustado = Math.min(Math.max(valorNumerico, 20000), 1000000);
+        setValue(valorAjustado);
+      }
+    }
+  }, [searchParams]);
+
+  const handleClick = () => {
+    // Passa o valor atual para a próxima página também
+    window.location.href = `/simulacao/simulador?valor=${value}`;
+  };
 
   // Função para formatar o valor como moeda brasileira
   const formatCurrency = (valor) => {
