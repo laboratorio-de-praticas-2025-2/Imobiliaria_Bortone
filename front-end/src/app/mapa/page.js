@@ -5,7 +5,6 @@ import OrderButton from "@/components/mapa/OrderButton";
 import SidebarMenu from "@/components/mapa/SidebarMenu/SidebarMenu";
 import SplashScreen from "@/components/SplashScreen";
 import { FiltersProvider } from "@/context/FiltersContext";
-import { mockImoveis } from "@/mock/imoveis";
 import { getImoveis } from "@/services/imoveisService";
 import { Input } from "antd";
 import dynamic from "next/dynamic";
