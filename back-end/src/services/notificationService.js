@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import Imovel from "../models/model.js";
+import Imovel from "../models/Imovel.js";
 import RecomendacaoImovel from "../models/recomendacaoImovelModel.js";
 // Importar apenas funções essenciais - SEM REDUNDÂNCIA
 import {
@@ -46,21 +46,30 @@ class NotificationService {
     }
 
     // Validar tipos de dados críticos
-    if (typeof novoImovel.preco !== 'number' || novoImovel.preco <= 0) {
+    const precoNumerico = parseFloat(novoImovel.preco);
+    if (isNaN(precoNumerico) || precoNumerico <= 0) {
       throw new Error('Preço deve ser um número positivo');
     }
 
-    if (typeof novoImovel.area !== 'number' || novoImovel.area <= 0) {
+    const areaNumerica = parseFloat(novoImovel.area);
+    if (isNaN(areaNumerica) || areaNumerica <= 0) {
       throw new Error('Área deve ser um número positivo');
     }
 
-    if (typeof novoImovel.latitude !== 'number' || typeof novoImovel.longitude !== 'number') {
+    const latitudeNumerico = parseFloat(novoImovel.latitude);
+    const longitudeNumerico = parseFloat(novoImovel.longitude);
+
+    if (isNaN(latitudeNumerico) || isNaN(longitudeNumerico)) {
       throw new Error('Coordenadas geográficas devem ser números válidos');
     }
 
     console.log(`[NotificationService] Parâmetros: Preço: R$${novoImovel.preco}, Área: ${novoImovel.area}m², Tipo: ${novoImovel.tipo_negociacao}`);
 
-    const { latitude, longitude, preco, area, tipo_negociacao, status } = novoImovel;
+    const { tipo_negociacao, status } = novoImovel;
+    const preco = precoNumerico; 
+    const area = areaNumerica;
+    const latitude = latitudeNumerico;
+    const longitude = longitudeNumerico;
 
     const umMesAtras = new Date();
     umMesAtras.setDate(umMesAtras.getDate() - NotificationService.DAYS_LOOKBACK);
@@ -70,6 +79,7 @@ class NotificationService {
         include: [
           {
             model: Imovel,
+            as: 'imovel',
             required: true,
             where: {
               tipo_negociacao,
@@ -190,6 +200,14 @@ class NotificationService {
 
   // Função para enviar notificações via Socket.IO - SEM REDUNDÂNCIAS
   async _enviarNotificacoes(recomendacoes, novoImovel, imovelSorteado) {
+
+      console.log('🎯 _enviarNotificacoes INICIADO');
+    console.log('📊 Parâmetros recebidos:', {
+        recomendacoes: recomendacoes?.length || 0,
+        novoImovel: novoImovel?.id,
+        imovelSorteado: imovelSorteado?.id
+    });
+
     const notificacoesSent = {
       recomendacoes: 0,
       broadcast: false
@@ -201,7 +219,7 @@ class NotificationService {
         const usuariosIds = [...new Set(recomendacoes.map(r => r.usuario_id))];
         console.log(`[NotificationService] Enviando recomendações personalizadas para ${usuariosIds.length} usuários: ${usuariosIds.join(', ')}`);
 
-        const resultados = sendToMultipleUsers(usuariosIds, 'property_recommendation', {
+        const resultados = sendToMultipleUsers(usuariosIds, 'nova_recomendacao', {
           type: 'personalized_recommendation',
           title: 'Nova Recomendação Personalizada',
           message: 'Encontramos um imóvel que combina com seu perfil!',
@@ -221,9 +239,9 @@ class NotificationService {
 
       // 2. BROADCAST DE IMÓVEL POPULAR (para usuários sem histórico) - UMA SÓ VEZ
       if (imovelSorteado) {
-        console.log(`[NotificationService] Enviando broadcast de imóvel popular: ${imovelSorteado.id}`);
+        console.log(`🔥 ENVIANDO BROADCAST para imóvel popular:`, imovelSorteado.id);
 
-        const broadcastResult = broadcastNotification('popular_property', {
+        const broadcastResult = broadcastNotification('imovel_popular', {
           type: 'popular_property',
           title: 'Imóvel Popular em Destaque',
           message: 'Confira este imóvel que está chamando atenção!',
@@ -238,11 +256,14 @@ class NotificationService {
         });
 
         notificacoesSent.broadcast = broadcastResult;
-        console.log(`[NotificationService] Broadcast de imóvel popular ${broadcastResult ? 'enviado' : 'falhou'}`);
-      }
-
+      console.log(`🚀 Broadcast resultado:`, broadcastResult ? '✅ SUCESSO' : '❌ FALHOU');
+      } else {
+            console.log('ℹ️ Nenhum imóvel popular encontrado para broadcast');
+        }
+ console.log('🎯 _enviarNotificacoes FINALIZADO:', notificacoesSent);
+        return notificacoesSent;
     } catch (error) {
-      console.error("[NotificationService] Erro ao enviar notificações via Socket.IO:", error.message);
+      console.error("❌ ERRO em _enviarNotificacoes:", error.message);
       throw new Error("Erro ao enviar notificações em tempo real.");
     }
 
@@ -261,7 +282,7 @@ class NotificationService {
       if (interessados.length > 0) {
         const userIds = [...new Set(interessados.map(i => i.usuario_id))];
 
-        const results = sendToMultipleUsers(userIds, 'price_change', {
+        const results = sendToMultipleUsers(userIds, 'alteracao_preco', {
           type: 'price_change',
           title: 'Alteração de Preço',
           message: 'O preço de um imóvel de seu interesse foi alterado',

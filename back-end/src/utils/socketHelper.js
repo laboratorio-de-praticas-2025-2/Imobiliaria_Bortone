@@ -87,7 +87,7 @@ export const broadcastNotification = (event, data) => {
     }
 
     try {
-        socketManagerInstance.broadcast(event, data);
+        socketManagerInstance.broadcastPublic(event, data);
         return true;
     } catch (error) {
         console.error('Erro ao fazer broadcast:', error);
