@@ -288,15 +288,15 @@ export default function Page() {
           onSave={async (newItem) => {
             try {
               const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-              const usuarioId = JSON.parse(localStorage.getItem("usuario"))?.id || 1; 
+              const usuarioId = JSON.parse(localStorage.getItem("userInfo"))?.id;
               const response = await fetch(`${apiUrl}/faq`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                  ...newItem,
                   usuario_id: usuarioId,
+                  ...newItem,
                 }),
               });
 
