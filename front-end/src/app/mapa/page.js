@@ -136,6 +136,7 @@ export default function Mapa() {
           imoveis={imoveisMapa || []}
           hoverImovel={hoverImovel}
           setHoverImovel={setHoverImovel}
+          alwaysShowCard={false}   // <--- adicionar
         />
       </div>
     </FiltersProvider>
