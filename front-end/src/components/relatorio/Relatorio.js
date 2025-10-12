@@ -15,7 +15,6 @@ import dayjs from "dayjs";
 export default function Relatorio({ data, secoes = [], dateRange }) {
   let pageNumber = 1;
 
-
   // Se não vier array de seções ou vier vazio, renderiza todas as seções
   const todasSecoes = [
     "SUMARIO_EXECUTIVO",
@@ -307,7 +306,7 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
                 </li>
                 <li className="!text-lg">
                   <span className="font-semibold">
-                    Taxa de Conversao de Agendamentos por Novos Usuários:
+                    Taxa de Conversão de Agendamentos por Novos Usuários:
                   </span>{" "}
                   <span className="text-md">
                     [{data?.jornadaCliente?.taxaConversao ?? "..."}]
@@ -422,17 +421,6 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
                 </li>
                 <li className="!text-lg">
                   <span className="font-semibold">
-                    Total de Imóveis Vendidos:
-                  </span>{" "}
-                  <span className="text-md">
-                    [
-                    {data?.analiseEstoque?.estatisticas[0]
-                      ?.total_imoveis_vendidos || "..."}
-                    ]
-                  </span>
-                </li>
-                <li className="!text-lg">
-                  <span className="font-semibold">
                     Imóveis com Preço Visível:
                   </span>{" "}
                   <span className="text-md">
@@ -453,7 +441,7 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
                     ]
                   </span>
                 </li>
-                <li className="!text-lg">
+                <li className="!text-lg li-graph">
                   <span className="font-semibold">
                     Distribuição de imóveis por faixa de preço:
                   </span>{" "}
@@ -469,10 +457,11 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
                     )}
                   </div>
                 </li>
-                <li className="!text-lg">
+                <li className="!text-lg li-graph">
                   <span className="font-semibold">
                     Distribuição de imóveis por tipo:
                   </span>{" "}
+                  <br />
                   <div>
                     {estoqueImobiliarioDistribuicaoTipo ? (
                       <PizzaGraph
@@ -538,12 +527,12 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
                       [{data?.desempenhoVendas?.totalVendas || "..."}]
                     </span>
                   </li>
-                  <li className="!text-lg">
+                  <li className="!text-lg li-graph">
                     <span className="font-semibold">
                       Distribuição das Vendas por Tipo:
                     </span>{" "}
+                    <br />
                     <div>
-                      {" "}
                       {desempenhoVendasDistribuicaoTipo ? (
                         <PizzaGraph
                           label={""}
@@ -634,10 +623,11 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
                       [{data?.desempenhoLocacoes?.totalLocacoes || "..."}]
                     </span>
                   </li>
-                  <li className="!text-lg">
+                  <li className="!text-lg li-graph">
                     <span className="font-semibold">
                       Distribuição das Locações por Tipo:
                     </span>{" "}
+                    <br />
                     <div>
                       {desempenhoLocacoesDistribuicaoTipo ? (
                         <PizzaGraph
