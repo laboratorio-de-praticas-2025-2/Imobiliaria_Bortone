@@ -3,7 +3,7 @@ import ReportController from '../controllers/reportsController.js';
 const relatorioRouter = express.Router();
 
 /**
- * GET /relatorio
+ * GET /relatorios
  * Query Params:
  *  - secoes: SUMARIO_EXECUTIVO,JORNADA_CLIENTE,ESTOQUE_IMOBILIARIO,DESEMPENHO_VENDAS,DESEMPENHO_LOCACOES
  *  - data_inicio: formato YYYY-MM-DD
@@ -12,7 +12,7 @@ const relatorioRouter = express.Router();
     relatorioRouter.get("/", ReportController.gerarDadosParaRelatorio); 
 
 /**
- * GET /relatorio/listar
+ * GET /relatorios/listar
  */
 relatorioRouter.get("/listar", ReportController.listarTiposRelatorios);
 
