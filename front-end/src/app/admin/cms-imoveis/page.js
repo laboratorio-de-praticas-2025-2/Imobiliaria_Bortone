@@ -2,7 +2,6 @@
 import { Table } from "antd";
 import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
-import { mockImoveis } from "@/mock/imoveis";
 import { useEffect, useState } from "react";
 import { LuHousePlus } from "react-icons/lu";
 import { BiPencil } from "react-icons/bi";
