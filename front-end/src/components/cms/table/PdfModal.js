@@ -35,11 +35,7 @@ export default function PdfModal({
             ) : (
               <div className="w-full h-full flex justify-center items-center overflow-hidden">
                 <div
-                  className="scale-40 
-                max-h-[900px]:scale-65
-                max-h-[800px]:scale-60
-                max-h-[700px]:scale-55
-                max-h-[600px]:scale-50
+                  className="scale-40 sm:scale-35 md:scale-40 lg:scale-45 xl:scale-50
                 h-[297mm] w-[210mm] shadow-lg 
                 [&_.page]:m-0 [&_.page]:p-[15mm] [&_.page]:box-border
                 [&_.page:first-child]:h-full                
