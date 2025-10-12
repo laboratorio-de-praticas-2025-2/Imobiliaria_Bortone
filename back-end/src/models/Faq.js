@@ -19,6 +19,10 @@ const Faq = connection.define(
     },
     usuario_id: {
       type: Sequelize.INTEGER,
+      references: {
+        model: "usuario",
+        key: "id",
+      },
       allowNull: false,
     },
   },
