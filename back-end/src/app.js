@@ -29,7 +29,7 @@ import imagemImovelRoutes from "./routes/imagemImovelRoutes.js";
 import dashboardRouter from "./routes/dashboardRoutes.js";
 import bannerRoutes from './routes/bannerRoutes.js';
 import publicidadeRoutes from "./routes/publicidadeRoutes.js";
-import simuladorRoutes from "./routes/simuladorRoutes.js"
+import simuladorRoutes from "./routes/simuladorRoutes.js";
 
 const app = express();
 
