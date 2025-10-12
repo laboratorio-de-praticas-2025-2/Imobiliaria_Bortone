@@ -85,7 +85,6 @@ export default function EditarBannerPage() {
               formData.descricao,
               user?.id?.toString() || "1" // usuario_id do usuário logado
             );
-            console.log('Nova imagem uploaded:', url_imagem);
           }
 
           // Enviar dados para o backend sem arquivo

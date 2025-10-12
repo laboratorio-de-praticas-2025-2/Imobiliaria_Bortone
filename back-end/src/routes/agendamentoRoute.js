@@ -5,6 +5,8 @@ import {
   sendScheduleConfirmation,
   sendPropertyNotification,
 } from "../controllers/agendamentoController.js";
+import * as AgendamentoCrud from "../controllers/agendamentoCrudController.js";
+import Auth from "../middlewares/Auth.js";
 
 const agendamentoRoutes = express.Router();
 
@@ -17,12 +19,8 @@ agendamentoRoutes.use((req, res, next) => {
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Content-Security-Policy', "default-src 'self'");
   
-  // Rate limiting por IP
-  const clientIP = req.ip || req.connection?.remoteAddress || "unknown";
-  const userAgent = req.get('User-Agent') || '';
+ 
   
-  // Log de requisições para auditoria
-  console.log(`[AUDIT] ${new Date().toISOString()} - IP: ${clientIP} - ${req.method} ${req.path} - UA: ${userAgent.substring(0, 100)}`);
   
   next();
 });
@@ -61,5 +59,14 @@ agendamentoRoutes.post("/agendar", sendScheduleConfirmation);
 
 // Rota para notificação de novos imóveis relacionada a agendamento
 agendamentoRoutes.post("/property-notification", sendPropertyNotification);
+
+// CRUD de Agendamentos (requer autenticação)
+agendamentoRoutes.post("/", Auth.Authorization, AgendamentoCrud.create);
+agendamentoRoutes.get("/me", Auth.Authorization, AgendamentoCrud.listForUser);
+// Lista geral (apenas admin)
+agendamentoRoutes.get("/", Auth.Authorization, AgendamentoCrud.listAll);
+agendamentoRoutes.get("/:id", Auth.Authorization, AgendamentoCrud.getById);
+agendamentoRoutes.patch("/:id", Auth.Authorization, AgendamentoCrud.update);
+agendamentoRoutes.delete("/:id", Auth.Authorization, AgendamentoCrud.remove);
 
 export default agendamentoRoutes;

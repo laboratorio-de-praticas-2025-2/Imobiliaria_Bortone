@@ -24,11 +24,9 @@ export async function GET(request, { params }) {
       imagePath = path.join(process.cwd(), 'public', 'images', 'publicidadeImages', filename);
     }
 
-    console.log('Buscando imagem em:', imagePath);
 
     // Verificar se o arquivo existe
     if (!fs.existsSync(imagePath)) {
-      console.log('Arquivo não encontrado:', imagePath);
       return new NextResponse('Image not found', { status: 404 });
     }
 

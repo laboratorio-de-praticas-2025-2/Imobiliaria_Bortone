@@ -78,7 +78,6 @@ export default function EditarPostPage() {
             validatedValues.conteudo,
             "1" // usuario_id
           );
-          console.log('Nova imagem uploaded:', url_imagem);
         }
 
         // Enviar dados para o backend sem arquivo

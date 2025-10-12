@@ -26,7 +26,6 @@ export default function CardMapa({ imovel }) {
       return;
     }
     
-    console.log(`Navegando para /imoveis/${imovel.id}`);
     router.push(`/imoveis/${imovel.id}`);
   };
 

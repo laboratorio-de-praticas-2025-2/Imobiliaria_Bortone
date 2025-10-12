@@ -16,13 +16,24 @@ export default function Dashboard() {
 
   const [dados, setDados] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Busca os dados da rota /Dashboard
   useEffect(() => {
+    setLoading(true);
+    setError(null);
+    
     getDashboardData()
-      .then((res) => setDados(res))
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
+      .then((res) => {
+        setDados(res);
+      })
+      .catch((err) => {
+        console.error("Dashboard: Erro ao buscar dados", err);
+        setError(err.message || "Erro ao carregar dados");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const semDados =
@@ -86,11 +97,31 @@ export default function Dashboard() {
       <Sidebar />
       <div className="md:ml-20">
         <CMS.Body title={"Dashboard"}>
-          {/* Aparente em telas grandes: */}
-          { semDados ? (
-          <div className="flex justify-center items-center h-[60vh] text-gray-500">
-            Nenhum dado disponível no momento.
-          </div>
+          {/* Estado de carregamento */}
+          {loading ? (
+            <div className="flex justify-center items-center h-[60vh]">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                <p className="text-gray-600">Carregando dashboard...</p>
+              </div>
+            </div>
+          ) : error ? (
+            <div className="flex justify-center items-center h-[60vh]">
+              <div className="text-center text-red-500">
+                <p className="text-xl mb-2">❌ Erro ao carregar dados</p>
+                <p className="text-sm">{error}</p>
+                <button 
+                  onClick={() => window.location.reload()} 
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                  Tentar novamente
+                </button>
+              </div>
+            </div>
+          ) : semDados ? (
+            <div className="flex justify-center items-center h-[60vh] text-gray-500">
+              Nenhum dado disponível no momento.
+            </div>
           ) : (
             <>
             <div className="hidden xl:block">

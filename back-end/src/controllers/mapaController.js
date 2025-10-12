@@ -57,7 +57,6 @@ class MapaController {
         murado: req.query.murado !== undefined ? req.query.murado === 'true' : undefined
       };
 
-      console.log('Filtros processados no controller:', filtros);
 
       const imoveis = await mapaService.buscarImoveisParaMapa(filtros);
       

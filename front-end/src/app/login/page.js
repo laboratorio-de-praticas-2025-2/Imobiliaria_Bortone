@@ -33,17 +33,11 @@ export default function LoginPage() {
 
 
       try {
-      console.log("📡 Enviando login...", dados);
 
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/user/login`,
         dados
       );
-
-      console.log("🔍 DEBUG LOGIN - Resposta completa do backend:", response.data);
-      console.log("🔍 DEBUG LOGIN - Dados do usuário recebidos:", response.data.user);
-      console.log("🔍 DEBUG LOGIN - Nível do usuário:", response.data.user.nivel, typeof response.data.user.nivel);
-
       message.success(response.data.message || `Login bem-sucedido!`);
 
       localStorage.setItem('authToken', response.data.token);
@@ -51,8 +45,6 @@ export default function LoginPage() {
 
       // Verificar o que foi salvo no localStorage
       const savedUserInfo = JSON.parse(localStorage.getItem('userInfo'));
-      console.log("💾 DEBUG LOGIN - Dados salvos no localStorage:", savedUserInfo);
-      console.log("💾 DEBUG LOGIN - Nível salvo:", savedUserInfo.nivel, typeof savedUserInfo.nivel);
 
       // Redirecionamento baseado no parâmetro redirect ou nível do usuário
       const redirectPath = getRedirectPath();
@@ -66,7 +58,6 @@ export default function LoginPage() {
         finalRedirect = '/';
       }
 
-      console.log(`🔄 Redirecionando para: ${finalRedirect}`);
 
       setTimeout(() => {
         router.push(finalRedirect);
@@ -85,7 +76,6 @@ export default function LoginPage() {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("❌ Falha no formulário:", errorInfo);
   };
 
   return (

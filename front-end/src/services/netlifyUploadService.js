@@ -53,13 +53,7 @@ export const uploadToNetlify = async (file, options = {}) => {
   formData.append('public_id', `${filePrefix}_${Date.now()}`);
   
   try {
-    console.log('🚀 Uploading to Cloudinary:', { 
-      fileName: file.name, 
-      size: file.size,
-      type,
-      folder,
-      cloudName
-    });
+    
     
     const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
       method: 'POST',
@@ -73,7 +67,6 @@ export const uploadToNetlify = async (file, options = {}) => {
     }
 
     const result = await response.json();
-    console.log('✅ Cloudinary upload successful:', result);
     
     // Retornar URL da imagem
     return result.secure_url;
@@ -138,7 +131,6 @@ export const uploadPublicidadeImage = async (file, titulo, conteudo, usuarioId, 
  */
 export const deleteFromNetlify = async (publicId, imageType = 'imoveis') => {
   try {
-    console.log('🗑️ Deleting from Cloudinary:', { publicId, imageType });
     
     // Para Cloudinary, precisaríamos de uma API key e secret no backend
     // Por agora, vamos apenas logar a tentativa

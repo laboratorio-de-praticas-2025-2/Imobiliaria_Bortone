@@ -28,7 +28,6 @@ export default function NetlifyImageUploadTest() {
     setResult(null);
 
     try {
-      console.log('🧪 TESTE: Iniciando upload...');
       
       const imageUrl = await uploadToNetlify(
         file,
@@ -43,7 +42,6 @@ export default function NetlifyImageUploadTest() {
         size: file.size
       });
       
-      console.log('🎉 TESTE: Upload concluído!', imageUrl);
       
     } catch (error) {
       console.error('💥 TESTE: Erro no upload:', error);
@@ -112,8 +110,6 @@ export default function NetlifyImageUploadTest() {
               src={result.url} 
               alt="Upload result" 
               className="max-w-full h-auto rounded border"
-              onError={() => console.log('❌ Erro ao carregar imagem:', result.url)}
-              onLoad={() => console.log('✅ Imagem carregada com sucesso!')}
             />
           </div>
         </div>
