@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 
 
-export default function InnerImoveisPage({ imoveis, pagination, onPageChange, searchedCity }) {
+export default function InnerImoveisPage({ imoveis = [], pagination = {}, loading, onPageChange = ()=>{}, searchedCity = "" }) {
   const [qtdImoveis, setQtdImoveis] = useState(0);
 
   useEffect(() => {

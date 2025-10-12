@@ -1,25 +1,12 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import ImovelCard from "./ImovelCard";
 import Link from "next/link";
-import { Button, Spin } from "antd";
-
+import GridImoveisFooter from "./GridImoveisFooter";
 
 export default function GridImoveis({ imoveis, pagination, onPageChange }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
-
   const [windowWidth, setWindowWidth] = useState(0);
-  const observer = useRef();
-  const lastImovelElementRef = useCallback(node => {
-    if (loading) return;
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        onLoadMore();
-      }
-    });
-    if (node) observer.current.observe(node);
-  }, [loading, hasMore, onLoadMore]);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -27,7 +14,6 @@ export default function GridImoveis({ imoveis, pagination, onPageChange }) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
 
   useEffect(() => {
     if (windowWidth < 640) setItemsPerPage(4);
@@ -64,16 +50,12 @@ export default function GridImoveis({ imoveis, pagination, onPageChange }) {
     setItemsPerPage((prev) => Math.min(prev + 4, imoveis.length));
   };
 
-
   return (
     <div className="w-full">
       {/* Grid */}
       <div className="grid gap-6 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {imoveis.map((imovel, index) => (
-          <div
-            key={`${imovel.id}-${index}`}
-            ref={index === imoveis.length - 1 ? lastImovelElementRef : null}
-          >
+        {currentItems.map((imovel, index) => (
+          <div key={`${imovel.id}-${index}`}>
             <Link href="/imoveis/[id]" as={`/imoveis/${imovel.id}`}>
               <ImovelCard imovel={imovel} />
             </Link>
@@ -96,7 +78,6 @@ export default function GridImoveis({ imoveis, pagination, onPageChange }) {
             : null
         }
       />
-
 
     </div>
   );

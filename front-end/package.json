@@ -54,5 +54,9 @@
     "multiparty": "^4.2.3",
     "node-fetch": "^2.7.0",
     "tailwindcss": "^4"
+  },
+  "overrides": {
+  "lodash": "^4.17.21"
   }
+  
 }

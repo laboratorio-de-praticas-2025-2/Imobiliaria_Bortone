@@ -66,7 +66,7 @@ export default function CriarImovelPage() {
         cidade: citiesSelecionado,
         estado: statesMap[selectedState],
         endereco: values.endereco,
-        mostrar_preco: values.mostrar_preco === "sim" ? true : false,
+        visibilidade_preco: values.mostrar_preco === "sim" ? 1 : 0,
         area: values.area,
         preco: values.preco,
         descricao: values.descricao,
@@ -75,7 +75,7 @@ export default function CriarImovelPage() {
         longitude: values.longitude,
       };
 
-      console.log(tipoSelecionado)
+      // console.log(tipoSelecionado)
 
       let specificData = {};
 
@@ -120,7 +120,7 @@ export default function CriarImovelPage() {
       if (response.status === 201) {
         const imovelId = response.data.id;
 
-        console.log("Arquivos selecionados:", fileList);
+        // console.log("Arquivos selecionados:", fileList);
 
         for (const file of fileList) {
           try {

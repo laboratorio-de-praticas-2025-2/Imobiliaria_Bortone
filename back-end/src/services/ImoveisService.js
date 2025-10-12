@@ -105,8 +105,8 @@ export const update = async (id, imovelData, casaData) => {
 };
 
 /**
- * @param {number} id - The ID of the entity to delete.
- * @returns {boolean} True if the entity was deleted, false otherwise.
+ * @param {number} id
+ * @returns {boolean} 
  */
 export const deleteImovel = async (id) => {
   const transaction = await connection.transaction(); 
@@ -140,14 +140,14 @@ export const deleteImovel = async (id) => {
    if (includeMetadata) {
      // ... returns { entities, totalCount, totalPages, ... }
    }
-   // ... otherwise, just returns the entities array
+   
    return entities;
  };
  
- * @param {Object} ordering - Object with orderBy and orderDirection properties
- * @param {Object} pagination - Object with page and pagination properties
- * @param {boolean} includeMetadata - Whether to include pagination metadata in response
- * @returns {Array<Object>|Object} - Array of entities or object with entities and metadata
+ * @param {Object} ordering 
+ * @param {Object} pagination 
+ * @param {boolean} includeMetadata 
+ * @returns {Array<Object>|Object}
  */
 export const getFilteredEntities = async (filters, filterMappings, include = [], ordering = {}, pagination = {}, includeMetadata = true) => {
   try {
@@ -195,9 +195,9 @@ export const getFilteredEntities = async (filters, filterMappings, include = [],
          if (['quartos', 'banheiros', 'vagas'].includes(mapping.field)) {
           if (filterValue) {
             if (mapping.type === 'plus') {
-              // Handle + filters (4+ should be >= 4)
+              
               if (!handlePlusFilter(filterValue, mapping.field)) {
-                // If not a "+" case, use exact match
+                
                 casaWhere[mapping.field] = parseInt(filterValue, 10);
               }
             } else {
@@ -260,9 +260,9 @@ export const getFilteredEntities = async (filters, filterMappings, include = [],
     const limit = parseInt(pagination.pagination) || 10;
     const offset = (page - 1) * limit;
 
-    console.log("Service - Pagination:", { page, limit, offset });
-
-    const entities = await Imovel.findAll({
+    console.log("Service - Pagination:", { page, limit, offset });    
+    
+    let entities = await Imovel.findAll({
       where: where,
       include: include,
       order: order.length > 0 ? order : undefined,
@@ -270,14 +270,13 @@ export const getFilteredEntities = async (filters, filterMappings, include = [],
       offset: offset,
     });
 
-    // Return pagination metadata only if requested
     if (includeMetadata) {
-      // Count only unique imóveis, not JOIN results
+      
       console.log("Count include:", JSON.stringify(include, null, 2));
 
       const totalCount = await Imovel.count({
         where: where,
-        // Don't include related models in count to avoid inflated numbers
+        
         
         include: include.length > 0 ? include : undefined,
         distinct: true,
@@ -295,7 +294,7 @@ export const getFilteredEntities = async (filters, filterMappings, include = [],
       };
     }
 
-    // Return just the entities array (current implementation)
+    
     return entities;
   } catch (error) {
     throw new Error(`Erro ao buscar entidades filtradas: ${error.message}`);

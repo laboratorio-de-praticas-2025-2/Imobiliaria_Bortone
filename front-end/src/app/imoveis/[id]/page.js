@@ -190,7 +190,7 @@ export default function Mapa() {
   const slidesToRender = slides.length > 0 ? slides : [{ url_imagem: null }];
 
   const preco =
-    imovelAtual?.preco === null || imovelAtual?.preco === undefined
+    imovelAtual?.visibilidade_preco === 0 || imovelAtual?.visibilidade_preco === false
       ? "Valor Oculto"
       : Number(imovelAtual.preco).toLocaleString("pt-BR", {
           style: "currency",

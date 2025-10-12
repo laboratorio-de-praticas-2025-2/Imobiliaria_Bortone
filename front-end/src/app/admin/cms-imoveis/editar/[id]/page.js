@@ -122,8 +122,6 @@ export default function EditarImovelPage({ params }) {
           const imagesData = imagesResponse.data;
 
           
-          console.log('DEBUG EDITAR: imagesData from API:', imagesData);
-          console.log('DEBUG EDITAR: apiUrl:', apiUrl);
           
           if (!Array.isArray(imagesData)) {
             console.warn('DEBUG EDITAR: imagesData não é array:', imagesData);
@@ -145,7 +143,7 @@ export default function EditarImovelPage({ params }) {
                 
                 // Se já é uma URL completa, use como está
                 if (cleanImageUrl.startsWith('http://') || cleanImageUrl.startsWith('https://')) {
-                  console.log(`DEBUG EDITAR: URL já completa: ${cleanImageUrl}`);
+                  
                   return {
                     uid: `image-${image.id}-${index}`,
                     name: cleanImageUrl.split('/').pop() || `image-${image.id}`,
@@ -163,11 +161,6 @@ export default function EditarImovelPage({ params }) {
                 
                 const fullUrl = `${cleanApiUrl}${cleanImageUrl}`;
                 
-                console.log('DEBUG EDITAR: Construindo URL:');
-                console.log('  - Image original:', image.url_imagem);
-                console.log('  - API URL limpa:', cleanApiUrl);
-                console.log('  - Image URL limpa:', cleanImageUrl);
-                console.log('  - URL final:', fullUrl);
                 
                 return {
                   uid: `image-${image.id}-${index}`,
@@ -184,7 +177,7 @@ export default function EditarImovelPage({ params }) {
               }
             }).filter(Boolean); 
             
-            console.log('DEBUG EDITAR: formattedImages processadas:', formattedImages);
+            // console.log('DEBUG EDITAR: formattedImages processadas:', formattedImages);
             setFileList(formattedImages);
             setOriginalImages(imagesData);
           }
@@ -221,10 +214,10 @@ export default function EditarImovelPage({ params }) {
         form.setFieldsValue({
           tipo: found.tipo ?? undefined,
           status: found.status ?? undefined,
-          cidade: found.cidade ?? undefined,
+          cidade: found.cidade ?? undefined, 
           estado: found.estado ?? undefined,
           descricao: found.descricao ?? undefined,
-          mostrar_preco: found.mostrar_preco ? "sim" : "nao",
+          mostrar_preco: found.visibilidade_preco ? "sim" : "nao",
           area: found.area ?? undefined,
           preco: found.preco ?? undefined,
           endereco: found.endereco ?? undefined,
@@ -272,9 +265,9 @@ export default function EditarImovelPage({ params }) {
       for (const imageId of imagesToDelete) {
         try {
           await axios.delete(`${apiUrl}/imagemimovel/${imageId}`);
-          console.log(`Imagem ${imageId} deletada com sucesso`);
+          // console.log(`Imagem ${imageId} deletada com sucesso`);
         } catch (error) {
-          console.error(`Erro ao deletar imagem ${imageId}:`, error);
+          // console.error(`Erro ao deletar imagem ${imageId}:`, error);
         }
       }
       
@@ -295,13 +288,12 @@ export default function EditarImovelPage({ params }) {
             'Content-Type': 'application/json',
           },
         });          
-          console.log(`Imagem ${newImage.name} enviada com sucesso. Filename: ${response.data.url_imagem}`);
+          // console.log(`Imagem ${newImage.name} enviada com sucesso. Filename: ${response.data.url_imagem}`);
         } catch (error) {
           console.error(`Erro ao fazer upload da imagem ${newImage.name}:`, error);
         }
       }
       
-      console.log('Gerenciamento de imagens concluído');
     } catch (error) {
       console.error('Erro no gerenciamento de imagens:', error);
     }
@@ -330,6 +322,7 @@ export default function EditarImovelPage({ params }) {
         estado: selectedState !== "Selecione o estado" ? selectedState : undefined,
 
         quartos: selectedBedrooms !== "Quantidade" ? parseInt(selectedBedrooms) : undefined,
+        visibilidade_preco: formValues.mostrar_preco === "sim" ? 1 : 0,
         banheiros: selectedBathrooms !== "Quantidade" ? parseInt(selectedBathrooms) : undefined,
         vagas: selectedParking !== "Quantidade" ? parseInt(selectedParking) : undefined,
         murado: formValues.possui_muro === "sim",
@@ -338,8 +331,6 @@ export default function EditarImovelPage({ params }) {
         usuario_id: imovel.usuario_id,
       };
 
-      console.log('Dados sendo enviados para atualização:', updateData);
-      console.log('usuario_id do imóvel original:', imovel.usuario_id);
       
       
       setLoading(true);
@@ -347,7 +338,7 @@ export default function EditarImovelPage({ params }) {
       
       await handleImageChanges();
       
-      console.log("Imóvel atualizado com sucesso!");
+      // console.log("Imóvel atualizado com sucesso!");
       setIsConfirmModalVisible(false);
       window.location.href = "/admin/cms-imoveis";
     } catch (error) {

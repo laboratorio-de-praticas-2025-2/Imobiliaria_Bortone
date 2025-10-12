@@ -1,11 +1,11 @@
 "use client";
 import { FilterDataProvider } from "@/context/FilterDataContext";
 import { useFilterData } from "@/context/FilterDataContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import InnerImoveisPage from "./InnerImoveisPage";
 import { useSEO } from "@/hooks/useSEO";
 import { getSEOConfig } from "@/config/seo";
-import "dotenv/config";
+// import "dotenv/config";
 
 export default function ImoveisPage() {
   // SEO para página de imóveis
@@ -19,6 +19,7 @@ export default function ImoveisPage() {
 }
 
 function ImoveisPageContent() {
+  const [loading, setLoading] = useState(false); // missing
   const [imoveis, setImoveis] = useState([]);
 
   
@@ -38,7 +39,7 @@ function ImoveisPageContent() {
   const itemsPerPage = 12;
   
 
-  
+
   // Function to normalize data before sending to API
   const normalizeForAPI = (data) => {
     if (typeof data === 'string') {
@@ -50,7 +51,8 @@ function ImoveisPageContent() {
     return data;
   };
   
-  const handleGetImoveis = async (page = 1) => {
+  const handleGetImoveis = useCallback(async (page = 1) => {
+    setLoading(true);
     try {
       const params = {};
       if (filterData && typeof filterData === "object") {
@@ -119,31 +121,35 @@ function ImoveisPageContent() {
     } catch (error) {
       console.error("Erro ao carregar imóveis:", error);
       setImoveis([]);
-      setTotalCount(0);
+      setPagination({
+        totalCount: 0,
+        totalPages: 0,
+        currentPage: 1,
+        hasNextPage: false,
+        hasPrevPage: false,
+      });
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterData, apiUrl]);
 
   const loadMore = () => {
     const nextPage = currentPage + 1;
     setCurrentPage(nextPage);
-    handleGetImoveis(nextPage, true);
+    handleGetImoveis(nextPage);
   };
 
   useEffect(() => {
-    
     handleGetImoveis(1);
-  }, [filterData]);
+  }, [handleGetImoveis]);
 
   return <InnerImoveisPage 
   imoveis={imoveis}
   pagination = {pagination}
+  loading = {loading}
   onPageChange={(page) => handleGetImoveis(page)} 
   searchedCity={filterData.citySearch}
   />;
   
 
 }
-
-

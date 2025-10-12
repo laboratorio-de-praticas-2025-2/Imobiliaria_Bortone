@@ -23,7 +23,8 @@ const extractEntityData = (body) => {
       banheiros,
       vagas,
       possui_piscina,
-      possui_jardim
+      possui_jardim,
+      visibilidade_preco
     } = body;
 
     const requiredImovelFields = ['tipo', 'endereco', 'cidade', 'estado', 'preco'];
@@ -58,7 +59,8 @@ const extractEntityData = (body) => {
       tipo_negociacao: tipo_negociacao || 'venda',
       status: status || 'disponivel',
       data_cadastro: new Date(),
-      data_update_status: new Date()
+      data_update_status: new Date(),
+      visibilidade_preco: visibilidade_preco === undefined ? 1 : (visibilidade_preco ? 1 : 0),
     };
 
     const casaData = {
@@ -156,10 +158,10 @@ export const getFilteredImoveis = async (req, res) => {
         pagination.pagination = req.query.pagination;
       }
       
-      // Debug logging
-      console.log("Controller - Query parameters:", req.query);
-      console.log("Controller - Filters object:", filters);
-      console.log("Controller - Status filter value:", req.query.status);
+      // // Debug logging
+      // console.log("Controller - Query parameters:", req.query);
+      // console.log("Controller - Filters object:", filters);
+      // console.log("Controller - Status filter value:", req.query.status);
 
       const result = await ImoveisService.getFilteredEntities(
         filters, 

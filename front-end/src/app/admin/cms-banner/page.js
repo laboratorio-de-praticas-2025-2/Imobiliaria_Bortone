@@ -132,7 +132,8 @@ export default function CmsBannerPage() {
               ) : (
                 <div className="text-center py-8">
                   <p className="text-gray-500 text-lg">Nenhum banner encontrado.</p>
-                  <p className="text-gray-400 text-sm mt-2">Clique em "Novo Banner" para criar seu primeiro banner.</p>
+                  {/* <p className="text-gray-400 text-sm mt-2">Clique em "Novo Banner" para criar seu primeiro banner.</p> */}
+                  <p className="text-gray-400 text-sm mt-2">Clique em &quot;Novo Banner&quot; para criar seu primeiro banner.</p>
                 </div>
               )}
             </CMS.TableBody>
