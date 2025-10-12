@@ -1,30 +1,46 @@
 "use client";
-
 import { useNotifications } from "@/hooks/useNotifications";
 import { Toaster } from "react-hot-toast";
 
-export default function NotificationProvider() {
-  // Hook funciona aqui porque é componente de cliente
-  try {
-    useNotifications();
-  } catch (err) {
-    // Evita que erros sincronizados no hook quebrem a renderização do layout
-    console.error("Erro no useNotifications():", err);
-  }
-
-  return (
-    <Toaster
-      position="center"
-      toastOptions={{
-        duration: 15000,
-        style: {
-          background: "transparent !important",
-          boxShadow: "none !important",
-          padding: "0 !important",
-          border: "none !important",
-          borderRadius: "0 !important",
-        },
-      }}
-    />
-  );
+export default function NotificationProvider({ children }) {
+    console.log("🔥 NotificationProvider renderizando...");
+    
+    const { isConnected } = useNotifications();
+    
+    return (
+        <>
+            {children}
+            <Toaster
+                position="top-center"
+                toastOptions={{
+                    duration: 20000,
+                    style: {
+                        background: 'transparent',
+                        boxShadow: 'none',
+                        padding: 0,
+                        margin: 0,
+                        width: '420px',
+                        maxWidth: '80vw',
+                    },
+                    success: {
+                        style: {
+                            background: 'transparent',
+                        }
+                    },
+                    error: {
+                        style: {
+                            background: 'transparent',
+                        }
+                    }
+                }}
+                containerStyle={{
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    position: 'fixed',
+                    zIndex: 9999,
+                }}
+            />
+        </>
+    );
 }

@@ -1,4 +1,5 @@
 "use client";
+
 import CustomNotification from "@/components/notifications/customNotification";
 import socketService from "@/services/socketService";
 import { useRouter } from "next/navigation";
@@ -36,7 +37,7 @@ export const useNotifications = () => {
                     tipo="popular"
                     onViewNow={(imovelId) => {
                         router.push(`/imoveis/${imovelId || data.property?.id}`);
-                        toast.dismiss(t.id);
+                        // toast.dismiss(t.id);
                     }}
                     onClose={() => toast.dismiss(t.id)}
                   />

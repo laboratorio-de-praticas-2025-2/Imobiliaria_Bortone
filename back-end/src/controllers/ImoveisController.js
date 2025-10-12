@@ -4,6 +4,7 @@ import ImagemImovel from "../models/ImagemImovel.js";
 import * as ImoveisService from "../services/ImoveisService.js";
 import NotificationService from "../services/notificationService.js";
 
+
 const extractEntityData = (body) => {
     const {
       tipo,
@@ -228,7 +229,7 @@ export const create = async (req, res) => {
         console.log("🔍 Iniciando sistema de notificações...");
         const notificationService = new NotificationService();
         console.log("✅ NotificationService criado");
-        const resultado = await notificationService.dispararAlertaNovoImovel(newImovel);
+        const resultado = await notificationService.dispararAlertaNovoImovel(newImovel, req.loggedUser);
         console.log("📊 Resultado do disparo:", resultado);
         console.log(`✅ Notificações enviadas para o imóvel ${newImovel.id}`);
       } catch(notificationError){

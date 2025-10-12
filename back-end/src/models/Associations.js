@@ -76,8 +76,7 @@ Agendamento.belongsTo(Imovel, {
 });
 
 
-export { Imovel, Casa, Terreno, Usuario, ImagemImovel, RecomendacaoImovel };
-
+export { Imovel, Casa, Terreno, Usuario, ImagemImovel, RecomendacaoImovel, Agendamento };
 
 
 

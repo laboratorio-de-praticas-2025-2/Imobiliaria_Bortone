@@ -1,6 +1,4 @@
-// src/services/socketService.js - SUBSTITUIR TUDO por:
 "use client";
-
 const SOCKET_URL =
   process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4001";
 
@@ -11,17 +9,25 @@ class SocketService {
     this.eventHandlers = new Map();
   }
 
-  async connect() {
+  async connect(tokenParam = null) {
     if (typeof window === "undefined") {
       return;
     }
     if (this.socket && this.socket.connected) return;
 
     try {
-      const token =
+      console.log("🔗 Conectando no navegador:", SOCKET_URL);
+
+      const token = tokenParam ||
         typeof window !== "undefined"
-          ? localStorage.getItem("token") || sessionStorage.getItem("token")
+          ?  localStorage.getItem("authToken") || localStorage.getItem("token")
           : null;
+       console.log("🔍 Token recebido como parâmetro:", !!tokenParam);
+        console.log("🔍 Token encontrado no storage:", !!(localStorage.getItem("token") || sessionStorage.getItem("token") || localStorage.getItem("authToken")));
+        console.log("🔍 Token final usado:", !!token);
+        console.log("🔍 Primeiros 50 chars do token:", token ? token.substring(0, 50) + "..." : "null");
+
+
       const socketModule = await import("socket.io-client");
       // Compatível com diferentes formatos de exportação (named `io`, default export, or module itself)
       const io = socketModule.io || socketModule.default || socketModule;
@@ -104,3 +110,4 @@ if (typeof window !== "undefined") {
 }
 
 export default socketServiceInstance;
+
