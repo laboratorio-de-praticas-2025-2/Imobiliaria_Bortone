@@ -1,0 +1,1726 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>Sistema de Notificações - Frontend - Imobiliaria Bortone - Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sistema-de-notificacoes-frontend" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-header__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imobiliaria Bortone - Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sistema de Notificações - Frontend
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-nav__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    Imobiliaria Bortone - Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RegrasGerais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../EstruturaDePastas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estrutura de Pastas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Frontend
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Frontend
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../NextConfig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../middlwareIndexacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Middleware
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ManualdeTags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual de Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../NETLIFY_SETUP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Setup Netlify
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentacao_Contatos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contatos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Imagens
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Imagens
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MIGRATION_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ⭐ Migração Cloudinary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CloudinaryArchitecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🏗️ Arquitetura Cloudinary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/imagens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Imagens
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AnaliseArquiteturaImagens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise de Problemas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ProblemasImagensVercel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Problemas Vercel (Histórico)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    APIs Core
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            APIs Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/AlgoritmoDeRecomendacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/BancoDeDados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dashboard
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/Agendamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agendamento de Visitação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/AgendamentoSMTP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidade do envio de e-mail
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Mapa
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Mapa
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/MapaAPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/MapaImplementacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Implementação da API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/MapaResumo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resumo da Integração
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Chat
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Chat
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/ChatSuporte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chat Suporte
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../WebSocket-Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Rodar o WebSocket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../UserLevels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Níveis de Usuário
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ChatSystemBugFixes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relatório de Correção de Bugs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview-da-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Overview da Task
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eventos-do-back-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Eventos do Back-end
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Eventos do Back-end">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eventos-disponiveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      📤 Eventos Disponíveis:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementacao-tecnica" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Implementação Técnica
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Implementação Técnica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-instalacao-das-dependencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Instalação das Dependências
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-configuracao-do-socketio" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Configuração do Socket.IO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-hook-para-gerenciar-notificacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Hook para Gerenciar Notificações
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-componente-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Componente Principal
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customizacao-avancada" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎨 Customização Avançada
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎨 Customização Avançada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#navegacao-por-clique-implementado" class="md-nav__link">
+    <span class="md-ellipsis">
+      🖱️ Navegação por Clique (IMPLEMENTADO)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estilizacao-para-designers" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎨 Estilização para Designers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notificacao-custom-component-maximo-controle-visual" class="md-nav__link">
+    <span class="md-ellipsis">
+      Notificação Custom Component (Máximo Controle Visual)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testes-e-debug" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔍 Testes e Debug
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔍 Testes e Debug">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#como-testar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como Testar:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug-no-console" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debug no Console:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bibliotecas-recomendadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Bibliotecas Recomendadas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Bibliotecas Recomendadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opcao-1-react-hot-toast-recomendada" class="md-nav__link">
+    <span class="md-ellipsis">
+      🥇 Opção 1: React Hot Toast (RECOMENDADA)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcao-2-react-toastify" class="md-nav__link">
+    <span class="md-ellipsis">
+      🥈 Opção 2: React Toastify
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcao-3-implementacao-custom" class="md-nav__link">
+    <span class="md-ellipsis">
+      🥉 Opção 3: Implementação Custom
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entrega-da-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Entrega da Task
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Entrega da Task">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checklist-de-implementacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checklist de Implementação:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resultado-esperado" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Resultado Esperado:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#duvidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      🆘 Dúvidas?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sistema-de-notificacoes-frontend">Sistema de Notificações - Frontend</h1>
+<h2 id="overview-da-task">📋 Overview da Task</h2>
+<p>Como DEV frontend, você precisa implementar um sistema de notificações em tempo real que:</p>
+<ol>
+<li><strong>Conecta</strong> com o Socket.IO do back-end</li>
+<li><strong>Escuta</strong> eventos de notificação </li>
+<li><strong>Exibe</strong> notificações estilizadas para o usuário</li>
+<li><strong>Gerencia</strong> o estado das notificações</li>
+</ol>
+<h2 id="eventos-do-back-end">🎯 Eventos do Back-end</h2>
+<p>O back-end emite os seguintes eventos que você deve escutar:</p>
+<h3 id="eventos-disponiveis">📤 Eventos Disponíveis:</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1. Nova recomendação personalizada (para usuários logados)</span>
+<span class="s1">&#39;nova_recomendacao&#39;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">imovel</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="p">,</span><span class="w"> </span><span class="nx">tipo</span><span class="p">,</span><span class="w"> </span><span class="nx">endereco</span><span class="p">,</span><span class="w"> </span><span class="nx">preco</span><span class="p">,</span><span class="w"> </span><span class="nx">area</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">motivo</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;baseado_no_seu_historico&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">timestamp</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;2024-10-09T15:30:00Z&#39;</span>
+<span class="p">}</span>
+
+<span class="c1">// 2. Imóvel popular (broadcast geral)</span>
+<span class="s1">&#39;imovel_popular&#39;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="mf">61</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">tipo</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Terreno&#39;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">  </span><span class="nx">endereco</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Rua Q, 234&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">preco</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;185000.00&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">area</span><span class="o">:</span><span class="w"> </span><span class="mf">700</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">// ... outros dados do imóvel</span>
+<span class="p">}</span>
+
+<span class="c1">// 3. Conexão estabelecida</span>
+<span class="s1">&#39;connect&#39;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="c1">// Socket conectado com sucesso</span>
+
+<span class="c1">// 4. Erro de conexão  </span>
+<span class="s1">&#39;connect_error&#39;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="c1">// Erro na conexão</span>
+</code></pre></div>
+<h2 id="implementacao-tecnica">🔧 Implementação Técnica</h2>
+<h3 id="1-instalacao-das-dependencias">1. <strong>Instalação das Dependências</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Socket.IO Client</span>
+npm<span class="w"> </span>install<span class="w"> </span>socket.io-client
+
+<span class="c1"># Biblioteca de notificações (RECOMENDADA)</span>
+npm<span class="w"> </span>install<span class="w"> </span>react-hot-toast
+<span class="c1"># OU alternativa</span>
+npm<span class="w"> </span>install<span class="w"> </span>react-toastify
+</code></pre></div>
+<h3 id="2-configuracao-do-socketio">2. <strong>Configuração do Socket.IO</strong></h3>
+<p>Crie: <code>src/services/socketService.js</code></p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">io</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;socket.io-client&#39;</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">SOCKET_URL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">REACT_APP_API_URL</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;http://localhost:4000&#39;</span><span class="p">;</span>
+
+<span class="kd">class</span><span class="w"> </span><span class="nx">SocketService</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kr">constructor</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">isConnected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nx">connect</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="o">?</span><span class="p">.</span><span class="nx">connected</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">io</span><span class="p">(</span><span class="nx">SOCKET_URL</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">autoConnect</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">timeout</span><span class="o">:</span><span class="w"> </span><span class="mf">20000</span><span class="p">,</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;connect&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;✅ Socket conectado:&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">isConnected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;disconnect&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;❌ Socket desconectado&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">isConnected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;connect_error&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;💥 Erro de conexão:&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nx">disconnect</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="p">.</span><span class="nx">disconnect</span><span class="p">();</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">isConnected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// Escutar eventos específicos</span>
+<span class="w">  </span><span class="nx">onNovaRecomendacao</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="o">?</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;nova_recomendacao&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">callback</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nx">onImovelPopular</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="o">?</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;imovel_popular&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">callback</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// Remover listeners</span>
+<span class="w">  </span><span class="nx">off</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">socket</span><span class="o">?</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span><span class="nx">event</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">SocketService</span><span class="p">();</span>
+</code></pre></div>
+<h3 id="3-hook-para-gerenciar-notificacoes">3. <strong>Hook para Gerenciar Notificações</strong></h3>
+<p>Crie: <code>src/hooks/useNotifications.js</code></p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useEffect</span><span class="p">,</span><span class="w"> </span><span class="nx">useCallback</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">toast</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;react-hot-toast&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">socketService</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../services/socketService&#39;</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">useNotifications</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="c1">// Função para navegar para o imóvel</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">navigateToImovel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useCallback</span><span class="p">((</span><span class="nx">imovelId</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Se usando React Router</span>
+<span class="w">    </span><span class="c1">// navigate(`/imoveis/${imovelId}`);</span>
+
+<span class="w">    </span><span class="c1">// Ou redirect direto</span>
+<span class="w">    </span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`/imoveis/</span><span class="si">${</span><span class="nx">imovelId</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+<span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="p">[]);</span>
+
+<span class="w">  </span><span class="c1">// Função para exibir notificação de recomendação CLICÁVEL</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">showRecomendacaoNotification</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useCallback</span><span class="p">((</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">imovel</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">;</span>
+
+<span class="w">    </span><span class="nx">toast</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span>
+<span class="w">      </span><span class="sb">`🏠 Nova recomendação: </span><span class="si">${</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">tipo</span><span class="si">}</span><span class="sb"> em </span><span class="si">${</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">cidade</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">duration</span><span class="o">:</span><span class="w"> </span><span class="mf">5000</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">position</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;top-right&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">style</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nx">background</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#10B981&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="nx">color</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="nx">cursor</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;pointer&#39;</span><span class="p">,</span><span class="w"> </span><span class="c1">// ← Indica que é clicável</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">icon</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;🎯&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">onClick</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">navigateToImovel</span><span class="p">(</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">id</span><span class="p">),</span><span class="w"> </span><span class="c1">// ← CLICK para navegar</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="p">[</span><span class="nx">navigateToImovel</span><span class="p">]);</span>
+
+<span class="w">  </span><span class="c1">// Função para exibir notificação de imóvel popular CLICÁVEL</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">showImovelPopularNotification</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useCallback</span><span class="p">((</span><span class="nx">imovel</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">precoFormatado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Intl</span><span class="p">.</span><span class="nx">NumberFormat</span><span class="p">(</span><span class="s1">&#39;pt-BR&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">style</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;currency&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">currency</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;BRL&#39;</span>
+<span class="w">    </span><span class="p">}).</span><span class="nx">format</span><span class="p">(</span><span class="nb">parseFloat</span><span class="p">(</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">preco</span><span class="p">));</span>
+
+<span class="w">    </span><span class="nx">toast</span><span class="p">(</span>
+<span class="w">      </span><span class="sb">`🔥 Imóvel em destaque: </span><span class="si">${</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">tipo</span><span class="si">}</span><span class="sb"> - </span><span class="si">${</span><span class="nx">precoFormatado</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">duration</span><span class="o">:</span><span class="w"> </span><span class="mf">4000</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">position</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;top-right&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">style</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nx">background</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#F59E0B&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="nx">color</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="nx">cursor</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;pointer&#39;</span><span class="p">,</span><span class="w"> </span><span class="c1">// ← Indica que é clicável</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">icon</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;⭐&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">onClick</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">navigateToImovel</span><span class="p">(</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">id</span><span class="p">),</span><span class="w"> </span><span class="c1">// ← CLICK para navegar</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="p">[</span><span class="nx">navigateToImovel</span><span class="p">]);</span>
+
+<span class="w">  </span><span class="nx">useEffect</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Conectar socket</span>
+<span class="w">    </span><span class="nx">socketService</span><span class="p">.</span><span class="nx">connect</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Configurar listeners</span>
+<span class="w">    </span><span class="nx">socketService</span><span class="p">.</span><span class="nx">onNovaRecomendacao</span><span class="p">(</span><span class="nx">showRecomendacaoNotification</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">socketService</span><span class="p">.</span><span class="nx">onImovelPopular</span><span class="p">(</span><span class="nx">showImovelPopularNotification</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Cleanup</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">socketService</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span><span class="s1">&#39;nova_recomendacao&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="nx">socketService</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span><span class="s1">&#39;imovel_popular&#39;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="p">[</span><span class="nx">showRecomendacaoNotification</span><span class="p">,</span><span class="w"> </span><span class="nx">showImovelPopularNotification</span><span class="p">]);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">isConnected</span><span class="o">:</span><span class="w"> </span><span class="nx">socketService</span><span class="p">.</span><span class="nx">isConnected</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">disconnect</span><span class="o">:</span><span class="w"> </span><span class="nx">socketService</span><span class="p">.</span><span class="nx">disconnect</span><span class="p">,</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">};</span>
+</code></pre></div>
+<h3 id="4-componente-principal">4. <strong>Componente Principal</strong></h3>
+<p>Use no seu <code>App.js</code> ou componente principal:</p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Toaster</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;react-hot-toast&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useNotifications</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;./hooks/useNotifications&#39;</span><span class="p">;</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">App</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">isConnected</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useNotifications</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;App&quot;</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="p">{</span><span class="cm">/* Status da conexão (opcional) */</span><span class="p">}</span>
+<span class="w">      </span><span class="p">{</span><span class="o">!</span><span class="nx">isConnected</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;connection-status&quot;</span><span class="o">&gt;</span>
+<span class="w">          </span><span class="err">🔴</span><span class="w"> </span><span class="nx">Desconectado</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Notificações</span><span class="w"> </span><span class="nx">indisponíveis</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="err">/div&gt;</span>
+<span class="w">      </span><span class="p">)}</span>
+
+<span class="w">      </span><span class="p">{</span><span class="cm">/* Seu conteúdo existente */</span><span class="p">}</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="nx">Routes</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="p">{</span><span class="cm">/* suas rotas */</span><span class="p">}</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="err">/Routes&gt;</span>
+
+<span class="w">      </span><span class="p">{</span><span class="cm">/* Container das notificações */</span><span class="p">}</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="nx">Toaster</span><span class="w"> </span>
+<span class="w">        </span><span class="nx">position</span><span class="o">=</span><span class="s2">&quot;top-right&quot;</span>
+<span class="w">        </span><span class="nx">reverseOrder</span><span class="o">=</span><span class="p">{</span><span class="kc">false</span><span class="p">}</span>
+<span class="w">        </span><span class="nx">gutter</span><span class="o">=</span><span class="p">{</span><span class="mf">8</span><span class="p">}</span>
+<span class="w">        </span><span class="nx">containerClassName</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="w">        </span><span class="nx">containerStyle</span><span class="o">=</span><span class="p">{{}}</span>
+<span class="w">        </span><span class="nx">toastOptions</span><span class="o">=</span><span class="p">{{</span>
+<span class="w">          </span><span class="nx">duration</span><span class="o">:</span><span class="w"> </span><span class="mf">4000</span><span class="p">,</span>
+<span class="w">          </span><span class="nx">style</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">background</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#363636&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">color</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#fff&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">        </span><span class="p">}}</span>
+<span class="w">      </span><span class="o">/&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="err">/div&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="customizacao-avancada">🎨 Customização Avançada</h2>
+<h3 id="navegacao-por-clique-implementado">🖱️ <strong>Navegação por Clique (IMPLEMENTADO)</strong></h3>
+<p>As notificações já são <strong>clicáveis</strong> e redirecionam automaticamente para a página do imóvel:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// ✅ CLICK na notificação = navegar para /imoveis/{id}</span>
+<span class="nx">onClick</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">navigateToImovel</span><span class="p">(</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="estilizacao-para-designers">🎨 <strong>Estilização para Designers</strong></h3>
+<p>Para seguir o guia de estilo da sua marca:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Cores customizáveis por tipo</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">notificationStyles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">recomendacao</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">background</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;linear-gradient(135deg, #667eea 0%, #764ba2 100%)&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">color</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">borderRadius</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;12px&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">boxShadow</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;0 8px 25px rgba(102, 126, 234, 0.25)&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">popular</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">background</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;linear-gradient(135deg, #f093fb 0%, #f5576c 100%)&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">color</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">    </span><span class="nx">borderRadius</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;12px&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">boxShadow</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;0 8px 25px rgba(245, 87, 108, 0.25)&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">hover</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">transform</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;scale(1.02)&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">transition</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;transform 0.2s ease&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+<h3 id="notificacao-custom-component-maximo-controle-visual">Notificação Custom Component (Máximo Controle Visual)</h3>
+<p>Se quiser mais controle visual:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// src/components/NotificationCustom.js</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">toast</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;react-hot-toast&#39;</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">showCustomNotification</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">imovel</span><span class="p">,</span><span class="w"> </span><span class="nx">tipo</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">toast</span><span class="p">.</span><span class="nx">custom</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="sb">`notification-custom </span><span class="si">${</span><span class="nx">t</span><span class="p">.</span><span class="nx">visible</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s1">&#39;animate-enter&#39;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;animate-leave&#39;</span><span class="si">}</span><span class="sb">`</span><span class="p">}</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;notification-header&quot;</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="nx">span</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;notification-icon&quot;</span><span class="o">&gt;</span>
+<span class="w">          </span><span class="p">{</span><span class="nx">tipo</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;recomendacao&#39;</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s1">&#39;🎯&#39;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;⭐&#39;</span><span class="p">}</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="err">/span&gt;</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="nx">span</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;notification-title&quot;</span><span class="o">&gt;</span>
+<span class="w">          </span><span class="p">{</span><span class="nx">tipo</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;recomendacao&#39;</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s1">&#39;Nova Recomendação&#39;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Imóvel em Destaque&#39;</span><span class="p">}</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="err">/span&gt;</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="nx">button</span><span class="w"> </span><span class="nx">onClick</span><span class="o">=</span><span class="p">{()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">toast</span><span class="p">.</span><span class="nx">dismiss</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">id</span><span class="p">)}</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;notification-close&quot;</span><span class="o">&gt;</span>
+<span class="w">          </span><span class="err">✕</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="err">/button&gt;</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="err">/div&gt;</span>
+
+<span class="w">      </span><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;notification-content&quot;</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="nx">h4</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">tipo</span><span class="p">}</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">{</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">cidade</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/h4&gt;</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">endereco</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="nx">p</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;price&quot;</span><span class="o">&gt;</span>
+<span class="w">          </span><span class="p">{</span><span class="ow">new</span><span class="w"> </span><span class="nb">Intl</span><span class="p">.</span><span class="nx">NumberFormat</span><span class="p">(</span><span class="s1">&#39;pt-BR&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">style</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;currency&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">currency</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;BRL&#39;</span>
+<span class="w">          </span><span class="p">}).</span><span class="nx">format</span><span class="p">(</span><span class="nb">parseFloat</span><span class="p">(</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">preco</span><span class="p">))}</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="err">/div&gt;</span>
+
+<span class="w">      </span><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;notification-actions&quot;</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="nx">button</span><span class="w"> </span>
+<span class="w">          </span><span class="nx">onClick</span><span class="o">=</span><span class="p">{()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// 🎯 NAVEGAÇÃO IMPLEMENTADA - Vai para página do imóvel</span>
+<span class="w">            </span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`/imoveis/</span><span class="si">${</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">id</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+<span class="w">            </span><span class="nx">toast</span><span class="p">.</span><span class="nx">dismiss</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}}</span>
+<span class="w">          </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;btn-primary&quot;</span>
+<span class="w">        </span><span class="o">&gt;</span>
+<span class="w">          </span><span class="nx">Ver</span><span class="w"> </span><span class="nx">Detalhes</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="err">/button&gt;</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="nx">button</span><span class="w"> </span>
+<span class="w">          </span><span class="nx">onClick</span><span class="o">=</span><span class="p">{()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">toast</span><span class="p">.</span><span class="nx">dismiss</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">id</span><span class="p">)}</span>
+<span class="w">          </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;btn-secondary&quot;</span>
+<span class="w">        </span><span class="o">&gt;</span>
+<span class="w">          </span><span class="nx">Fechar</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="err">/button&gt;</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="err">/div&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="err">/div&gt;</span>
+<span class="w">  </span><span class="p">),</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">duration</span><span class="o">:</span><span class="w"> </span><span class="mf">6000</span><span class="p">,</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">};</span>
+</code></pre></div>
+<h2 id="testes-e-debug">🔍 Testes e Debug</h2>
+<h3 id="como-testar">Como Testar:</h3>
+<ol>
+<li><strong>Inicie o back-end</strong> (porta 4000)</li>
+<li><strong>Inicie o front-end</strong> (porta 3000)</li>
+<li><strong>Cadastre um imóvel</strong> via API/Postman</li>
+<li><strong>Observe</strong> as notificações aparecerem</li>
+</ol>
+<h3 id="debug-no-console">Debug no Console:</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Verificar se o socket está conectado</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Socket conectado:&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">socketService</span><span class="p">.</span><span class="nx">isConnected</span><span class="p">);</span>
+
+<span class="c1">// Escutar todos os eventos (debug)</span>
+<span class="nx">socketService</span><span class="p">.</span><span class="nx">socket</span><span class="o">?</span><span class="p">.</span><span class="nx">onAny</span><span class="p">((</span><span class="nx">eventName</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">args</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`📡 Evento recebido: </span><span class="si">${</span><span class="nx">eventName</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span><span class="w"> </span><span class="nx">args</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<h2 id="bibliotecas-recomendadas">📚 Bibliotecas Recomendadas</h2>
+<h3 id="opcao-1-react-hot-toast-recomendada">🥇 <strong>Opção 1: React Hot Toast</strong> (RECOMENDADA)</h3>
+<ul>
+<li>✅ Leve e rápida</li>
+<li>✅ Boa customização</li>
+<li>✅ Animações suaves</li>
+<li>✅ TypeScript support</li>
+</ul>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>react-hot-toast
+</code></pre></div>
+<h3 id="opcao-2-react-toastify">🥈 <strong>Opção 2: React Toastify</strong></h3>
+<ul>
+<li>✅ Mais features</li>
+<li>✅ Posicionamento avançado</li>
+<li>✅ Temas prontos</li>
+<li>⚠️ Mais pesada</li>
+</ul>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>react-toastify
+</code></pre></div>
+<h3 id="opcao-3-implementacao-custom">🥉 <strong>Opção 3: Implementação Custom</strong></h3>
+<ul>
+<li>✅ Controle total</li>
+<li>✅ Sem dependências extras</li>
+<li>⚠️ Mais trabalho</li>
+</ul>
+<h2 id="entrega-da-task">🚀 Entrega da Task</h2>
+<h3 id="checklist-de-implementacao">Checklist de Implementação:</h3>
+<ul>
+<li>[ ] Instalar dependências (<code>socket.io-client</code> + biblioteca de notificações)</li>
+<li>[ ] Criar serviço de Socket.IO (<code>socketService.js</code>)</li>
+<li>[ ] Criar hook de notificações (<code>useNotifications.js</code>)</li>
+<li>[ ] Integrar no componente principal (<code>App.js</code>)</li>
+<li>[ ] Configurar container de notificações (<code>&lt;Toaster /&gt;</code>)</li>
+<li>[ ] Testar recebimento de eventos</li>
+<li>[ ] Estilizar notificações (responsivo)</li>
+<li>[ ] Adicionar navegação para imóvel (opcional)</li>
+<li>[ ] Documentar no README do front-end</li>
+</ul>
+<h3 id="resultado-esperado">🎯 Resultado Esperado:</h3>
+<p>Quando um imóvel for cadastrado no back-end, o front-end deve:
+1. <strong>Receber</strong> o evento automaticamente
+2. <strong>Exibir</strong> notificação estilizada
+3. <strong>Permitir</strong> interação (fechar, navegar)
+4. <strong>Funcionar</strong> em qualquer página da aplicação</p>
+<h2 id="duvidas">🆘 Dúvidas?</h2>
+<ul>
+<li><strong>Backend URL</strong>: <code>http://localhost:4000</code></li>
+<li><strong>Eventos disponíveis</strong>: <code>nova_recomendacao</code>, <code>imovel_popular</code></li>
+<li><strong>Posicionamento</strong>: <code>top-right</code> (padrão)</li>
+<li><strong>Duração</strong>: 4-6 segundos</li>
+</ul>
+<p><strong>Boa implementação!</strong> 🚀</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
