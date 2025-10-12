@@ -7,36 +7,135 @@ import { RxAvatar } from "react-icons/rx";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import infoContato from "@/utils/infoContato.json";
 
-
 // Helper movido para fora do componente para evitar recriação a cada renderização
 const getUserData = () => {
   // Verificação para Server-Side Rendering (SSR) onde o localStorage não existe
   if (typeof window === "undefined") {
-    return { token: null, info: {}, nome: "Usuário", userId: null, nivel: 1, isAgent: false };
+    return {
+      token: null,
+      info: {},
+      nome: "Usuário",
+      userId: null,
+      nivel: 1,
+      isAgent: false,
+    };
   }
-  
+
   try {
     const token = localStorage.getItem("authToken");
     const userInfoString = localStorage.getItem("userInfo") || "{}";
     const info = JSON.parse(userInfoString);
-    
+
     // Usa o operador "nullish coalescing" (??) para um fallback mais seguro
     let nivel = info?.nivel ?? 1;
-    
-    const nivelNumerico = typeof nivel === 'string' ? parseInt(nivel, 10) : nivel;
+
+    const nivelNumerico =
+      typeof nivel === "string" ? parseInt(nivel, 10) : nivel;
     const isAgent = nivelNumerico === 0;
-    
+
     return {
       token,
       info,
       nome: info?.nome || "Usuário",
       userId: info?.id || null,
       nivel: nivelNumerico,
-      isAgent
+      isAgent,
     };
   } catch (error) {
     console.error("Erro ao ler dados do usuário:", error);
-    return { token: null, info: {}, nome: "Usuário", userId: null, nivel: 1, isAgent: false };
+    return {
+      token: null,
+      info: {},
+      nome: "Usuário",
+      userId: null,
+      nivel: 1,
+      isAgent: false,
+    };
+  }
+};
+
+// --- Helpers para som e notificações ---
+// Toca um som "pop-ding" curto usando Web Audio API (pop rápido + ding)
+const playPopDing = (opts = {}) => {
+  const {
+    popGain = 0.08,
+    dingGain = 0.18,
+    popFreq = 120,
+    dingFreq = 1000,
+    popTime = 0.03,
+    dingTime = 0.18,
+  } = opts;
+  try {
+    if (typeof window === "undefined") return;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+
+    const ctx = new AudioContext();
+    const now = ctx.currentTime;
+
+    // Pop: ruído curto usando oscillator com frequência baixa e envelope rápido
+    const popOsc = ctx.createOscillator();
+    const popGainNode = ctx.createGain();
+    popOsc.type = "square";
+    popOsc.frequency.value = popFreq;
+    popGainNode.gain.setValueAtTime(popGain, now);
+    popGainNode.gain.exponentialRampToValueAtTime(0.0001, now + popTime);
+    popOsc.connect(popGainNode);
+    popGainNode.connect(ctx.destination);
+    popOsc.start(now);
+    popOsc.stop(now + popTime + 0.01);
+
+    // Ding: sinusoidal com decaimento
+    const dingOsc = ctx.createOscillator();
+    const dingGainNode = ctx.createGain();
+    dingOsc.type = "sine";
+    dingOsc.frequency.setValueAtTime(dingFreq, now + popTime * 0.7);
+    dingGainNode.gain.setValueAtTime(dingGain, now + popTime * 0.7);
+    dingGainNode.gain.exponentialRampToValueAtTime(
+      0.0001,
+      now + popTime * 0.7 + dingTime
+    );
+    dingOsc.connect(dingGainNode);
+    dingGainNode.connect(ctx.destination);
+    dingOsc.start(now + popTime * 0.7);
+    dingOsc.stop(now + popTime * 0.7 + dingTime + 0.02);
+
+    // Fechar contexto após sons terminarem
+    setTimeout(() => {
+      try {
+        ctx.close();
+      } catch (e) {}
+    }, (popTime + dingTime + 0.1) * 1000);
+  } catch (e) {
+    console.warn("Não foi possível tocar pop-ding:", e);
+  }
+};
+
+// Pede permissão de Notificação se necessário e retorna estado
+const ensureNotificationPermission = async () => {
+  try {
+    if (typeof window === "undefined" || !("Notification" in window))
+      return false;
+    if (Notification.permission === "granted") return true;
+    if (Notification.permission === "denied") return false;
+    const permission = await Notification.requestPermission();
+    return permission === "granted";
+  } catch (e) {
+    console.warn("Falha ao requisitar permissão de notificação:", e);
+    return false;
+  }
+};
+
+const showBrowserNotification = (title, options = {}) => {
+  try {
+    if (typeof window === "undefined" || !("Notification" in window)) return;
+    if (Notification.permission !== "granted") return;
+    const notif = new Notification(title, options);
+    // Fechar automaticamente após 6 segundos
+    setTimeout(() => notif.close(), 6000);
+    return notif;
+  } catch (e) {
+    console.warn("Não foi possível exibir notificação:", e);
   }
 };
 
@@ -48,31 +147,53 @@ export default function ChatModal({ onClose, isLoggedIn }) {
   const [ws, setWs] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState("disconnected"); // "connecting", "connected", "reconnecting", "disconnected"
-  
+
   // Estados do usuário inicializados com lazy initialization
   const [userData, setUserData] = useState(() => getUserData());
   const [connectedUsers, setConnectedUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [lastUpdate, setLastUpdate] = useState(new Date());
-  
+
   // Refs
   const inputRef = useRef();
   const listRef = useRef();
+
+  // Pedir permissão de notificação ao montar para agentes (melhora UX)
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        if (!mounted) return;
+        if (!userData || !userData.isAgent) return;
+        // Solicita permissão, mas não força popup se já negado
+        await ensureNotificationPermission();
+      } catch (e) {
+        console.warn("Erro ao solicitar permissão de notificação no mount:", e);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [userData?.isAgent]);
 
   const getWebSocketUrl = () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       if (apiUrl) return apiUrl.replace(/^http/, "ws");
-      
+
       if (typeof window !== "undefined") {
         const { protocol, hostname, port } = window.location;
         const wsProtocol = protocol === "https:" ? "wss:" : "ws:";
-        if (hostname === "localhost" || hostname === "127.0.0.1") return `${wsProtocol}//${hostname}:4000`;
-        if (hostname.includes('.vercel.app')) {
-          const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://imobiliaria-bortone.onrender.com';
+        if (hostname === "localhost" || hostname === "127.0.0.1")
+          return `${wsProtocol}//${hostname}:4000`;
+        if (hostname.includes(".vercel.app")) {
+          const backendUrl =
+            process.env.NEXT_PUBLIC_API_URL ||
+            "https://imobiliaria-bortone.onrender.com";
           return backendUrl.replace(/^http/, "ws");
         }
-        if (hostname.includes('.onrender.com')) return `${wsProtocol}//${hostname}`;
+        if (hostname.includes(".onrender.com"))
+          return `${wsProtocol}//${hostname}`;
         return `${wsProtocol}//${hostname}${port ? `:${port}` : ""}`;
       }
       return "ws://localhost:4000";
@@ -99,10 +220,10 @@ export default function ChatModal({ onClose, isLoggedIn }) {
   const selectUser = (userId) => {
     console.log("🎯 Selecionando usuário:", userId);
     setSelectedUser(userId);
-    
+
     // Limpar mensagens antigas exceto a inicial
-    setMessages(prev => prev.filter(msg => msg.id === 1));
-    
+    setMessages((prev) => prev.filter((msg) => msg.id === 1));
+
     // Solicitar histórico do usuário selecionado
     if (ws && isConnected) {
       const payload = { type: "getHistory", userId: userId };
@@ -117,15 +238,30 @@ export default function ChatModal({ onClose, isLoggedIn }) {
       id: id || Date.now(),
       sender: sender || "support",
       text: text || "",
-      timestamp: timestamp instanceof Date ? timestamp : new Date(timestamp)
+      timestamp: timestamp instanceof Date ? timestamp : new Date(timestamp),
     };
   };
+
+  // Normaliza texto para comparação (remove pontuação/emoji e deixa em lowercase)
+  const normalizeText = (txt = "") =>
+    txt
+      .toString()
+      .replace(/[^\p{L}\p{N}\s]/gu, "") // remove emojis e pontuação
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
 
   // Conexão WebSocket - corrigida para incluir dependências necessárias
   useEffect(() => {
     if (!userData.token || !userData.userId) {
       console.warn("⚠️ Dados de autenticação não encontrados ou inválidos.");
-      setMessages([createMessage(1, "support", "❌ Você precisa fazer login para usar o chat.")]);
+      setMessages([
+        createMessage(
+          1,
+          "support",
+          "❌ Você precisa fazer login para usar o chat."
+        ),
+      ]);
       return;
     }
 
@@ -134,16 +270,13 @@ export default function ChatModal({ onClose, isLoggedIn }) {
       nome: userData.nome,
       nivel: userData.nivel,
       isAgent: userData.isAgent,
-      tokenPreview: userData.token?.substring(0, 30) + "..."
     });
-    
-    console.log("💡 Se houver erro 'Token inválido', faça logout e login novamente para obter um novo token.");
-    
+
     // Mensagem inicial baseada no tipo de usuário
     const initialText = userData.isAgent
       ? "Bem-vindo ao painel de atendimento! Selecione um usuário para conversar."
       : "Olá! Como posso ajudar você hoje?";
-    
+
     setMessages([createMessage(1, "support", initialText)]);
 
     let socket;
@@ -151,31 +284,31 @@ export default function ChatModal({ onClose, isLoggedIn }) {
     let heartbeatTimer;
     let reconnectAttempts = 0;
     const maxReconnectAttempts = 10;
-    
+
     const startHeartbeat = (socket) => {
       // Limpar heartbeat anterior se existir
       if (heartbeatTimer) clearInterval(heartbeatTimer);
-      
+
       let lastPongTime = Date.now();
-      
+
       // Enviar ping a cada 30 segundos e verificar se recebemos pong
       heartbeatTimer = setInterval(() => {
         if (socket && socket.readyState === WebSocket.OPEN) {
           const now = Date.now();
-          
+
           // Se não recebemos pong há mais de 60 segundos, considerar conexão morta
           if (now - lastPongTime > 60000) {
             console.log("❌ Conexão considerada morta - não recebeu pong");
             socket.close(1000, "Heartbeat timeout");
             return;
           }
-          
+
           socket.send(JSON.stringify({ type: "ping", timestamp: now }));
         }
       }, 30000);
-      
+
       // Atualizar tempo do último pong quando recebermos resposta
-      socket.addEventListener('message', (event) => {
+      socket.addEventListener("message", (event) => {
         try {
           const data = JSON.parse(event.data);
           if (data.type === "pong") {
@@ -186,20 +319,24 @@ export default function ChatModal({ onClose, isLoggedIn }) {
         }
       });
     };
-    
+
     const stopHeartbeat = () => {
       if (heartbeatTimer) {
         clearInterval(heartbeatTimer);
         heartbeatTimer = null;
       }
     };
-    
+
     const connect = () => {
       const wsUrl = `${getWebSocketUrl()}?token=${userData.token}`;
-      console.log(`🔌 Tentando conectar WebSocket (tentativa ${reconnectAttempts + 1}): ${wsUrl}`);
-      
+      console.log(
+        `🔌 Tentando conectar WebSocket (tentativa ${
+          reconnectAttempts + 1
+        }): ${wsUrl}`
+      );
+
       setConnectionStatus("connecting");
-      
+
       try {
         socket = new WebSocket(wsUrl);
         setWs(socket);
@@ -209,11 +346,14 @@ export default function ChatModal({ onClose, isLoggedIn }) {
           setIsConnected(true);
           setConnectionStatus("connected");
           reconnectAttempts = 0;
-          setMessages((prev) => prev.filter(msg => 
-            !msg.text.includes("Erro de conexão") && 
-            !msg.text.includes("Reconectando") &&
-            !msg.text.includes("Conexão perdida")
-          ));
+          setMessages((prev) =>
+            prev.filter(
+              (msg) =>
+                !msg.text.includes("Erro de conexão") &&
+                !msg.text.includes("Reconectando") &&
+                !msg.text.includes("Conexão perdida")
+            )
+          );
 
           // Iniciar heartbeat
           startHeartbeat(socket);
@@ -223,7 +363,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
             token: userData.token,
             userId: userData.userId,
             nome: userData.nome,
-            nivel: userData.nivel
+            nivel: userData.nivel,
           };
           console.log("📤 Enviando mensagem de conexão:", connectMessage);
           socket.send(JSON.stringify(connectMessage));
@@ -245,11 +385,12 @@ export default function ChatModal({ onClose, isLoggedIn }) {
               const payload = getPayload(data);
 
               // Extrai campos com tolerância a diferentes chaves
-              const text =
-                (payload?.text ??
-                 payload?.content ??
-                 payload?.body ??
-                 "").toString();
+              const text = (
+                payload?.text ??
+                payload?.content ??
+                payload?.body ??
+                ""
+              ).toString();
 
               if (!text.trim()) {
                 console.warn("⚠️ Mensagem recebida sem texto útil:", payload);
@@ -264,7 +405,10 @@ export default function ChatModal({ onClose, isLoggedIn }) {
                 null;
 
               const ts = payload?.timestamp ?? data?.timestamp ?? Date.now();
-              const fromMe = fromId && fromId === userData.userId;
+              // Comparação robusta para identificar se a mensagem foi enviada por este usuário
+              // Aceita números e strings, e trata null/undefined corretamente
+              const fromMe =
+                fromId != null && String(fromId) === String(userData.userId);
 
               const newMsg = createMessage(
                 ts,
@@ -275,14 +419,81 @@ export default function ChatModal({ onClose, isLoggedIn }) {
 
               console.log("➕ Adicionando mensagem normalizada:", newMsg);
               setMessages((prev) => [...prev, newMsg]);
+
+              // --- NOTIFICAÇÕES (som + browser) para agente e cliente ---
+              try {
+                // Não notificar se a mensagem foi enviada por este usuário
+                if (fromMe) return;
+
+                // Tentar garantir que o AudioContext esteja ativo (ajuda com políticas de autoplay)
+                try {
+                  if (typeof window !== "undefined") {
+                    if (
+                      window._bortone_audio_ctx &&
+                      window._bortone_audio_ctx.state === "suspended"
+                    ) {
+                      window._bortone_audio_ctx.resume().catch(() => {});
+                    }
+                  }
+                } catch (e) {
+                  // não bloqueia alertas
+                }
+
+                // Tocar som (Web Audio helper existente)
+                try {
+                  playPopDing();
+                } catch (e) {
+                  // se falhar, tentar tocar um som via elemento Audio se disponível
+                  try {
+                    if (typeof window !== "undefined") {
+                      if (!window._bortone_fallback_audio) {
+                        // tom simples gerado como data-uri (curto beep) não é trivial — evitar assets novos
+                        // então simplesmente criar um Audio vazio para tentar disparar alguma reprodução
+                        window._bortone_fallback_audio = new Audio();
+                      }
+                      window._bortone_fallback_audio.play?.().catch(() => {});
+                    }
+                  } catch (e2) {}
+                }
+
+                // Mostrar notificação de browser para ambos (agente e cliente) quando permissão concedida
+                ensureNotificationPermission().then((granted) => {
+                  if (!granted) return;
+
+                  const shortBody = text.trim().slice(0, 120);
+
+                  if (userData.isAgent) {
+                    // Agente recebe notificação sobre mensagens de usuários
+                    const title = `Nova mensagem de ${
+                      payload?.fromName ||
+                      payload?.nome ||
+                      `Usuário ${fromId || "desconhecido"}`
+                    }`;
+                    showBrowserNotification(title, {
+                      body: shortBody,
+                      tag: `chat-from-${fromId || "unknown"}`,
+                      renotify: true,
+                    });
+                    return;
+                  }
+
+                  // Cliente recebe notificação sobre respostas do suporte/atendente
+                  const agentLabel =
+                    payload?.fromName || payload?.nome || "Suporte";
+                  const title = `Resposta de ${agentLabel}`;
+                  showBrowserNotification(title, {
+                    body: shortBody,
+                    tag: `chat-support-${ts}`,
+                    renotify: true,
+                  });
+                });
+              } catch (e) {
+                console.warn("Erro ao disparar alertas:", e);
+              }
             }
 
             if (["history", "messages", "chatHistory"].includes(type)) {
-              const listRaw =
-                data.messages ??
-                data.history ??
-                data.data ??
-                [];
+              const listRaw = data.messages ?? data.history ?? data.data ?? [];
 
               const list = Array.isArray(listRaw) ? listRaw : [];
 
@@ -293,8 +504,9 @@ export default function ChatModal({ onClose, isLoggedIn }) {
                   return t.trim() !== "";
                 })
                 .map((m, idx) => {
-                  const text =
-                    (m?.text ?? m?.content ?? m?.body ?? "").toString().trim();
+                  const text = (m?.text ?? m?.content ?? m?.body ?? "")
+                    .toString()
+                    .trim();
                   const fromId =
                     m?.fromUserId ?? m?.from ?? m?.senderId ?? null;
                   const ts = m?.timestamp ?? Date.now() + idx;
@@ -325,22 +537,34 @@ export default function ChatModal({ onClose, isLoggedIn }) {
             }
 
             if (type === "status") {
-              const msg =
-                (data.msg ?? data.message ?? "").toString().trim();
+              const msg = (data.msg ?? data.message ?? "").toString().trim();
               if (msg) {
-                setMessages((prev) => [
-                  ...prev,
-                  createMessage(Date.now(), "support", msg),
-                ]);
+                setMessages((prev) => {
+                  const recent = prev.slice(-5);
+                  const normalized = normalizeText(msg);
+                  const exists = recent.some(
+                    (m) => normalizeText(m.text) === normalized
+                  );
+                  if (exists) return prev;
+                  return [...prev, createMessage(Date.now(), "support", msg)];
+                });
               }
             }
 
             if (data.error) {
               const errorMsg = `Erro: ${data.error}`;
-              setMessages((prev) => [
-                ...prev,
-                createMessage(Date.now(), "support", errorMsg),
-              ]);
+              setMessages((prev) => {
+                const recent = prev.slice(-5);
+                const normalized = normalizeText(errorMsg);
+                const exists = recent.some(
+                  (m) => normalizeText(m.text) === normalized
+                );
+                if (exists) return prev;
+                return [
+                  ...prev,
+                  createMessage(Date.now(), "support", errorMsg),
+                ];
+              });
             }
 
             // Responder a pings do servidor
@@ -350,8 +574,14 @@ export default function ChatModal({ onClose, isLoggedIn }) {
 
             // Confirmar recebimento de pong
             if (type === "pong") {
-              const latency = data.timestamp ? Date.now() - data.timestamp : null;
-              console.log(`🏓 Pong recebido do servidor${latency ? ` (latência: ${latency}ms)` : ""}`);
+              const latency = data.timestamp
+                ? Date.now() - data.timestamp
+                : null;
+              console.log(
+                `🏓 Pong recebido do servidor${
+                  latency ? ` (latência: ${latency}ms)` : ""
+                }`
+              );
             }
           } catch (e) {
             console.error("❌ Falha ao processar mensagem WS:", e, event.data);
@@ -359,27 +589,47 @@ export default function ChatModal({ onClose, isLoggedIn }) {
         };
 
         socket.onclose = (event) => {
-          console.log("❌ WebSocket fechado:", { code: event.code, reason: event.reason });
+          console.log("❌ WebSocket fechado:", {
+            code: event.code,
+            reason: event.reason,
+          });
           console.log("🔍 Estado da conexão antes do fechamento:", {
             readyState: socket.readyState,
             isConnected: isConnected,
             reconnectAttempts: reconnectAttempts,
-            userData: userData
+            userData: userData,
           });
           setIsConnected(false);
           stopHeartbeat();
-          
+
           // Códigos específicos que não devem reconectar
-          const noReconnectCodes = [1000, 1001, 4001, 4002, 4003]; // Normal closure, going away, auth errors, user limit
-          
-          if (!noReconnectCodes.includes(event.code) && reconnectAttempts < maxReconnectAttempts) {
+          const noReconnectCodes = [1000, 1001, 4001, 4002]; // Normal closure, going away, auth errors
+
+          if (
+            !noReconnectCodes.includes(event.code) &&
+            reconnectAttempts < maxReconnectAttempts
+          ) {
             reconnectAttempts++;
             setConnectionStatus("reconnecting");
-            const delay = Math.min(1000 * Math.pow(2, reconnectAttempts - 1), 10000);
-            console.log(`🔄 Tentando reconectar em ${delay}ms (código: ${event.code})`);
-            
-            setMessages((prev) => [...prev, createMessage(Date.now(), "support", `🔄 Conexão perdida (código: ${event.code}). Reconectando em ${Math.round(delay/1000)}s...`)]);
-            
+            const delay = Math.min(
+              1000 * Math.pow(2, reconnectAttempts - 1),
+              10000
+            );
+            console.log(
+              `🔄 Tentando reconectar em ${delay}ms (código: ${event.code})`
+            );
+
+            setMessages((prev) => [
+              ...prev,
+              createMessage(
+                Date.now(),
+                "support",
+                `🔄 Conexão perdida (código: ${
+                  event.code
+                }). Reconectando em ${Math.round(delay / 1000)}s...`
+              ),
+            ]);
+
             reconnectTimer = setTimeout(connect, delay);
           } else {
             setConnectionStatus("disconnected");
@@ -428,28 +678,65 @@ export default function ChatModal({ onClose, isLoggedIn }) {
       }
     };
     // Incluindo dependências necessárias para resolver o warning do ESLint
-  }, [userData.token, userData.userId, userData.isAgent, userData.nome, userData.nivel, selectedUser]);
+  }, [
+    userData.token,
+    userData.userId,
+    userData.isAgent,
+    userData.nome,
+    userData.nivel,
+    selectedUser,
+  ]);
 
   const handleSend = () => {
     const messageText = newMessage.trim();
     if (!messageText || !ws || !isConnected) return;
-    
+
+    // Tentar garantir que o AudioContext esteja ativo (ajuda com políticas de autoplay)
+    try {
+      if (typeof window !== "undefined") {
+        // Cria e resume um AudioContext silencioso se necessário
+        if (!window._bortone_audio_ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            try {
+              window._bortone_audio_ctx = new AudioContext();
+              if (window._bortone_audio_ctx.state === "suspended") {
+                window._bortone_audio_ctx.resume().catch(() => {});
+              }
+            } catch (e) {}
+          }
+        } else if (window._bortone_audio_ctx.state === "suspended") {
+          window._bortone_audio_ctx.resume().catch(() => {});
+        }
+      }
+    } catch (e) {
+      // Não falhar o envio apenas por problema de audio
+      console.warn("Falha ao inicializar AudioContext:", e);
+    }
+
     let payload = { type: "message", text: messageText };
-    
+
     // Validação para agentes
     if (userData.isAgent) {
       if (!selectedUser) {
-        setMessages((prev) => [...prev, createMessage(Date.now(), "support", "⚠️ Selecione um usuário para enviar mensagem.")]);
+        setMessages((prev) => [
+          ...prev,
+          createMessage(
+            Date.now(),
+            "support",
+            "⚠️ Selecione um usuário para enviar mensagem."
+          ),
+        ]);
         return;
       }
       payload.to = selectedUser;
       console.log("📤 AGENTE enviando para usuário:", selectedUser);
     }
-    
+
     try {
       console.log("📤 Enviando payload:", payload);
       ws.send(JSON.stringify(payload));
-      
+
       // Adicionar mensagem enviada imediatamente
       const sentMessage = createMessage(Date.now(), "user", messageText);
       console.log("➕ Adicionando mensagem enviada:", sentMessage);
@@ -457,7 +744,14 @@ export default function ChatModal({ onClose, isLoggedIn }) {
       setNewMessage("");
     } catch (e) {
       console.error("❌ Erro ao enviar:", e);
-      setMessages((prev) => [...prev, createMessage(Date.now(), "support", "❌ Falha ao enviar. Tente novamente.")]);
+      setMessages((prev) => [
+        ...prev,
+        createMessage(
+          Date.now(),
+          "support",
+          "❌ Falha ao enviar. Tente novamente."
+        ),
+      ]);
     }
   };
 
@@ -466,7 +760,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
     setShowEmojis(false);
     inputRef.current?.focus();
   };
-  
+
   // Debug: Adicionar logs para monitorar mensagens
   useEffect(() => {
     console.log("🔍 Estado atual das mensagens:", messages);
@@ -474,7 +768,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
 
   // Função para redirecionar para login
   const handleLoginRedirect = () => {
-    window.location.href = '/login';
+    window.location.href = "/login";
   };
 
   // Se o usuário não estiver logado, mostra tela de login
@@ -489,13 +783,14 @@ export default function ChatModal({ onClose, isLoggedIn }) {
               <h2 className="text-sm md:text-base text-white font-semibold">
                 Suporte Imobiliária Bortone
               </h2>
-              <p className="text-xs text-white/80">
-                Faça login para conversar
-              </p>
+              <p className="text-xs text-white/80">Faça login para conversar</p>
             </div>
           </div>
           <button onClick={onClose}>
-            <IoIosCloseCircle className="w-8 h-8 md:w-10 md:h-10 transition-transform hover:scale-110" color="white" />
+            <IoIosCloseCircle
+              className="w-8 h-8 md:w-10 md:h-10 transition-transform hover:scale-110"
+              color="white"
+            />
           </button>
         </div>
 
@@ -509,7 +804,8 @@ export default function ChatModal({ onClose, isLoggedIn }) {
               Entre em contato conosco!
             </h3>
             <p className="text-sm text-gray-600 mb-6">
-              Para usar o chat de suporte, você precisa fazer login em sua conta.
+              Para usar o chat de suporte, você precisa fazer login em sua
+              conta.
             </p>
           </div>
 
@@ -521,7 +817,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
               Fazer Login
             </button>
             <button
-              onClick={() => window.location.href = '/cadastro'}
+              onClick={() => (window.location.href = "/cadastro")}
               className="w-full border border-[#4C62AE] text-[#4C62AE] py-3 px-4 rounded-lg font-semibold hover:bg-[#4C62AE] hover:text-white transition-colors"
             >
               Criar Conta
@@ -537,7 +833,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
       </div>
     );
   }
-  
+
   return (
     <div className="fixed z-[9999] inset-0 w-full h-full rounded-none md:inset-auto md:bottom-4 md:right-4 md:w-[90%] md:max-w-sm md:h-[70vh] md:rounded-2xl bg-white shadow-lg flex flex-col overflow-hidden animate-slideUpFade">
       {/* Header */}
@@ -546,11 +842,13 @@ export default function ChatModal({ onClose, isLoggedIn }) {
           <RxAvatar className="w-8 h-8 md:w-10 md:h-10" color="white" />
           <div>
             <h2 className="text-sm md:text-base text-white font-semibold">
-              {userData.isAgent ? "Painel de Atendimento" : "Suporte Imobiliária Bortone"}
+              {userData.isAgent
+                ? "Painel de Atendimento"
+                : "Suporte Imobiliária Bortone"}
             </h2>
             <p className="text-xs text-white/80">
               {connectionStatus === "connected" && "🟢 Online"}
-              {connectionStatus === "connecting" && "� Conectando..."}
+              {connectionStatus === "connecting" && " Conectando..."}
               {connectionStatus === "reconnecting" && "🟡 Reconectando..."}
               {connectionStatus === "disconnected" && "🔴 Desconectado"}
               {" • " + userData.nome}
@@ -559,7 +857,10 @@ export default function ChatModal({ onClose, isLoggedIn }) {
           </div>
         </div>
         <button onClick={onClose}>
-          <IoIosCloseCircle className="w-8 h-8 md:w-10 md:h-10 transition-transform hover:scale-110" color="white" />
+          <IoIosCloseCircle
+            className="w-8 h-8 md:w-10 md:h-10 transition-transform hover:scale-110"
+            color="white"
+          />
         </button>
       </div>
 
@@ -576,17 +877,19 @@ export default function ChatModal({ onClose, isLoggedIn }) {
                 </span>
               </div>
               <div className="text-xs text-gray-500 mt-1">
-                Última atualização: {lastUpdate.toLocaleTimeString('pt-BR')}
+                Última atualização: {lastUpdate.toLocaleTimeString("pt-BR")}
               </div>
             </div>
             <div className="flex-1 overflow-y-auto">
               {connectedUsers.length > 0 ? (
                 connectedUsers.map((user) => (
-                  <div 
-                    key={user.userId} 
-                    onClick={() => selectUser(user.userId)} 
+                  <div
+                    key={user.userId}
+                    onClick={() => selectUser(user.userId)}
                     className={`p-3 border-b cursor-pointer hover:bg-gray-200 transition-colors ${
-                      selectedUser === user.userId ? 'bg-blue-100 border-blue-300' : ''
+                      selectedUser === user.userId
+                        ? "bg-blue-100 border-blue-300"
+                        : ""
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -594,7 +897,9 @@ export default function ChatModal({ onClose, isLoggedIn }) {
                         <div className="text-sm font-medium text-gray-800 flex items-center">
                           🟢 {user.nome || `Usuário ${user.userId}`}
                         </div>
-                        <div className="text-xs text-gray-500">ID: {user.userId}</div>
+                        <div className="text-xs text-gray-500">
+                          ID: {user.userId}
+                        </div>
                       </div>
                       {selectedUser === user.userId && (
                         <div className="text-blue-500 text-xs">💬 Ativo</div>
@@ -605,8 +910,12 @@ export default function ChatModal({ onClose, isLoggedIn }) {
               ) : (
                 <div className="flex-1 flex flex-col items-center justify-center p-4 text-center">
                   <div className="text-4xl mb-3">👨‍💼</div>
-                  <div className="text-sm font-medium text-gray-600 mb-2">Aguardando usuários</div>
-                  <div className="text-xs text-gray-500">Usuários online aparecerão aqui.</div>
+                  <div className="text-sm font-medium text-gray-600 mb-2">
+                    Aguardando usuários
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    Usuários online aparecerão aqui.
+                  </div>
                 </div>
               )}
             </div>
@@ -618,7 +927,7 @@ export default function ChatModal({ onClose, isLoggedIn }) {
                 <span className="text-yellow-600">🟡 Conectando...</span>
               )}
               {connectionStatus === "reconnecting" && (
-                <span className="text-yellow-600">� Reconectando...</span>
+                <span className="text-yellow-600"> Reconectando...</span>
               )}
               {connectionStatus === "disconnected" && (
                 <span className="text-red-600">🔴 Desconectado</span>
@@ -628,13 +937,20 @@ export default function ChatModal({ onClose, isLoggedIn }) {
         )}
 
         {/* Área de mensagens */}
-        <div className={`flex flex-col ${userData.isAgent ? 'flex-1' : 'w-full'}`}>
+        <div
+          className={`flex flex-col ${userData.isAgent ? "flex-1" : "w-full"}`}
+        >
           {userData.isAgent && selectedUser && (
             <div className="p-2 bg-blue-50 text-sm text-blue-700 border-b">
-              Conversando com: {connectedUsers.find(u => u.userId === selectedUser)?.nome || `Usuário ${selectedUser}`}
+              Conversando com:{" "}
+              {connectedUsers.find((u) => u.userId === selectedUser)?.nome ||
+                `Usuário ${selectedUser}`}
             </div>
           )}
-          <div ref={listRef} className="flex-1 p-3 space-y-2 overflow-y-auto bg-gray-50">
+          <div
+            ref={listRef}
+            className="flex-1 p-3 space-y-2 overflow-y-auto bg-gray-50"
+          >
             {messages.length > 0 ? (
               messages.map((msg, idx) => {
                 if (!msg || !msg.text || msg.text.trim() === "") return null;
@@ -661,26 +977,30 @@ export default function ChatModal({ onClose, isLoggedIn }) {
       <div className="relative flex items-center border-t p-2 gap-2 bg-[#4C62AE]">
         {userData.isAgent && !selectedUser && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="text-white text-sm text-center">Selecione um usuário para conversar</div>
+            <div className="text-white text-sm text-center">
+              Selecione um usuário para conversar
+            </div>
           </div>
         )}
         <div className="relative">
-          <BsEmojiSmileFill 
-            className="w-8 h-8 cursor-pointer hover:scale-110 transition" 
-            color="white" 
-            onClick={() => setShowEmojis(!showEmojis)} 
+          <BsEmojiSmileFill
+            className="w-8 h-8 cursor-pointer hover:scale-110 transition"
+            color="white"
+            onClick={() => setShowEmojis(!showEmojis)}
           />
           {showEmojis && (
             <div className="absolute bottom-10 left-0 w-48 bg-white rounded-lg shadow-lg p-2 flex flex-wrap gap-2 z-50 animate-emojiOpen">
-              {["😀", "😂", "😍", "👍", "🔥", "🎉", "🙌", "🤔", "😢", "👏"].map((emoji) => (
-                <button 
-                  key={emoji} 
-                  onClick={() => addEmoji(emoji)} 
-                  className="text-xl hover:scale-125 transition"
-                >
-                  {emoji}
-                </button>
-              ))}
+              {["😀", "😂", "😍", "👍", "🔥", "🎉", "🙌", "🤔", "😢", "👏"].map(
+                (emoji) => (
+                  <button
+                    key={emoji}
+                    onClick={() => addEmoji(emoji)}
+                    className="text-xl hover:scale-125 transition"
+                  >
+                    {emoji}
+                  </button>
+                )
+              )}
             </div>
           )}
         </div>
@@ -690,7 +1010,11 @@ export default function ChatModal({ onClose, isLoggedIn }) {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
-          placeholder={userData.isAgent && !selectedUser ? "Selecione um usuário..." : "Digite sua mensagem..."}
+          placeholder={
+            userData.isAgent && !selectedUser
+              ? "Selecione um usuário..."
+              : "Digite sua mensagem..."
+          }
           className="flex-1 bg-white rounded-3xl px-3 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-300"
           disabled={!isConnected || (userData.isAgent && !selectedUser)}
         />
@@ -698,7 +1022,9 @@ export default function ChatModal({ onClose, isLoggedIn }) {
           onClick={handleSend}
           disabled={!isConnected || (userData.isAgent && !selectedUser)}
           className={`flex w-10 h-10 rounded-full items-center justify-center hover:scale-110 transition ${
-            isConnected && (!userData.isAgent || selectedUser) ? 'opacity-100' : 'opacity-50 cursor-not-allowed'
+            isConnected && (!userData.isAgent || selectedUser)
+              ? "opacity-100"
+              : "opacity-50 cursor-not-allowed"
           }`}
         >
           <IoSend color="white" className="w-6 h-6 text-white" />
