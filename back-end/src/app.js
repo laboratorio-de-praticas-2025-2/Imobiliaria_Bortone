@@ -87,6 +87,9 @@ app.use(errorHandler);
 // Inicializar WebSocket
 initWebSocket(server);
 
+// Log de configuração JWT para debug
+console.log("🔑 JWT_SECRET configurado:", process.env.JWT_SECRET ? "✅ Sim" : "❌ Não (usando fallback)");
+console.log("🔑 JWT_SECRET primeiros 10 chars:", process.env.JWT_SECRET ? process.env.JWT_SECRET.substring(0, 10) + "..." : "N/A");
 
 // ----------------------
 // Banco de dados

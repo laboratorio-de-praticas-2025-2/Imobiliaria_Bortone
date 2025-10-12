@@ -71,7 +71,7 @@ export default function FaqModal({ isEdit = false, data, onClose, onSave }) {
 
             <div className="flex justify-center mt-4">
               <button
-                onClick={handleSubmit}
+                type="submit"
                 className="bg-[#2C3E99] px-6 py-2 rounded-full hover:bg-[#223173] transition font-medium shadow-md"
               >
                 <p className="text-white">

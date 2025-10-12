@@ -24,8 +24,7 @@ export function buildImageUrl(imageUrl, type = 'default', fallback = '/404.png')
  * @returns {string} URL base da API sem trailing slash
  */
 function getApiBaseUrl() {
-  const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || 
-    (process.env.NODE_ENV !== 'production' ? 'http://localhost:4000' : '');
+  const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://imobiliaria-bortone.onrender.com';
   
   if (!rawApiUrl) {
     if (process.env.NODE_ENV === 'development') {

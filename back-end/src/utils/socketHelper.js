@@ -46,7 +46,7 @@ export const sendToUser = (userId, event, data) => {
     }
 
     try {
-        return socketManagerInstance.sendToUser(userId, event, data);
+        return socketManagerInstance.sendToUser(String(userId), event, data);
     } catch (error) {
         console.error('Erro ao enviar notificação para usuário:', error);
         return false;
@@ -67,7 +67,8 @@ export const sendToMultipleUsers = (userIds, event, data) => {
     }
 
     try {
-        return socketManagerInstance.sendToUsers(userIds, event, data);
+        const userIdsStr = userIds.map(String);
+        return socketManagerInstance.sendToUsers(userIdsStr, event, data);
     } catch (error) {
         console.error('Erro ao enviar para múltiplos usuários:', error);
         return [];
@@ -130,7 +131,7 @@ export const isUserConnected = (userId) => {
     }
 
     try {
-        return socketManagerInstance.isUserConnected(userId);
+        return socketManagerInstance.isUserConnected(String(userId));
     } catch (error) {
         console.error('Erro ao verificar conexão do usuário:', error);
         return false;

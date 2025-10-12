@@ -9,8 +9,6 @@ export default function initWebSocket(server) {
     "http://localhost:3000",
     "http://localhost:3001", 
     "https://imobiliaria-bortone.vercel.app",
-    "https://imobiliaria-bortone-git-develop-daniel-augusto-mandiras-projects.vercel.app",
-    "https://imobiliaria-bortone-git-14b00d-daniel-augusto-mandiras-projects.vercel.app",
     // Padrões Vercel para branches
     "https://imobiliaria-bortone-git-",
     "https://imobiliaria-bortone-",
@@ -19,6 +17,7 @@ export default function initWebSocket(server) {
   const wss = new WebSocketServer({ server });
   wss.on("connection", (ws, req) => {
     const origin = req.headers.origin;
+    console.log(`🔌 Nova conexão WebSocket - Origin: ${origin}`);
     
     // Em desenvolvimento, permitir qualquer origem local
     const isDevelopment = process.env.NODE_ENV === 'development';
@@ -30,6 +29,7 @@ export default function initWebSocket(server) {
       });
     
     if (!isOriginAllowed) {
+      console.log(`❌ Origin não permitida: ${origin}`);
       ws.close(1008, "Origin não permitida");
       return;
     }
@@ -38,6 +38,16 @@ export default function initWebSocket(server) {
     ws.isAlive = true;
     ws.on("pong", () => {
       ws.isAlive = true;
+    });
+
+    // Log de fechamento para debug
+    ws.on("close", (code, reason) => {
+      console.log(`🔌 WebSocket fechado - Código: ${code}, Razão: ${reason}, Usuário: ${ws.userData?.id || 'desconhecido'}`);
+    });
+
+    // Log de erros para debug
+    ws.on("error", (error) => {
+      console.log(`🚨 Erro no WebSocket - Usuário: ${ws.userData?.id || 'desconhecido'}, Erro: ${error.message}`);
     });
 
     // Para teste: permitir conexão sem JWT se for modo de desenvolvimento
@@ -58,16 +68,39 @@ export default function initWebSocket(server) {
 
     // Autenticação JWT obrigatória
     if (!token) {
+      console.log("❌ Token não fornecido na URL");
       ws.close(4001, "Token JWT obrigatório");
       return;
     }
 
+    // Debug: verificar se JWT_SECRET está definido
+    if (!process.env.JWT_SECRET) {
+      console.error("❌ ERRO CRÍTICO: JWT_SECRET não está definido no ambiente!");
+      ws.close(4002, "Configuração inválida do servidor");
+      return;
+    }
+
+    console.log(`🔍 Tentando verificar token (primeiros 30 chars): ${token.substring(0, 30)}...`);
+    console.log(`🔍 JWT_SECRET definido: ${!!process.env.JWT_SECRET}`);
+
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log(`✅ Token válido para usuário ID: ${decoded.id}, Email: ${decoded.email}, Nível: ${decoded.nivel}`);
       ws.userData = decoded;
       handleConnection(ws);
     } catch (error) {
-      ws.close(4002, "Token inválido");
+      console.log(`❌ Erro na verificação do token: ${error.message}`);
+      console.log(`🔍 Tipo de erro: ${error.name}`);
+      if (error.name === 'TokenExpiredError') {
+        console.log(`⏰ Token expirou em: ${error.expiredAt}`);
+        ws.close(4002, "Token expirado");
+      } else if (error.name === 'JsonWebTokenError') {
+        console.log(`🔍 Mensagem de erro JWT: ${error.message}`);
+        ws.close(4002, "Token inválido");
+      } else {
+        console.log(`🔍 Erro desconhecido: ${error.stack}`);
+        ws.close(4002, "Erro ao validar token");
+      }
     }
   });
 
