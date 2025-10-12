@@ -1,7 +1,6 @@
 import logo from "@/../public/images/LogoAzul.svg";
 import Image from "next/image";
 
-
 /**
  * TableRelatorio - componente de tabela flexível para relatório
  * @param {Object[]} data - array de objetos (linhas)
@@ -18,6 +17,16 @@ export default function TableRelatorio({
   returnPages = true,
 }) {
   const hasData = Array.isArray(data) && data.length > 0;
+
+  const cellStyles = {
+    padding: "4px 8px",
+    border: "1px solid #ddd",
+    fontSize: "11px",
+    wordWrap: "break-word",
+    overflowWrap: "break-word",
+    whiteSpace: "normal",
+    lineHeight: "1.2",
+  };
 
   // Se não há dados ou tem menos que o limite, renderiza normalmente
   if (!hasData || data.length <= rowsPerPage) {
@@ -72,12 +81,15 @@ export default function TableRelatorio({
                     key={row.id || i}
                     style={{
                       backgroundColor: i % 2 === 0 ? "#ffffff" : "#f5f7fa",
+                      pageBreakInside: "avoid",
+                      breakInside: "avoid",
                     }}
                   >
                     {headers.map((header, j) => (
                       <td
                         key={header.key || j}
                         style={{
+                          ...cellStyles,
                           padding: "4px 8px",
                           border: "1px solid #ddd",
                           fontSize: "11px",
