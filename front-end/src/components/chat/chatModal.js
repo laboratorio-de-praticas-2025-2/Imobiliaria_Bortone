@@ -242,6 +242,15 @@ export default function ChatModal({ onClose, isLoggedIn }) {
     };
   };
 
+  // Normaliza texto para comparação (remove pontuação/emoji e deixa em lowercase)
+  const normalizeText = (txt = "") =>
+    txt
+      .toString()
+      .replace(/[^\p{L}\p{N}\s]/gu, "") // remove emojis e pontuação
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+
   // Conexão WebSocket - corrigida para incluir dependências necessárias
   useEffect(() => {
     if (!userData.token || !userData.userId) {
@@ -530,19 +539,32 @@ export default function ChatModal({ onClose, isLoggedIn }) {
             if (type === "status") {
               const msg = (data.msg ?? data.message ?? "").toString().trim();
               if (msg) {
-                setMessages((prev) => [
-                  ...prev,
-                  createMessage(Date.now(), "support", msg),
-                ]);
+                setMessages((prev) => {
+                  const recent = prev.slice(-5);
+                  const normalized = normalizeText(msg);
+                  const exists = recent.some(
+                    (m) => normalizeText(m.text) === normalized
+                  );
+                  if (exists) return prev;
+                  return [...prev, createMessage(Date.now(), "support", msg)];
+                });
               }
             }
 
             if (data.error) {
               const errorMsg = `Erro: ${data.error}`;
-              setMessages((prev) => [
-                ...prev,
-                createMessage(Date.now(), "support", errorMsg),
-              ]);
+              setMessages((prev) => {
+                const recent = prev.slice(-5);
+                const normalized = normalizeText(errorMsg);
+                const exists = recent.some(
+                  (m) => normalizeText(m.text) === normalized
+                );
+                if (exists) return prev;
+                return [
+                  ...prev,
+                  createMessage(Date.now(), "support", errorMsg),
+                ];
+              });
             }
 
             // Responder a pings do servidor
