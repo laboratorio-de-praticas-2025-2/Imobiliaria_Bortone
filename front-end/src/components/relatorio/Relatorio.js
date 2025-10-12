@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Card from "@/components/relatorio/Card.js";
 import { FaUserPlus, FaUserPen, FaUser, FaHouseChimney } from "react-icons/fa6";
 import "../../styles/relatorio.css";
 import { FaCheckSquare } from "react-icons/fa";
@@ -208,7 +207,7 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
                       const valorGeral =
                         Number(data?.sumarioExecutivo?.totalVendas) || 0;
                       const ticketMedio =
-                        totalVendas > 0 ? valorGeral / totalVendas : 0;                     
+                        totalVendas > 0 ? valorGeral / totalVendas : 0;
 
                       return ticketMedio.toLocaleString("pt-BR", {
                         style: "currency",
@@ -333,43 +332,19 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
               )}
             </div>
           </div>
-          <div className="page" id="jornada-cliente-tabela">
-            <header>
-              <Image
-                src={logo.src}
-                alt="Logo Bortone"
-                width={180}
-                height={50}
-              />
-            </header>
-            <div className="text-center">
-              <div>
-                <h3 className="title">Tabela Detalhada de Agendamentos:</h3>
-              </div>
-              <div>
-                <TableRelatorio
-                  className="min-w-full border-separate border-spacing-0"
-                  title=""
-                  data={data?.jornadaCliente?.tabelaAgendamentos}
-                  headers={[
-                    {
-                      key: "id_agendamento",
-                      label: "ID Agendamento",
-                      align: "left",
-                    },
-                    { key: "data_marcada", label: "Data Marcada" },
-                    {
-                      key: "data_cadastro_usuario",
-                      label: "Data Cadastro Usuário",
-                    },
-                    { key: "email", label: "Email" },
-                    { key: "endereco", label: "Endereço do Imóvel" },
-                    { key: "tipo", label: "Tipo" },
-                  ]}
-                />
-              </div>
-            </div>
-          </div>
+          <TableRelatorio
+            title="Tabela Detalhada de Agendamentos"
+            data={data?.jornadaCliente?.tabelaAgendamentos}
+            headers={[
+              { key: "id_agendamento", label: "ID Agendamento", align: "left" },
+              { key: "data_marcada", label: "Data Marcada" },
+              { key: "data_cadastro_usuario", label: "Data Cadastro Usuário" },
+              { key: "email", label: "Email" },
+              { key: "endereco", label: "Endereço do Imóvel" },
+              { key: "tipo", label: "Tipo" },
+            ]}
+            returnPages={true} // Isso fará o TableRelatorio retornar páginas completas
+          />
         </>
       ),
     },
@@ -514,37 +489,24 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
               </ul>
             </div>
           </div>
-          <div className="page" id="estoque-imobiliario-tabela">
-            <header>
-              <Image
-                src={logo.src}
-                alt="Logo Bortone"
-                width={180}
-                height={50}
-              />
-            </header>
-            <div>
-              <h3 className="title">Imóveis Mais Acessados no Site:</h3>
-            </div>
-            <TableRelatorio
-              className="min-w-full border-separate border-spacing-0"
-              title=""
-              data={data?.analiseEstoque?.tabelaAcessos}
-              headers={[
-                { key: "id", label: "ID", align: "center" },
-                { key: "quantidade_acessos", label: "Quantidade Acessos" },
-                { key: "tipo", label: "Tipo" },
-                { key: "visibilidade_preco", label: "Visibilidade Preço" },
-                {
-                  key: "area",
-                  label: "Área",
-                  align: "center",
-                  render: (value) => (value ? `${value} m²` : "-"),
-                },
-                { key: "endereco", label: "Endereço" },
-              ]}
-            />
-          </div>
+          <TableRelatorio
+            title="Imóveis Mais Acessados no Site"
+            data={data?.analiseEstoque?.tabelaAcessos}
+            headers={[
+              { key: "id", label: "ID", align: "center" },
+              { key: "quantidade_acessos", label: "Quantidade Acessos" },
+              { key: "tipo", label: "Tipo" },
+              { key: "visibilidade_preco", label: "Visibilidade Preço" },
+              {
+                key: "area",
+                label: "Área",
+                align: "center",
+                render: (value) => (value ? `${value} m²` : "-"),
+              },
+              { key: "endereco", label: "Endereço" },
+            ]}
+            returnPages={true}
+          />
         </>
       ),
     },
@@ -609,51 +571,38 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
               )}
             </div>
           </div>
-          <div className="page" id="desempenho-venda-tabela">
-            <header>
-              <Image
-                src={logo.src}
-                alt="Logo Bortone"
-                width={180}
-                height={50}
-              />
-            </header>
-            <div>
-              <h3 className="title">Tabela Detalhada de Vendas:</h3>
-            </div>
-            <TableRelatorio
-              className="min-w-full border-separate border-spacing-0"
-              title=""
-              data={data?.desempenhoVendas?.tabelaVendas}
-              headers={[
-                { key: "id", label: "ID", align: "center" },
-                {
-                  key: "data_update_status",
-                  label: "Data de Venda",
-                  align: "center",
-                },
-                { key: "tipo", label: "Tipo do Imóvel" },
-                { key: "endereco", label: "Endereco" },
-                {
-                  key: "preco",
-                  label: "Preço",
-                  align: "right",
-                  render: (value) =>
-                    `R$ ${Number(value).toLocaleString("pt-BR", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}`,
-                },
-                { key: "visibilidade_preco", label: "Visibilidade Preço" },
-                {
-                  key: "area",
-                  label: "Área",
-                  align: "right",
-                  render: (value) => (value ? `${value} m²` : "-"),
-                },
-              ]}
-            />
-          </div>
+          <TableRelatorio
+            title="Tabela Detalhada de Vendas"
+            data={data?.desempenhoVendas?.tabelaVendas}
+            headers={[
+              { key: "id", label: "ID", align: "center" },
+              {
+                key: "data_update_status",
+                label: "Data de Venda",
+                align: "center",
+              },
+              { key: "tipo", label: "Tipo do Imóvel" },
+              { key: "endereco", label: "Endereco" },
+              {
+                key: "preco",
+                label: "Preço",
+                align: "right",
+                render: (value) =>
+                  `R$ ${Number(value).toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}`,
+              },
+              { key: "visibilidade_preco", label: "Visibilidade Preço" },
+              {
+                key: "area",
+                label: "Área",
+                align: "right",
+                render: (value) => (value ? `${value} m²` : "-"),
+              },
+            ]}
+            returnPages={true}
+          />
         </>
       ),
     },
@@ -718,51 +667,38 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
               )}
             </div>
           </div>
-          <div className="page">
-            <header>
-              <Image
-                src={logo.src}
-                alt="Logo Bortone"
-                width={180}
-                height={50}
-              />
-            </header>
-            <div>
-              <h3 className="title">Tabela Detalhada de Locações:</h3>
-            </div>
-            <TableRelatorio
-              className="min-w-full border-separate border-spacing-0"
-              title=""
-              data={data?.desempenhoLocacoes?.tabelaLocacoes}
-              headers={[
-                { key: "id", label: "ID", align: "center" },
-                {
-                  key: "data_update_status",
-                  label: "Data de Locação",
-                  align: "center",
-                },
-                { key: "tipo", label: "Tipo do Imóvel" },
-                { key: "endereco", label: "Endereco" },
-                {
-                  key: "preco",
-                  label: "Preço",
-                  align: "right",
-                  render: (value) =>
-                    `R$ ${Number(value).toLocaleString("pt-BR", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}`,
-                },
-                { key: "visibilidade_preco", label: "Visibilidade Preço" },
-                {
-                  key: "area",
-                  label: "Área",
-                  align: "right",
-                  render: (value) => (value ? `${value} m²` : "-"),
-                },
-              ]}
-            />
-          </div>
+          <TableRelatorio
+            title="Tabela Detalhada de Locações"
+            data={data?.desempenhoLocacoes?.tabelaLocacoes}
+            headers={[
+              { key: "id", label: "ID", align: "center" },
+              {
+                key: "data_update_status",
+                label: "Data de Locação",
+                align: "center",
+              },
+              { key: "tipo", label: "Tipo do Imóvel" },
+              { key: "endereco", label: "Endereco" },
+              {
+                key: "preco",
+                label: "Preço",
+                align: "right",
+                render: (value) =>
+                  `R$ ${Number(value).toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}`,
+              },
+              { key: "visibilidade_preco", label: "Visibilidade Preço" },
+              {
+                key: "area",
+                label: "Área",
+                align: "right",
+                render: (value) => (value ? `${value} m²` : "-"),
+              },
+            ]}
+            returnPages={true}
+          />
         </>
       ),
     },
@@ -862,8 +798,6 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
         </div>
       </div>
       {/* PÁGINAS */}
-      {/* Renderiza as seções selecionadas */}
-
       {/* Renderiza as seções selecionadas COM KEY */}
       {secoesParaRenderizar.map((secaoKey) => (
         <React.Fragment key={secaoKey}>

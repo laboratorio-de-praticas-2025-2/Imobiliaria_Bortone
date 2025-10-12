@@ -79,12 +79,12 @@ export default function PdfModal({
                     >
                       Baixar PDF
                     </button>
-                    <button
+                    {/* <button
                       className="border-2 border-white rounded-full p-3 !text-white cursor-pointer"
                       onClick={onShare}
                     >
                       <IoShareSocialSharp size={20} />
-                    </button>
+                    </button> */}
                     <button
                       className="border-2 border-white rounded-full p-3 !text-white cursor-pointer"
                       onClick={onPrint}

@@ -13,6 +13,8 @@ import { useRef, useState, useEffect } from "react";
 import { exportRelatorioToPdf } from "@/utils/pdfUtils";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { useReactToPrint } from "react-to-print";
+import html2canvas from "html2canvas-pro";
+import html2pdf from "html2pdf.js";
 import DateRangeModal from "@/components/relatorio/DateRange";
 
 // Funções auxiliares para compartilhamento

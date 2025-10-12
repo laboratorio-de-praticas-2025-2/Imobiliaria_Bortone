@@ -3,6 +3,11 @@
   --background: #eef0f9;
 }
 
+.no-print-styles {
+  /* Reseta todos os estilos de impressão */
+  background-image: none !important;
+}
+
 @page {
   size: A4;
   margin: 0;
@@ -14,7 +19,6 @@ body {
   font-size: 13px;
   line-height: 1.5;
   margin: 0;
-  padding: 0;
   width: 100%;
   height: 100%;
   font-family: Arial, sans-serif;
@@ -22,13 +26,57 @@ body {
 
 @media print {
   body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
     background-image: url('/images/LogoAzul.png'), url('/images/logo-background.svg');
+  }
+
+
+  table,
+  tr,
+  td {
+    page-break-inside: avoid;
+  }
+
+  /* Estilos para seções de tabela paginadas */
+  .table-section {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .table-section-break {
+    break-before: page;
+    page-break-before: always;
+    margin-top: 40px;
+  }
+
+  .table-section+.table-section {
+    margin-top: 100mm !important;
+  }
+
+  .table-section table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    font-size: 11px !important;
+  }
+
+  .table-section th {
+    background-color: #273668 !important;
+    color: white !important;
+    font-weight: bold !important;
+  }
+
+  .table-section td,
+  .table-section th {
+    padding: 4px 8px !important;
+    border: 1px solid #ddd !important;
+    font-size: 11px !important;
   }
 }
 
 .page {
   width: 210mm;
-  min-height: 297mm;
+  height: 297mm;
   margin: 0;
   padding: 18mm 18mm;
   box-sizing: border-box;
@@ -142,6 +190,58 @@ header {
   font-size: 2.5rem;
   font-weight: bold;
   color: var(--primary);
+}
+
+
+/* Estilos para seções de tabela paginadas */
+.page .table-section {
+  margin-top: 20px;
+}
+
+.page table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+  font-size: 11px !important;
+}
+
+.page th {
+  background-color: #273668 !important;
+  color: white !important;
+  font-weight: bold !important;
+  border: 1px solid #ddd !important;
+}
+
+.page td,
+.page th {
+  padding: 4px 8px !important;
+  border: 1px solid #ddd !important;
+  font-size: 11px !important;
+}
+
+.table-section-break {
+  break-before: page;
+  page-break-before: always;
+  margin-top: 40px;
+}
+
+.table-section+.table-section {
+  margin-top: 100mm !important;
+}
+
+ul {
+  list-style-position: outside;
+  /* garante que o bullet fique fora do texto */
+  padding-left: 1.2em;
+  margin: 0.2em 0;
+}
+
+li {
+  line-height: 1.4;
+  vertical-align: middle;
+  display: flex;
+  /* força alinhamento em linha */
+  align-items: center;
+  /* centraliza o texto com o bullet */
 }
 
 .card-icon {
