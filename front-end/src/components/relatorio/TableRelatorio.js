@@ -90,9 +90,6 @@ export default function TableRelatorio({
                         key={header.key || j}
                         style={{
                           ...cellStyles,
-                          padding: "4px 8px",
-                          border: "1px solid #ddd",
-                          fontSize: "11px",
                           textAlign:
                             header.align === "right"
                               ? "right"
