@@ -1,9 +1,9 @@
 "use client";
 import { Divider } from "antd";
-import Image from "next/image";
 import Header from "@/components/home/Header";
-import PropriedadesSelecionadas from "@/components/home/PropriedadesSelecionadas";;
+import PropriedadesSelecionadas from "@/components/home/PropriedadesSelecionadas";
 import HomeFooter from "@/components/home/HomeFooter";
+import PublicidadeCarousel from "@/components/home/PublicidadeCarousel";
 import SplashScreen from "@/components/SplashScreen";
 import { useEffect, useState } from "react";
 import { useSEO } from "@/hooks/useSEO";
@@ -102,24 +102,8 @@ export default function Home() {
         </div>
 
         <div className="flex-shrink-0 w-full md:w-[20%]">
-          <div className="hidden md:block pt-10">
-            <Image
-              src="/images/dudaShopVerticalMaior.svg"
-              alt="dudaShopVertical"
-              width={301}
-              height={600}
-              className="block object-contain pt-5"
-            />
-          </div>
-
-          <div className="block md:hidden">
-            <Image
-              src="/images/dudaShop.svg"
-              alt="dudaShop"
-              width={344}
-              height={100}
-              className="block object-contain w-full"
-            />
+          <div className="pt-10">
+            <PublicidadeCarousel />
           </div>
         </div>
       </div>

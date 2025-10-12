@@ -1,7 +1,6 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import publicidadeRoutes from "./routes/publicidadeRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import { createServer } from 'http';
@@ -28,11 +27,6 @@ import mapaRoutes from "./routes/mapaRoutes.js";
 import imoveisRouter from "./routes/ImoveisRouter.js";
 import imagemImovelRoutes from "./routes/imagemImovelRoutes.js";
 import dashboardRouter from "./routes/dashboardRoutes.js";
-import initWebSocket from "./config/websocket.js";
-import { errorHandler } from "./middlewares/errorHandler.js";
-import path from "path";
-import { fileURLToPath } from "url";
-import http from "http";
 import bannerRoutes from './routes/bannerRoutes.js';
 import publicidadeRoutes from "./routes/publicidadeRoutes.js";
 
