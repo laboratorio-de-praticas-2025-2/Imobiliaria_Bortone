@@ -1,13 +1,15 @@
 "use client";
+
+
 import { navLinks } from "@/mock/navLinks";
 import { Button, Flex, Input } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { createElement, useState } from "react";
+import { useState, createElement, useEffect } from "react";
 import { FaBars } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
-import { usersMock } from "@/mock/users";
 import { IoIosArrowDown } from "react-icons/io";
+import { handleLogout } from "@/utils/auth";
 
 const { Search } = Input;
 const onSearch = (value) => console.log(value);
@@ -15,16 +17,44 @@ const onSearch = (value) => console.log(value);
 export default function HomeNavbar({ className }) {
   const [open, setOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Altere para userMock[null] para simular deslogado, userMock[1] = usuário comum
-  const user = usersMock[0] || null;
-  const isLoggedIn = !!user;
+  // Verificar se o usuário está logado
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    const userInfo = localStorage.getItem("userInfo");
+    
+    if (authToken && userInfo) {
+      try {
+        const parsedUser = JSON.parse(userInfo);
+        console.log("🔍 Dados do usuário carregados:", parsedUser);
+        console.log("🔍 Nível do usuário:", parsedUser.nivel, "Tipo:", typeof parsedUser.nivel);
+        setUser(parsedUser);
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error("Erro ao parsear dados do usuário:", error);
+        setUser(null);
+        setIsLoggedIn(false);
+      }
+    } else {
+      setUser(null);
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  // Função de logout customizada para limpar estados locais
+  const handleLogoutLocal = () => {
+    setUser(null);
+    setIsLoggedIn(false);
+    setUserMenuOpen(false);
+    // Chama a função centralizada de logout
+    handleLogout();
+  };
+
 
   const buttonHeightPX = 40;
-  const topRadius = "20px";
   const bottomRadius = "20px";
-
-  // Stagger: delays para cada item do dropdown
   const delays = ["0ms", "60ms", "120ms"];
 
   return (
@@ -37,18 +67,39 @@ export default function HomeNavbar({ className }) {
         align="center"
         className="hidden md:flex navbar-desktop"
       >
-        <Link href="/">
+        {/* Logo */}
+        <Link 
+          href="/"
+          onClick={() => {
+            // Marcar navegação para home se estivermos no admin
+            if (window.location.pathname.includes('/admin')) {
+              sessionStorage.setItem('navigatedFromAdmin', 'true');
+            }
+          }}
+        >
           <Image
             src="/images/LogoPreta.svg"
             alt="Logo Bortone"
             width={113}
             height={43}
+            style={{ width: 'auto', height: 'auto' }}
           />
         </Link>
 
-        <div className="flex items-center gap-10">
+        {/* Links de navegação */}
+        <div className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
-            <Link href={link.path} key={link.name} className="h-full">
+            <Link 
+              href={link.path} 
+              key={link.name} 
+              className="h-full"
+              onClick={() => {
+                // Marcar navegação para home se estivermos no admin
+                if (link.path === '/' && window.location.pathname.includes('/admin')) {
+                  sessionStorage.setItem('navigatedFromAdmin', 'true');
+                }
+              }}
+            >
               <Flex
                 gap="middle"
                 align="center"
@@ -61,51 +112,58 @@ export default function HomeNavbar({ className }) {
           ))}
         </div>
 
-        {isLoggedIn ? (
-          <div className="relative inline-block text-left">
-            <button
-              onClick={() => setUserMenuOpen(!userMenuOpen)}
-              className="bg-[#EEF0F9] px-4 py-2 rounded-full cursor-pointer whitespace-nowrap flex items-center gap-1 relative z-[10000]"
-              style={{ color: "#304383" }}
-            >
-              <span className="truncate">{user.nome}</span>
-              <IoIosArrowDown />
-            </button>
+        {/* Botões lado a lado */}
+        <div className="flex items-center gap-2 relative">
+        
+          {/* Botão do usuário */}
+          {isLoggedIn ? (
+            <div className="relative inline-block text-left">
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="bg-[#EEF0F9] px-4 py-2 rounded-full cursor-pointer whitespace-nowrap flex items-center gap-1 relative z-[9000]"
+                style={{ color: "#304383", height: buttonHeightPX }}
+              >
+                <span className="truncate">{user?.nome}</span>
+                <IoIosArrowDown />
+              </button>
 
-            {/* Dropdown - botão sempre acima */}
-            <ul
-              className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9999] 
-                          transition-all duration-300 ease-out 
-                          ${
-                            userMenuOpen
-                              ? "opacity-100 translate-y-0"
-                              : "opacity-0 -translate-y-2 pointer-events-none"
-                          }`}
-              style={{
-                paddingTop: buttonHeightPX,
-                borderRadius: bottomRadius,
-              }}
-            >
-              <li
-                className={`px-4 py-2 h-[30px] hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
-                            flex justify-center items-center transition-all duration-300 ease-out
+              {/* Dropdown */}
+              <ul
+                className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9000]
+                            transition-all duration-300 ease-out
                             ${
                               userMenuOpen
                                 ? "opacity-100 translate-y-0"
-                                : "opacity-0 -translate-y-2"
+                                : "opacity-0 -translate-y-2 pointer-events-none"
                             }`}
                 style={{
-                  color: "#304383",
-                  borderTopLeftRadius: topRadius,
-                  borderTopRightRadius: topRadius,
-                  transitionDelay: delays[0],
+                  paddingTop: buttonHeightPX,
+                  borderRadius: bottomRadius,
                 }}
               >
-                Perfil
-              </li>
-              {user.nivel === "administrador" && (
+                {user?.nivel === 0 && (
+                  <Link href={"/admin/dashboard"}>
+                    <li
+                      className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
+                                  flex justify-center items-center transition-all duration-300 ease-out
+                                  ${
+                                    userMenuOpen
+                                      ? "opacity-100 translate-y-0"
+                                      : "opacity-0 -translate-y-2"
+                                  }`}
+                      style={{
+                        color: "#304383",
+                        transitionDelay: delays[1],
+                      }}
+                    >
+                      CMS
+                    </li>
+                  </Link>
+                )}
+
                 <li
-                  className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
+                  onClick={handleLogoutLocal}
+                  className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
                               flex justify-center items-center transition-all duration-300 ease-out
                               ${
                                 userMenuOpen
@@ -114,43 +172,28 @@ export default function HomeNavbar({ className }) {
                               }`}
                   style={{
                     color: "#304383",
-                    transitionDelay: delays[1],
+                    borderBottomLeftRadius: bottomRadius,
+                    borderBottomRightRadius: bottomRadius,
+                    transitionDelay:
+                    user?.nivel === 0 ? delays[2] : delays[1],
                   }}
                 >
-                  CMS
+                  Sair
                 </li>
-              )}
-              <li
-                className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
-                            flex justify-center items-center transition-all duration-300 ease-out
-                            ${
-                              userMenuOpen
-                                ? "opacity-100 translate-y-0"
-                                : "opacity-0 -translate-y-2"
-                            }`}
-                style={{
-                  color: "#304383",
-                  borderBottomLeftRadius: bottomRadius,
-                  borderBottomRightRadius: bottomRadius,
-                  transitionDelay:
-                    user.nivel === "administrador" ? delays[2] : delays[1],
-                }}
-              >
-                Sair
-              </li>
-            </ul>
-          </div>
-        ) : (
-          <Button
-            variant="outlined"
-            icon={<FaUser />}
-            shape="round"
-            className="btn-login whitespace-nowrap"
-            href="/bem-vindo"
-          >
-            Entrar
-          </Button>
-        )}
+              </ul>
+            </div>
+          ) : (
+            <Button
+              variant="outlined"
+              icon={<FaUser />}
+              shape="round"
+              className="btn-login whitespace-nowrap"
+              href="/bem-vindo"
+            >
+              Entrar
+            </Button>
+          )}
+        </div>
       </Flex>
 
       {/* Navbar Mobile */}
@@ -169,6 +212,7 @@ export default function HomeNavbar({ className }) {
               alt="Logo Bortone"
               width={113}
               height={43}
+              style={{ width: 'auto', height: 'auto' }}
             />
           </Link>
         </Flex>
@@ -178,17 +222,17 @@ export default function HomeNavbar({ className }) {
             <div className="relative inline-block text-left">
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="bg-[#EEF0F9] px-4 py-2 rounded-full whitespace-nowrap flex items-center gap-1 cursor-pointer relative z-[10000]"
-                style={{ color: "#304383" }}
+                className="bg-[#EEF0F9] px-4 py-2 rounded-full whitespace-nowrap flex items-center gap-1 cursor-pointer relative z-[9000]"
+                style={{ color: "#304383", height: buttonHeightPX }}
               >
-                <span className="truncate">{user.nome}</span>
+                <span className="truncate">{user?.nome}</span>
                 <IoIosArrowDown />
               </button>
 
-              {/* Dropdown Mobile - botão sempre acima */}
+              {/* Dropdown Mobile */}
               <ul
-                className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9999] 
-                            transition-all duration-300 ease-out 
+                className={`absolute right-0 top-0 min-w-full bg-white shadow-lg z-[9000]
+                            transition-all duration-300 ease-out
                             ${
                               userMenuOpen
                                 ? "opacity-100 translate-y-0"
@@ -199,42 +243,28 @@ export default function HomeNavbar({ className }) {
                   borderRadius: bottomRadius,
                 }}
               >
-                <li
-                  className={`px-4 py-2 h-[30px] hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
-                              flex justify-center items-center transition-all duration-300 ease-out
-                              ${
-                                userMenuOpen
-                                  ? "opacity-100 translate-y-0"
-                                  : "opacity-0 -translate-y-2"
-                              }`}
-                  style={{
-                    color: "#304383",
-                    borderTopLeftRadius: topRadius,
-                    borderTopRightRadius: topRadius,
-                    transitionDelay: delays[0],
-                  }}
-                >
-                  Perfil
-                </li>
-                {user.nivel === "administrador" && (
-                  <li
-                    className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
-                                flex justify-center items-center transition-all duration-300 ease-out
-                                ${
-                                  userMenuOpen
-                                    ? "opacity-100 translate-y-0"
-                                    : "opacity-0 -translate-y-2"
-                                }`}
-                    style={{
-                      color: "#304383",
-                      transitionDelay: delays[1],
-                    }}
-                  >
-                    CMS
-                  </li>
+                {user?.nivel === 0 && (
+                  <Link href={"/admin/dashboard"}>
+                    <li
+                      className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
+                                  flex justify-center items-center transition-all duration-300 ease-out
+                                  ${userMenuOpen
+                          ? "opacity-100 translate-y-0"
+                          : "opacity-0 -translate-y-2"
+                        }`}
+                      style={{
+                        color: "#304383",
+                        transitionDelay: delays[1],
+                      }}
+                    >
+                      CMS
+                    </li>
+                  </Link>
                 )}
+
                 <li
-                  className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center 
+                  onClick={handleLogoutLocal}
+                  className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center
                               flex justify-center items-center transition-all duration-300 ease-out
                               ${
                                 userMenuOpen
@@ -246,7 +276,7 @@ export default function HomeNavbar({ className }) {
                     borderBottomLeftRadius: bottomRadius,
                     borderBottomRightRadius: bottomRadius,
                     transitionDelay:
-                      user.nivel === "administrador" ? delays[2] : delays[1],
+                    user?.nivel === 0 ? delays[2] : delays[1],
                   }}
                 >
                   Sair
@@ -272,7 +302,8 @@ export default function HomeNavbar({ className }) {
         className={`fixed top-0 left-0 h-full w-[80%] bg-white shadow-lg transform transition-transform duration-300 z-50
           ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
-        <div className="flex flex-col gap-8 p-4 border-b border-gray-300">
+        <div className="flex flex-col gap-6 p-4 border-b border-gray-300">
+          {/* Logo */}
           <Flex justify="space-between" align="center" className="w-full">
             <Link href="/">
               <Image
@@ -280,25 +311,11 @@ export default function HomeNavbar({ className }) {
                 alt="Logo Bortone"
                 width={113}
                 height={43}
+                style={{ width: 'auto', height: 'auto' }}
               />
             </Link>
           </Flex>
-          <Flex vertical gap="middle">
-            <p className="text-sm text-[var(--primary)]">
-              Faça login para conferir imóveis disponíveis na sua região,
-              visitas, propostas e contatos
-            </p>
-            {!isLoggedIn && (
-              <Button
-                type="primary"
-                shape="round"
-                className="w-full entrar-btn-mobile"
-                href="/bem-vindo"
-              >
-                Entrar
-              </Button>
-            )}
-          </Flex>
+
         </div>
 
         <div className="flex flex-col p-6 gap-6">
@@ -309,6 +326,7 @@ export default function HomeNavbar({ className }) {
             allowClear
             className="nav-search-mobile"
           />
+
           {navLinks.map((link) => (
             <Link
               href={link.path}
@@ -316,7 +334,7 @@ export default function HomeNavbar({ className }) {
               onClick={() => setOpen(false)}
               className="text-xl text-[var(--primary)] flex items-center gap-4"
             >
-              {createElement(link.icon)}
+              {link.icon && createElement(link.icon)}
               {link.name}
             </Link>
           ))}
@@ -331,4 +349,5 @@ export default function HomeNavbar({ className }) {
       )}
     </div>
   );
+  
 }

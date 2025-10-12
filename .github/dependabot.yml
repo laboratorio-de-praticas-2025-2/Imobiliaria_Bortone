@@ -1,7 +1,14 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/" # pasta raiz do projeto
+    directory: "/front-end"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    target-branch: "develop"
+  - package-ecosystem: "npm"
+    directory: "/back-end"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    target-branch: "develop"

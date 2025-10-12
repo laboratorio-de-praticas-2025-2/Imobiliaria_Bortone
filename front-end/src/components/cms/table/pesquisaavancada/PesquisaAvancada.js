@@ -5,7 +5,7 @@ import { useState } from "react";
 import useHandleClickOutside from "@/hooks/useHandleClickOutside";
 import { useRef } from "react";
 
-export default function PesquisaAvancadaUser() {
+export default function PesquisaAvancadaUser({ onAdvancedFilter }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -23,7 +23,7 @@ export default function PesquisaAvancadaUser() {
         <TbAdjustmentsHorizontal className="h-4 w-4 text-[var(--primary)]" />
       </button>
 
-      {isOpen && <PesquisaAvancadaModal />}
+      {isOpen && <PesquisaAvancadaModal onAdvancedFilter={onAdvancedFilter} />}
     </div>
   );
 }

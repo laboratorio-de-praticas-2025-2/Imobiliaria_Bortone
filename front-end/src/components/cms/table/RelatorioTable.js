@@ -36,6 +36,6 @@ export default function RelatorioTable({ columns, data, loading, pdfReady }) {
     );
   }
   return (
-    <Table columns={columns} dataSource={data} rowKey="id" pagination={false} />
+    <Table columns={columns} dataSource={data} rowKey="key" pagination={false} />
   );
 }

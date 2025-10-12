@@ -13,6 +13,7 @@ import { setSocketManager } from './utils/socketHelper.js';
 import { errorHandler } from "./middlewares/errorHandler.js";
 import "./models/Associations.js";
 
+// Importar todas as rotas
 import healthRouter from "./routes/healthRouter.js";
 import socketRoutes from './routes/socketRoutes.js';
 import blogRoutes from "./routes/blogRoutes.js";
@@ -28,7 +29,7 @@ import imagemImovelRoutes from "./routes/imagemImovelRoutes.js";
 import dashboardRouter from "./routes/dashboardRoutes.js";
 import bannerRoutes from './routes/bannerRoutes.js';
 import publicidadeRoutes from "./routes/publicidadeRoutes.js";
-import simuladorRoutes from "./routes/simuladorRoutes.js";
+import simuladorRoutes from "./routes/simuladorRoutes.js"
 
 const app = express();
 
@@ -37,6 +38,13 @@ const __dirname = path.dirname(__filename);
 
 // Criar servidor HTTP
 const server = createServer(app);
+
+// Inicializar SocketManager
+const socketManager = new SocketManager(server);
+
+// Tornar socketManager disponível globalmente
+app.set('socketManager', socketManager);
+setSocketManager(socketManager);
 
 // ----------------------
 // Middlewares
@@ -47,6 +55,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Servir arquivos estáticos
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
+// Rotas
 
 app.use('/', recomendacaoRouter);
 app.use("/api/socket", socketRoutes);
@@ -63,14 +73,21 @@ app.use("/publicacoes", blogRoutes);
 app.use('/imoveis', imoveisRouter);
 app.use('/imagemImovel', imagemImovelRoutes);
 app.use('/publicidade', publicidadeRoutes);
-app.use('/simulador', simuladorRoutes)
+app.use('/simulador', simuladorRoutes);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
 app.use(errorHandler);
 
+// Inicializar WebSocket
+initWebSocket(server);
+
+// Log de configuração JWT para debug
+console.log("🔑 JWT_SECRET configurado:", process.env.JWT_SECRET ? "✅ Sim" : "❌ Não (usando fallback)");
+console.log("🔑 JWT_SECRET primeiros 10 chars:", process.env.JWT_SECRET ? process.env.JWT_SECRET.substring(0, 10) + "..." : "N/A");
+
 // ----------------------
-// Banco de dados 
+// Banco de dados
 // ----------------------
 connection
   .authenticate()
