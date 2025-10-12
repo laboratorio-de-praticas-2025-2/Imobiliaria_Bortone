@@ -1,3 +1,4 @@
+"use client";
 // Utilitário para construção unificada de URLs de imagens no CMS
 // Este arquivo centraliza toda a lógica de construção de URLs de imagens
 
