@@ -6,13 +6,16 @@ import { useSearchParams } from "next/navigation";
 
 function RequestFormContent() {
   const searchParams = useSearchParams();
-  const [parcelas, setParcelas] = useState(20);
+  const [parcelas, setParcelas] = useState(60);
   const [valorEntrada, setValorEntrada] = useState('');
   const [valorImovel, setValorImovel] = useState('');
   const [resultado, setResultado] = useState(null);
   const [carregando, setCarregando] = useState(false);
 
   const { propertyType, modalidade } = useContext(SimulacaoContext);
+  
+  // Define o range máximo de parcelas baseado no tipo de imóvel
+  const maxParcelas = 420;
   // Função para formatar valor em moeda brasileira
   const formatCurrency = (valor) => {
     if (!valor) return '';
@@ -57,7 +60,7 @@ function RequestFormContent() {
     const valorFromURL = searchParams.get('valor');
     
     if (valorFromURL) {
-      const valorNumerico = parseInt(valorFromURL, 10);
+      const valorNumerico = parseFloat(valorFromURL.replace(/[^\d]/g, ''));
       
       if (!isNaN(valorNumerico) && valorNumerico > 0) {
         setValorImovel(valorNumerico.toString());
@@ -69,7 +72,7 @@ function RequestFormContent() {
   }, [searchParams]);
 
   const handleInputChange = (e) => {
-    const value = Math.max(1, Math.min(32, Number(e.target.value))); 
+    const value = Math.max(1, Math.min(maxParcelas, Number(e.target.value))); 
     setParcelas(value || 1); 
   };
 
@@ -138,9 +141,9 @@ function RequestFormContent() {
             <Input
               type="number"
               min={1}
-              max={32}
+              max={maxParcelas}
               value={parcelas}
-              readOnly
+              onChange={handleInputChange}
               className="rounded-lg mt-1 h-12 text-center shadow-md"
             />
           </div>
@@ -161,7 +164,8 @@ function RequestFormContent() {
             >
               <Slider
                 min={1}
-                max={32}
+                max={maxParcelas}
+                step={1}
                 value={parcelas}
                 onChange={(value) => setParcelas(value)}
               />
@@ -185,8 +189,8 @@ function RequestFormContent() {
             </Button>
           </div>
           {resultado && (
-            <div className="mt-4 p-4 bg-gray-50 rounded-lg border">
-              <h3 className="font-bold text-[var(--primary)] mb-2">Resultado da Simulação:</h3>
+            <div className="mt-4 p-4 bg-gray-50 rounded-lg border w-3xs">
+              <h3 className="font-bold text-[var(--primary)] mb-3 text-center">Resultado da Simulação:</h3>
                 <div className="space-y-2">
                   <p className="text-sm">
                     <strong>Valor Financiado:</strong> 
@@ -194,27 +198,42 @@ function RequestFormContent() {
                       {formatCurrency(resultado.valorFinanciado)}
                     </span>
                   </p>
-                  <p className="text-sm">
-                    <strong>Valor da Parcela:</strong> 
-                    <span className="text-[var(--primary)] font-bold ml-2">
-                      {formatCurrency(resultado.parcelaComJuros || resultado.primeiraParcela)}
-                    </span>
-                  </p>
-                  <p className=" text-[var(--primary)]text-sm">
-                    <strong>Total a Pagar:</strong> 
-                    <span className="text-[var(--primary)] font-bold ml-2">
-                      {formatCurrency(resultado.totalComJuros || resultado.totalPago)}
-                    </span>
-                  </p>
-                  {resultado.primeiraParcela && resultado.ultimaParcela && (
-                    <div className="mt-3 pt-2 border-t">
-                      <p className="text-xs text-gray-600">
-                        <strong>Primeira Parcela:</strong> {formatCurrency(resultado.primeiraParcela)}
+                  {modalidade === 'sac' ? (
+                    <>
+                      <p className="text-sm">
+                        <strong>Primeira Parcela:</strong> 
+                        <span className="text-[var(--primary)] font-bold ml-2">
+                          {formatCurrency(resultado.primeiraParcela)}
+                        </span>
                       </p>
-                      <p className="text-xs text-gray-600">
-                        <strong>Última Parcela:</strong> {formatCurrency(resultado.ultimaParcela)}
+                      <p className="text-sm">
+                        <strong>Última Parcela:</strong> 
+                        <span className="text-[var(--primary)] font-bold ml-2">
+                          {formatCurrency(resultado.ultimaParcela)}
+                        </span>
                       </p>
-                    </div>
+                      <p className="text-sm">
+                        <strong>Total a Pagar:</strong> 
+                        <span className="text-[var(--primary)] font-bold ml-2">
+                          {formatCurrency(resultado.totalPago)}
+                        </span>
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-sm">
+                        <strong>Valor da Parcela:</strong> 
+                        <span className="text-[var(--primary)] font-bold ml-2">
+                          {formatCurrency(resultado.parcelaComJuros)}
+                        </span>
+                      </p>
+                      <p className="text-sm">
+                        <strong>Total a Pagar:</strong> 
+                        <span className="text-[var(--primary)] font-bold ml-2">
+                          {formatCurrency(resultado.totalComJuros)}
+                        </span>
+                      </p>
+                    </>
                   )}
                 </div>
             </div>
