@@ -27,8 +27,11 @@ function FormContent() {
   const handleClick = () => {
     // Passa o valor atual e o imovelId (se existir) para a próxima página
     const imovelId = searchParams.get('imovelId');
-    const query = new URLSearchParams({ valor: String(value) });
-    if (imovelId) query.set('imovelId', imovelId);
+    const query = new URLSearchParams();
+    query.set('valor', String(value));
+    if (imovelId) {
+      query.set('imovelId', imovelId);
+    }
     window.location.href = `/simulacao/simulador?${query.toString()}`;
   };
 

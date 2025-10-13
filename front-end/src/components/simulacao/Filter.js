@@ -1,7 +1,12 @@
-import { useState, createContext, useContext } from "react";
+import { createContext, useContext } from "react";
 import { Button, Col, Row } from "antd";
 
-export const SimulacaoContext = createContext();
+export const SimulacaoContext = createContext({
+  propertyType: "imovel",
+  setPropertyType: () => {},
+  modalidade: "price",
+  setModalidade: () => {}
+});
 
 export default function Filter() {
   const { propertyType, setPropertyType, modalidade, setModalidade } = useContext(SimulacaoContext);
