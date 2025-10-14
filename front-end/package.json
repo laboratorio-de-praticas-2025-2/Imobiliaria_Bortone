@@ -20,7 +20,7 @@
     "antd-style": "^3.7.1",
     "app-paths": "^0.0.2",
     "axios": "^1.12.2",
-    "chart.js": "^4.5.0",
+    "chart.js": "^4.5.1",
     "dayjs": "^1.11.18",
     "dotenv": "^17.2.1",
     "html2canvas-pro": "^1.5.12",
