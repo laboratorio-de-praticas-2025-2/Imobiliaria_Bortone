@@ -52,7 +52,7 @@
     "eslint-config-next": "15.5.5",
     "form-data": "^4.0.0",
     "multiparty": "^4.2.3",
-    "node-fetch": "^2.7.0",
+    "node-fetch": "^3.3.2",
     "tailwindcss": "^4"
   },
   "overrides": {
