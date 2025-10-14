@@ -4,7 +4,7 @@ export async function POST(request) {
     const body = await request.json();
     console.log('📨 Dados recebidos:', body);
     
-    const response = await fetch('http://localhost:4000/simulador/calcular', {
+    const response = await fetch('https://imobiliaria-bortone.onrender.com/simulador/calcular', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
