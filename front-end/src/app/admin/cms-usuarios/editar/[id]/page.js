@@ -29,8 +29,8 @@ export default function EditarUserPage({ params }) {
         form.setFieldsValue({
           nome: res.data?.nome || "",
           email: res.data?.email || "",
-          telefone: res.data?.telefone || "",
-          nivel: res.data?.nivel || "",
+          celular: res.data?.celular || "",
+          nivel: res.data?.nivel === 0 ? "administrador" : "usuario",
         });
       } catch (err) {
         console.error("Erro ao buscar usuário:", err);
