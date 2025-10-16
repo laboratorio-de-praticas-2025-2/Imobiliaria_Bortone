@@ -7,21 +7,26 @@ import { useSearchParams } from "next/navigation";
 function RequestFormContent() {
   const searchParams = useSearchParams();
   const [parcelas, setParcelas] = useState(60);
+  const [parcelasInput, setParcelasInput] = useState('60');
+  const [parcelasFocused, setParcelasFocused] = useState(false);
   const [valorEntrada, setValorEntrada] = useState('');
   const [valorImovel, setValorImovel] = useState('');
+  const [valorImovelFocused, setValorImovelFocused] = useState(false);
+  const [valorEntradaFocused, setValorEntradaFocused] = useState(false);
   const [resultado, setResultado] = useState(null);
   const [carregando, setCarregando] = useState(false);
 
   const { propertyType, modalidade } = useContext(SimulacaoContext);
   
-  // Define o range máximo de parcelas baseado no tipo de imóvel
+  // Parcelas máximas permitidas
   const maxParcelas = 420;
   // Função para formatar valor em moeda brasileira
   const formatCurrency = (valor) => {
-    if (!valor) return '';
-    const numero = typeof valor === 'string' ? parseFloat(valor.replace(/[^\d]/g, '')) : valor;
+    if (valor === '' || valor === null || typeof valor === 'undefined') return '';
+    const normalized = normalizeToDot(String(valor));
+    const numero = parseFloat(normalized);
     if (isNaN(numero)) return '';
-    
+
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
@@ -30,29 +35,43 @@ function RequestFormContent() {
 
   // Função para formatar valor sem símbolo de moeda (apenas com pontos e vírgulas)
   const formatNumber = (valor) => {
-    if (!valor) return '';
-    const numero = typeof valor === 'string' ? parseFloat(valor.replace(/[^\d]/g, '')) : valor;
+    if (valor === '' || valor === null || typeof valor === 'undefined') return '';
+    const normalized = normalizeToDot(String(valor));
+    const numero = parseFloat(normalized);
     if (isNaN(numero)) return '';
-    
+
     return new Intl.NumberFormat('pt-BR').format(numero);
   };
-
-  // Função para remover formatação e retornar apenas números
-  const unformatCurrency = (valorFormatado) => {
-    if (!valorFormatado) return '';
-    return valorFormatado.replace(/[^\d]/g, '');
+  const normalizeToDot = (input) => {
+    if (!input && input !== 0) return '';
+    let s = String(input).trim();
+    if (s === '') return '';
+    s = s.replace(/[^0-9.,-]/g, '');
+    const hasComma = s.indexOf(',') !== -1;
+    const hasDot = s.indexOf('.') !== -1;
+    if (hasComma && hasDot) {
+      s = s.replace(/\./g, '');
+      s = s.replace(/,/g, '.');
+    } else if (hasComma) {
+      s = s.replace(/,/g, '.');
+    }
+    const parts = s.split('.');
+    if (parts.length > 2) {
+      s = parts.shift() + '.' + parts.join('');
+    }
+    return s;
   };
 
   // Função para lidar com mudança no valor do imóvel
   const handleValorImovelChange = (e) => {
-    const valor = unformatCurrency(e.target.value);
-    setValorImovel(valor);
+    const raw = String(e.target.value).replace(/[^0-9,\.\-]/g, '');
+    setValorImovel(raw);
   };
 
   // Função para lidar com mudança no valor de entrada
   const handleValorEntradaChange = (e) => {
-    const valor = unformatCurrency(e.target.value);
-    setValorEntrada(valor);
+    const raw = String(e.target.value).replace(/[^0-9,\.\-]/g, '');
+    setValorEntrada(raw);
   };
 
   // Captura o valor do query parameter quando o componente monta
@@ -60,20 +79,36 @@ function RequestFormContent() {
     const valorFromURL = searchParams.get('valor');
     
     if (valorFromURL) {
-      const valorNumerico = parseFloat(valorFromURL.replace(/[^\d]/g, ''));
-      
+      const normalized = normalizeToDot(valorFromURL);
+      const valorNumerico = parseFloat(normalized);
+
       if (!isNaN(valorNumerico) && valorNumerico > 0) {
-        setValorImovel(valorNumerico.toString());
+        setValorImovel(String(valorNumerico));
         // Define automaticamente 20% do valor como entrada sugerida
         const entradaSugerida = Math.round(valorNumerico * 0.2);
-        setValorEntrada(entradaSugerida.toString());
+        setValorEntrada(String(entradaSugerida));
       }
     }
   }, [searchParams]);
 
-  const handleInputChange = (e) => {
-    const value = Math.max(1, Math.min(maxParcelas, Number(e.target.value))); 
-    setParcelas(value || 1); 
+  // função para lidar com mudança no input de parcelas
+  const handleParcelasInputChange = (e) => {
+    setParcelasInput(e.target.value);
+  };
+
+  // função para lidar com perda de foco no input
+  const handleParcelasBlur = () => {
+    const raw = (parcelasInput || '').toString().trim();
+    if (raw === '') {
+      setParcelas(1);
+      setParcelasInput('1');
+    } else {
+      const num = Number(raw);
+      const clamped = Math.max(1, Math.min(maxParcelas, isNaN(num) ? 1 : num));
+      setParcelas(clamped);
+      setParcelasInput(String(clamped));
+    }
+    setParcelasFocused(false);
   };
 
   const handleSimular = async () => {
@@ -86,8 +121,8 @@ function RequestFormContent() {
 
     const dados = {
       tipo: propertyType, 
-      valorImovel: Number(valorImovel),
-      entrada: Number(valorEntrada),
+      valorImovel: Number(normalizeToDot(valorImovel)),
+      entrada: Number(normalizeToDot(valorEntrada)),
       parcelas: Number(parcelas),
       modalidade: modalidade 
     };
@@ -118,8 +153,12 @@ function RequestFormContent() {
                 type="text"
               placeholder="Digite aqui o valor"
               className="rounded-lg mt-1 h-12 text-center shadow-md"
-                value={formatCurrency(valorImovel)} 
+                value={valorImovelFocused ? valorImovel : formatCurrency(valorImovel)} 
                 onChange={handleValorImovelChange}
+                onFocus={() => setValorImovelFocused(true)}
+                onBlur={() => setValorImovelFocused(false)}
+                inputMode="numeric"
+                pattern="[0-9]*"
             />
           </div>
           <div className="w-3xs">
@@ -130,8 +169,12 @@ function RequestFormContent() {
                 type="text"
               placeholder="Digite aqui o valor"
               className="rounded-lg mt-1 h-12 text-center shadow-md"
-                value={formatCurrency(valorEntrada)} 
+                value={valorEntradaFocused ? valorEntrada : formatCurrency(valorEntrada)} 
                 onChange={handleValorEntradaChange}
+                onFocus={() => setValorEntradaFocused(true)}
+                onBlur={() => setValorEntradaFocused(false)}
+                inputMode="numeric"
+                pattern="[0-9]*"
             />
           </div>
           <div className="w-2xs">
@@ -142,8 +185,10 @@ function RequestFormContent() {
               type="number"
               min={1}
               max={maxParcelas}
-              value={parcelas}
-              onChange={handleInputChange}
+              value={parcelasInput}
+              onChange={handleParcelasInputChange}
+              onFocus={() => setParcelasFocused(true)}
+              onBlur={handleParcelasBlur}
               className="rounded-lg mt-1 h-12 text-center shadow-md"
             />
           </div>
@@ -167,7 +212,10 @@ function RequestFormContent() {
                 max={maxParcelas}
                 step={1}
                 value={parcelas}
-                onChange={(value) => setParcelas(value)}
+                onChange={(value) => {
+                  setParcelas(value);
+                  setParcelasInput(String(value));
+                }}
               />
             </ConfigProvider>
           </div>

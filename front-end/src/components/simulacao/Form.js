@@ -6,6 +6,8 @@ import { useSearchParams } from "next/navigation";
 function FormContent() {
   const searchParams = useSearchParams();
   const [value, setValue] = useState(100000);
+  const [valueInput, setValueInput] = useState(String(100000));
+  const [valueFocused, setValueFocused] = useState(false);
 
   // Captura o valor do query parameter quando o componente monta
   useEffect(() => {
@@ -43,6 +45,27 @@ function FormContent() {
     }).format(valor);
   };
 
+  
+  // Função que permite digitar no input
+  const handleValueInputChange = (e) => {
+    const raw = String(e.target.value).replace(/[^0-9]/g, '');
+    setValueInput(raw);
+  };
+
+  const handleValueInputBlur = () => {
+    const raw = (valueInput || '').toString().trim();
+    if (raw === '') {
+      setValue(20000);
+      setValueInput(String(20000));
+    } else {
+      const num = Number(raw);
+      const clamped = Math.min(Math.max(isNaN(num) ? 20000 : Math.round(num), 20000), 1000000);
+      setValue(clamped);
+      setValueInput(String(clamped));
+    }
+    setValueFocused(false);
+  };
+
   return (
     <div className=" justify-self-center lg:pb-10">
       <div className=" md:w-110 lg:h-85 bg-white p-7 md:p-10 rounded-3xl  relative z-20 text-center">
@@ -63,8 +86,12 @@ function FormContent() {
         <div className="mb-4 pt-2 w-3xs justify-self-center">
           <Input
             type="text"
-            value={formatCurrency(value)}
-            readOnly
+            value={valueFocused ? valueInput : formatCurrency(Number(valueInput))}
+            onChange={handleValueInputChange}
+            onFocus={() => setValueFocused(true)}
+            onBlur={handleValueInputBlur}
+            inputMode="numeric"
+            pattern="[0-9]*"
             className="w-[35%] border border-gray-200 rounded px-3 py-2 focus:outline-none text-left h-12"
           />
         </div>
@@ -89,7 +116,10 @@ function FormContent() {
               max={1000000}
               step={1}
               value={value}
-              onChange={(newValue) => setValue(newValue)}
+              onChange={(newValue) => {
+                setValue(newValue);
+                setValueInput(String(newValue));
+              }}
             />
           </ConfigProvider>
           <div className="flex  w-full">

@@ -3,8 +3,8 @@ export async function POST(request) {
     console.log('🔄 API Route: Recebendo requisição...');
     const body = await request.json();
     console.log('📨 Dados recebidos:', body);
-    
-    const response = await fetch('http://localhost:4000/simulador/calcular', {
+    const api_url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
+    const response = await fetch(`${api_url}/simulador/calcular`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
