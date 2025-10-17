@@ -1,6 +1,5 @@
 "use client";
 import { Pagination } from "antd";
-import { useEffect } from "react";
 
 export default function TableFooter({
   postsData, // Pra compatibilidade com paginação client-side 
@@ -15,11 +14,8 @@ export default function TableFooter({
     if (onPageChange) onPageChange(page);
   };
 
-  useEffect(() => {
-    if (onPageChange) {
-      onPageChange(1);
-    }
-  }, [total]);
+  // Removido o useEffect que resetava a página quando o total mudava
+  // pois isso estava causando conflitos com a navegação de páginas
 
   const calculateRange = () => {
     if (!total || total === 0) return { start: 0, end: 0 };

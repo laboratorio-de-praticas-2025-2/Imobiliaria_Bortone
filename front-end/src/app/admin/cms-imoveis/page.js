@@ -319,6 +319,7 @@ export default function CmsUserPage() {
   ];
 
   const onSearch = (value) => {
+    setCurrentPage(1); // Reset para página 1 ao buscar
     setFilterData((prev) => ({
       ...prev,
       searchTerm: value || null,
@@ -326,6 +327,7 @@ export default function CmsUserPage() {
     }));
   };
   const handleSelectOrder = (value) => {
+    setCurrentPage(1); // Reset para página 1 ao mudar ordenação
     setFilterData((prev) => ({
       ...prev,
       order: value === "Ordenar por" ? null : value,
@@ -339,6 +341,7 @@ export default function CmsUserPage() {
   };
 
   const handleAdvancedSearch = (filters) => {
+    setCurrentPage(1); // Reset para página 1 ao fazer busca avançada
     setFilterData((prev) => ({
       ...prev,
       ...filters,
