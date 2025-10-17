@@ -1,0 +1,1676 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>🗺️ Sistema de Geocodificação e Autocomplete - Imobiliaria Bortone - Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sistema-de-geocodificacao-e-autocomplete" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Imobiliaria Bortone - Documentação" class="md-header__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imobiliaria Bortone - Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              🗺️ Sistema de Geocodificação e Autocomplete
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Imobiliaria Bortone - Documentação" class="md-nav__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    Imobiliaria Bortone - Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RegrasGerais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EstruturaDePastas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estrutura de Pastas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Frontend
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Frontend
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/NextConfig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/middlwareIndexacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Middleware
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/ManualdeTags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual de Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/NETLIFY_SETUP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Setup Netlify
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/Documentacao_Contatos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contatos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Imagens
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Imagens
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MIGRATION_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ⭐ Migração Cloudinary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CloudinaryArchitecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🏗️ Arquitetura Cloudinary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/imagens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Imagens
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AnaliseArquiteturaImagens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise de Problemas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ProblemasImagensVercel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Problemas Vercel (Histórico)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    APIs Core
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            APIs Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/AlgoritmoDeRecomendacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/BancoDeDados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dashboard
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Agendamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agendamento de Visitação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/AgendamentoSMTP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidade do envio de e-mail
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Mapa
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Mapa
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaAPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaImplementacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Implementação da API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaResumo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resumo da Integração
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Chat
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Chat
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/ChatSuporte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chat Suporte
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WebSocket-Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Rodar o WebSocket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UserLevels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Níveis de Usuário
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ChatSystemBugFixes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relatório de Correção de Bugs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Visão Geral
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#componentes-criados" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ Componentes Criados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🛠️ Componentes Criados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Hooks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usegeocoding-hooksusegeocodingjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      useGeocoding (/hooks/useGeocoding.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useviacep-hooksuseviacepjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      useViaCEP (/hooks/useViaCEP.js)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-componentes-de-formulario" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Componentes de Formulário
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Componentes de Formulário">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cityautocomplete-componentscmsformfieldscityautocompletejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      CityAutocomplete (/components/cms/form/fields/CityAutocomplete.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cepfield-componentscmsformfieldscepfieldjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      CEPField (/components/cms/form/fields/CEPField.js)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-componente-de-mapa-atualizado" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Componente de Mapa Atualizado
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Componente de Mapa Atualizado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mappick-componentscmsformfieldsmappickjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      MapPick (/components/cms/form/fields/MapPick.js)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Implementações
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Implementações">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-formulario-de-cadastro-de-imoveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Formulário de Cadastro de Imóveis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-formulario-de-agendamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Formulário de Agendamento
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apis-utilizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      🌐 APIs Utilizadas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🌐 APIs Utilizadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-openstreetmap-nominatim" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. OpenStreetMap Nominatim
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-viacep" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. ViaCEP
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilitarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Utilitários
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Utilitários">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#statemappingjs-atualizado" class="md-nav__link">
+    <span class="md-ellipsis">
+      stateMapping.js (atualizado)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-testar" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Como Testar
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Como Testar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testando-cep" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testando CEP:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testando-clique-no-mapa" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testando Clique no Mapa:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testando-autocomplete-de-cidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testando Autocomplete de Cidade:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consideracoes-importantes" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚠️ Considerações Importantes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚠️ Considerações Importantes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#limites-de-taxa" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limites de Taxa
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debouncing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debouncing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tratamento-de-erros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tratamento de Erros
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#melhorias-futuras" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Melhorias Futuras
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      🐛 Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐛 Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problema-erro-ao-buscar-localizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problema: "Erro ao buscar localização"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problema-cep-nao-encontrado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problema: CEP não encontrado
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problema-autocomplete-nao-mostra-resultados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problema: Autocomplete não mostra resultados
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Referências
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sistema-de-geocodificacao-e-autocomplete">🗺️ Sistema de Geocodificação e Autocomplete</h1>
+<h2 id="visao-geral">📋 Visão Geral</h2>
+<p>Este documento descreve o sistema de geocodificação implementado no projeto Imobiliária Bortone, que permite preencher automaticamente informações de município/cidade a partir de:</p>
+<ol>
+<li><strong>CEP digitado</strong> (ViaCEP)</li>
+<li><strong>Clique no mapa</strong> (Nominatim - OpenStreetMap)</li>
+<li><strong>Busca por nome de cidade</strong> (Nominatim - OpenStreetMap)</li>
+</ol>
+<h2 id="componentes-criados">🛠️ Componentes Criados</h2>
+<h3 id="1-hooks">1. <strong>Hooks</strong></h3>
+<h4 id="usegeocoding-hooksusegeocodingjs"><code>useGeocoding</code> (<code>/hooks/useGeocoding.js</code>)</h4>
+<p>Hook para geocodificação usando OpenStreetMap Nominatim API.</p>
+<p><strong>Funcionalidades:</strong>
+- ✅ Geocodificação reversa: converte coordenadas (lat/lng) em endereço
+- ✅ Busca de locais por texto
+- ✅ Busca específica de cidades brasileiras</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useGeocoding</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/hooks/useGeocoding&#39;</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">reverseGeocode</span><span class="p">,</span><span class="w"> </span><span class="nx">searchCity</span><span class="p">,</span><span class="w"> </span><span class="nx">loading</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useGeocoding</span><span class="p">();</span>
+
+<span class="c1">// Geocodificação reversa</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">locationData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">reverseGeocode</span><span class="p">(</span><span class="o">-</span><span class="mf">23.5505</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mf">46.6333</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">locationData</span><span class="p">.</span><span class="nx">cidade</span><span class="p">);</span><span class="w"> </span><span class="c1">// &quot;São Paulo&quot;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">locationData</span><span class="p">.</span><span class="nx">estado</span><span class="p">);</span><span class="w"> </span><span class="c1">// &quot;São Paulo&quot;</span>
+
+<span class="c1">// Buscar cidades</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">cities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">searchCity</span><span class="p">(</span><span class="s2">&quot;São Paulo&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;SP&quot;</span><span class="p">);</span>
+</code></pre></div></p>
+<h4 id="useviacep-hooksuseviacepjs"><code>useViaCEP</code> (<code>/hooks/useViaCEP.js</code>)</h4>
+<p>Hook para buscar endereços por CEP usando ViaCEP API (gratuita, brasileira).</p>
+<p><strong>Funcionalidades:</strong>
+- ✅ Buscar endereço completo por CEP
+- ✅ Buscar CEP por endereço (reverso)
+- ✅ Formatação automática de CEP</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useViaCEP</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/hooks/useViaCEP&#39;</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">buscarCEP</span><span class="p">,</span><span class="w"> </span><span class="nx">formatarCEP</span><span class="p">,</span><span class="w"> </span><span class="nx">loading</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useViaCEP</span><span class="p">();</span>
+
+<span class="c1">// Buscar por CEP</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">buscarCEP</span><span class="p">(</span><span class="s2">&quot;01310-100&quot;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">address</span><span class="p">.</span><span class="nx">cidade</span><span class="p">);</span><span class="w"> </span><span class="c1">// &quot;São Paulo&quot;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">address</span><span class="p">.</span><span class="nx">estado</span><span class="p">);</span><span class="w"> </span><span class="c1">// &quot;SP&quot;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">address</span><span class="p">.</span><span class="nx">rua</span><span class="p">);</span><span class="w"> </span><span class="c1">// &quot;Avenida Paulista&quot;</span>
+</code></pre></div></p>
+<h3 id="2-componentes-de-formulario">2. <strong>Componentes de Formulário</strong></h3>
+<h4 id="cityautocomplete-componentscmsformfieldscityautocompletejs"><code>CityAutocomplete</code> (<code>/components/cms/form/fields/CityAutocomplete.js</code>)</h4>
+<p>Campo de autocomplete inteligente para cidades brasileiras.</p>
+<p><strong>Props:</strong>
+- <code>value</code>: Valor inicial
+- <code>onChange</code>: Callback quando o valor muda
+- <code>onSelect</code>: Callback quando uma cidade é selecionada
+- <code>placeholder</code>: Texto placeholder
+- <code>state</code>: Sigla do estado para filtrar (opcional)
+- <code>disabled</code>: Desabilitar campo
+- <code>style</code>: Estilos customizados</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">CityAutocomplete</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/components/cms/form/fields/CityAutocomplete&#39;</span><span class="p">;</span>
+
+<span class="o">&lt;</span><span class="nx">Form</span><span class="p">.</span><span class="nx">Item</span><span class="w"> </span><span class="nx">name</span><span class="o">=</span><span class="s2">&quot;cidade_estado&quot;</span><span class="w"> </span><span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Cidade/Estado&quot;</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="nx">CityAutocomplete</span>
+<span class="w">    </span><span class="nx">placeholder</span><span class="o">=</span><span class="s2">&quot;Digite o nome da cidade&quot;</span>
+<span class="w">    </span><span class="nx">onSelect</span><span class="o">=</span><span class="p">{(</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">option</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Selecionado:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="p">);</span>
+<span class="w">      </span><span class="c1">// value: &quot;São Paulo, SP&quot;</span>
+<span class="w">      </span><span class="c1">// option: { cidade, estado, latitude, longitude }</span>
+<span class="w">    </span><span class="p">}}</span>
+<span class="w">  </span><span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="err">/Form.Item&gt;</span>
+</code></pre></div></p>
+<h4 id="cepfield-componentscmsformfieldscepfieldjs"><code>CEPField</code> (<code>/components/cms/form/fields/CEPField.js</code>)</h4>
+<p>Campo de CEP com busca automática de endereço.</p>
+<p><strong>Props:</strong>
+- <code>value</code>: Valor inicial do CEP
+- <code>onChange</code>: Callback quando o CEP muda
+- <code>onAddressFound</code>: Callback quando o endereço é encontrado
+- <code>disabled</code>: Desabilitar campo
+- <code>style</code>: Estilos customizados</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">CEPField</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/components/cms/form/fields/CEPField&#39;</span><span class="p">;</span>
+
+<span class="o">&lt;</span><span class="nx">Form</span><span class="p">.</span><span class="nx">Item</span><span class="w"> </span><span class="nx">name</span><span class="o">=</span><span class="s2">&quot;cep&quot;</span><span class="w"> </span><span class="nx">label</span><span class="o">=</span><span class="s2">&quot;CEP&quot;</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="nx">CEPField</span><span class="w"> </span>
+<span class="w">    </span><span class="nx">onAddressFound</span><span class="o">=</span><span class="p">{(</span><span class="nx">addressData</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// Preencher outros campos automaticamente</span>
+<span class="w">      </span><span class="nx">form</span><span class="p">.</span><span class="nx">setFieldsValue</span><span class="p">({</span>
+<span class="w">        </span><span class="nx">cidade</span><span class="o">:</span><span class="w"> </span><span class="nx">addressData</span><span class="p">.</span><span class="nx">cidade</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">estado</span><span class="o">:</span><span class="w"> </span><span class="nx">addressData</span><span class="p">.</span><span class="nx">estado</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">endereco</span><span class="o">:</span><span class="w"> </span><span class="nx">addressData</span><span class="p">.</span><span class="nx">rua</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">bairro</span><span class="o">:</span><span class="w"> </span><span class="nx">addressData</span><span class="p">.</span><span class="nx">bairro</span>
+<span class="w">      </span><span class="p">});</span>
+<span class="w">    </span><span class="p">}}</span>
+<span class="w">  </span><span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="err">/Form.Item&gt;</span>
+</code></pre></div></p>
+<h3 id="3-componente-de-mapa-atualizado">3. <strong>Componente de Mapa Atualizado</strong></h3>
+<h4 id="mappick-componentscmsformfieldsmappickjs"><code>MapPick</code> (<code>/components/cms/form/fields/MapPick.js</code>)</h4>
+<p>Componente de mapa com geocodificação reversa ao clicar.</p>
+<p><strong>Nova funcionalidade:</strong>
+- Ao clicar no mapa, busca automaticamente a cidade e estado daquelas coordenadas
+- Exibe notificação com a localização encontrada
+- Retorna dados via callback</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">MapPick</span><span class="w"> </span>
+<span class="w">  </span><span class="nx">form</span><span class="o">=</span><span class="p">{</span><span class="nx">form</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">onCityStateFound</span><span class="o">=</span><span class="p">{(</span><span class="nx">locationData</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Preencher campos automaticamente</span>
+<span class="w">    </span><span class="nx">setCidade</span><span class="p">(</span><span class="nx">locationData</span><span class="p">.</span><span class="nx">cidade</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">setEstado</span><span class="p">(</span><span class="nx">locationData</span><span class="p">.</span><span class="nx">estado</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}}</span>
+<span class="err">/&gt;</span>
+</code></pre></div></p>
+<h2 id="implementacoes">🎯 Implementações</h2>
+<h3 id="1-formulario-de-cadastro-de-imoveis">1. <strong>Formulário de Cadastro de Imóveis</strong></h3>
+<p><strong>Arquivo:</strong> <code>/app/admin/cms-imoveis/criar/page.js</code></p>
+<p><strong>Funcionalidades implementadas:</strong>
+- ✅ Campo de CEP com preenchimento automático de cidade, estado e rua
+- ✅ Clique no mapa preenche automaticamente cidade e estado
+- ✅ Notificações visuais quando os campos são preenchidos</p>
+<p><strong>Fluxo:</strong>
+1. Usuário digita o CEP → campos preenchidos automaticamente
+2. Usuário clica no mapa → cidade e estado preenchidos
+3. Campos podem ser editados manualmente se necessário</p>
+<h3 id="2-formulario-de-agendamento">2. <strong>Formulário de Agendamento</strong></h3>
+<p><strong>Arquivo:</strong> <code>/app/agendamento/[id]/page.js</code></p>
+<p><strong>Funcionalidades implementadas:</strong>
+- ✅ Autocomplete de cidade com busca inteligente
+- ✅ Busca em tempo real conforme o usuário digita
+- ✅ Debounce de 500ms para evitar requisições excessivas</p>
+<p><strong>Experiência do usuário:</strong>
+1. Usuário começa a digitar o nome da cidade
+2. Após 3 caracteres, sugestões aparecem
+3. Usuário seleciona a cidade desejada
+4. Campo preenchido no formato "Cidade, Estado"</p>
+<h2 id="apis-utilizadas">🌐 APIs Utilizadas</h2>
+<h3 id="1-openstreetmap-nominatim">1. <strong>OpenStreetMap Nominatim</strong></h3>
+<ul>
+<li><strong>URL:</strong> <code>https://nominatim.openstreetmap.org</code></li>
+<li><strong>Tipo:</strong> Gratuita</li>
+<li><strong>Limite:</strong> 1 requisição por segundo</li>
+<li><strong>Uso:</strong> Geocodificação reversa e busca de cidades</li>
+</ul>
+<p><strong>Importante:</strong> Requer header <code>User-Agent</code> customizado (configurado como <code>ImobiliariaBortone/1.0</code>)</p>
+<h3 id="2-viacep">2. <strong>ViaCEP</strong></h3>
+<ul>
+<li><strong>URL:</strong> <code>https://viacep.com.br</code></li>
+<li><strong>Tipo:</strong> Gratuita, sem limites</li>
+<li><strong>Uso:</strong> Busca de endereços por CEP brasileiro</li>
+</ul>
+<p><strong>Formato do CEP:</strong> Aceita com ou sem hífen (<code>12345-678</code> ou <code>12345678</code>)</p>
+<h2 id="utilitarios">🔧 Utilitários</h2>
+<h3 id="statemappingjs-atualizado"><code>stateMapping.js</code> (atualizado)</h3>
+<p>Adicionadas funções para converter entre nome completo e sigla de estados:</p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">getStateName</span><span class="p">,</span><span class="w"> </span><span class="nx">getStateAbbr</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/utils/stateMapping&#39;</span><span class="p">;</span>
+
+<span class="nx">getStateName</span><span class="p">(</span><span class="s1">&#39;SP&#39;</span><span class="p">);</span><span class="w"> </span><span class="c1">// &quot;São Paulo&quot;</span>
+<span class="nx">getStateAbbr</span><span class="p">(</span><span class="s1">&#39;São Paulo&#39;</span><span class="p">);</span><span class="w"> </span><span class="c1">// &quot;SP&quot;</span>
+</code></pre></div>
+<h2 id="como-testar">🚀 Como Testar</h2>
+<h3 id="testando-cep">Testando CEP:</h3>
+<ol>
+<li>Vá para <code>/admin/cms-imoveis/criar</code></li>
+<li>Digite um CEP válido (ex: <code>11900-000</code>)</li>
+<li>Observe os campos cidade, estado e endereço sendo preenchidos</li>
+</ol>
+<h3 id="testando-clique-no-mapa">Testando Clique no Mapa:</h3>
+<ol>
+<li>Vá para <code>/admin/cms-imoveis/criar</code></li>
+<li>Clique em qualquer ponto do mapa</li>
+<li>Observe a notificação com cidade/estado</li>
+<li>Verifique que os dropdowns foram atualizados</li>
+</ol>
+<h3 id="testando-autocomplete-de-cidade">Testando Autocomplete de Cidade:</h3>
+<ol>
+<li>Vá para <code>/agendamento/[id]</code> (escolha um imóvel)</li>
+<li>No campo "Cidade/Estado", digite "são"</li>
+<li>Veja as sugestões aparecerem</li>
+<li>Selecione uma cidade</li>
+</ol>
+<h2 id="consideracoes-importantes">⚠️ Considerações Importantes</h2>
+<h3 id="limites-de-taxa">Limites de Taxa</h3>
+<ul>
+<li><strong>Nominatim:</strong> Máximo 1 requisição por segundo</li>
+<li><strong>ViaCEP:</strong> Sem limites, mas use com moderação</li>
+</ul>
+<h3 id="debouncing">Debouncing</h3>
+<p>O autocomplete de cidades possui debounce de 500ms para:
+- Reduzir número de requisições
+- Melhorar performance
+- Respeitar limites da API</p>
+<h3 id="tratamento-de-erros">Tratamento de Erros</h3>
+<p>Todos os hooks possuem tratamento de erros:
+- Mensagens de erro são logadas no console
+- Estados de loading são gerenciados
+- Feedback visual ao usuário em caso de falha</p>
+<h2 id="melhorias-futuras">📝 Melhorias Futuras</h2>
+<ol>
+<li><strong>Cache de resultados</strong>: Armazenar cidades já buscadas</li>
+<li><strong>Geolocalização</strong>: Detectar localização do usuário automaticamente</li>
+<li><strong>Mapbox</strong>: Considerar Mapbox para geocodificação mais precisa</li>
+<li><strong>Histórico</strong>: Salvar cidades recentemente buscadas</li>
+<li><strong>Validação</strong>: Adicionar validação de coordenadas</li>
+</ol>
+<h2 id="troubleshooting">🐛 Troubleshooting</h2>
+<h3 id="problema-erro-ao-buscar-localizacao">Problema: "Erro ao buscar localização"</h3>
+<ul>
+<li><strong>Causa:</strong> Limite de taxa do Nominatim excedido</li>
+<li><strong>Solução:</strong> Aguardar 1 segundo antes de nova requisição</li>
+</ul>
+<h3 id="problema-cep-nao-encontrado">Problema: CEP não encontrado</h3>
+<ul>
+<li><strong>Causa:</strong> CEP inválido ou não existe</li>
+<li><strong>Solução:</strong> Verificar se o CEP está correto (8 dígitos)</li>
+</ul>
+<h3 id="problema-autocomplete-nao-mostra-resultados">Problema: Autocomplete não mostra resultados</h3>
+<ul>
+<li><strong>Causa:</strong> Texto muito curto (&lt; 3 caracteres)</li>
+<li><strong>Solução:</strong> Digite pelo menos 3 caracteres</li>
+</ul>
+<h2 id="referencias">📚 Referências</h2>
+<ul>
+<li><a href="https://nominatim.org/release-docs/latest/api/Overview/">Nominatim API Docs</a></li>
+<li><a href="https://viacep.com.br/">ViaCEP Docs</a></li>
+<li><a href="https://operations.osmfoundation.org/policies/nominatim/">OpenStreetMap Usage Policy</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
