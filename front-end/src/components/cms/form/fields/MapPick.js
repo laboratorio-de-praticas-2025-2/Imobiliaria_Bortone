@@ -5,6 +5,8 @@ import { MapContainer, TileLayer, useMapEvents, Marker, useMap } from "react-lea
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import LocationButton from "@/components/mapa/LocationButton";
+import { useGeocoding } from "@/hooks/useGeocoding";
+import { message } from "antd";
 
 /* Corrige ícone padrão do Leaflet (usa CDN para evitar problemas em Next.js) */
 let DefaultIcon;
@@ -55,9 +57,9 @@ function ZoomButtons() {
 }
 
 /* Captura clique no mapa, seta form e retorna posição para o pai */
-function ClickHandler({ form, onSetPos }) {
+function ClickHandler({ form, onSetPos, onLocationFound }) {
   const map = useMapEvents({
-    click(e) {
+    async click(e) {
       const lat = Number(e.latlng.lat.toFixed(6));
       const lng = Number(e.latlng.lng.toFixed(6));
 
@@ -71,6 +73,11 @@ function ClickHandler({ form, onSetPos }) {
       map.setView([lat, lng], map.getZoom(), { animate: true });
 
       if (onSetPos) onSetPos([lat, lng]);
+      
+      // Chamar geocodificação reversa
+      if (onLocationFound) {
+        onLocationFound(lat, lng);
+      }
     },
   });
   return null;
@@ -90,9 +97,45 @@ function MapUpdater({ center }) {
 }
 
 
-export default function MapPick({ form, initialCenter = [-24.4886, -47.8442], initialZoom = 12 }) {
+export default function MapPick({ 
+  form, 
+  initialCenter = [-24.4886, -47.8442], 
+  initialZoom = 12,
+  onCityStateFound // Callback para retornar cidade e estado encontrados
+}) {
   const [pos, setPos] = useState(null);
   const [mapCenter, setMapCenter] = useState(initialCenter);
+  const { reverseGeocode, loading } = useGeocoding();
+
+  // Função para buscar cidade/estado a partir das coordenadas
+  const handleLocationFound = async (lat, lng) => {
+    try {
+      const locationData = await reverseGeocode(lat, lng);
+      
+      if (locationData && locationData.cidade && locationData.estado) {
+        console.log("📍 Local encontrado:", locationData);
+        
+        // Notificar o usuário
+        message.success(`Local: ${locationData.cidade} - ${locationData.estado}`);
+        
+        // Callback para o componente pai
+        if (onCityStateFound) {
+          onCityStateFound({
+            cidade: locationData.cidade,
+            estado: locationData.estado,
+            bairro: locationData.bairro,
+            rua: locationData.rua,
+            endereco_completo: locationData.endereco_completo
+          });
+        }
+      } else {
+        message.warning("Não foi possível identificar a cidade neste local");
+      }
+    } catch (error) {
+      console.error("Erro na geocodificação reversa:", error);
+      message.error("Erro ao buscar localização");
+    }
+  };
 
   // se o form já tiver valores de latitude/longitude, inicializa o marcador
   useEffect(() => {
@@ -145,6 +188,11 @@ export default function MapPick({ form, initialCenter = [-24.4886, -47.8442], in
 
   return (
     <div className="h-full w-full relative">
+      {loading && (
+        <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-50 bg-white px-4 py-2 rounded shadow-lg">
+          Buscando localização...
+        </div>
+      )}
       <MapContainer
         center={mapCenter}
         zoom={initialZoom}
@@ -158,7 +206,7 @@ export default function MapPick({ form, initialCenter = [-24.4886, -47.8442], in
           attribution="&copy; OpenStreetMap contributors"
         />
 
-        <ClickHandler form={form} onSetPos={setPos} />
+        <ClickHandler form={form} onSetPos={setPos} onLocationFound={handleLocationFound} />
         <MapUpdater center={pos} />
 
         {pos && <Marker position={pos} />}

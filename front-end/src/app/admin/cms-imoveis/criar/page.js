@@ -17,9 +17,11 @@ import { useRouter } from "next/navigation";
 import { uploadImovelImage } from "@/services/netlifyUploadService";
 
 import { apiClient } from "@/utils/apiClient";
-import { statesMap } from "@/utils/stateMapping";
+import { statesMap, getStateName } from "@/utils/stateMapping";
 import { useFormSubmit } from "@/hooks/useAsyncOperation";
 import { useAuth } from "@/hooks/useAuth";
+import CEPField from "@/components/cms/form/fields/CEPField";
+import CityAutocomplete from "@/components/cms/form/fields/CityAutocomplete";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
   ssr: false,
@@ -191,6 +193,49 @@ export default function CriarImovelPage() {
   const [selectedParking, setSelectedParking] = useState("Quantidade");
   const [selectedBedrooms, setSelectedBedrooms] = useState("Quantidade");
   const [selectedBathrooms, setSelectedBathrooms] = useState("Quantidade");
+  
+  // Handler para quando o CEP é encontrado
+  const handleCEPFound = (addressData) => {
+    if (addressData) {
+      console.log("📮 CEP encontrado:", addressData);
+      
+      // Preencher campos automaticamente
+      if (addressData.cidade) {
+        setCitiesSelecionado(addressData.cidade);
+      }
+      
+      if (addressData.estado) {
+        const estadoCompleto = getStateName(addressData.estado);
+        setSelectedState(estadoCompleto);
+      }
+      
+      if (addressData.rua) {
+        form.setFieldsValue({ endereco: addressData.rua });
+      }
+    }
+  };
+
+  // Handler para quando a localização do mapa é encontrada
+  const handleMapLocationFound = (locationData) => {
+    if (locationData) {
+      console.log("🗺️ Localização do mapa encontrada:", locationData);
+      
+      if (locationData.cidade) {
+        setCitiesSelecionado(locationData.cidade);
+      }
+      
+      if (locationData.estado) {
+        // Buscar o nome completo do estado
+        const estadoCompleto = getStateName(locationData.estado);
+        setSelectedState(estadoCompleto);
+      }
+      
+      if (locationData.rua && !form.getFieldValue('endereco')) {
+        form.setFieldsValue({ endereco: locationData.rua });
+      }
+    }
+  };
+
   const states = [
     "Acre",
     "Alagoas",
@@ -345,6 +390,18 @@ export default function CriarImovelPage() {
                 />
               </div>
               <div className="sm:w-[30%] flex flex-col gap-6 items-start ">
+                <div className=" flex flex-row gap-2 !w-full">
+                  <FormAntd.Item
+                    name="cep"
+                    label={"CEP"}
+                    className={`custom-form-item !w-full`}
+                    labelCol={{ span: 24 }}
+                  >
+                    <CEPField 
+                      onAddressFound={handleCEPFound}
+                    />
+                  </FormAntd.Item>
+                </div>
                 <div className=" flex flex-row gap-2 !w-full">
                   <FormAntd.Item
                     label={"Cidade"}
@@ -590,7 +647,10 @@ export default function CriarImovelPage() {
                   }`}
                 >
                   {/* passa a instância do form para o MapPick */}
-                  <MapPick form={form} />
+                  <MapPick 
+                    form={form} 
+                    onCityStateFound={handleMapLocationFound}
+                  />
                 </div>
 
                 <FormButton text="Cadastrar" icon={<LuHousePlus />} disabled={isLoading} />

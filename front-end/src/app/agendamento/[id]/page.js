@@ -7,6 +7,7 @@ import TextField from "@/components/cms/form/fields/TextField";
 import PhoneField from "@/components/cms/form/fields/PhoneField";
 import FormButton from "@/components/cms/form/fields/Button";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
+import CityAutocomplete from "@/components/cms/form/fields/CityAutocomplete";
 import { useEffect, useState } from "react";
 import { buildImageUrl } from "@/utils/imageUtils";
 import { useParams, useRouter } from "next/navigation";
@@ -319,12 +320,19 @@ export default function Agendamento() {
                     />
                   </div>
 
-                  <TextField
+                  <Form.Item
                     name="cidade_estado"
                     label="Cidade/Estado"
-                    placeholder="São Paulo/SP"
-                    className="!w-[100%]"
-                  />
+                    className="!w-full"
+                  >
+                    <CityAutocomplete
+                      placeholder="Digite o nome da cidade (ex: São Paulo)"
+                      onSelect={(value, option) => {
+                        console.log("Cidade selecionada:", value, option);
+                        form.setFieldsValue({ cidade_estado: value });
+                      }}
+                    />
+                  </Form.Item>
 
                   <TextAreaField
                     name="comentario"
