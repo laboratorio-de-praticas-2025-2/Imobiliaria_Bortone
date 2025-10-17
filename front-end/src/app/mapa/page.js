@@ -5,8 +5,6 @@ import OrderButton from "@/components/mapa/OrderButton";
 import SidebarMenu from "@/components/mapa/SidebarMenu/SidebarMenu";
 import SplashScreen from "@/components/SplashScreen";
 import { FiltersProvider } from "@/context/FiltersContext";
-import { mockImoveis } from "@/mock/imoveis";
-import { getImoveis } from "@/services/imoveisService";
 import { Input } from "antd";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
@@ -43,7 +41,6 @@ export default function Mapa() {
         return;
       }
       
-      console.log("Carregando imóveis iniciais...");
       const response = await fetch(`${apiUrl}/mapa/busca`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -51,11 +48,9 @@ export default function Mapa() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Imóveis carregados:", data);
         if (data.success && data.data) {
           setImoveisCarrossel(data.data);
           setImoveisMapa(data.data);
-          console.log(`${data.data.length} imóveis carregados inicialmente`);
         } else {
           console.warn("API retornou sucesso mas sem dados");
         }
@@ -68,7 +63,6 @@ export default function Mapa() {
   };
 
   const onSearch = async (value) => {
-    console.log("Buscando imóveis para:", value);
     const endereco = {
       endereco: value,
     };
@@ -82,7 +76,6 @@ export default function Mapa() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         if (data) {
           // Atualize os estados com os dados retornados da API
           setImoveisCarrossel(data.propriedades.carrossel || []);
@@ -143,6 +136,7 @@ export default function Mapa() {
           imoveis={imoveisMapa || []}
           hoverImovel={hoverImovel}
           setHoverImovel={setHoverImovel}
+          alwaysShowCard={false}   // <--- adicionar
         />
       </div>
     </FiltersProvider>

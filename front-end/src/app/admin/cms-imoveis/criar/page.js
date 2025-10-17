@@ -15,8 +15,10 @@ import { LuHousePlus } from "react-icons/lu";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { uploadImovelImage } from "@/services/netlifyUploadService";
-import { useFormSubmit } from "@/hooks/useAsyncOperation";
+
 import { apiClient } from "@/utils/apiClient";
+import { statesMap } from "@/utils/stateMapping";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
 import { useAuth } from "@/hooks/useAuth";
 
 const MapPick = dynamic(() => import("@/components/cms/form/fields/MapPick"), {
@@ -31,8 +33,9 @@ export default function CriarImovelPage() {
   const { user } = useAuth();
 
   const onFinish = async (values) => {
-    if (isLoading) return;
-    setIsLoading(true);
+
+    
+  setIsLoading(true);
     try {
       // Validações básicas
       if (tipoSelecionado === "Tipo") {
@@ -61,9 +64,9 @@ export default function CriarImovelPage() {
         tipo: tipoSelecionado.toLowerCase(),
         status: statusSelecionado.toLowerCase(),
         cidade: citiesSelecionado,
-        estado: selectedState,
+        estado: statesMap[selectedState],
         endereco: values.endereco,
-        mostrar_preco: values.mostrar_preco === "sim" ? true : false,
+        visibilidade_preco: values.mostrar_preco === "sim" ? 1 : 0,
         area: values.area,
         preco: values.preco,
         descricao: values.descricao,
@@ -72,7 +75,9 @@ export default function CriarImovelPage() {
         longitude: values.longitude,
       };
 
-      console.log(tipoSelecionado)
+
+      // console.log(tipoSelecionado)
+
 
       let specificData = {};
 
@@ -109,7 +114,6 @@ export default function CriarImovelPage() {
         ...(tipoSelecionado.toLowerCase() === "terreno" ? specificData : {}),
       };
       
-      console.log("Dados sendo enviados para API:", finalData);
       
       const response = await apiClient.post('/imoveis', finalData);
       
@@ -117,7 +121,9 @@ export default function CriarImovelPage() {
       if (response.status === 201) {
         const imovelId = response.data.id;
 
-        console.log("Arquivos selecionados:", fileList);
+
+        // console.log("Arquivos selecionados:", fileList);
+
 
         for (const file of fileList) {
           try {
@@ -140,7 +146,7 @@ export default function CriarImovelPage() {
             );
           } catch (uploadError) {
             console.error("Erro no upload da imagem:", uploadError);
-            throw uploadError; // Re-throw para ser capturado no catch principal
+            throw uploadError;  //Re-throw para ser capturado no catch principal
           }
         }
         
@@ -151,8 +157,10 @@ export default function CriarImovelPage() {
       console.error("Erro ao cadastrar imóvel:", error);
       alert("Erro ao cadastrar imóvel. Tente novamente.");
     } finally {
-      setIsLoading(false);
-    }
+      
+    setIsLoading(false); 
+  }
+
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -212,8 +220,9 @@ export default function CriarImovelPage() {
     "Sergipe",
     "Tocantins",
   ];
+
   const options = ["Casa", "Terreno"];
-  const status = ["Disponivel", "Indisponivel", "Vendido", "Alugado"];
+  const status = ["Disponivel", "Indisponivel", "Vendido", "Locado"];
   const cities = [
     "Apiaí",
     "Barra do Chapéu",
@@ -583,7 +592,9 @@ export default function CriarImovelPage() {
                   {/* passa a instância do form para o MapPick */}
                   <MapPick form={form} />
                 </div>
-                <FormButton text="Cadastrar" icon={<LuHousePlus />} loading={isLoading} />
+
+                <FormButton text="Cadastrar" icon={<LuHousePlus />} disabled={isLoading} />
+
               </div>
             </div>
           </Form.FormBody>

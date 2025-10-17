@@ -1,21 +1,12 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import ImovelCard from "./ImovelCard";
 import Link from "next/link";
-import { Button, Spin } from "antd";
+import GridImoveisFooter from "./GridImoveisFooter";
 
-export default function GridImoveis({ imoveis, loading, onLoadMore, hasMore }) {
+export default function GridImoveis({ imoveis, pagination, onPageChange }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
   const [windowWidth, setWindowWidth] = useState(0);
-  const observer = useRef();
-  const lastImovelElementRef = useCallback(node => {
-    if (loading) return;
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        onLoadMore();
-      }
-    });
-    if (node) observer.current.observe(node);
-  }, [loading, hasMore, onLoadMore]);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -24,28 +15,47 @@ export default function GridImoveis({ imoveis, loading, onLoadMore, hasMore }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (!imoveis.length && !loading) {
-    return (
-      <div className="w-full text-center py-20">
-        <div className="text-xl text-gray-500 mb-4">
-          Nenhum imóvel encontrado
-        </div>
-        <div className="text-gray-400">
-          Tente ajustar os filtros de pesquisa
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (windowWidth < 640) setItemsPerPage(4);
+    else if (windowWidth < 768) setItemsPerPage(6);
+    else if (windowWidth < 1024) setItemsPerPage(9);
+    else setItemsPerPage(12);
+
+    setCurrentPage(1);
+  }, [windowWidth]);
+
+  // Determine if using server-side pagination
+  const isServerPaginated = !!pagination;
+
+  const effectivePage = isServerPaginated ? pagination.currentPage : currentPage;
+  const totalPages = isServerPaginated
+    ? pagination.totalPages
+    : Math.ceil(imoveis.length / itemsPerPage);
+
+  const startIndex = (effectivePage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = isServerPaginated ? imoveis : imoveis.slice(startIndex, endIndex);
+
+  const handlePrev = () => {
+    const newPage = Math.max(effectivePage - 1, 1);
+    isServerPaginated ? onPageChange?.(newPage) : setCurrentPage(newPage);
+  };
+
+  const handleNext = () => {
+    const newPage = Math.min(effectivePage + 1, totalPages);
+    isServerPaginated ? onPageChange?.(newPage) : setCurrentPage(newPage);
+  };
+
+  const showMoreMobile = () => {
+    setItemsPerPage((prev) => Math.min(prev + 4, imoveis.length));
+  };
 
   return (
     <div className="w-full">
       {/* Grid */}
       <div className="grid gap-6 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {imoveis.map((imovel, index) => (
-          <div
-            key={`${imovel.id}-${index}`}
-            ref={index === imoveis.length - 1 ? lastImovelElementRef : null}
-          >
+        {currentItems.map((imovel, index) => (
+          <div key={`${imovel.id}-${index}`}>
             <Link href="/imoveis/[id]" as={`/imoveis/${imovel.id}`}>
               <ImovelCard imovel={imovel} />
             </Link>
@@ -53,34 +63,22 @@ export default function GridImoveis({ imoveis, loading, onLoadMore, hasMore }) {
         ))}
       </div>
 
-      {/* Loading spinner */}
-      {loading && (
-        <div className="w-full text-center py-8">
-          <Spin size="large" />
-          <div className="mt-4 text-gray-500">Carregando mais imóveis...</div>
-        </div>
-      )}
+      {/* Footer */}
+      <GridImoveisFooter
+        currentPage={effectivePage}
+        totalPages={totalPages}
+        handlePrev={handlePrev}
+        handleNext={handleNext}
+        windowWidth={windowWidth}
+        showMoreMobile={
+          !isServerPaginated &&
+          windowWidth < 640 &&
+          currentItems.length < imoveis.length
+            ? showMoreMobile
+            : null
+        }
+      />
 
-      {/* Load more button for fallback */}
-      {!loading && hasMore && windowWidth < 640 && (
-        <div className="w-full text-center py-8">
-          <Button 
-            type="primary" 
-            size="large"
-            onClick={onLoadMore}
-            className="bg-[var(--primary)] hover:bg-[var(--primary-dark)]"
-          >
-            Carregar mais imóveis
-          </Button>
-        </div>
-      )}
-
-      {/* End message */}
-      {!loading && !hasMore && imoveis.length > 0 && (
-        <div className="w-full text-center py-8 text-gray-500">
-          Todos os imóveis foram carregados
-        </div>
-      )}
     </div>
   );
 }

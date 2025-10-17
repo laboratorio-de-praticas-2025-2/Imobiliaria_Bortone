@@ -29,6 +29,7 @@ import imagemImovelRoutes from "./routes/imagemImovelRoutes.js";
 import dashboardRouter from "./routes/dashboardRoutes.js";
 import bannerRoutes from './routes/bannerRoutes.js';
 import publicidadeRoutes from "./routes/publicidadeRoutes.js";
+import simuladorRoutes from "./routes/simuladorRoutes.js";
 
 const app = express();
 
@@ -39,7 +40,14 @@ const __dirname = path.dirname(__filename);
 const server = createServer(app);
 
 // Inicializar SocketManager
-const socketManager = new SocketManager(server);
+const socketManager = new SocketManager();
+
+socketManager.io.engine.on("connection_error", (err) => {
+  console.log("🚨 Socket connection error:", err.req?.url || 'URL não disponível');
+  console.log("🚨 Socket error code:", err.code);
+  console.log("🚨 Socket error message:", err.message);
+  console.log("🚨 Socket error context:", err.context);
+});
 
 // Tornar socketManager disponível globalmente
 app.set('socketManager', socketManager);
@@ -60,7 +68,7 @@ app.use("/publicidade", publicidadeRoutes);
 app.use('/', recomendacaoRouter);
 app.use("/api/socket", socketRoutes);
 app.use('/banner', bannerRoutes);
-app.use('/user', userRoutes );
+app.use('/user', userRoutes);
 app.use("/search", searchRouter);
 app.use("/agendamentos", agendamentoRouter);
 app.use("/health", healthRouter);
@@ -72,6 +80,7 @@ app.use("/publicacoes", blogRoutes);
 app.use('/imoveis', imoveisRouter);
 app.use('/imagemImovel', imagemImovelRoutes);
 app.use('/publicidade', publicidadeRoutes);
+app.use('/simulador', simuladorRoutes);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));

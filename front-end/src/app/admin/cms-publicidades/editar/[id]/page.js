@@ -36,7 +36,6 @@ export default function EditarPublicidadePage() {
       if (response.status === 200) {
         setPublicidade(response.data);
         setFileList([]);
-        console.log('Publicidade carregada:', response.data);
         
         // Preencher o formulário com os dados carregados
         form.setFieldsValue({
@@ -46,7 +45,6 @@ export default function EditarPublicidadePage() {
       }
       setLoading(false);
     } catch {
-      console.log("Erro ao carregar publicidade");
       setLoading(false);
     }
   }, [id, form]);
@@ -66,16 +64,9 @@ export default function EditarPublicidadePage() {
     await submitForm(
       formValues,
       async (validatedValues) => {
-        console.log('=== FRONT-END DEBUG ===');
-        console.log('fileList:', fileList);
-        console.log('fileList.length:', fileList.length);
         if (fileList.length > 0) {
-          console.log('fileList[0]:', fileList[0]);
-          console.log('fileList[0].originFileObj:', fileList[0].originFileObj);
+          console.log('Arquivo selecionado para upload:', fileList[0]);
         }
-        console.log('validatedValues:', validatedValues);
-        console.log('publicidade:', publicidade);
-        console.log('=======================');
         
         let url_imagem = publicidade.url_imagem; // Manter imagem atual
 
@@ -88,11 +79,9 @@ export default function EditarPublicidadePage() {
             publicidade.usuario_id.toString(),
             publicidade.ativo
           );
-          console.log('Nova imagem uploaded:', url_imagem);
         } else {
           console.log('Nenhum arquivo novo selecionado, mantendo imagem atual');
         }
-
         // Enviar dados para o backend sem arquivo
         const publicidadeData = {
           titulo: validatedValues.titulo,
@@ -102,7 +91,6 @@ export default function EditarPublicidadePage() {
           url_imagem
         };
 
-        console.log('Enviando dados para backend:', publicidadeData);
 
         const response = await apiClient.put(`/publicidade/${id}`, publicidadeData);
         
@@ -124,7 +112,7 @@ export default function EditarPublicidadePage() {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Edit Failed:", errorInfo);
+    // console.log("Edit Failed:", errorInfo); --- IGNORE ---
   };
 
   if (loading) return <SplashScreen />;

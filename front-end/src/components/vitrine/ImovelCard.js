@@ -2,7 +2,7 @@ import ImageCarroussel from "./ImageCarroussel";
 
 export default function ImovelCard({ imovel }) {
   const preco =
-    imovel.preco === null || imovel.preco === undefined
+      imovel.visibilidade_preco === 0 || imovel.visibilidade_preco === false
       ? "Valor Oculto"
       : Number(imovel.preco).toLocaleString("pt-BR", {
           style: "currency",

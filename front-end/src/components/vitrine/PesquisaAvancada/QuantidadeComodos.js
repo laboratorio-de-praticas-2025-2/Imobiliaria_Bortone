@@ -2,6 +2,8 @@ import { Flex } from "antd";
 import QuantidadeBotao from "./QuantidadeBotao";
 
 export default function QuantidadeComodos({title, setSelected, selected, quantity}) {
+    console.log(`QuantidadeComodos ${title} - selected:`, selected);
+    
     return (
       <div className="w-full slider-preco-container">
         <Flex vertical gap={16}>

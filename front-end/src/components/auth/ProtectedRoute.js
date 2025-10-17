@@ -30,7 +30,6 @@ export default function ProtectedRoute({
         const userInfoString = localStorage.getItem("userInfo");
 
         if (!authToken || !userInfoString) {
-          console.log("❌ ProtectedRoute: Token ou userInfo não encontrados");
           const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
           router.push(`${redirectTo}?redirect=${encodeURIComponent(currentPath)}`);
           return;
@@ -38,21 +37,16 @@ export default function ProtectedRoute({
 
         // Verificar informações do usuário
         const userInfo = JSON.parse(userInfoString);
-        console.log("🔍 ProtectedRoute: Verificando usuário:", userInfo);
-        console.log("🔍 ProtectedRoute: userInfo.nivel:", userInfo.nivel, "tipo:", typeof userInfo.nivel);
 
         // Verificar nível de acesso
         const userLevel = parseInt(userInfo.nivel ?? 1);
-        console.log("🔍 ProtectedRoute: userLevel após parseInt:", userLevel, "requiredLevel:", requiredLevel);
         
         if (userLevel > requiredLevel) {
-          console.log(`❌ ProtectedRoute: Nível insuficiente. Usuário: ${userLevel}, Necessário: ${requiredLevel}`);
           alert(accessDeniedMessage);
           router.push("/");
           return;
         }
 
-        console.log(`✅ ProtectedRoute: Usuário autorizado. Nível: ${userLevel}`);
         setIsAuthorized(true);
       } catch (error) {
         console.error("❌ ProtectedRoute: Erro ao verificar autenticação:", error);

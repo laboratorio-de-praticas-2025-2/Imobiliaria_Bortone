@@ -27,16 +27,35 @@
 /* O card */
 .hover-card {
   position: absolute;
+  left: 50%;
+  top: 0;
   transform: translate(-50%, -100%);
   background-color: #fff;
-  padding: 12px;
+  padding: clamp(8px, 2vw, 12px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
+  z-index: 10000;
   pointer-events: none;
-  width: 290px;
-  height: 230px;
-  border-radius: 1cap;
+  width: clamp(160px, 40vw, 290px);   /* encolhe até 160px, cresce até 290px */
+  height: clamp(120px, 30vh, 230px);  /* encolhe até 120px, cresce até 230px */
+  border-radius: 8px;
+  overflow: hidden;
 }
+/* extra para telas com escala alta / DPR alto (ex.: 150% do Windows) */
+@media (min-resolution: 1.5dppx), (min-device-pixel-ratio: 1.5) {
+  .hover-card {
+    width: min(86vw, 230px);
+    height: auto;
+    max-width: 230px;
+  }
+}
+@media (min-resolution: 1.2dppx), (min-device-pixel-ratio: 1.2) {
+  .hover-card {
+    width: min(86vw, 230px);
+    height: auto;
+    max-width: 230px;
+  }
+}
+
 
 .card-text {
   font-size: 14;
@@ -228,7 +247,7 @@
 
 .button-text {
   font-family: "Glacial Indifference";
-  font-size: 1.2rem;
+  font-size: 12px;
   font-weight: 700;
 }
 .menu-label {
@@ -371,19 +390,19 @@
 }
 
 /* Estilo para clusters pequenos */
-.marker-cluster-small {
+.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
   background-color: #304383 !important;
   border-radius: 50%;
   box-shadow: 0 0 8px rgba(48, 67, 131, 0.4);
   transition: transform 0.2s ease;
 }
 
-.marker-cluster-small:hover {
+.marker-cluster-small:hover, .marker-cluster-medium:hover, .marker-cluster-large:hover {
   transform: scale(1.1);
 }
 
 /* Estilo interno do número */
-.marker-cluster-small div {
+.marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
   background-color: #304383 !important;
   color: #fff !important;
   font-weight: 600;

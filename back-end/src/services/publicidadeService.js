@@ -69,8 +69,7 @@ class PublicidadeService {
 
   async getAllPublicidades(params) {
     try {
-      console.log('=== SERVICE DEBUG ===');
-      console.log('Parâmetros recebidos:', params);
+
 
       const optionsPublicidade = {};
 
@@ -80,7 +79,6 @@ class PublicidadeService {
             [PublicidadeModel.sequelize.Sequelize.Op.like]: `%${params.titulo}%`
           }
         };
-        console.log('Filtro por título aplicado:', params.titulo);
       }
 
       if (params && params.usuario_id) {
@@ -88,23 +86,18 @@ class PublicidadeService {
           optionsPublicidade.where = {};
         }
         optionsPublicidade.where.usuario_id = params.usuario_id;
-        console.log('Filtro por usuário aplicado:', params.usuario_id);
       }
 
       if (params && params.ordenarPor) {
         const ordemPublicidade = params.direcao === "DESC" ? "DESC" : "ASC";
-        console.log('Ordenação solicitada:', params.ordenarPor, 'direção:', ordemPublicidade);
 
         if (params.ordenarPor === "data") {
           optionsPublicidade.order = [["id", ordemPublicidade]];
-          console.log('Aplicando ordenação por ID (data)');
         } else if (params.ordenarPor === "alfabetica") {
           optionsPublicidade.order = [["titulo", ordemPublicidade]];
-          console.log('Aplicando ordenação alfabética por título');
         }
       } else {
         optionsPublicidade.order = [["id", "DESC"]];
-        console.log('Aplicando ordenação padrão (ID DESC)');
       }
 
       const page = parseInt(params?.page) || 1;

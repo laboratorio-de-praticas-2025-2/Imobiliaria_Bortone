@@ -26,7 +26,6 @@ export default function PesquisaAvancadaMobile() {
       ...(selectedType === "Terreno" && { area }),
     };
 
-    console.log("Filtros enviados:", filtros);
     // Aqui você pode fazer a requisição com os filtros
   };
 

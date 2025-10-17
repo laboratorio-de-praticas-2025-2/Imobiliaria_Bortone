@@ -71,6 +71,11 @@ const Imovel = connection.define(
       type: Sequelize.DATE,
       allowNull: true,
     },
+    visibilidade_preco: {
+      type: Sequelize.TINYINT(1),
+      allowNull: false,
+      defaultValue: 1,
+    },
   },
   {
     tableName: "imoveis",

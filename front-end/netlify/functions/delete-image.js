@@ -51,18 +51,13 @@ exports.handler = async (event, context) => {
     const finalFolder = imageType ? folderMap[imageType] || folder : folder;
     const filePath = path.join(process.cwd(), 'public', 'images', finalFolder, fileName);
     
-    console.log('🗑️ Tentando deletar arquivo:', {
-      fileName,
-      folder: finalFolder,
-      filePath
-    });
+    
     
     // Verificar se arquivo existe e deletar
     try {
       await fs.access(filePath);
       await fs.unlink(filePath);
       
-      console.log('✅ Arquivo deletado com sucesso:', fileName);
       
       return {
         statusCode: 200,

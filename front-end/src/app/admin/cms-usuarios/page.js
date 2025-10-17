@@ -172,11 +172,9 @@ export default function Page() {
   };
   const handleSelectOrder = (value) => {
     setFilterData((prev) => ({ ...prev, order: value }));
-    console.log("Selected order:", value);
   };
   const updateFilterData = (newData) => {
     setFilterData((prev) => ({ ...prev, ...newData }));
-    console.log("Update filter data:", newData);
   };
 
   return (

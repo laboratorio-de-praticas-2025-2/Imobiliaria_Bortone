@@ -14,7 +14,6 @@ export async function GET(request) {
       return new NextResponse('URL inválida', { status: 400 });
     }
 
-    console.log('🔄 Proxy Image Request:', imageUrl);
 
     // Fazer fetch da imagem original
     const response = await fetch(imageUrl, {

@@ -2,13 +2,10 @@ import publicidadeService from "../services/publicidadeService.js";
 
 export const createPublicidade = async (req, res) => {
   try {
-    console.log('=== BACK-END DEBUG ===');
-    console.log('req.body:', req.body);
-    console.log('======================');
+
     
     const { titulo, conteudo, usuario_id, ativo, url_imagem } = req.body;
     
-    console.log('url_imagem recebida:', url_imagem);
 
     // Converter strings para tipos corretos
     const usuarioIdNumber = parseInt(usuario_id, 10);
@@ -40,8 +37,6 @@ export const createPublicidade = async (req, res) => {
 export const getAllPublicidades = async (req, res) => {
   try {
     const { titulo, usuario_id, ordenarPor, direcao, page, limit } = req.query;
-
-    console.log('Query params recebidos:', { titulo, usuario_id, ordenarPor, direcao, page, limit });
 
     const resultado = await publicidadeService.getAllPublicidades({
       titulo,
@@ -82,10 +77,7 @@ export const getPublicidadeById = async (req, res) => {
 
 export const updatePublicidade = async (req, res) => {
   try {
-    console.log('=== UPDATE DEBUG ===');
-    console.log('req.body:', req.body);
-    console.log('req.params:', req.params);
-    console.log('===================');
+
     
     const { id } = req.params;
     const { titulo, conteudo, usuario_id, ativo, url_imagem } = req.body;
@@ -124,7 +116,6 @@ export const updatePublicidade = async (req, res) => {
       updateData.url_imagem = url_imagem;
     }
     
-    console.log('updateData:', updateData);
     
     const publicidadeAtualizada = await publicidadeService.updatePublicidade(Number(id), updateData);
 

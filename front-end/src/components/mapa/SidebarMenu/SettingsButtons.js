@@ -14,7 +14,6 @@ export default function SettingsButtons({
     try {
       // Obter filtros do contexto
       const filters = getFiltersForApi(type);
-      console.log("Filtros aplicados:", filters);
       
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       
@@ -29,7 +28,6 @@ export default function SettingsButtons({
       // Processar cada filtro adequadamente
       if (filters && typeof filters === 'object') {
         Object.entries(filters).forEach(([key, value]) => {
-          console.log(`Processando filtro ${key}:`, value);
           
           // Tratamento especial para arrays (preco, area, localizacao)
           if (Array.isArray(value)) {
@@ -38,18 +36,15 @@ export default function SettingsButtons({
               if (typeof value[0] === 'number' && typeof value[1] === 'number') {
                 queryParams.append('precoMin', value[0]);
                 queryParams.append('precoMax', value[1]);
-                console.log(`Filtro de preço aplicado: ${value[0]} - ${value[1]}`);
               }
             } else if (key === 'area' && value.length === 2) {
               if (typeof value[0] === 'number' && typeof value[1] === 'number') {
                 if (value[0] >= 0) queryParams.append('areaMin', value[0]);
                 if (value[1] > 0) queryParams.append('areaMax', value[1]);
-                console.log(`Filtro de área aplicado: ${value[0]} - ${value[1]}`);
               }
             } else if (key === 'localizacao' && value.length > 0) {
               // Para localização (array de cidades), envia todas as cidades selecionadas
               queryParams.append('cidades', value.join(','));
-              console.log(`Filtro de cidades aplicado: ${value.join(', ')}`);
             }
           } 
           // Tratamento para valores não-nulos, não-undefined e não-vazios
@@ -73,7 +68,6 @@ export default function SettingsButtons({
         });
       }
       
-      console.log("Query params:", queryParams.toString());
       
       const response = await fetch(`${apiUrl}/mapa/busca?${queryParams.toString()}`, {
         method: "GET",
@@ -87,15 +81,11 @@ export default function SettingsButtons({
       }
 
       const data = await response.json();
-      console.log("Dados filtrados:", data);
       
       if (data.success && data.data) {
         // Atualiza a lista de imóveis com os dados retornados do backend
-        console.log(`Atualizando imóveis com ${data.data.length} resultados:`, data.data.map(i => ({ id: i.id, tipo: i.tipo, cidade: i.cidade })));
-        console.log('Cidades encontradas nos resultados:', [...new Set(data.data.map(i => i.cidade))]);
         setImoveisMapa(data.data);
         setImoveisCarrossel(data.data);
-        console.log(`${data.data.length} imóveis encontrados com os filtros aplicados`);
       } else {
         console.warn("Nenhum imóvel encontrado com os filtros aplicados");
         // Limpa a lista se não houver resultados
@@ -134,7 +124,6 @@ export default function SettingsButtons({
               if (data.success && data.data) {
                 setImoveisMapa(data.data);
                 setImoveisCarrossel(data.data);
-                console.log("Filtros removidos, carregados todos os imóveis");
               }
             }
           } catch (error) {
