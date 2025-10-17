@@ -6,7 +6,6 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import axios from "axios";
 import { PiWarningCircleBold } from "react-icons/pi";
-import { apiClient } from "@/utils/apiClient";
 
 export default function CmsPublicidadePage() {
   const [publicidades, setPublicidades] = useState([]);
@@ -92,6 +91,7 @@ export default function CmsPublicidadePage() {
       setIsLoading(false);
     }
   }, [filterData.order, currentPage, pagination.itemsPerPage]);
+
   // Função para deletar uma publicidade específica
   const deletePublicidade = useCallback(async (id) => {
     try {
@@ -234,37 +234,6 @@ export default function CmsPublicidadePage() {
     setCurrentPage(newPage);
   };
 
-  // Alterna o status 'ativo' da publicidade (0/1 ou boolean)
-  const handleTogglePublicidade = async (id) => {
-    try {
-      const pub = publicidades.find((p) => p.id === id);
-      if (!pub) return;
-
-      const isActive =
-        pub.ativo === 1 ||
-        pub.ativo === "1" ||
-        pub.ativo === true ||
-        pub.ativo === "true";
-      const novoAtivo = !isActive;
-
-      // Atualiza no backend
-      await apiClient.put(`/publicidade/${id}`, { ativo: novoAtivo });
-
-      // Atualiza estado local sem recarregar toda a lista
-      setPublicidades((prev) =>
-        prev.map((p) =>
-          p.id === id ? { ...p, ativo: novoAtivo ? 1 : 0 } : p
-        )
-      );
-      setFilteredPublicidades((prev) =>
-        prev.map((p) =>
-          p.id === id ? { ...p, ativo: novoAtivo ? 1 : 0 } : p
-        )
-      );
-    } catch (error) {
-      console.error("Erro ao alterar status da publicidade:", error);
-    }
-  };
   const getCurrentPageItems = () => {
     // Garantir que filteredPublicidades seja sempre um array
     const publicidades = Array.isArray(filteredPublicidades)
@@ -298,7 +267,7 @@ export default function CmsPublicidadePage() {
               {isLoading ? (
                 <div className="flex justify-center items-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                  "ml-2">Carregando...</span>
+                  <span className="ml-2">Carregando...</span>
                 </div>
               ) : getCurrentPageItems().length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-center">
@@ -308,9 +277,8 @@ export default function CmsPublicidadePage() {
                       item={publicidade}
                       href_cms="publicidades"
                       header={true}
-                      onDelete={loadPublicidades}
-                      // Passa handler com id correto para alternar status
-                      onToggle={() => handleTogglePublicidade(publicidade.id)}
+                      onDelete={() => deletePublicidade(publicidade.id)}
+                      onToggle={() => togglePublicidade(publicidade.id, publicidade.ativo === 1)}
                     />
                   ))}
                 </div>
@@ -323,7 +291,7 @@ export default function CmsPublicidadePage() {
                         className="text-[var(--primary)]"
                       />
                       <div className="flex flex-col gap-2">
-                        "text-4xl font-bold text-[var(--primary)]">
+                        <span className="text-4xl font-bold text-[var(--primary)]">
                           Atenção
                         </span>
                         <p className="max-w-[200px]">
