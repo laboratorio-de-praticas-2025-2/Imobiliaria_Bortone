@@ -34,7 +34,7 @@ const validateField = {
     if (!value) return null;
     const cleanPhone = value.replace(/\D/g, "");
     if (cleanPhone.length < 10 || cleanPhone.length > 11) {
-      return "Telefone deve ter 10 ou 11 dígitos";
+      return "celular deve ter 10 ou 11 dígitos";
     }
     return null;
   },
@@ -129,7 +129,7 @@ export default function Agendamento() {
       form.setFieldsValue({
         nome: user.nome || '',
         email: user.email || '',
-        telefone: user.celular || user.telefone || '',
+        celular: user.celular || user.celular || '',
       });
     }
   }, [user, form]);
@@ -143,7 +143,7 @@ export default function Agendamento() {
       
       const nome = (values?.nome || "").trim();
       const email = (values?.email || "").trim();
-      const telefone = (values?.telefone || "").trim();
+      const celular = (values?.celular || "").trim();
       const cidadeEstado = (values?.cidade_estado || "").trim();
 
 
@@ -163,9 +163,9 @@ export default function Agendamento() {
         return;
       }
 
-      const phoneError = validateField.phone(telefone);
+      const phoneError = validateField.phone(celular);
       if (phoneError) {
-        console.error('❌ Erro no telefone:', phoneError);
+        console.error('❌ Erro no celular:', phoneError);
         message.error(phoneError);
         setSubmitting(false);
         return;
@@ -179,7 +179,7 @@ export default function Agendamento() {
         return;
       }
 
-      const cleanPhone = telefone.replace(/\D/g, "");
+      const cleanPhone = celular.replace(/\D/g, "");
       const appointment = {
         name: nome,
         email: email.toLowerCase(),
@@ -304,8 +304,8 @@ export default function Agendamento() {
 
                   <div className="flex flex-col md:flex-row gap-13">
                     <PhoneField
-                      name="telefone"
-                      label="Telefone"
+                      name="celular"
+                      label="celular"
                       placeholder="(11) 99999-9999"
                       mask={MASKS.phone}
                     />
