@@ -75,6 +75,12 @@
   font-size: 20px !important;
 }
 
+#basic_senha::placeholder {
+  color: #a1a1aa !important;
+  font-weight: 500 !important;
+  font-size: 20px !important;
+}
+
 .required .ant-form-item-required::before {
   display: none !important;
 }

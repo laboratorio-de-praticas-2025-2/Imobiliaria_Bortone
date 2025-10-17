@@ -4,89 +4,55 @@ import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { Spin } from "antd";
 
-// Import dinâmico para evitar problemas de SSR no Vercel
+// Import dinâmico do Doughnut Chart
 const Doughnut = dynamic(
   () => import("react-chartjs-2").then((mod) => mod.Doughnut),
   { ssr: false }
 );
 
-// Import dinâmico do Chart.js para evitar problemas no Vercel
-const ChartJS = dynamic(
-  () => import("chart.js").then((mod) => {
-    const { Chart, ArcElement, Tooltip, Legend } = mod;
-    Chart.register(ArcElement, Tooltip, Legend);
-    return Chart;
-  }),
-  { ssr: false }
-);
+// Registrar os elementos do Chart.js (uma única vez)
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function RentalByRegion({ data, label, options, className, loading }) {
+export default function RentalByRegion({
+  data,
+  label,
+  options,
+  className,
+  loading,
+}) {
   const [chartData, setChartData] = useState(null);
-  const [isReady, setIsReady] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const chartRef = useRef(null);
   const containerRef = useRef(null);
 
-  // Garantir que o componente está montado (importante para Vercel)
+  // Aguarda montagem e define dados válidos
   useEffect(() => {
-    setIsMounted(true);
-    return () => setIsMounted(false);
-  }, []);
+    if (!data || !data.datasets) return;
 
-  // Aguarda o container estar pronto e dados válidos
-  useEffect(() => {
-    if (!isMounted) return;
+    const timer = setTimeout(() => {
+      const hasValidData = data.datasets.some(
+        (d) => Array.isArray(d.data) && d.data.length > 0
+      );
 
-    const checkReadiness = () => {
-      if (containerRef.current && data && data.labels && data.datasets) {
-        const containerRect = containerRef.current.getBoundingClientRect();
-        if (containerRect.width > 0 && containerRect.height > 0) {
-          // Verifica se há dados válidos
-          const hasValidData = data.datasets.some(dataset => 
-            dataset.data && dataset.data.length > 0 && 
-            dataset.data.some(value => value > 0)
-          );
-          
-          if (hasValidData) {
-            setIsReady(true);
-            setChartData(data);
-          }
-        }
+      if (hasValidData) {
+        setChartData(data);
+      } else {
+        // Evita loop infinito mostrando "sem dados"
+        setChartData({
+          labels: ["Sem dados"],
+          datasets: [
+            {
+              data: [1],
+              backgroundColor: ["#E5E5E5"],
+              borderWidth: 0,
+              cutout: "0%",
+            },
+          ],
+        });
       }
-    };
+    }, 300);
 
-    // Aguarda mais tempo no Vercel para garantir hidratação completa
-    const timer = setTimeout(checkReadiness, 500);
-    
-    // Também verifica quando há resize
-    const handleResize = () => {
-      setTimeout(checkReadiness, 100);
-    };
-    
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [data, isMounted]);
-
-  // Reset quando data mudar
-  useEffect(() => {
-    setIsReady(false);
+    return () => clearTimeout(timer);
   }, [data]);
-
-
-  // Dados padrão para evitar erros
-  const safeData = data && data.labels && data.datasets ? data : {
-    labels: ['Sem dados'],
-    datasets: [{
-      data: [1],
-      backgroundColor: ['#E5E5E5'],
-      borderWidth: 0,
-      cutout: "0%",
-    }]
-  };
 
   // Opções seguras para o gráfico
   const safeOptions = {
@@ -94,15 +60,15 @@ export default function RentalByRegion({ data, label, options, className, loadin
     responsive: true,
     maintainAspectRatio: false,
     animation: {
-      duration: isReady ? (options?.animation?.duration || 300) : 0
+      duration: 300,
     },
     plugins: {
       ...options?.plugins,
       legend: {
         ...options?.plugins?.legend,
-        display: data && data.labels && data.labels.length > 0
-      }
-    }
+        display: !!(chartData?.labels?.length > 0),
+      },
+    },
   };
 
   return (
@@ -119,12 +85,13 @@ export default function RentalByRegion({ data, label, options, className, loadin
           <div className="w-fit h-full min-h-[180px] flex items-center justify-center">
             {loading ? (
               <Spin tip="Carregando gráfico..." />
-            ) : isReady ? (
+            ) : chartData ? (
               <Doughnut
-                ref={chartRef}
-                data={safeData}
+                data={chartData}
                 options={safeOptions}
-                key={JSON.stringify(data)}
+                key={JSON.stringify(chartData)}
+                width={250}
+                height={250}
               />
             ) : (
               <div className="flex items-center justify-center h-full">
