@@ -10,22 +10,29 @@ import "swiper/css/navigation";
 
 const BACKEND_BASE_URL = "http://localhost:4000";
 
-// Função helper para construir URL de imagem corretamente
+// 🔥 FUNÇÃO getImageUrl CORRIGIDA - para front-end
 const getImageUrl = (urlImagem) => {
-  if (!urlImagem) return null;
+  if (!urlImagem) return "/images/slide1.png"; // Fallback
+  
+  console.log("🖼️ URL original:", urlImagem);
   
   // Se já é uma URL completa, retorna como está
   if (urlImagem.startsWith("http://") || urlImagem.startsWith("https://")) {
     return urlImagem;
   }
   
-  // Se começa com /, é um caminho absoluto do backend
-  if (urlImagem.startsWith("/")) {
-    return `${BACKEND_BASE_URL}${urlImagem}`;
+  // 🔥 CORREÇÃO: Para imagens no FRONT-END, use caminho relativo
+  // As imagens estão em public/uploads/banners/
+  if (urlImagem.startsWith("/uploads/")) {
+    return urlImagem; // Já está no formato correto para front-end
   }
   
-  // Se não tem /, assume que é apenas o nome do arquivo
-  return `${BACKEND_BASE_URL}/uploads/${urlImagem}`;
+  // Se for apenas o nome do arquivo, construa o caminho correto
+  if (!urlImagem.startsWith("/") && !urlImagem.startsWith("http")) {
+    return `/uploads/banners/${urlImagem}`;
+  }
+  
+  return "/images/slide1.png"; // Fallback padrão
 };
 
 // Slides padrão como fallback
@@ -145,8 +152,12 @@ export default function HeaderSlider() {
                 className="w-full h-auto object-cover"
                 onError={(e) => {
                   console.error("❌ Erro ao carregar imagem:", slide.url);
+                  console.log("🔄 Tentando fallback...");
                   // Fallback para imagem padrão se houver erro
                   e.target.src = "/images/slide1.png";
+                }}
+                onLoad={() => {
+                  console.log("✅ Imagem carregada com sucesso:", slide.url);
                 }}
               />
             </div>

@@ -17,26 +17,32 @@ const normalizeAtivo = (value) => {
   return 0;
 };
 
-// 🔥 FUNÇÃO getImageUrl CORRIGIDA
+// 🔥 FUNÇÃO getImageUrl CORRIGIDA - VERSÃO SIMPLIFICADA
 const getImageUrl = (urlImagem) => {
-  console.log("🖼️ Processando imagem:", urlImagem); // Debug
+  console.log("🖼️ Processando imagem:", urlImagem);
   
   if (!urlImagem || urlImagem === "null" || urlImagem === "undefined") {
-    return "/images/casa.png"; // Imagem padrão
+    return "/images/casa.png";
   }
   
-  // Se já é uma URL completa
+  // 🔥 CORREÇÃO: Para imagens no FRONT-END, use URL relativa
+  // As imagens estão em front-end/public/uploads/banners/
+  // Então a URL deve ser: /uploads/banners/nome-arquivo.jpg
+  if (urlImagem.startsWith("/uploads/")) {
+    return urlImagem; // Já está no formato correto
+  }
+  
+  // Se for apenas o nome do arquivo, construa o caminho
+  if (!urlImagem.startsWith("/") && !urlImagem.startsWith("http")) {
+    return `/uploads/banners/${urlImagem}`;
+  }
+  
+  // Para URLs completas (deixe como está)
   if (urlImagem.startsWith("http://") || urlImagem.startsWith("https://")) {
     return urlImagem;
   }
   
-  // Se começa com /, adiciona base URL
-  if (urlImagem.startsWith("/")) {
-    return `${BACKEND_BASE_URL}${urlImagem}`;
-  }
-  
-  // Se é apenas o nome do arquivo
-  return `${BACKEND_BASE_URL}/uploads/banners/${urlImagem}`;
+  return "/images/casa.png"; // Fallback
 };
 
 export default function CmsBannerPage() {

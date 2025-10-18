@@ -9,6 +9,7 @@ export default function UploadField({
   className,
   fileList,
   setFileList,
+  onFileSelect, // ← NOVA PROP
 }) {
   return (
     <div className={`custom-form-item ${className}`}>
@@ -17,8 +18,11 @@ export default function UploadField({
       </label>
       <Upload
         beforeUpload={(file) => {
-          // Permitir o arquivo ser adicionado à lista, mas não fazer upload automático
-          return false;
+          // CHAMAR A NOVA PROP
+          if (onFileSelect) {
+            onFileSelect(file);
+          }
+          return false; // Não fazer upload automático
         }}
         fileList={fileList}
         onChange={({ fileList }) => {
