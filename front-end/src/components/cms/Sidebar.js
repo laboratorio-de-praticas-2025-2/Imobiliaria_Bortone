@@ -159,18 +159,6 @@ export default function Sidebar() {
               </Link>
             </div>
           </div>
-
-          <div className="flex justify-center">
-            <Link href="/">
-              <Image
-                src="/images/logo.svg"
-                alt="Logo Bortone"
-                width={50}
-                height={50}
-                className="object-contain md:flex hidden"
-              />
-            </Link>
-          </div>
         </div>
       )}
     </>
