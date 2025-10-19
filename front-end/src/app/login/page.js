@@ -12,6 +12,7 @@ export default function LoginPage() {
   useSEO(getSEOConfig('/login'));
 
   const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
   const router = useRouter();
 
   // Capturar parâmetro de redirecionamento
@@ -31,15 +32,12 @@ export default function LoginPage() {
       senha: values.password
     };
 
-
-
       try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/user/login`,
         dados
       );
       message.success(response.data.message || `Login bem-sucedido!`);
-
 
       localStorage.setItem('authToken', response.data.token);
       localStorage.setItem('userInfo', JSON.stringify(response.data.user));
@@ -65,17 +63,33 @@ export default function LoginPage() {
         finalRedirect = '/';
       }
 
-
       setTimeout(() => {
         router.push(finalRedirect);
       }, 1000);
 
     } catch (error) {
       console.error(error);
-      if (error.response && error.response.data && error.response.data.message) {
-        message.error(error.response.data.message);
+      
+      const msg = error?.response?.data?.message?.toLowerCase?.() || '';
+      const status = error?.response?.status;
+      
+      const errorMessage = error?.response?.data?.message || 'Erro ao conectar com o servidor.';
+      
+      if (msg.includes('email') || status === 404 || msg.includes('não encontrado') || msg.includes('not found') || msg.includes('não existe') || msg.includes('não cadastrado')) {
+        form.setFields([
+          { name: 'email', errors: ['Email inválido'] },
+          { name: 'password', errors: [] } 
+        ]);
+      } else if (status === 401 || status === 403 || msg.includes('credencial') || msg.includes('senha') || msg.includes('password') || msg.includes('incorreto')) {
+        form.setFields([
+          { name: 'email', errors: [] },
+          { name: 'password', errors: ['Senha inválida'] }
+        ]);
       } else {
-        message.error("Erro ao conectar com o servidor.");
+        form.setFields([
+          { name: 'email', errors: [] },
+          { name: 'password', errors: [errorMessage] }
+        ]);
       }
     } finally {
       setLoading(false);
@@ -83,6 +97,14 @@ export default function LoginPage() {
   };
 
   const onFinishFailed = (errorInfo) => {
+  };
+
+  // Limpar erros ao tentar novamente
+  const handleSubmit = () => {
+    form.setFields([
+      { name: 'email', errors: [] },
+      { name: 'password', errors: [] }
+    ]);
   };
 
   return (
@@ -94,6 +116,7 @@ export default function LoginPage() {
         </h1>
         <Flex vertical className="login-form-container">
           <Form
+            form={form}
             name="login"
             autoComplete="off"
             onFinish={onFinish}
@@ -118,6 +141,7 @@ export default function LoginPage() {
               >
                 <Input.Password placeholder="Digite sua senha:" />
               </Form.Item>
+
               <Form.Item>
                 <Flex vertical align="center" gap="small">
                   <Button
@@ -125,6 +149,7 @@ export default function LoginPage() {
                     htmlType="submit"
                     className="login-button"
                     loading={loading}
+                    onClick={handleSubmit}
                   >
                     Entrar
                   </Button>
