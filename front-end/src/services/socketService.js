@@ -2,11 +2,14 @@
 const SOCKET_URL =
   process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4001";
 
+
+
 class SocketService {
   constructor() {
     this.socket = null;
     this.isConnected = false;
     this.eventHandlers = new Map();
+    this.shownNotifications = new Set();
   }
 
   async connect(tokenParam = null) {
