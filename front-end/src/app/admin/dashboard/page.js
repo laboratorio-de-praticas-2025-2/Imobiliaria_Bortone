@@ -27,12 +27,12 @@ export default function Dashboard() {
   if (!dados) return <p>Erro ao carregar</p>;
 
   // Dados para o gráfico de setores
-  const data = dados?.vendasRecentes
+  const data = dados?.desempenhoVendas
   ? {
-      labels: dados.vendasRecentes.map((v) => v.tipo),
+      labels: dados.desempenhoVendas.distribuicaoPorTipo.map((v) => v.tipo),
       datasets: [
         {
-          data: dados.vendasRecentes.map((v) => v.quantidade),
+          data: dados.desempenhoVendas.distribuicaoPorTipo.map((v) => v.quantidade),
           backgroundColor: ["#243B7B", "#F39C12", "#E74C3C"],
           borderWidth: 0,
           cutout: "0%",
@@ -86,7 +86,7 @@ export default function Dashboard() {
               <div className="grid grid-rows-5 col-span-2 gap-6">
                 <div className="row-span-2">
                   <PizzaGraph
-                    label={"Venda nos últimos 30 dias"}
+                    label={"Vendas no período"}
                     data={data}
                     options={options}
                   />
@@ -94,9 +94,9 @@ export default function Dashboard() {
 
                 <div className="grid grid-rows-3 row-span-3 content-between gap-6 h-full">
                   <Card
-                    name={"usuarios_cadastrados"}
-                    label={"Total de usuários cadastrados"}
-                    value={dados.usuarios.total}
+                    name={"novos_usuarios"}
+                    label={"Novos Usuários"}
+                    value={dados.estatisticasUsuarios.novosUsuarios}
                     labelCol={{ span: 24 }}
                     icon={
                       <FaUserPlus className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
@@ -104,22 +104,30 @@ export default function Dashboard() {
                   />
 
                   <Card
-                    name={"usuarios_administradores"}
-                    label={"Usuários administradores"}
-                    value={dados.usuarios.administradores}
+                    name={"agendamentos_novos_usuarios"}
+                    label={"Agendamentos por novos usuários"}
+                    value={dados.estatisticasUsuarios.agendamentosNovosUsuarios}
                     labelCol={{ span: 24 }}
                     icon={
                       <FaUserPen className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                     }
                   />
-
-                  <Card
-                    name={"casas_visitantes"}
-                    label={"Usuários visitantes"}
-                    value={dados.usuarios.visitantes}
+                   <Card
+                    name={"agendamentos_antigos_usuarios"}
+                    label={"Agendamentos por antigos usuários"}
+                    value={dados.estatisticasUsuarios.agendamentosAntigoUsuarios}
                     labelCol={{ span: 24 }}
                     icon={
-                      <FaUser className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                      <FaUserPen className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
+                    }
+                  />
+                  <Card
+                    name={"taxa_conversao"}
+                    label={"Taxa de conversão"}
+                    value={dados.estatisticasUsuarios.taxaConversao}
+                    labelCol={{ span: 24 }}
+                    icon={
+                      <FaUserPen className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                     }
                   />
                 </div>
@@ -129,9 +137,9 @@ export default function Dashboard() {
                   <div className="grid grid-cols-2 row-span-4  gap-6">
                     <Card
                       name={"vendas"}
-                      label={"Total de imóveis disponíveis para venda"}
+                      label={"Total de imóveis disponíveis"}
                       className={"!text-3xl"}
-                      value={dados.imoveis.porNegociacao.venda}
+                      value={dados.estoqueImobiliario.estatisticas.disponiveis}
                       labelCol={{ span: 24 }}
                       icon={
                         <PiCoinsFill className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
@@ -141,7 +149,7 @@ export default function Dashboard() {
                       name={"locacoes"}
                       label={"Total de imóveis disponíveis para locações"}
                       className={"!text-3xl"}
-                      value={dados.imoveis.porNegociacao.locacao}
+                      value={dados.estoqueImobiliario.estatisticas.disponiveis}
                       labelCol={{ span: 24 }}
                       icon={
                         <MdOutlineBedroomParent className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
@@ -151,9 +159,9 @@ export default function Dashboard() {
                   <div className="grid grid-cols-4 row-span-3 gap-6">
                     <div className="">
                       <Card
-                        name={"imoveis_disponiveis"}
-                        label={"Total de imóveis disponíveis"}
-                        value={dados.imoveis.total}
+                        name={"imoveis_alugados"}
+                        label={"Total de imóveis alugados"}
+                        value={dados.estoqueImobiliario.estatisticas.locados}
                         labelCol={{ span: 24 }}
                         className={"!text-lg"}
                         icon={
@@ -163,9 +171,9 @@ export default function Dashboard() {
                     </div>
                     <div className="">
                       <Card
-                        name={"apartamentos_disponiveis"}
-                        label={"Apartamentos disponíveis"}
-                        value={dados.imoveis.porTipo.apartamentos}
+                        name={"imoveis_vendidos"}
+                        label={"Total de imóveis vendidos"}
+                        value={dados.estoqueImobiliario.estatisticas.vendidos}
                         labelCol={{ span: 24 }}
                         className={"!text-lg"}
                         icon={
@@ -177,7 +185,7 @@ export default function Dashboard() {
                       <Card
                         name={"casas_disponiveis"}
                         label={"Casas disponíveis"}
-                        value={dados.imoveis.porTipo.casas}
+                        value={dados.estoqueImobiliario.distribuicaoPorTipo.find(item => item.tipo === 'Casa')?.quantidade || 0}
                         labelCol={{ span: 24 }}
                         className={"!text-lg"}
                         icon={
@@ -189,7 +197,7 @@ export default function Dashboard() {
                       <Card
                         name={"terrenos_disponiveis"}
                         label={"Terrenos disponíveis"}
-                        value={dados.imoveis.porTipo.terrenos}
+                        value={dados.estoqueImobiliario.distribuicaoPorTipo.find(item => item.tipo === 'Terreno')?.quantidade || 0}
                         labelCol={{ span: 24 }}
                         className={"!text-lg"}
                         icon={
@@ -201,7 +209,13 @@ export default function Dashboard() {
                 </div>
                 <div className="row-span-3">
                   {/* Passa os dados dos alugueis como propriedade pro componente */}
-                  <LineGraph alugueisPorMes={dados.alugueisPorMes} />
+                    <LineGraph lineGraphData={dados.desempenhoAlugueis.evolucaoMensal}
+                    title="Evolução de aluguéis" />
+                </div>
+                <div className="row-span-3">
+                  {/* Passa os dados dos alugueis como propriedade pro componente */}
+                    <LineGraph lineGraphData={dados.desempenhoVendas.evolucaoMensal}
+                    title="Evolução de vendas" />
                 </div>
               </div>
             </div>
@@ -224,7 +238,7 @@ export default function Dashboard() {
                     name={"vendas"}
                     label={"Total de imóveis disponíveis para venda"}
                     className={"!text-xl"}
-                    value={dados.imoveis.porNegociacao.venda}
+                    value={0}
                     labelCol={{ span: 24 }}
                     icon={
                       <PiCoinsFill className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
@@ -234,7 +248,7 @@ export default function Dashboard() {
                     name={"locacoes"}
                     label={"Total de imóveis disponíveis para locações"}
                     className={"!text-xl"}
-                    value={dados.imoveis.porNegociacao.locacao}
+                    value={0}
                     labelCol={{ span: 24 }}
                     icon={
                       <MdOutlineBedroomParent className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
@@ -248,7 +262,7 @@ export default function Dashboard() {
                   <Card
                     name={"imoveis_disponiveis"}
                     label={"Total de imóveis disponíveis"}
-                    value={dados.imoveis.total}
+                    value={0}
                     labelCol={{ span: 24 }}
                     className={"!text-lg"}
                     icon={
@@ -261,7 +275,7 @@ export default function Dashboard() {
                   <Card
                     name={"apartamentos_disponiveis"}
                     label={"Apartamentos disponíveis"}
-                    value={dados.imoveis.porTipo.apartamentos}
+                    value={0}
                     labelCol={{ span: 24 }}
                     className={"!text-xl"}
                     icon={
@@ -275,7 +289,7 @@ export default function Dashboard() {
                 <Card
                   name={"casas_disponiveis"}
                   label={"Casas disponíveis"}
-                  value={dados.imoveis.porTipo.casas}
+                  value={0}
                   labelCol={{ span: 24 }}
                   className={"!text-xl"}
                   icon={
@@ -285,7 +299,7 @@ export default function Dashboard() {
                 <Card
                   name={"terrenos_disponiveis"}
                   label={"Terrenos disponíveis"}
-                  value={dados.imoveis.porTipo.terrenos}
+                  value={0}
                   labelCol={{ span: 24 }}
                   className={"!text-xl"}
                   icon={
@@ -295,14 +309,14 @@ export default function Dashboard() {
               </div>
               <div className="">
                 {" "}
-                <LineGraph alugueisPorMes={dados.alugueisPorMes} />
+                {/* <LineGraph alugueisPorMes={0} /> */}
               </div>
               <div className="grid grid-cols-2 h-[100px] gap-6">
                 {" "}
                 <Card
                   name={"usuarios_cadastrados"}
                   label={"Total de usuários cadastrados"}
-                  value={dados.usuarios.total}
+                  value={0}
                   labelCol={{ span: 24 }}
                   className={"!text-xl"}
                   icon={
@@ -312,7 +326,7 @@ export default function Dashboard() {
                 <Card
                   name={"usuarios_administradores"}
                   label={"Usuários administradores"}
-                  value={dados.usuarios.administradores}
+                  value={0}
                   labelCol={{ span: 24 }}
                   className={"!text-xl"}
                   icon={
@@ -325,7 +339,7 @@ export default function Dashboard() {
                 <Card
                   name={"casas_visitantes"}
                   label={"Usuários visitantes"}
-                  value={dados.usuarios.visitantes}
+                  value={0}
                   labelCol={{ span: 24 }}
                   className={"!text-xl"}
                   icon={
@@ -349,7 +363,7 @@ export default function Dashboard() {
                 name={"vendas"}
                 label={"Número total de vendas"}
                 className={"!text-xl"}
-                value={dados.imoveis.porNegociacao.venda}
+                value={0}
                 labelCol={{ span: 24 }}
                 icon={
                   <PiCoinsFill className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
@@ -359,7 +373,7 @@ export default function Dashboard() {
                 name={"locacoes"}
                 label={"Número total de locações"}
                 className={"!text-xl"}
-                value={dados.imoveis.porNegociacao.locacao}
+                value={0}
                 labelCol={{ span: 24 }}
                 icon={
                   <MdOutlineBedroomParent className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
@@ -368,7 +382,7 @@ export default function Dashboard() {
               <Card
                 name={"imoveis_disponiveis"}
                 label={"Total de imóveis disponíveis"}
-                value={dados.imoveis.total}
+                value={0}
                 labelCol={{ span: 24 }}
                 className={"!text-lg"}
                 icon={
@@ -378,7 +392,7 @@ export default function Dashboard() {
               <Card
                 name={"apartamentos_disponiveis"}
                 label={"Apartamentos disponíveis"}
-                value={dados.imoveis.porTipo.apartamentos}
+                value={0}
                 labelCol={{ span: 24 }}
                 className={"!text-xl"}
                 icon={
@@ -388,7 +402,7 @@ export default function Dashboard() {
               <Card
                 name={"casas_disponiveis"}
                 label={"Casas disponíveis"}
-                value={dados.imoveis.porTipo.casas}
+                value={0}
                 labelCol={{ span: 24 }}
                 className={"!text-xl"}
                 icon={
@@ -398,18 +412,18 @@ export default function Dashboard() {
               <Card
                 name={"terrenos_disponiveis"}
                 label={"Terrenos disponíveis"}
-                value={dados.imoveis.porTipo.terrenos}
+                value={0}
                 labelCol={{ span: 24 }}
                 className={"!text-xl"}
                 icon={
                   <MdTerrain className="text-[var(--primary)] text-4xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />
                 }
               />{" "}
-              <LineGraph alugueisPorMes={dados.alugueisPorMes} />
+              {/* <LineGraph alugueisPorMes={dados.alugueisPorMes} /> */}
               <Card
                 name={"usuarios_cadastrados"}
                 label={"Total de usuários cadastrados"}
-                value={dados.usuarios.total}
+                value={0}
                 labelCol={{ span: 24 }}
                 className={"!text-xl"}
                 icon={
@@ -419,7 +433,7 @@ export default function Dashboard() {
               <Card
                 name={"usuarios_administradores"}
                 label={"Usuários administradores"}
-                value={dados.usuarios.administradores}
+                value={0}
                 labelCol={{ span: 24 }}
                 className={"!text-xl"}
                 icon={
@@ -429,7 +443,7 @@ export default function Dashboard() {
               <Card
                 name={"usuarios_visitantes"}
                 label={"Usuários visitantes"}
-                value={dados.usuarios.visitantes}
+                value={0}
                 labelCol={{ span: 24 }}
                 className={"!text-xl"}
                 icon={
