@@ -316,19 +316,19 @@ export default function Page() {
                 columns={columns}
                 dataSource={orderedAgendamentos}
                 rowKey="id"
-                pagination={{
-                  current: currentPage,
-                  pageSize: pageSize,
-                  total: orderedAgendamentos.length,
-                  onChange: setCurrentPage,
-                  showSizeChanger: false,
-                }}
+                pagination={false}
                 className={styles.customTable}
                 scroll={{ x: "max-content" }}
               />
             </CMS.TableBody>
 
-            {/* Removido TableFooter duplicado - usando paginação integrada do Antd */}
+            {/* Paginador controlado */}
+            <CMS.TableFooter
+              totalItems={orderedAgendamentos.length}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+            />
           </CMS.Table>
         </CMS.Body>
       </div>

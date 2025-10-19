@@ -60,3 +60,6 @@ nav:
     - Como Rodar o WebSocket: WebSocket-Setup.md
     - Sistema de Níveis de Usuário: UserLevels.md
     - Relatório de Correção de Bugs: ChatSystemBugFixes.md
+
+  - Sistema Admin CMS:
+    - "📄 Correção de Paginação": CorrecaoPaginacao.md
