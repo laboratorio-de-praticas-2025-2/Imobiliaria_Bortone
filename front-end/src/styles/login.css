@@ -20,6 +20,16 @@
   width: 100%;
 }
 
+.login-form-item .ant-form-item-explain-error {
+  color: #d32f2f;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.login-form-item .ant-form-item-has-error .ant-input-outlined {
+  border-color: #d32f2f !important;
+}
+
 .login-form-item .ant-input-outlined {
   border-color: var(--primary);
   border-radius: 18px;
@@ -74,6 +84,38 @@ input::placeholder,
   background: transparent;
   color: var(--primary);
   border: 1px solid var(--primary);
+}
+
+/* Pop-up de erro de credenciais */
+.error-popup {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 4px;
+  z-index: 10;
+  animation: slideDown 0.3s ease-out;
+}
+
+.error-text {
+  color: #d32f2f;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .boas-vindas-content {
