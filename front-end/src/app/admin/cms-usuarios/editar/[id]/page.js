@@ -4,11 +4,12 @@ import Form from "@/components/cms/form";
 import FormButton from "@/components/cms/form/fields/Button";
 import TextField from "@/components/cms/form/fields/TextField";
 import Sidebar from "@/components/cms/Sidebar";
-import axios from "axios";
+import SplashScreen from "@/components/SplashScreen";
 import RadioField from "@/components/cms/form/fields/RadioField";
 import { useEffect, useState, use } from "react";
 import { Form as FormAntd } from "antd";
 import { apiClient } from "@/utils/apiClient";
+import PasswordField from "@/components/cms/form/fields/PasswordField";
 
 export default function EditarUserPage({ params }) {
   const { id } = use(params);
@@ -29,8 +30,8 @@ export default function EditarUserPage({ params }) {
         form.setFieldsValue({
           nome: res.data?.nome || "",
           email: res.data?.email || "",
-          telefone: res.data?.telefone || "",
-          nivel: res.data?.nivel || "",
+          celular: res.data?.celular || "",
+          nivel: res.data?.nivel === 0 ? "administrador" : "usuario",
         });
       } catch (err) {
         console.error("Erro ao buscar usuário:", err);
@@ -73,8 +74,7 @@ export default function EditarUserPage({ params }) {
     console.log("Edit Failed:", errorInfo);
   };
 
-  if (!user) return <div>Carregando...</div>;
-  if (!form) return <div>Inicializando formulário...</div>;
+  if (!user || !form) return <SplashScreen />;
 
   return (
     <>
@@ -130,7 +130,7 @@ export default function EditarUserPage({ params }) {
                   className="!w-[100%]"
                 />
 
-                <TextField
+                <PasswordField
                   name="senha"
                   label="Senha"
                   placeholder="Senha do Usuário"

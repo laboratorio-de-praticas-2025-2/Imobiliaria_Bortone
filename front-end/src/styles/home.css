@@ -28,15 +28,15 @@
 }
 
 .btn-login {
-  background-color: transparent;
+  background-color: white;
   border: 2px solid white;
-  color: white;
+  color: var(--primary);
   height: 40px;
 }
 
 .btn-login:hover {
-  background-color: white !important;
-  color: black !important;
+  background-color: transparent !important;
+  color: white !important;
   border: 2px solid white !important;
 }
 

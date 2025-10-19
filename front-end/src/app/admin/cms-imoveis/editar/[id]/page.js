@@ -8,7 +8,7 @@ import TextAreaField from "@/components/cms/form/fields/TextAreaField";
 import TextField from "@/components/cms/form/fields/TextField";
 import UploadImovel from "@/components/cms/form/fields/UploadImovel";
 import Sidebar from "@/components/cms/Sidebar";
-import { mockImoveis } from "@/mock/imoveis";
+import SplashScreen from "@/components/SplashScreen";
 import { Form as FormAntd } from "antd";
 import dynamic from "next/dynamic";
 import { useEffect, useState, use } from "react";
@@ -31,7 +31,6 @@ export default function EditarImovelPage({ params }) {
   const [fileList, setFileList] = useState([]);
   const [originalImages, setOriginalImages] = useState([]);
 
-  // estados / seleções (usados pelos DropdownField do layout)
   const [tipoSelecionado, setTipoSelecionado] = useState("Selecione o Tipo");
   const [statusSelecionado, setStatusSelecionado] =
     useState("Selecione o status");
@@ -72,7 +71,7 @@ export default function EditarImovelPage({ params }) {
     "Tocantins",
   ];
   const options = ["Casa", "Terreno"];
-  const status = ["Disponível", "Indisponível", "Vendido", "Alugado"];
+  const status = ["Disponível", "Indisponível", "Vendido", "Locado"];
   const cities = [
     "Apiaí",
     "Barra do Chapéu",
@@ -117,111 +116,123 @@ export default function EditarImovelPage({ params }) {
         }
         setImovel(found);
 
-        // Fetch images for the imovel
-        const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
-        const imagesData = imagesResponse.data;
 
-        // Process and set the fileList with improved error handling
-        console.log('DEBUG EDITAR: imagesData from API:', imagesData);
-        console.log('DEBUG EDITAR: apiUrl:', apiUrl);
-        
-        if (!Array.isArray(imagesData)) {
-          console.warn('DEBUG EDITAR: imagesData não é array:', imagesData);
+
+        try {
+          const imagesResponse = await axios.get(`${apiUrl}/imagemimovel/imovel/${id}`);
+          const imagesData = imagesResponse.data;
+
+          
+          
+          if (!Array.isArray(imagesData)) {
+            console.warn('DEBUG EDITAR: imagesData não é array:', imagesData);
+            setFileList([]);
+            setOriginalImages([]);
+          } else {
+            
+            const formattedImages = imagesData.map((image, index) => {
+              try {
+                // Validação básica do objeto imagem
+                if (!image || !image.url_imagem) {
+                  console.warn(`DEBUG EDITAR: Imagem inválida no índice ${index}:`, image);
+                  return null;
+                }
+                
+                // Construir URL completa da imagem
+                const cleanApiUrl = apiUrl?.replace(/\/+$/, '') || '';
+                let cleanImageUrl = image.url_imagem;
+                
+                // Se já é uma URL completa, use como está
+                if (cleanImageUrl.startsWith('http://') || cleanImageUrl.startsWith('https://')) {
+                  
+                  return {
+                    uid: `image-${image.id}-${index}`,
+                    name: cleanImageUrl.split('/').pop() || `image-${image.id}`,
+                    status: 'done',
+                    url: cleanImageUrl,
+                    originalId: image.id,
+                    isOriginal: true,
+                    filename: image.url_imagem
+                  };
+                }
+                
+                if (!cleanImageUrl.startsWith('/')) {
+                  cleanImageUrl = `/${cleanImageUrl}`;
+                }
+                
+                const fullUrl = `${cleanApiUrl}${cleanImageUrl}`;
+                
+                
+                return {
+                  uid: `image-${image.id}-${index}`,
+                  name: image.url_imagem.split('/').pop() || `image-${image.id}`,
+                  status: 'done',
+                  url: fullUrl,
+                  originalId: image.id,
+                  isOriginal: true,
+                  filename: image.url_imagem
+                };
+              } catch (error) {
+                console.error(`DEBUG EDITAR: Erro ao processar imagem ${index}:`, error, image);
+                return null;
+              }
+            }).filter(Boolean); 
+
+            
+            // console.log('DEBUG EDITAR: formattedImages processadas:', formattedImages);
+            setFileList(formattedImages);
+            setOriginalImages(imagesData);
+          }
+        } catch (imageError) {
+          console.warn('DEBUG EDITAR: Erro ao buscar imagens (pode ser normal se não houver imagens):', imageError);
           setFileList([]);
           setOriginalImages([]);
-          return;
         }
-        
-        const formattedImages = imagesData.map((image, index) => {
-          try {
-            // Validação básica do objeto imagem
-            if (!image || !image.url_imagem) {
-              console.warn(`DEBUG EDITAR: Imagem inválida no índice ${index}:`, image);
-              return null;
-            }
-            
-            // Construir URL completa da imagem
-            const cleanApiUrl = apiUrl?.replace(/\/+$/, '') || '';
-            let cleanImageUrl = image.url_imagem;
-            
-            // Se já é uma URL completa, use como está
-            if (cleanImageUrl.startsWith('http://') || cleanImageUrl.startsWith('https://')) {
-              console.log(`DEBUG EDITAR: URL já completa: ${cleanImageUrl}`);
-              return {
-                uid: `image-${image.id}-${index}`,
-                name: cleanImageUrl.split('/').pop() || `image-${image.id}`,
-                status: 'done',
-                url: cleanImageUrl,
-                originalId: image.id,
-                isOriginal: true,
-                filename: image.url_imagem
-              };
-            }
-            
-            // Garantir que a URL relativa esteja correta
-            if (!cleanImageUrl.startsWith('/')) {
-              cleanImageUrl = `/${cleanImageUrl}`;
-            }
-            
-            const fullUrl = `${cleanApiUrl}${cleanImageUrl}`;
-            
-            console.log('DEBUG EDITAR: Construindo URL:');
-            console.log('  - Image original:', image.url_imagem);
-            console.log('  - API URL limpa:', cleanApiUrl);
-            console.log('  - Image URL limpa:', cleanImageUrl);
-            console.log('  - URL final:', fullUrl);
-            
-            return {
-              uid: `image-${image.id}-${index}`, // Unique identifier mais robusto
-              name: image.url_imagem.split('/').pop() || `image-${image.id}`,
-              status: 'done',
-              url: fullUrl,
-              originalId: image.id,
-              isOriginal: true,
-              filename: image.url_imagem
-            };
-          } catch (error) {
-            console.error(`DEBUG EDITAR: Erro ao processar imagem ${index}:`, error, image);
-            return null;
-          }
-        }).filter(Boolean); // Remove entradas nulas
-        
-        console.log('DEBUG EDITAR: formattedImages processadas:', formattedImages);
-        setFileList(formattedImages);
-        setOriginalImages(imagesData);
 
-        // preencher seleções locais (para os DropdownField customizados)
         setTipoSelecionado(found.tipo ?? "Selecione o Tipo");
         setStatusSelecionado(found.status ?? "Selecione o status");
         setCitiesSelecionado(found.cidade ?? "Selecione a cidade");
         setSelectedState(found.estado ?? "Selecione o estado");
-        setSelectedBedrooms(found.casa.quartos ? String(found.casa.quartos) : "Quantidade");
+  
+        if (found.casa && found.tipo && found.tipo.toLowerCase() !== "terreno") {
+          const formatValue = (value) => {
+            if (value >= 5) return "5+";
+            return String(value);
+          };
+          
+          setSelectedBedrooms(found.casa.quartos ? formatValue(found.casa.quartos) : "Quantidade");
+          setSelectedBathrooms(
+            found.casa.banheiros ? formatValue(found.casa.banheiros) : "Quantidade"
+          );
+          setSelectedParking(found.casa.vagas ? formatValue(found.casa.vagas) : "Quantidade");
+        } else {
+          
+          setSelectedBedrooms("Quantidade");
+          setSelectedBathrooms("Quantidade");
+          setSelectedParking("Quantidade");
+        }
 
-        setSelectedBathrooms(
-          found.casa.banheiros ? String(found.casa.banheiros) : "Quantidade"
-        );
-        setSelectedParking(found.casa.vagas ? String(found.casa.vagas) : "Quantidade");
 
-        // setar valores do form Antd
+        
         form.setFieldsValue({
           tipo: found.tipo ?? undefined,
           status: found.status ?? undefined,
-          cidade: found.cidade ?? undefined,
+          cidade: found.cidade ?? undefined, 
           estado: found.estado ?? undefined,
           descricao: found.descricao ?? undefined,
+          mostrar_preco: found.visibilidade_preco ? "sim" : "nao",
           area: found.area ?? undefined,
           preco: found.preco ?? undefined,
           endereco: found.endereco ?? undefined,
-          quartos: found.casa.quartos ?? undefined,
-          banheiros: found.casa.banheiros ?? undefined,
-          vagas: found.casa.vagas ?? undefined,
+          quartos: found.casa?.quartos ?? undefined,
+          banheiros: found.casa?.banheiros ?? undefined,
+          vagas: found.casa?.vagas ?? undefined,
           possui_muro: found.murado ? "sim" : "nao",
-          possui_piscina: found.casa.possui_piscina ? "sim" : "nao",
-          possui_jardim: found.casa.possui_jardim ? "sim" : "nao",
+          possui_piscina: found.casa?.possui_piscina ? "sim" : "nao",
+          possui_jardim: found.casa?.possui_jardim ? "sim" : "nao",
           latitude: found.latitude ?? undefined,
           longitude: found.longitude ?? undefined,
-          // imagens: found.imagens ?? [], // se UploadImovel aceitar
-          // latitude, longitude nulos no mock
+          
         });
       } catch (error) {
         console.error("Erro ao carregar imóvel:", error);
@@ -244,41 +255,36 @@ export default function EditarImovelPage({ params }) {
 
   const handleImageChanges = async () => {
     try {
-      // Obter IDs das imagens originais
-      const originalImageIds = originalImages.map(img => img.id);
+      const originalImageIds = Array.isArray(originalImages) ? originalImages.map(img => img.id) : [];
       
-      // Obter IDs das imagens atuais (apenas as originais que ainda estão presentes)
       const currentOriginalIds = fileList
         .filter(file => file.isOriginal)
         .map(file => file.originalId);
       
-      // Encontrar imagens que foram removidas
       const imagesToDelete = originalImageIds.filter(id => !currentOriginalIds.includes(id));
       
-      // Encontrar imagens que foram adicionadas (não são originais)
       const newImages = fileList.filter(file => !file.isOriginal && file.originFileObj);
       
-      // Deletar imagens removidas
       for (const imageId of imagesToDelete) {
         try {
           await axios.delete(`${apiUrl}/imagemimovel/${imageId}`);
-          console.log(`Imagem ${imageId} deletada com sucesso`);
+
+          
+          // console.log(`Imagem ${imageId} deletada com sucesso`);
+
         } catch (error) {
-          console.error(`Erro ao deletar imagem ${imageId}:`, error);
+          // console.error(`Erro ao deletar imagem ${imageId}:`, error);
         }
       }
       
-      // Fazer upload de novas imagens
       for (const newImage of newImages) {
         try {
-        // Upload via Netlify
         const imageUrl = await uploadImovelImage(
           newImage.originFileObj,
           id,
           newImage.name || 'Imagem do imóvel'
         );
 
-        // Salvar referência da imagem no backend
         const response = await axios.post(`${apiUrl}/imagemimovel`, {
           imovel_id: id,
           url_imagem: imageUrl,
@@ -287,58 +293,73 @@ export default function EditarImovelPage({ params }) {
           headers: {
             'Content-Type': 'application/json',
           },
-        });          // The API should return the filename (not full URL) for database storage
-          console.log(`Imagem ${newImage.name} enviada com sucesso. Filename: ${response.data.url_imagem}`);
+
+        });          
+          // console.log(`Imagem ${newImage.name} enviada com sucesso. Filename: ${response.data.url_imagem}`);
+
         } catch (error) {
           console.error(`Erro ao fazer upload da imagem ${newImage.name}:`, error);
         }
       }
       
-      console.log('Gerenciamento de imagens concluído');
     } catch (error) {
       console.error('Erro no gerenciamento de imagens:', error);
     }
   };
 
+  const normalizeText = (text) => {
+    return text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  };
+
   const onConfirm = async () => {
     try {
-      // Atualizar dados do imóvel
+
+    const normalizedStatus = statusSelecionado !== "Selecione o status" 
+      ? normalizeText(statusSelecionado)
+      : undefined;
+
       const updateData = {
         ...formValues,
+        
         tipo: tipoSelecionado !== "Selecione o Tipo" ? tipoSelecionado : undefined,
-        status: statusSelecionado !== "Selecione o status" ? statusSelecionado : undefined,
+        status: normalizedStatus,
         cidade: citiesSelecionado !== "Selecione a cidade" ? citiesSelecionado : undefined,
         estado: selectedState !== "Selecione o estado" ? selectedState : undefined,
+
         quartos: selectedBedrooms !== "Quantidade" ? parseInt(selectedBedrooms) : undefined,
+        visibilidade_preco: formValues.mostrar_preco === "sim" ? 1 : 0,
         banheiros: selectedBathrooms !== "Quantidade" ? parseInt(selectedBathrooms) : undefined,
         vagas: selectedParking !== "Quantidade" ? parseInt(selectedParking) : undefined,
         murado: formValues.possui_muro === "sim",
         possui_piscina: formValues.possui_piscina === "sim",
         possui_jardim: formValues.possui_jardim === "sim",
-        // Manter o usuario_id original do imóvel
         usuario_id: imovel.usuario_id,
       };
 
-      console.log('Dados sendo enviados para atualização:', updateData);
-      console.log('usuario_id do imóvel original:', imovel.usuario_id);
+
       
+      
+      setLoading(true);
       await axios.put(`${apiUrl}/imoveis/${id}`, updateData);
       
-      // Gerenciar imagens
       await handleImageChanges();
+
       
-      console.log("Imóvel atualizado com sucesso!");
+      // console.log("Imóvel atualizado com sucesso!");
+
       setIsConfirmModalVisible(false);
       window.location.href = "/admin/cms-imoveis";
     } catch (error) {
       console.error("Erro ao atualizar imóvel:", error);
-      // Aqui você pode adicionar uma notificação de erro para o usuário
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (loading) return <div>Carregando...</div>;
-  if (imovel === null) return <div>Imóvel não encontrado.</div>;
-  if (!form) return <div>Inicializando formulário...</div>;
+  if (loading || !form) return <SplashScreen /> ;
 
   return (
     <>
@@ -357,7 +378,7 @@ export default function EditarImovelPage({ params }) {
             form={form}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            initialValues={{}} // usamos form.setFieldsValue quando carregado
+            initialValues={{}} 
           >
             <div className=" flex flex-col sm:flex-row w-full gap-6">
               <div className="sm:w-[35%] flex flex-col gap-6 items-start ">
@@ -371,7 +392,7 @@ export default function EditarImovelPage({ params }) {
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
-                      placeholder="Selecione o Tipo"
+                      placeholder="Tipo"
                       label="Tipo"
                       options={options}
                       selected={tipoSelecionado}
@@ -391,7 +412,7 @@ export default function EditarImovelPage({ params }) {
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
-                      placeholder="Selecione o status"
+                      placeholder="Status"
                       options={status}
                       selected={statusSelecionado}
                       setSelected={setStatusSelecionado}
@@ -400,10 +421,26 @@ export default function EditarImovelPage({ params }) {
                       classname="bg-white hover:bg-[#EEF0F9] w-fit "
                     />
                   </FormAntd.Item>
+
+                  <FormAntd.Item
+                    name="mostrar_preco"
+                    label={"Mostrar Preço?"}
+                    rules={[
+                      { required: true, message: "Este campo é obrigatório!" },
+                    ]}
+                    className={`custom-form-item  required !w-full`}
+                    labelCol={{ span: 24 }}
+                  >
+                    <RadioFieldImovel
+                      options={[
+                        { label: "Sim", value: "sim" },
+                        { label: "Não", value: "nao" },
+                      ]}
+                    />
+                  </FormAntd.Item>
                 </div>
 
-                {/* Se o UploadImovel suportar inicialização por prop, poderia receber imovel.imagens.
-                    Aqui apenas renderiza o componente; ajuste conforme sua implementação do UploadImovel. */}
+                
                 <UploadImovel className={"!w-full"} fileList={fileList} setFileList={setFileList} />
 
                 <TextAreaField
@@ -426,7 +463,7 @@ export default function EditarImovelPage({ params }) {
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
-                      placeholder="Selecione a Cidade"
+                      placeholder="Cidade"
                       options={cities}
                       selected={citiesSelecionado}
                       setSelected={setCitiesSelecionado}
@@ -445,7 +482,7 @@ export default function EditarImovelPage({ params }) {
                     labelCol={{ span: 24 }}
                   >
                     <DropdownField
-                      placeholder="Selecione o Estado"
+                      placeholder="Estado"
                       label="Estado"
                       options={states}
                       selected={selectedState}
@@ -623,8 +660,6 @@ export default function EditarImovelPage({ params }) {
                           label="Latitude"
                           placeholder="Latitude"
                           className="!w-full"
-                          classInput="!bg-[#EEEEEE]"
-                          readOnly
                         />
                       </div>
                       <div className=" flex flex-row gap-2 !w-full">
@@ -633,8 +668,6 @@ export default function EditarImovelPage({ params }) {
                           label="Longitude"
                           placeholder="Longitude"
                           className="!w-full"
-                          classInput="!bg-[#EEEEEE]"
-                          readOnly
                         />
                       </div>
                     </>
@@ -658,16 +691,12 @@ export default function EditarImovelPage({ params }) {
                         label="Latitude"
                         placeholder="Latitude"
                         className="!w-full"
-                        classInput="!bg-[#EEEEEE]"
-                        readOnly
                       />
                       <TextField
                         name="longitude"
                         label="Longitude"
-                        classInput="!bg-[#EEEEEE]"
                         placeholder="Longitude"
                         className="!w-full !border-b-blue-50"
-                        readOnly
                       />
                     </div>
                   )}
@@ -681,7 +710,7 @@ export default function EditarImovelPage({ params }) {
                   {/* passa a instância do form para o MapPick */}
                   <MapPick form={form} />
                 </div>
-                <FormButton text="Salvar Alterações" />
+                <FormButton text="Salvar Alterações" disabled={loading || isConfirmModalVisible} />
               </div>
             </div>
           </Form.FormBody>

@@ -4,8 +4,8 @@ import { Form, Input, Button, Flex, message } from "antd";
 import { useSEO } from "@/hooks/useSEO";
 import { getSEOConfig } from "@/config/seo";
 import { useState } from "react";
-import axios from "axios";         
-import { useRouter } from "next/navigation"; 
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   // SEO para página de login
@@ -14,39 +14,60 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  // Capturar parâmetro de redirecionamento
+  const getRedirectPath = () => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('redirect') || '/';
+    }
+    return '/';
+  };
+
   const onFinish = async (values) => {
     setLoading(true);
 
-        const dados = {
-        email: values.email,
-        senha: values.password
+    const dados = {
+      email: values.email,
+      senha: values.password
     };
 
 
-      try {
-      console.log("📡 Enviando login...", dados);
 
+      try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/user/login`,
         dados
       );
-
-      console.log("🔍 DEBUG LOGIN - Resposta completa do backend:", response.data);
-      console.log("🔍 DEBUG LOGIN - Dados do usuário recebidos:", response.data.user);
-      console.log("🔍 DEBUG LOGIN - Nível do usuário:", response.data.user.nivel, typeof response.data.user.nivel);
-
       message.success(response.data.message || `Login bem-sucedido!`);
+
 
       localStorage.setItem('authToken', response.data.token);
       localStorage.setItem('userInfo', JSON.stringify(response.data.user));
 
+      // Garante que o socket sempre conecta autenticado
+      if (typeof window !== 'undefined' && window.socketService) {
+        await window.socketService.disconnect();
+        await window.socketService.connect(response.data.token);
+      }
+
       // Verificar o que foi salvo no localStorage
       const savedUserInfo = JSON.parse(localStorage.getItem('userInfo'));
-      console.log("💾 DEBUG LOGIN - Dados salvos no localStorage:", savedUserInfo);
-      console.log("💾 DEBUG LOGIN - Nível salvo:", savedUserInfo.nivel, typeof savedUserInfo.nivel);
+
+      // Redirecionamento baseado no parâmetro redirect ou nível do usuário
+      const redirectPath = getRedirectPath();
+      const userLevel = parseInt(savedUserInfo.nivel ?? 1);
+
+      let finalRedirect = redirectPath;
+
+      // Se tentou acessar admin mas não é admin, redirecionar para home
+      if (redirectPath.includes('/admin') && userLevel !== 0) {
+        message.warning('Você não tem permissão para acessar a área administrativa.');
+        finalRedirect = '/';
+      }
+
 
       setTimeout(() => {
-        router.push("/");
+        router.push(finalRedirect);
       }, 1000);
 
     } catch (error) {
@@ -62,7 +83,6 @@ export default function LoginPage() {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("❌ Falha no formulário:", errorInfo);
   };
 
   return (

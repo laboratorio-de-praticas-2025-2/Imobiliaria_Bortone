@@ -2,7 +2,6 @@
 import { Table } from "antd";
 import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
-import { mockImoveis } from "@/mock/imoveis";
 import { useEffect, useState } from "react";
 import { LuHousePlus } from "react-icons/lu";
 import { BiPencil } from "react-icons/bi";
@@ -35,6 +34,11 @@ const useStyle = createStyles(({ css, token }) => {
 
 export default function CmsUserPage() {
   const [imoveis, setImoveis] = useState([]);
+  const [paginationInfo, setPaginationInfo] = useState({
+    totalItems: 0,
+    totalPages: 1,
+    currentPage: 1,
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
   const [filterData, setFilterData] = useState({
@@ -67,7 +71,6 @@ export default function CmsUserPage() {
       
       setImoveis(prev => prev.filter(imovel => imovel.id !== imovelToDelete));
       
-      console.log("Imóvel deletado com sucesso!");
       setIsConfirmModalVisible(false);
       setImovelToDelete(null);
     } catch (error) {
@@ -94,7 +97,6 @@ export default function CmsUserPage() {
         )
       );
       
-      console.log(`Status do imóvel ${id} alterado para: ${newStatus}`);
     } catch (error) {
       console.error("Erro ao alterar status do imóvel:", error);
     }
@@ -103,9 +105,28 @@ export default function CmsUserPage() {
   const fetchImoveis = async () => {
     try {
       const queryParams = new URLSearchParams();
+
+      queryParams.append("page", currentPage);
+      queryParams.append("pagination", pageSize);
+      
       if (filterData.order) {
-        queryParams.append("order", filterData.order);
+        const orderMapping = {
+          "Ordem alfabética": { orderBy: "endereco", orderDirection: "ASC" },
+          "Data de inclusão (mais recente)": { orderBy: "data_cadastro", orderDirection: "DESC" },
+          "Data de inclusão (mais antigo)": { orderBy: "data_cadastro", orderDirection: "ASC" },
+          "Preço (menor para maior)": { orderBy: "preco", orderDirection: "ASC" },
+          "Preço (maior para menor)": { orderBy: "preco", orderDirection: "DESC" },
+          "Área (menor para maior)": { orderBy: "area", orderDirection: "ASC" },
+          "Área (maior para menor)": { orderBy: "area", orderDirection: "DESC" }
+        };
+        
+        const orderConfig = orderMapping[filterData.order];
+        if (orderConfig) {
+          queryParams.append("orderBy", orderConfig.orderBy);
+          queryParams.append("orderDirection", orderConfig.orderDirection);
+        }
       }
+      
       if (filterData.searchTerm) {
         queryParams.append("searchTerm", filterData.searchTerm);
       }
@@ -127,14 +148,23 @@ export default function CmsUserPage() {
       }
 
       const endpoint = `/imoveis?${queryParams.toString()}`;
-      console.log("Fetching data from endpoint:", `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`);
       const response = await apiClient.get(endpoint);
-      console.log("API Response Data:", response.data);
-      if (Array.isArray(response.data)) {
-        setImoveis(response.data);
+
+      
+      
+      console.log("API Response Data:", response.data);      
+      if (response.data && Array.isArray(response.data.entities)) {
+        setImoveis(response.data.entities);
+        setPaginationInfo({
+          totalItems: response.data.totalCount,
+          totalPages: response.data.totalPages,
+          currentPage: response.data.currentPage,
+        });
+
       } else {
-        console.warn("API did not return an array for imoveis, received:", response.data);
+        console.warn("API did not return the expected paginated object, received:", response.data);
         setImoveis([]); 
+        setPaginationInfo({ totalItems: 0, totalPages: 1, currentPage: 1 });
       }
     } catch (error) {
       console.error("Error fetching imoveis:", error);
@@ -195,6 +225,15 @@ export default function CmsUserPage() {
       title: "Data",
       dataIndex: "data_cadastro",
       key: "data",
+      render: (value) => {
+      if (!value) return "-";
+      const date = new Date(value);
+      return date.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+    }
     },
     {
       title: "Murado",
@@ -212,16 +251,19 @@ export default function CmsUserPage() {
       title: "Quartos",
       dataIndex: ['casa',"quartos"],
       key: "quartos",
+      render: (value) => value >= 5 ? "5+" : value,
     },
     {
       title: "Banheiros",
       dataIndex: ['casa',"banheiros"],
       key: "banheiros",
+      render: (value) => value >= 5 ? "5+" : value,
     },
     {
       title: "Vagas",
       dataIndex: ['casa',"vagas"],
       key: "vagas",
+      render: (value) => value >= 5 ? "5+" : value,
     },
     {
       title: "Piscina",
@@ -276,14 +318,8 @@ export default function CmsUserPage() {
     },
   ];
 
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const paginatedMock = imoveis.slice(startIndex, endIndex).map((item) => ({
-    ...item,
-    verificadoText: item.verificado ? "Sim" : "-",
-  }));
-
   const onSearch = (value) => {
+    setCurrentPage(1); // Reset para página 1 ao buscar
     setFilterData((prev) => ({
       ...prev,
       searchTerm: value || null,
@@ -291,27 +327,27 @@ export default function CmsUserPage() {
     }));
   };
   const handleSelectOrder = (value) => {
+    setCurrentPage(1); // Reset para página 1 ao mudar ordenação
     setFilterData((prev) => ({
       ...prev,
       order: value === "Ordenar por" ? null : value,
-      advancedSearch: false, 
     }));
   };
   const updateFilterData = (newData) => {
     setFilterData((prev) => {
       const newState = { ...prev, ...newData };
-      console.log("FilterData after update:", newState);
       return newState;
     });
   };
 
   const handleAdvancedSearch = (filters) => {
-    setFilterData({
+    setCurrentPage(1); // Reset para página 1 ao fazer busca avançada
+    setFilterData((prev) => ({
+      ...prev,
       ...filters,
       searchTerm: null, 
-      order: null,
       advancedSearch: true, 
-    });
+    }));
   };
 
   return (
@@ -340,11 +376,20 @@ export default function CmsUserPage() {
               updateFilterData={updateFilterData}
               type={"imovel"}
               onAdvancedSearch={handleAdvancedSearch}
+              optionsOrder={[
+                "Ordem alfabética", 
+                "Data de inclusão (mais recente)", 
+                "Data de inclusão (mais antigo)",
+                "Preço (menor para maior)",
+                "Preço (maior para menor)",
+                "Área (menor para maior)",
+                "Área (maior para menor)"
+              ]}
             />
             <CMS.TableBody table={true}>
               <Table
                 columns={columns}
-                dataSource={paginatedMock}
+                dataSource={imoveis}
                 rowKey="id"
                 pagination={false}
                 className={styles.customTable}
@@ -355,8 +400,9 @@ export default function CmsUserPage() {
 
             {/* Paginador controlado */}
             <CMS.TableFooter
-              postsData={imoveis}
+              totalItems={paginationInfo.totalItems}
               pageSize={pageSize}
+              currentPage={currentPage} 
               onPageChange={setCurrentPage}
             />
           </CMS.Table>

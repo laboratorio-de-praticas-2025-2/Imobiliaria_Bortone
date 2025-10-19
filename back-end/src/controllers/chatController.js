@@ -30,75 +30,81 @@ export function handleConnection(ws) {
         const roleMap = { 0: "agent", 1: "user" };
         role = roleMap[decoded.nivel];
         currentId = decoded.id;
-      }
-
-      // Conexão inicial
+      } // Conexão inicial
       if (data.type === "connect") {
         let decoded;
-        
-        // Modo de teste com usuários fixos
+
+        // Sempre usar ws.userData que foi definido no websocket.js durante a conexão inicial
         if (ws.userData) {
           decoded = ws.userData;
         } else {
-          decoded = chatService.verifyToken(data.token);
-          if (!decoded) {
-            ws.close(1008, "Token inválido");
-            return;
+          // Se já temos userData do websocket.js, usar ao invés de verificar novamente
+          if (ws.userData) {
+            decoded = ws.userData;
+          } else {
+            decoded = chatService.verifyToken(data.token);
+            if (!decoded) {
+              ws.close(4002, "Token inválido");
+              return;
+            }
           }
         }
 
         const roleMap = {
           0: "agent", // admin → atendente
-          1: "user"   // user → usuário normal
+          1: "user", // user → usuário normal
         };
-        
+
         role = roleMap[decoded.nivel];
         currentId = decoded.id;
-        
+
         // Priorizar nome do token, depois o nome enviado pelo cliente
-        const nomeUsuario = decoded.nome || data.nome || decoded.email || `Usuario ${currentId}`;
-        
-        // Log detalhado para debug
-        console.log(`🔍 Conexão chat - ID: ${currentId}, Nome: "${nomeUsuario}", Nível: ${decoded.nivel}, Role: ${role}`, {
-          tokenNome: decoded.nome,
-          dataNome: data.nome,
-          email: decoded.email,
-          nomeEscolhido: nomeUsuario
-        });
+        const nomeUsuario =
+          decoded.nome || data.nome || decoded.email || `Usuario ${currentId}`;        
 
         // Usuário
         if (role === "user") {
           // No modo de desenvolvimento, permitir conexão mesmo sem agentes online
-          const isDevelopment = process.env.NODE_ENV === 'development';
+          const isDevelopment = process.env.NODE_ENV === "development";
+
+          // Verificar limite de usuários ANTES de outras verificações
+          const maxUsers = isDevelopment ? 10 : 20;
+          if (Object.keys(chatService.users).length >= maxUsers) {
           
+            chatService.send(ws, {
+              type: "error",
+              msg: "Limite de usuários simultâneos atingido. Tente novamente mais tarde.",
+            });
+            setTimeout(
+              () => ws.close(4003, "Limite de usuários atingido"),
+              1000
+            );
+            return;
+          }
+
           if (!isDevelopment) {
             const horarioResultado = dentroHorario();
             const temAgentes = Object.keys(chatService.agents).length > 0;
-            
+
             if (horarioResultado !== true) {
-              chatService.send(ws, {
-                type: "status",
-                msg: "⏰ Nosso atendimento funciona de 8h às 18h. Deixe sua mensagem que responderemos em breve!",
-              });
+              if (!ws._welcomeSent) {
+                chatService.send(ws, {
+                  type: "status",
+                  msg: "⏰ Nosso atendimento funciona de 8h às 18h. Deixe sua mensagem que responderemos em breve!",
+                });
+                ws._welcomeSent = true;
+              }
               // Não fechar conexão, permitir deixar mensagem
             } else if (!temAgentes) {
-              chatService.send(ws, {
-                type: "status", 
-                msg: "📝 Nossos atendentes estão ocupados no momento. Deixe sua mensagem que responderemos em breve!",
-              });
+              if (!ws._welcomeSent) {
+                chatService.send(ws, {
+                  type: "status",
+                  msg: "📝 Nossos atendentes estão ocupados no momento. Deixe sua mensagem que responderemos em breve!",
+                });
+                ws._welcomeSent = true;
+              }
               // Não fechar conexão, permitir deixar mensagem
             }
-          }
-
-          // Limite maior para desenvolvimento, menor para produção
-          const maxUsers = isDevelopment ? 10 : 20;
-          if (Object.keys(chatService.users).length >= maxUsers) {
-            chatService.send(ws, {
-              type: "status",
-              msg: "Limite de usuários simultâneos atingido. Tente novamente mais tarde.",
-            });
-            ws.close();
-            return;
           }
 
           chatService.users[currentId] = {
@@ -106,7 +112,7 @@ export function handleConnection(ws) {
             nome: nomeUsuario,
             lastActivity: Date.now(),
           };
-          
+
           if (!chatService.history[currentId]) {
             chatService.history[currentId] = [];
           }
@@ -118,7 +124,7 @@ export function handleConnection(ws) {
             type: "status",
             msg: `✅ Conectado como ${nomeUsuario}`,
           });
-          
+
           chatService.send(ws, {
             type: "history",
             messages: chatService.history[currentId],
@@ -127,31 +133,38 @@ export function handleConnection(ws) {
           // Mensagem de boas-vindas personalizada
           if (!isDevelopment) {
             const agentesOnline = Object.keys(chatService.agents).length;
-            if (agentesOnline > 0) {
-              chatService.send(ws, {
-                type: "status",
-                msg: `👋 Olá ${nomeUsuario}! Como posso ajudar você hoje? (${agentesOnline} atendente${agentesOnline > 1 ? 's' : ''} disponível${agentesOnline > 1 ? 'is' : ''})`,
-              });
-            } else {
-              chatService.send(ws, {
-                type: "status",
-                msg: `👋 Olá ${nomeUsuario}! Deixe sua mensagem que responderemos em breve. Seu atendimento é importante para nós!`,
-              });
+            if (!ws._welcomeSent) {
+              if (agentesOnline > 0) {
+                chatService.send(ws, {
+                  type: "status",
+                  msg: `👋 Olá ${nomeUsuario}! Como posso ajudar você hoje? (${agentesOnline} atendente${
+                    agentesOnline > 1 ? "s" : ""
+                  } disponível${agentesOnline > 1 ? "is" : ""})`,
+                });
+              } else {
+                chatService.send(ws, {
+                  type: "status",
+                  msg: `👋 Olá ${nomeUsuario}! Deixe sua mensagem que responderemos em breve. Seu atendimento é importante para nós!`,
+                });
+              }
+              ws._welcomeSent = true;
             }
           }
 
           // Notificar outros usuários sobre entrada (apenas em desenvolvimento)
           if (isDevelopment) {
-            Object.entries(chatService.users).forEach(([otherId, otherData]) => {
-              if (otherId !== currentId.toString()) {
-                chatService.send(otherData.ws, {
-                  type: "status",
-                  msg: `${nomeUsuario} entrou no chat.`,
-                });
+            Object.entries(chatService.users).forEach(
+              ([otherId, otherData]) => {
+                if (otherId !== currentId.toString()) {
+                  chatService.send(otherData.ws, {
+                    type: "status",
+                    msg: `${nomeUsuario} entrou no chat.`,
+                  });
+                }
               }
-            });
+            );
           }
-          
+
           chatService.broadcastAgents({
             type: "status",
             msg: `${nomeUsuario} entrou no chat.`,
@@ -183,8 +196,17 @@ export function handleConnection(ws) {
         }
       }
 
+      // Ping/Pong para manter conexão ativa
+      if (data.type === "ping") {
+        chatService.send(ws, {
+          type: "pong",
+          timestamp: data.timestamp || Date.now(),
+        });
+        return;
+      }
+
       // Mensagens
-  if (data.type === "message") {
+      if (data.type === "message") {
         //Garantir que a mensagem é uma string e não vazia
         if (typeof data.text !== "string" || data.text.trim() === "") {
           chatService.send(ws, { type: "error", msg: "Mensagem Inválida." });
@@ -201,6 +223,20 @@ export function handleConnection(ws) {
           return;
         }
 
+        // Bloquear links (URLs) para evitar phishing
+        // Detecta padrões comuns: http(s)://, www. ou domínios simples como example.com
+        const urlRegex =
+          /(?:https?:\/\/|www\.|[a-z0-9-]+\.[a-z]{2,})(?:\/\S*)?/i;
+        if (urlRegex.test(data.text)) {
+          const errorText = "Links não são permitidos neste chat.";
+          chatService.send(ws, {
+            type: "error",
+            msg: errorText,
+            error: errorText,
+          });
+          return;
+        }
+
         // Bloquear caracteres especiais não permitidos
         const caracPermitido = /^[a-zA-Z0-9À-ú\s.,!?@#-]+$/;
         if (!caracPermitido.test(data.text)) {
@@ -211,16 +247,30 @@ export function handleConnection(ws) {
           return;
         }
 
+        // === FILTRO DE SPAM: impedir flood de mensagens por usuário (< 3 segundos) ===
+        const RATE_LIMIT_MS = 3000; // 3 segundos
+        if (role === "user" && chatService.users[currentId]) {
+          const lastMsgAt = chatService.users[currentId].lastMessageAt || 0;
+          const now = Date.now();
+          if (now - lastMsgAt < RATE_LIMIT_MS) {
+            chatService.send(ws, {
+              type: "status",
+              msg: "Aguarde 3 segundos antes de enviar outra mensagem.",
+            });
+            return;
+          }
+        }
+
         let newMsg;
 
         if (role === "user") {
           const nomeUsuario = chatService.users[currentId].nome;
-          newMsg = { 
-            userId: currentId, 
+          newMsg = {
+            userId: currentId,
             fromUserId: currentId,
-            nome: nomeUsuario, 
+            nome: nomeUsuario,
             text: data.text,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
           };
 
           // Adicionar mensagem ao histórico com limite de 100
@@ -229,20 +279,27 @@ export function handleConnection(ws) {
           // Atualizar atividade do usuário
           chatService.updateUserActivity(currentId);
 
+          // Registrar timestamp da última mensagem para o rate-limit
+          if (chatService.users[currentId]) {
+            chatService.users[currentId].lastMessageAt = Date.now();
+          }
+
           // No modo de desenvolvimento, enviar mensagem para todos os outros usuários conectados
-          const isDevelopment = process.env.NODE_ENV === 'development';
+          const isDevelopment = process.env.NODE_ENV === "development";
           if (isDevelopment) {
-            Object.entries(chatService.users).forEach(([otherId, otherData]) => {
-              if (otherId !== currentId.toString()) {
-                chatService.send(otherData.ws, {
-                  type: "message",
-                  fromUserId: currentId,
-                  text: data.text,
-                  nome: nomeUsuario,
-                  timestamp: newMsg.timestamp
-                });
+            Object.entries(chatService.users).forEach(
+              ([otherId, otherData]) => {
+                if (otherId !== currentId.toString()) {
+                  chatService.send(otherData.ws, {
+                    type: "message",
+                    fromUserId: currentId,
+                    text: data.text,
+                    nome: nomeUsuario,
+                    timestamp: newMsg.timestamp,
+                  });
+                }
               }
-            });
+            );
           }
 
           // Enviar para agentes também (normalizado com campos no topo)
@@ -267,12 +324,12 @@ export function handleConnection(ws) {
             return;
           }
 
-          newMsg = { 
-            userId: currentId, 
+          newMsg = {
+            userId: currentId,
             fromUserId: currentId,
-            nome: "Atendente", 
+            nome: "Atendente",
             text: data.text,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
           };
 
           // Adicionar mensagem ao histórico com limite de 100
@@ -287,7 +344,7 @@ export function handleConnection(ws) {
             userId: targetUser,
             timestamp: newMsg.timestamp,
           });
-          
+
           // Broadcast para demais atendentes, EXCLUINDO o remetente para evitar duplicação
           chatService.broadcastAgents(
             {
@@ -308,13 +365,19 @@ export function handleConnection(ws) {
       if (data.type === "getHistory") {
         // Apenas agentes devem solicitar histórico de um usuário específico
         if (role !== "agent") {
-          chatService.send(ws, { type: "error", msg: "Apenas agentes podem solicitar histórico." });
+          chatService.send(ws, {
+            type: "error",
+            msg: "Apenas agentes podem solicitar histórico.",
+          });
           return;
         }
 
         const userId = data.userId;
         if (!userId) {
-          chatService.send(ws, { type: "error", msg: "Parâmetro userId é obrigatório." });
+          chatService.send(ws, {
+            type: "error",
+            msg: "Parâmetro userId é obrigatório.",
+          });
           return;
         }
 

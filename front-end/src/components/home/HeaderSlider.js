@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 
-const BACKEND_BASE_URL = "http://localhost:4000";
+const apiURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
 // Função helper para construir URL de imagem corretamente
 const getImageUrl = (urlImagem) => {
@@ -21,11 +21,11 @@ const getImageUrl = (urlImagem) => {
   
   // Se começa com /, é um caminho absoluto do backend
   if (urlImagem.startsWith("/")) {
-    return `${BACKEND_BASE_URL}${urlImagem}`;
+    return `${apiURL}${urlImagem}`;
   }
   
   // Se não tem /, assume que é apenas o nome do arquivo
-  return `${BACKEND_BASE_URL}/uploads/${urlImagem}`;
+  return `${apiURL}/uploads/${urlImagem}`;
 };
 
 // Slides padrão como fallback
@@ -47,15 +47,13 @@ export default function HeaderSlider() {
     try {
       setLoading(true);
       
-      console.log("🎠 Buscando banners ativos para carrossel...");
-      
-      const response = await fetch(`${BACKEND_BASE_URL}/banner`);
+
+      const response = await fetch(`${apiURL}/banner`);
       if (!response.ok) {
         throw new Error(`Erro ${response.status}: ${response.statusText}`);
       }
       
       const data = await response.json();
-      console.log("📊 Dados recebidos do backend:", data);
       
       // Validação básica dos dados
       if (!Array.isArray(data)) {
@@ -64,7 +62,6 @@ export default function HeaderSlider() {
       
       // Filtra apenas banners ativos
       const bannersAtivos = data.filter(banner => banner.ativo === 1);
-      console.log(`✅ Banners ativos encontrados: ${bannersAtivos.length}`);
       
       if (bannersAtivos.length > 0) {
         // Converte banners para formato de slides
@@ -75,25 +72,15 @@ export default function HeaderSlider() {
           originalUrl: banner.url_imagem
         }));
         
-        // Log das URLs processadas
-        slidesFromBanners.forEach((slide, index) => {
-          console.log(`🖼️ Slide ${index + 1}:`, {
-            id: slide.id,
-            original: slide.originalUrl,
-            processed: slide.url
-          });
-        });
+  
         
         setSlides(slidesFromBanners);
-        console.log("🎉 Carrossel atualizado com banners ativos!");
       } else {
-        console.log("⚠️ Nenhum banner ativo encontrado, usando slides padrão");
         setSlides(defaultSlides);
       }
       
     } catch (error) {
       console.error("❌ Erro ao buscar banners ativos:", error);
-      console.log("🔄 Usando slides padrão como fallback");
       setSlides(defaultSlides);
     } finally {
       setLoading(false);

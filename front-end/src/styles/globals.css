@@ -136,7 +136,7 @@ p {
 }
 
 ::-webkit-scrollbar-track {
-  background: ;      /* cor do trilho */
+  background: transparent ;      /* cor do trilho */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -151,5 +151,19 @@ p {
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #4C62AE #f1f1f1;
+  scrollbar-color: #4C62AE transparent;
+}
+
+
+div.go4109123758 {
+  transform: unset !important;
+  top: unset !important;
+  left: unset !important;
+  position: relative !important;
+}
+
+div[data-rht-toaster] {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }

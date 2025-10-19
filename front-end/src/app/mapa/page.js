@@ -5,8 +5,6 @@ import OrderButton from "@/components/mapa/OrderButton";
 import SidebarMenu from "@/components/mapa/SidebarMenu/SidebarMenu";
 import SplashScreen from "@/components/SplashScreen";
 import { FiltersProvider } from "@/context/FiltersContext";
-import { mockImoveis } from "@/mock/imoveis";
-import { getImoveis } from "@/services/imoveisService";
 import { Input } from "antd";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
@@ -33,8 +31,38 @@ export default function Mapa() {
   const [showSplash, setShowSplash] = useState(true);
   const [animateOut, setAnimateOut] = useState(false);
 
+  // Função para carregar todos os imóveis iniciais
+  const carregarTodosImoveis = async () => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      
+      if (!apiUrl) {
+        console.error("NEXT_PUBLIC_API_URL não configurada");
+        return;
+      }
+      
+      const response = await fetch(`${apiUrl}/mapa/busca`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.data) {
+          setImoveisCarrossel(data.data);
+          setImoveisMapa(data.data);
+        } else {
+          console.warn("API retornou sucesso mas sem dados");
+        }
+      } else {
+        console.error("Erro HTTP ao carregar imóveis:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Erro na requisição inicial:", error);
+    }
+  };
+
   const onSearch = async (value) => {
-    console.log("Buscando imóveis para:", value);
     const endereco = {
       endereco: value,
     };
@@ -48,7 +76,6 @@ export default function Mapa() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         if (data) {
           // Atualize os estados com os dados retornados da API
           setImoveisCarrossel(data.propriedades.carrossel || []);
@@ -62,9 +89,10 @@ export default function Mapa() {
     }
   };
 
-  // useEffect(() => {
-  //   setImoveis(getImoveis());
-  // }, []);
+  // Carregar todos os imóveis na inicialização
+  useEffect(() => {
+    carregarTodosImoveis();
+  }, []);
 
   useEffect(() => {
     if (showSplash) {
@@ -101,13 +129,14 @@ export default function Mapa() {
         />
       </div>
       <div className="absolute z-900 sm:bottom-0 sm:right-0 flex justify-center w-full md:justify-end h-fit">
-        <CarrosselMapa imoveis={imoveisCarrossel} />
+        <CarrosselMapa imoveis={imoveisCarrossel || []} />
       </div>
       <div className="map-container">
         <MapView
-          imoveis={imoveisMapa}
+          imoveis={imoveisMapa || []}
           hoverImovel={hoverImovel}
           setHoverImovel={setHoverImovel}
+          alwaysShowCard={false}   // <--- adicionar
         />
       </div>
     </FiltersProvider>

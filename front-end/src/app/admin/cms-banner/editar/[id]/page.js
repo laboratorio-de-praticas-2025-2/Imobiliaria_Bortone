@@ -1,18 +1,23 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { DatePicker as AntdDatePicker, Form as FormAntd } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
-import ConfirmModal from "@/components/cms/ConfirmModal";
-import Form from "@/components/cms/form";
-import FormButton from "@/components/cms/form/fields/Button";
-import TextAreaField from "@/components/cms/form/fields/TextAreaField";
-import UploadField from "@/components/cms/form/fields/UploadField";
 import Sidebar from "@/components/cms/Sidebar";
+import ConfirmModal from "@/components/cms/ConfirmModal";
+import Form from "@/components/cms/form/index";
+import TextAreaField from "@/components/cms/form/fields/TextAreaField";
+import FormButton from "@/components/cms/form/fields/Button";
+
+import { CloudinaryImage } from "@/components/ui/CloudinaryImage";
+import UploadField from "@/components/cms/form/fields/UploadField";
 import { uploadBannerImage } from "@/services/netlifyUploadService";
-import { Form as FormAntd } from "antd";
 import { apiClient } from "@/utils/apiClient";
+import SplashScreen from "@/components/SplashScreen";
+import { useFormSubmit } from "@/hooks/useAsyncOperation";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function EditarBannerPage() {
   const { id } = useParams();
@@ -21,11 +26,15 @@ export default function EditarBannerPage() {
   const [fileList, setFileList] = useState([]);
   const [formValues, setFormValues] = useState(null);
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const { submitForm, isLoading } = useFormSubmit();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (!id) return;
     const fetchBanner = async () => {
       try {
+        setLoading(true);
         const res = await apiClient.get(`/banner/${id}`);
         const data = res.data;
         setBanner(data);
@@ -46,8 +55,10 @@ export default function EditarBannerPage() {
             },
           ]);
         }
+        setLoading(false);
       } catch (err) {
         console.error("Erro ao buscar banner:", err);
+        setLoading(false);
       }
     };
     fetchBanner();
@@ -60,44 +71,54 @@ export default function EditarBannerPage() {
 
   const onConfirm = async () => {
     try {
-      let url_imagem = banner?.url_imagem; // Manter imagem atual
+      const values = await form.validateFields();
+      
+      await submitForm(
+        values,
+        async (formData) => {
+          let url_imagem = banner.url_imagem;
 
-      // Upload da nova imagem via Cloudinary se houver arquivo
-      if (fileList.length > 0 && fileList[0].originFileObj) {
-        url_imagem = await uploadBannerImage(
-          fileList[0].originFileObj,
-          formValues.descricao,
-          "1" // usuario_id
-        );
-        console.log('Nova imagem uploaded:', url_imagem);
-      }
+          // Upload da nova imagem via Cloudinary se houver arquivo
+          if (fileList.length > 0 && fileList[0].originFileObj) {
+            url_imagem = await uploadBannerImage(
+              fileList[0].originFileObj,
+              formData.descricao,
+              user?.id?.toString() || "1" // usuario_id do usuário logado
+            );
+          }
 
-      // Enviar dados para o backend sem arquivo
-      const bannerData = {
-        descricao: formValues.descricao,
-        usuario_id: 1,
-        ativo: true,
-        url_imagem
-      };
+          // Enviar dados para o backend sem arquivo
+          const bannerData = {
+            descricao: formData.descricao,
+            usuario_id: user?.id || 1,
+            url_imagem
+          };
 
-      const res = await apiClient.put(`/banner/${id}`, bannerData);
+          const res = await apiClient.put(`/banner/${id}`, bannerData);
 
-      if (res.status === 200) {
-        alert("Banner atualizado com sucesso!");
-        setIsConfirmModalVisible(false);
-        window.location.href = "/admin/cms-banner";
-      } else {
-        alert("Erro ao atualizar banner: " + (res.data?.error || "Desconhecido"));
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao enviar o formulário.");
+          if (res.status !== 200) {
+            throw new Error(res.data?.error || "Erro ao atualizar banner");
+          }
+
+          return res.data;
+        },
+        {
+          successMessage: "Banner atualizado com sucesso!",
+          onSuccess: () => {
+            setIsConfirmModalVisible(false);
+            window.location.href = "/admin/cms-banner";
+          },
+          requiredFields: ['descricao']
+        }
+      );
+    } catch (error) {
+      console.error("Erro na validação:", error);
     }
   };
 
   const onFinishFailed = (errorInfo) => console.log("Edit Failed:", errorInfo);
 
-  if (!banner) return <div>Carregando...</div>;
+  if (loading) return <SplashScreen />;
 
   return (
     <>
@@ -137,8 +158,8 @@ export default function EditarBannerPage() {
 
                 <FormButton
                   text="Salvar"
-                  onClick={() => setIsConfirmModalVisible(true)}
                   icon={<UploadOutlined />}
+                  loading={isLoading}
                 />
               </div>
             </div>

@@ -33,10 +33,22 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
     // Para publicidades, usar url_imagem; para outros, usar imagem
     const imageUrl = item.url_imagem || item.imagem;
     
-    if (!imageUrl) return "/images/casa.png";
+    console.log('🖼️ Card Image Debug:', {
+      itemId: item.id,
+      imageUrl,
+      type: getImageType(),
+      href_cms
+    });
+    
+    if (!imageUrl) {
+      console.log('⚠️ Nenhuma URL de imagem encontrada, usando fallback');
+      return "/images/casa.png";
+    }
     
     // Usar utilitário unificado para construir URL
-    return buildImageUrlWithProxy(imageUrl, getImageType());
+    const finalUrl = buildImageUrlWithProxy(imageUrl, getImageType());
+    console.log('🔗 URL final da imagem:', finalUrl);
+    return finalUrl;
   };
   
   const imageSrc = getImageSrc();
@@ -53,12 +65,18 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
   }, [item.id, item.url_imagem, item.imagem]);
 
   const onConfirmDelete = async () => {
-    if (!onDelete) return;
+    if (!onDelete) {
+      console.warn('⚠️ onDelete function not provided');
+      return;
+    }
     setIsProcessing(true);
+    console.log('🗑️ Card: Iniciando delete do item', item.id);
     try {
       await onDelete();
+      console.log('✅ Card: Delete concluído com sucesso');
     } catch (error) {
-      console.error("Falha ao deletar:", error);
+      console.error("❌ Card: Falha ao deletar:", error);
+      alert('Erro ao deletar item: ' + (error.message || 'Erro desconhecido'));
     } finally {
       setIsProcessing(false);
       setIsConfirmModalVisible(false);
@@ -66,12 +84,18 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
   };
 
   const handleToggle = async () => {
-    if (!onToggle) return;
+    if (!onToggle) {
+      console.warn('⚠️ onToggle function not provided');
+      return;
+    }
     setIsProcessing(true);
+    console.log('🔄 Card: Iniciando toggle do item', item.id, 'Status atual:', item.ativo);
     try {
       await onToggle();
+      console.log('✅ Card: Toggle concluído com sucesso');
     } catch (error) {
-      console.error("Erro ao alternar status:", error);
+      console.error("❌ Card: Erro ao alternar status:", error);
+      alert('Erro ao alterar status: ' + (error.message || 'Erro desconhecido'));
     } finally {
       setIsProcessing(false);
     }

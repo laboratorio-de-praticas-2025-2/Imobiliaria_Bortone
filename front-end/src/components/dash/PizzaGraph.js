@@ -2,62 +2,42 @@
 
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
-import { Row, Col } from "antd";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Spin } from "antd";
 
-// Registrar elementos necessários globalmente
-ChartJS.register(ArcElement, Tooltip, Legend);
-
-// Import dinâmico apenas do Doughnut
+// Import dinâmico do Doughnut Chart
 const Doughnut = dynamic(
   () => import("react-chartjs-2").then((mod) => mod.Doughnut),
   { ssr: false }
 );
 
-export default function RentalByRegion({ data, label, options, className }) {
+// Registrar os elementos do Chart.js (uma única vez)
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+export default function RentalByRegion({
+  data,
+  label,
+  options,
+  className,
+  loading,
+}) {
   const [chartData, setChartData] = useState(null);
-  const [isReady, setIsReady] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const chartRef = useRef(null);
   const containerRef = useRef(null);
 
+  // Aguarda montagem e define dados válidos
   useEffect(() => {
-    setIsMounted(true);
-    return () => setIsMounted(false);
-  }, []);
+    if (!data || !data.datasets) return;
 
-  useEffect(() => {
-    if (!isMounted) return;
+    const timer = setTimeout(() => {
+      const hasValidData = data.datasets.some(
+        (d) => Array.isArray(d.data) && d.data.length > 0
+      );
 
-    const checkReadiness = () => {
-      if (containerRef.current && data?.labels && data?.datasets) {
-        const rect = containerRef.current.getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0) {
-          const hasData = data.datasets.some(
-            (d) => d.data?.some((v) => v > 0)
-          );
-          if (hasData) {
-            setIsReady(true);
-            setChartData(data);
-          }
-        }
-      }
-    };
-
-    const timer = setTimeout(checkReadiness, 500);
-    window.addEventListener("resize", checkReadiness);
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("resize", checkReadiness);
-    };
-  }, [data, isMounted]);
-
-  useEffect(() => setIsReady(false), [data]);
-
-  const safeData =
-    data?.labels && data?.datasets
-      ? data
-      : {
+      if (hasValidData) {
+        setChartData(data);
+      } else {
+        // Evita loop infinito mostrando "sem dados"
+        setChartData({
           labels: ["Sem dados"],
           datasets: [
             {
@@ -67,18 +47,26 @@ export default function RentalByRegion({ data, label, options, className }) {
               cutout: "0%",
             },
           ],
-        };
+        });
+      }
+    }, 300);
 
+    return () => clearTimeout(timer);
+  }, [data]);
+
+  // Opções seguras para o gráfico
   const safeOptions = {
     ...options,
     responsive: true,
     maintainAspectRatio: false,
-    animation: { duration: isReady ? options?.animation?.duration || 300 : 0 },
+    animation: {
+      duration: 300,
+    },
     plugins: {
       ...options?.plugins,
       legend: {
         ...options?.plugins?.legend,
-        display: !!data?.labels?.length,
+        display: !!(chartData?.labels?.length > 0),
       },
     },
   };
@@ -95,12 +83,15 @@ export default function RentalByRegion({ data, label, options, className }) {
 
         <div className="items-center justify-items-center w-full h-full min-h-[200px]">
           <div className="w-fit h-full min-h-[180px] flex items-center justify-center">
-            {isReady ? (
+            {loading ? (
+              <Spin tip="Carregando gráfico..." />
+            ) : chartData ? (
               <Doughnut
-                ref={chartRef}
-                data={safeData}
+                data={chartData}
                 options={safeOptions}
-                key={JSON.stringify(data)}
+                key={JSON.stringify(chartData)}
+                width={250}
+                height={250}
               />
             ) : (
               <div className="flex items-center justify-center h-full">

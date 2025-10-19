@@ -5,6 +5,8 @@ import { IoClose } from "react-icons/io5";
 import Relatorio from "@/components/relatorio/Relatorio.js";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
+import { exportRelatorioToPdfV2 } from "@/utils/pdfUtilsV2";
+import dayjs from "dayjs";
 
 export default function PdfModal({
   loading,
@@ -14,9 +16,10 @@ export default function PdfModal({
   onShare,
   onPrint,
   toast,
-  reportData,
+  reportData,  
   record,
-  componentToPrintRef
+  componentToPrintRef,
+  dateRange
 }) {
   return (
     (loading || pdfReady) && (
@@ -32,18 +35,14 @@ export default function PdfModal({
             ) : (
               <div className="w-full h-full flex justify-center items-center overflow-hidden">
                 <div
-                  className="scale-40 
-                max-h-[900px]:scale-65
-                max-h-[800px]:scale-60
-                max-h-[700px]:scale-55
-                max-h-[600px]:scale-50
+                  className="scale-40 sm:scale-35 md:scale-40 lg:scale-45 xl:scale-50
                 h-[297mm] w-[210mm] shadow-lg 
                 [&_.page]:m-0 [&_.page]:p-[15mm] [&_.page]:box-border
-                [&_.page:first-child]:block [&_.page:first-child]:h-full                
+                [&_.page:first-child]:h-full                
                 [&_.page:not(:first-child)]:invisible"
                 >
                   <div ref={componentToPrintRef}>
-                    <Relatorio data={reportData} />
+                    <Relatorio data={reportData} secoes={record.secoes} dateRange={dateRange} />
                   </div>
                 </div>
               </div>
@@ -63,33 +62,37 @@ export default function PdfModal({
                     PDF Gerado com sucesso
                   </p>
                   <p className="md:text-2xl text-lg font-bold">
-                    {record.pdfNome}.pdf
+                    {record?.pdfNome || 'Relatorio'}.pdf
                   </p>
                   <div className="flex gap-6">
-                    <span className="md:text-xl">2 MB</span>
-                    <span className="md:text-xl">2 Páginas</span>
+                    {dateRange && (
+                      <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+                        <strong>Período: </strong>
+                        {dayjs(dateRange.startDate).format('DD/MM/YYYY')} - {dayjs(dateRange.endDate).format('DD/MM/YYYY')}
+                      </div>
+                    )}
                   </div>
                   <div className="flex gap-3 mt-7 justify-between">
                     <button
-                      className="bg-white !text-[var(--primary)] !font-bold md:px-10 px-3 rounded-full"
+                      className="bg-white !text-[var(--primary)] !font-bold md:px-10 px-3 rounded-full cursor-pointer"
                       onClick={onDownload}
                     >
                       Baixar PDF
                     </button>
-                    <button
-                      className="border-2 border-white rounded-full p-3 !text-white"
+                    {/* <button
+                      className="border-2 border-white rounded-full p-3 !text-white cursor-pointer"
                       onClick={onShare}
                     >
                       <IoShareSocialSharp size={20} />
-                    </button>
+                    </button> */}
                     <button
-                      className="border-2 border-white rounded-full p-3 !text-white"
+                      className="border-2 border-white rounded-full p-3 !text-white cursor-pointer"
                       onClick={onPrint}
                     >
                       <BsFillPrinterFill size={20} />
                     </button>
                     <button
-                      className="border-2 border-white rounded-full p-3 !text-white"
+                      className="border-2 border-white rounded-full p-3 !text-white cursor-pointer"
                       onClick={onClose}
                     >
                       <IoClose size={20} />

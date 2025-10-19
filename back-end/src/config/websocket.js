@@ -9,20 +9,27 @@ export default function initWebSocket(server) {
     "http://localhost:3000",
     "http://localhost:3001", 
     "https://imobiliaria-bortone.vercel.app",
-    // Adicionar outras origens permitidas em produção
+    // Padrões Vercel para branches
+    "https://imobiliaria-bortone-git-",
+    "https://imobiliaria-bortone-",
   ];
 
   const wss = new WebSocketServer({ server });
   wss.on("connection", (ws, req) => {
     const origin = req.headers.origin;
+    console.log(`🔌 Nova conexão WebSocket - Origin: ${origin}`);
     
     // Em desenvolvimento, permitir qualquer origem local
     const isDevelopment = process.env.NODE_ENV === 'development';
     const isOriginAllowed = isDevelopment || 
       !origin || 
-      ALLOWED_ORIGINS.some(allowedOrigin => origin.startsWith(allowedOrigin));
+      ALLOWED_ORIGINS.some(allowedOrigin => {
+        // Permitir exata ou que comece com (para URLs do Vercel)
+        return origin === allowedOrigin || origin.startsWith(allowedOrigin);
+      });
     
     if (!isOriginAllowed) {
+      console.log(`❌ Origin não permitida: ${origin}`);
       ws.close(1008, "Origin não permitida");
       return;
     }
@@ -32,6 +39,8 @@ export default function initWebSocket(server) {
     ws.on("pong", () => {
       ws.isAlive = true;
     });
+
+
 
     // Para teste: permitir conexão sem JWT se for modo de desenvolvimento
     const urlParams = new URLSearchParams(req.url.split('?')[1]);
@@ -51,30 +60,51 @@ export default function initWebSocket(server) {
 
     // Autenticação JWT obrigatória
     if (!token) {
+      console.log("❌ Token não fornecido na URL");
       ws.close(4001, "Token JWT obrigatório");
       return;
     }
+
+    // Debug: verificar se JWT_SECRET está definido
+    if (!process.env.JWT_SECRET) {
+      console.error("❌ ERRO CRÍTICO: JWT_SECRET não está definido no ambiente!");
+      ws.close(4002, "Configuração inválida do servidor");
+      return;
+    }
+
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       ws.userData = decoded;
       handleConnection(ws);
     } catch (error) {
-      ws.close(4002, "Token inválido");
+      console.log(`❌ Erro na verificação do token: ${error.message}`);
+      console.log(`🔍 Tipo de erro: ${error.name}`);
+      if (error.name === 'TokenExpiredError') {
+        console.log(`⏰ Token expirou em: ${error.expiredAt}`);
+        ws.close(4002, "Token expirado");
+      } else if (error.name === 'JsonWebTokenError') {
+        console.log(`🔍 Mensagem de erro JWT: ${error.message}`);
+        ws.close(4002, "Token inválido");
+      } else {
+        console.log(`🔍 Erro desconhecido: ${error.stack}`);
+        ws.close(4002, "Erro ao validar token");
+      }
     }
   });
 
-  // Heartbeat: enviar ping a cada 15 minutos
+  // Heartbeat: enviar ping a cada 30 segundos
   setInterval(() => {
     wss.clients.forEach((ws) => {
       if (ws.isAlive === false) {
+        console.log("🔌 Terminando conexão WebSocket inativa");
         ws.terminate();
         return;
       }
       ws.isAlive = false;
       ws.ping();
     });
-  }, 900000); // 15 minutos
+  }, 30000); // 30 segundos
 
   console.log("✅ WebSocket inicializado");
 };

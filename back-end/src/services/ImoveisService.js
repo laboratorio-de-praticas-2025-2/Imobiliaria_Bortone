@@ -82,7 +82,7 @@ export const update = async (id, imovelData, casaData) => {
 
     await imovel.update(imovelData, { transaction });
 
-    if (imovelData.tipo.toLowerCase() === 'casa') {
+    if (imovelData.tipo && imovelData.tipo.toLowerCase() === 'casa') {
       const casa = await Casa.findOne({ where: { imovel_id: id }, transaction });
       if (casa) {
         await casa.update(casaData, { transaction });
@@ -105,8 +105,8 @@ export const update = async (id, imovelData, casaData) => {
 };
 
 /**
- * @param {number} id - The ID of the entity to delete.
- * @returns {boolean} True if the entity was deleted, false otherwise.
+ * @param {number} id
+ * @returns {boolean} 
  */
 export const deleteImovel = async (id) => {
   const transaction = await connection.transaction(); 
@@ -135,13 +135,184 @@ export const deleteImovel = async (id) => {
 /**
  * @param {Object} filters 
  * @param {Object} filterMappings
- * @param {Array<Object>} include 
- * @returns {Array<Object>} 
+ * @param {Array<Object>} include export const getFilteredEntities = async (..., includeMetadata = true) => {
+   // ...
+   if (includeMetadata) {
+     // ... returns { entities, totalCount, totalPages, ... }
+   }
+   
+   return entities;
+ };
+ 
+ * @param {Object} ordering 
+ * @param {Object} pagination 
+ * @param {boolean} includeMetadata 
+ * @returns {Array<Object>|Object}
  */
-export const getFilteredEntities = async (filters, filterMappings, include = []) => {
+export const getFilteredEntities = async (filters, filterMappings, include = [], ordering = {}, pagination = {}, includeMetadata = true) => {
   try {
     const where = {};
     const casaWhere = {};
+    
+    // Debug logging
+    console.log("Service - Received filters:", filters);
+    console.log("Service - Filter mappings:", filterMappings);
+
+
+    const handlePlusFilter = (value, field) => {
+      if (typeof value === 'string' && value.includes('+')) {
+        const baseNumber = parseInt(value, 10);
+        if (!isNaN(baseNumber)) {
+          casaWhere[field] = {
+            [Op.gte]: baseNumber 
+          };
+          return true;
+        }
+      }
+      return false;
+    };
+
+    for (const key in filterMappings) {
+      const mapping = filterMappings[key];
+      const filterValue = filters[key];
+
+
+      if (mapping.type === 'search' && filterValue) {
+        where[mapping.field] = {
+          [Op.like]: `%${filterValue}%`
+        };
+        continue;
+      }
+
+
+      const minKey = `min${key.charAt(0).toUpperCase() + key.slice(1)}`;
+      const maxKey = `max${key.charAt(0).toUpperCase() + key.slice(1)}`;
+      const minValue = filters[minKey];
+      const maxValue = filters[maxKey];
+
+      if (mapping.model === 'casa') {
+
+         if (['quartos', 'banheiros', 'vagas'].includes(mapping.field)) {
+          if (filterValue) {
+            if (mapping.type === 'plus') {
+              
+              if (!handlePlusFilter(filterValue, mapping.field)) {
+                
+                casaWhere[mapping.field] = parseInt(filterValue, 10);
+              }
+            } else {
+              // Regular exact match
+              casaWhere[mapping.field] = parseInt(filterValue, 10);
+            }
+          }
+          continue;
+        }
+
+        if (filterValue !== undefined) {
+          casaWhere[mapping.field] = filterValue;
+        }
+      } else if (mapping.type === 'exact') {
+        if (filterValue !== undefined) {
+          where[mapping.field] = filterValue;
+          console.log(`Service - Applied exact filter: ${mapping.field} = ${filterValue}`);
+        }
+      } else if (mapping.type === 'range') {
+        if (minValue !== undefined && maxValue !== undefined) {
+          where[mapping.field] = { [Op.between]: [minValue, maxValue] };
+        } else if (minValue !== undefined) {
+          where[mapping.field] = { [Op.gte]: minValue };
+        } else if (maxValue !== undefined) {
+          where[mapping.field] = { [Op.lte]: maxValue };
+        }
+      }
+    }
+
+    if (Object.keys(casaWhere).length > 0) {
+      let casaInclude = include.find(item => item.model === Casa && item.as === 'casa');
+
+      if (casaInclude) {
+        casaInclude.where = { ...casaInclude.where, ...casaWhere };
+      } else {
+        include.push({ model: Casa, as: 'casa', where: casaWhere });
+      }
+    }
+    
+    const order = [];
+    if (ordering.orderBy && ordering.orderDirection) {
+      const validOrderBy = ['data_cadastro', 'endereco', 'preco', 'area'];
+      const validOrderDirection = ['ASC', 'DESC'];
+      
+      console.log("Service - Ordering received:", ordering);
+      console.log("Service - Valid orderBy:", validOrderBy.includes(ordering.orderBy));
+      console.log("Service - Valid orderDirection:", validOrderDirection.includes(ordering.orderDirection.toUpperCase()));
+      
+      if (validOrderBy.includes(ordering.orderBy) && validOrderDirection.includes(ordering.orderDirection.toUpperCase())) {
+        order.push([ordering.orderBy, ordering.orderDirection.toUpperCase()]);
+        console.log("Service - Order applied:", order);
+      }
+    }
+
+    console.log("Service - Final order configuration:", order);
+    console.log("Service - Final where clause:", where);
+
+    // Handle pagination
+    const page = parseInt(pagination.page) || 1;
+    const limit = parseInt(pagination.pagination) || 10;
+    const offset = (page - 1) * limit;
+
+    console.log("Service - Pagination:", { page, limit, offset });    
+    
+    let entities = await Imovel.findAll({
+      where: where,
+      include: include,
+      order: order.length > 0 ? order : undefined,
+      limit: limit,
+      offset: offset,
+    });
+
+    if (includeMetadata) {
+      
+      console.log("Count include:", JSON.stringify(include, null, 2));
+
+      const totalCount = await Imovel.count({
+        where: where,
+        
+        
+        include: include.length > 0 ? include : undefined,
+        distinct: true,
+        col: 'id'
+      });
+      
+      const totalPages = Math.ceil(totalCount / limit);
+      return {
+        entities,
+        totalCount,
+        totalPages,
+        currentPage: page,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1
+      };
+    }
+
+    
+    return entities;
+  } catch (error) {
+    throw new Error(`Erro ao buscar entidades filtradas: ${error.message}`);
+  }
+};
+
+/**
+ * @param {Object} filters 
+ * @param {Object} filterMappings 
+ * @param {Array<Object>} include 
+ * @param {Object} paginationParams 
+ * @returns {Object} 
+ */
+export const getFilteredEntitiesWithPagination = async (filters, filterMappings, include = [], paginationParams = {}) => {
+  try {
+    const where = {};
+    const casaWhere = {};
+    const { limit, offset } = paginationParams;
 
     for (const key in filterMappings) {
       const mapping = filterMappings[key];
@@ -180,12 +351,17 @@ export const getFilteredEntities = async (filters, filterMappings, include = [])
       }
     }
 
-    const entities = await Imovel.findAll({
+    const result = await Imovel.findAndCountAll({
       where: where,
       include: include,
+      limit: limit,
+      offset: offset,
+      order: [['data_cadastro', 'DESC'], ['id', 'DESC']], // Ordenar por mais recentes primeiro
+      distinct: true, // Para contar corretamente com JOINs
     });
-    return entities;
+
+    return result;
   } catch (error) {
-    throw new Error(`Erro ao buscar entidades filtradas: ${error.message}`);
+    throw new Error(`Erro ao buscar entidades filtradas com paginação: ${error.message}`);
   }
 };

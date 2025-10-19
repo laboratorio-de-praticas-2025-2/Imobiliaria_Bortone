@@ -7,7 +7,7 @@ import PesquisaAvancadaUser from "./pesquisaavancada/PesquisaAvancada";
 import PesquisaAvancada from "@/components/cms/form/PesquisaAvancada";
 const { Search } = Input;
 
-const optionsOrder = ["Ordem alfabetica", "Data de inclusão"];
+const defaultOptionsOrder = ["Ordem alfabetica", "Data de inclusão"];
 
 export default function TableHeader({
   onSearch,
@@ -19,7 +19,11 @@ export default function TableHeader({
   updateFilterData,
   type = undefined,
   newButton = true,
+  modalNewButton = false,
+  onClick,
   onAdvancedFilter,
+  onAdvancedSearch,
+  optionsOrder = defaultOptionsOrder, // Permite ordens customizadas
 }) {
   return (
     <div
@@ -27,7 +31,7 @@ export default function TableHeader({
         newButton ? "justify-between" : "justify-end"
       } items-center px-4 py-4 bg-[var(--primary)] rounded-t-4xl gap-2`}
     >
-      {newButton && (
+      {newButton && !modalNewButton && (
         <Link
           href={href}
           className="!bg-white !text-[var(--primary)] !font-bold !border-0 !rounded-full h-[34.4px] !text-lg !px-4 hover:!bg-[var(--primary)] hover:!text-white transition-colors flex gap-2 justify-center items-center"
@@ -36,9 +40,24 @@ export default function TableHeader({
           {buttonIcon && <span className="md:ml-2">{buttonIcon}</span>}
         </Link>
       )}
+
+      {modalNewButton &&
+        newButton &&(
+          <button
+            onClick={onClick}
+            className="!bg-white !text-[var(--primary)] !font-bold !border-0 !rounded-full h-[34.4px] !text-lg !px-4 hover:!bg-[var(--primary)] hover:!text-white transition-colors flex gap-2 justify-center items-center"
+          >
+            <p className="hidden md:flex">{buttonText}</p>
+            {buttonIcon && <span className="md:ml-2">{buttonIcon}</span>}
+          </button>
+        )}
+
       <div className="flex md:gap-4 gap-2 items-center">
+
         {type === "user" && <PesquisaAvancadaUser onAdvancedFilter={onAdvancedFilter} />}
-        {type === "imovel" && <PesquisaAvancada />}
+        {type === "imovel" && <PesquisaAvancada filterData={filterData} updateFilterData={updateFilterData} onAdvancedSearch={onAdvancedSearch} />}
+
+
         <Search
           placeholder="Pesquisar"
           onSearch={onSearch}

@@ -4,18 +4,41 @@ import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
 import PdfModal from "@/components/cms/table/PdfModal";
 import RelatorioTable from "@/components/cms/table/RelatorioTable";
-import { getRelatorioData, getAllRelatorios } from "@/services/RelatorioService"; // API para listagem
+import {
+  getRelatorioData,
+  getAllRelatorios,
+} from "@/services/RelatorioService"; // API para listagem
 import { message } from "antd";
 import { useRef, useState, useEffect } from "react";
 import { exportRelatorioToPdf } from "@/utils/pdfUtils";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { useReactToPrint } from "react-to-print";
+import html2canvas from "html2canvas-pro";
+import html2pdf from "html2pdf.js";
+import DateRangeModal from "@/components/relatorio/DateRange";
+
+// Funções auxiliares para compartilhamento
+const generatePdfAsBlob = async (element) => {
+  const { exportRelatorioToPdfAsBlobDOM } = await import("@/utils/pdfUtils");
+  return await exportRelatorioToPdfAsBlobDOM(element);
+};
+
+const downloadPdfBlob = (blob, fileName) => {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
 
 export default function TableRelatorio() {
   const [toast, setToast] = useState(null);
   const showToast = (fileName, action) => {
     setToast({ fileName, action });
-    setTimeout(() => setToast(null), 3000);
+    setTimeout(() => setToast(null), 2000);
   };
 
   const [loading, setLoading] = useState(false); // Para PDF
@@ -26,8 +49,14 @@ export default function TableRelatorio() {
   const [reportData, setReportData] = useState(null);
   const [record, setRecord] = useState();
   const [reportList, setReportList] = useState([]);
-  const pageSize = 5;
+  const [dateRangeModalVisible, setDateRangeModalVisible] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState();
+  const [selectedDates, setSelectedDates] = useState({
+    startDate: null,
+    endDate: null,
+  });
 
+  const pageSize = 5;
   const componentToPrintRef = useRef();
 
   // Busca os relatórios da API
@@ -43,7 +72,6 @@ export default function TableRelatorio() {
       .finally(() => setLoadingTable(false));
   }, []);
 
-
   // Colunas da tabela
   const columns = [
     {
@@ -53,19 +81,18 @@ export default function TableRelatorio() {
     },
     {
       title: "Ação",
-      dataIndex: "tipo",
-      key: "tipo",
+      dataIndex: "nome",
+      key: "nome",
       render: (text, record) => (
         <button
-          className="bg-[var(--primary)] !text-white font-bold py-2 px-4 rounded-full"
-          onClick={() => gerarPDF(record)}
+          className="bg-[var(--primary)] !text-white font-bold py-2 px-4 rounded-full cursor-pointer"
+          onClick={() => openDateRangeModal(record)}
         >
           Gerar PDF
         </button>
       ),
     },
   ];
-
 
   // Filtragem e paginação
   const filteredData = reportList.filter((item) =>
@@ -77,21 +104,35 @@ export default function TableRelatorio() {
 
   const onSearch = (value) => setFilterData({ search: value });
 
-  // Função para gerar PDF
-  const gerarPDF = (record) => {
+  const openDateRangeModal = (record) => {
+    setSelectedRecord(record);
+    setDateRangeModalVisible(true);
+  };
+
+  // Confirma as datas e abre o PDF
+  const handleDateRangeConfirm = async (startDate, endDate, record) => {
+    setSelectedDates({ startDate, endDate });
+    setDateRangeModalVisible(false);
     setLoading(true);
     setPdfReady(false);
 
-    getRelatorioData(record.tipo)
-      .then((res) => {
-        setReportData(res);
-        setRecord(record);
-      })
-      .catch((err) => console.error(err))
-      .finally(() => {
-        setLoading(false);
-        setPdfReady(true);
-      });
+    try {
+      const res = await getRelatorioData(record.secoes, startDate, endDate);
+      setReportData(res);
+      setRecord(selectedRecord);
+      setPdfReady(true);
+    } catch (err) {
+      console.error(err);
+      message.error("Erro ao gerar relatório com as datas selecionadas");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fecha o modal de datas
+  const handleDateRangeCancel = () => {
+    setDateRangeModalVisible(false);
+    setSelectedRecord(null);
   };
 
   // Handlers do PDF Modal
@@ -108,31 +149,57 @@ export default function TableRelatorio() {
   };
 
   const handleShare = async () => {
-    const fileUrl = "/relatorios/Relatorio-Exemplo.pdf";
-    const fileName = "Relatorio-Exemplo.pdf";
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Compartilhar PDF",
-          text: `Confira o relatório: ${fileName}`,
-          url: fileUrl,
-        });
-        message.success("PDF compartilhado com sucesso!");
-      } catch (err) {
-        message.error("Falha ao compartilhar o PDF");
+    try {
+      if (!componentToPrintRef.current) throw new Error("Ref não encontrado");
+
+      const fileName = record ? `${record.pdfNome}.pdf` : "Relatorio.pdf";
+
+      // Gera o PDF como blob (snapshot idêntico ao preview)
+      const pdfBlob = await generatePdfAsBlob(componentToPrintRef.current);
+
+      // Preferir compartilhar ARQUIVO via Web Share API
+      if (navigator.share && navigator.canShare) {
+        try {
+          const file = new File([pdfBlob], fileName, {
+            type: "application/pdf",
+          });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title: "Relatório - Imobiliária Bortone",
+              text: `Confira o relatório: ${fileName}`,
+              files: [file],
+            });
+            showToast(fileName, "Compartilhamento concluído");
+            return;
+          }
+        } catch (shareErr) {
+          console.warn(
+            "Falha ao compartilhar arquivo, aplicando fallback:",
+            shareErr
+          );
+        }
       }
-    } else {
-      navigator.clipboard.writeText(window.location.origin + fileUrl);
-      message.info("Link copiado para a área de transferência!");
+
+      // Fallback definitivo: baixar o arquivo quando não houver suporte a compartilhar arquivos
+      downloadPdfBlob(pdfBlob, fileName);
+      message.info(
+        "Dispositivo não suporta compartilhar arquivos. PDF baixado."
+      );
+      showToast(fileName, "PDF baixado para compartilhar");
+    } catch (error) {
+      console.error("Erro ao compartilhar PDF:", error);
+      message.error("Falha ao compartilhar o PDF");
     }
-    showToast("Relatorio-Exemplo.pdf", "Compartilhamento concluído");
   };
 
   const handlePrint = useReactToPrint({
     contentRef: componentToPrintRef,
     documentTitle: record ? record.pdfNome : "Relatorio",
     onAfterPrint: () => {
-      showToast(record ? `${record.pdfNome}.pdf` : "Relatorio.pdf", "Impressão concluída!");
+      showToast(
+        record ? `${record.pdfNome}.pdf` : "Relatorio.pdf",
+        "Impressão concluída!"
+      );
     },
   });
 
@@ -144,6 +211,14 @@ export default function TableRelatorio() {
       <Sidebar />
       <div className="md:ml-20">
         <CMS.Body title="Relatórios">
+          {/* Modal de seleção de datas */}
+          <DateRangeModal
+            visible={dateRangeModalVisible}
+            onCancel={handleDateRangeCancel}
+            onConfirm={(start, end) =>
+              handleDateRangeConfirm(start, end, selectedRecord)
+            }
+          />
           <PdfModal
             loading={loading}
             pdfReady={pdfReady}
@@ -155,12 +230,15 @@ export default function TableRelatorio() {
             reportData={reportData}
             record={record}
             componentToPrintRef={componentToPrintRef}
+            dateRange={selectedDates}
           />
           {toast && (
             <div className="fixed top-5 right-0 w-120 bg-white shadow-lg rounded-xl p-4 flex items-start gap-3 z-50 animate-slide-in">
               <IoCheckmarkCircle className="text-green-500 text-2xl mt-1" />
               <div className="flex flex-col">
-                <span className="font-bold text-gray-800">{toast.fileName}</span>
+                <span className="font-bold text-gray-800">
+                  {toast.fileName}
+                </span>
                 <span className="text-gray-500 text-sm">{toast.action}</span>
               </div>
             </div>

@@ -16,7 +16,7 @@ export default function SliderArea({ value = [200, 20000], onChange}) {
     if (Array.isArray(val)) {
       setMinValue(val[0]);
       setMaxValue(val[1]);
-      onChange?.(val); // 🔥 Notify parent
+      onChange?.(val);
     }
   };
 

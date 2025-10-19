@@ -18,10 +18,7 @@ export default function ChatLauncherClient({ token }) {
   }, []);
 
   const handleChatClick = () => {
-    if (!isUserLoggedIn) {
-      alert("Você precisa fazer login para usar o chat de suporte.");
-      return;
-    }
+    // Agora sempre abre o modal, a verificação de login será feita dentro do modal
     setIsChatOpen((s) => !s);
   };
 
@@ -30,18 +27,18 @@ export default function ChatLauncherClient({ token }) {
     return null;
   }
 
-  // Só renderizar o botão se o usuário estiver logado
-  if (!isUserLoggedIn) {
-    return null;
-  }
-
   return (
     <>
-      {/* passa handler ao botão */}
+      {/* sempre mostra o botão de chat */}
       <ChatButton onClick={handleChatClick} />
 
       {/* mostra modal quando aberto */}
-      {isChatOpen && <ChatModal onClose={() => setIsChatOpen(false)} />}
+      {isChatOpen && (
+        <ChatModal 
+          onClose={() => setIsChatOpen(false)} 
+          isLoggedIn={isUserLoggedIn}
+        />
+      )}
     </>
   );
 }

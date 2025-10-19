@@ -7,6 +7,7 @@ import { MdPersonAdd } from "react-icons/md";
 import Sidebar from "@/components/cms/Sidebar";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import PasswordField from "@/components/cms/form/fields/PasswordField";
 
 export default function CriarUserPage() {
   const router = useRouter();
@@ -19,7 +20,6 @@ export default function CriarUserPage() {
         ativo: 1, // ou 0
       };
   const res = await axios.post(`${apiUrl}/user/cms-register`, payload);
-      console.log("Usuário cadastrado com sucesso:", res.data);
       router.push("/admin/cms-usuarios");
     } catch (err) {
       console.error("Erro ao cadastrar usuário:", err);
@@ -71,7 +71,7 @@ export default function CriarUserPage() {
                   className="!w-[100%]"
                 />
 
-                <TextField
+                <PasswordField
                   name="senha"
                   label="Senha"
                   placeholder="Senha do Usuário"

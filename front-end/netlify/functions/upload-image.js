@@ -38,8 +38,6 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    console.log('🔍 NETLIFY CLOUDINARY UPLOAD FUNCTION');   
-    console.log('Event headers:', event.headers);
 
     // Verificar se Cloudinary está configurado    
     if (!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
@@ -51,7 +49,6 @@ exports.handler = async (event, context) => {
       };
     }
 
-    console.log('Event body length:', event.body?.length);
 
     // Verificar se o body é válido
     if (!event.body) {
@@ -94,11 +91,7 @@ exports.handler = async (event, context) => {
       };
     }
 
-    console.log('📎 Upload iniciado:', {
-      fileName,
-      imageType,
-      fileSize: file.length
-    });
+   
 
     // Mapear tipos para pastas no Cloudinary
     const folderMap = {
@@ -124,11 +117,7 @@ exports.handler = async (event, context) => {
       ]
     });
 
-    console.log('✅ Upload bem-sucedido para Cloudinary:', {
-      public_id: uploadResponse.public_id,
-      url: uploadResponse.secure_url,
-      folder
-    });
+
 
     // Retornar resultado
     return {

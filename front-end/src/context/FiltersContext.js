@@ -5,7 +5,7 @@ const FiltersContext = createContext();
 const INITIAL_FILTERS = {
   casa: {
     tipo: "Casa",
-    preco: [25000, 200000],
+    preco: [25000, 1000000],
     area: [0, 200],
     quartos: null,
     banheiros: null,
@@ -16,7 +16,7 @@ const INITIAL_FILTERS = {
   },
   terreno: {
     tipo: "Terreno",
-    preco: [25000, 200000],
+    preco: [25000, 1000000],
     area: [0, 200],
     murado: false,
     localizacao: [],
@@ -27,10 +27,13 @@ export function FiltersProvider({ children }) {
   const [filters, setFilters] = useState(INITIAL_FILTERS);
 
   const updateFilters = (type, newFilters) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [type]: { ...prevFilters[type], ...newFilters },
-    }));
+    setFilters((prevFilters) => {
+      const updatedFilters = {
+        ...prevFilters,
+        [type]: { ...prevFilters[type], ...newFilters },
+      };
+      return updatedFilters;
+    });
   };
 
   // Função para obter apenas os filtros de casa ou terreno para enviar à API

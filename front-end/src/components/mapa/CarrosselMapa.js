@@ -5,6 +5,7 @@ import { handleImgError } from "@/utils/imageFallback";
 import Card from "./CardMapa";
 
 export default function CarrosselMapa({ imoveis }) {
+  
   const carouselRef = useRef(null);
   const sheetRef = useRef(null);
 
@@ -114,9 +115,15 @@ export default function CarrosselMapa({ imoveis }) {
               </div>
             )}
             <div className="flex flex-col gap-4">
-              {imoveis.map((imovel) => (
-                <Card key={imovel.id} imovel={imovel} />
-              ))}
+              {imoveis && imoveis.length > 0 ? (
+                imoveis.map((imovel) => (
+                  <Card key={imovel.id} imovel={imovel} />
+                ))
+              ) : (
+                <div className="text-center text-gray-500 py-8">
+                  Nenhum imóvel encontrado
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -133,9 +140,15 @@ export default function CarrosselMapa({ imoveis }) {
           onMouseMove={handleMouseMove}
         >
           <div className="flex gap-4 px-4 flex-row">
-            {imoveis.map((imovel) => (
-              <Card key={imovel.id} imovel={imovel} />
-            ))}
+            {imoveis && imoveis.length > 0 ? (
+              imoveis.map((imovel) => (
+                <Card key={imovel.id} imovel={imovel} />
+              ))
+            ) : (
+              <div className="text-center text-gray-500 py-8 whitespace-nowrap">
+                Nenhum imóvel encontrado
+              </div>
+            )}
           </div>
         </div>
       )}

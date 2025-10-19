@@ -28,8 +28,6 @@ export default function HomeNavbar({ className }) {
     if (authToken && userInfo) {
       try {
         const parsedUser = JSON.parse(userInfo);
-        console.log("🔍 Dados do usuário carregados:", parsedUser);
-        console.log("🔍 Nível do usuário:", parsedUser.nivel, "Tipo:", typeof parsedUser.nivel);
         setUser(parsedUser);
         setIsLoggedIn(true);
       } catch (error) {
@@ -68,7 +66,15 @@ export default function HomeNavbar({ className }) {
         className="hidden md:flex navbar-desktop"
       >
         {/* Logo */}
-        <Link href="/">
+        <Link 
+          href="/"
+          onClick={() => {
+            // Marcar navegação para home se estivermos no admin
+            if (window.location.pathname.includes('/admin')) {
+              sessionStorage.setItem('navigatedFromAdmin', 'true');
+            }
+          }}
+        >
           <Image
             src="/images/LogoPreta.svg"
             alt="Logo Bortone"
@@ -81,7 +87,17 @@ export default function HomeNavbar({ className }) {
         {/* Links de navegação */}
         <div className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
-            <Link href={link.path} key={link.name} className="h-full">
+            <Link 
+              href={link.path} 
+              key={link.name} 
+              className="h-full"
+              onClick={() => {
+                // Marcar navegação para home se estivermos no admin
+                if (link.path === '/' && window.location.pathname.includes('/admin')) {
+                  sessionStorage.setItem('navigatedFromAdmin', 'true');
+                }
+              }}
+            >
               <Flex
                 gap="middle"
                 align="center"
@@ -96,22 +112,7 @@ export default function HomeNavbar({ className }) {
 
         {/* Botões lado a lado */}
         <div className="flex items-center gap-2 relative">
-          {/* Botão "Contate-nos" */}
-          <button className="pl-5">
-            <Link
-              href="https://wa.me/5513996720645" // substitua pelo número
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-2 rounded-full border-2 border-white bg-transparent
-                         !text-white hover:!bg-white hover:!text-[#304383] transition-colors duration-200
-                         whitespace-nowrap flex-shrink-0 min-w-[130px] text-sm md:text-base
-                         flex items-center justify-center no-underline"
-              style={{ height: "40px" }}
-            >
-              Contate-nos
-            </Link>
-          </button>
-
+        
           {/* Botão do usuário */}
           {isLoggedIn ? (
             <div className="relative inline-block text-left">
@@ -313,19 +314,6 @@ export default function HomeNavbar({ className }) {
             </Link>
           </Flex>
 
-          {/* Botão "Contate-nos" - Mobile */}
-          <Link
-            href="https://wa.me/5513996720645" // substitua pelo número
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-2 rounded-full border-2 border-[#304383] bg-transparent 
-                       text-[#304383] hover:!bg-[#304383] hover:!text-white transition-colors duration-200
-                       whitespace-nowrap flex-shrink-0 min-w-[130px] text-base
-                       flex items-center justify-center no-underline "
-            style={{ height: "40px" }}
-          >
-            Contate-nos
-          </Link>
         </div>
 
         <div className="flex flex-col p-6 gap-6">
