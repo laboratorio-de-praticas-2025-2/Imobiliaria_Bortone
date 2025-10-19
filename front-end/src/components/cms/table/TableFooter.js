@@ -42,9 +42,9 @@ export default function TableFooter({
       : 1;
 
   return (
-    <div className="bg-white p-4 py- relative flex items-center md:flex-row flex-col">
+    <div className="bg-white p-4 relative flex items-center justify-between md:flex-row flex-col gap-4">
       {/* Paginação centralizada */}
-      <div className="md:absolute md:left-1/2 md:-translate-x-1/2">
+      <div className="md:absolute md:left-1/2 md:-translate-x-1/2 order-2 md:order-1">
         <Pagination
           className="custom-pagination-cms"
           current={safeCurrentPage}
@@ -53,16 +53,16 @@ export default function TableFooter({
           onChange={handleChange}
           showSizeChanger={false}
           itemRender={(_, type, originalElement) => {
-            if (type === "prev") return <span>&lt; Anterior</span>;
-            if (type === "next") return <span>Próximo &gt;</span>;
+            if (type === "prev") return <span>‹ Anterior</span>;
+            if (type === "next") return <span>Próximo ›</span>;
             return originalElement;
           }}
         />
       </div>
 
       {/* Texto alinhado à direita */}
-      <div className="md:ml-auto">
-        <p className="text-sm text-gray-600">
+      <div className="md:ml-auto order-1 md:order-2">
+        <p className="text-sm text-gray-600 whitespace-nowrap">
           Exibindo {total > 0 ? start : 0} - {end} de {total}{" "}
           registros
         </p>
