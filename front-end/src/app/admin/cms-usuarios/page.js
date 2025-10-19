@@ -138,7 +138,8 @@ export default function Page() {
       return bDate - aDate;
     });
   }
-  // fatia os usuários conforme página
+
+  // Paginação manual dos dados
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const paginatedUsers = orderedUsers.slice(startIndex, endIndex);
@@ -214,8 +215,9 @@ export default function Page() {
 
             {/* Paginador controlado */}
             <CMS.TableFooter
-              postsData={users}
+              totalItems={orderedUsers.length}
               pageSize={pageSize}
+              currentPage={currentPage}
               onPageChange={setCurrentPage}
             />
           </CMS.Table>

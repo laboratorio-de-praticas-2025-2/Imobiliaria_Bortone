@@ -100,7 +100,8 @@ export default function TableRelatorio() {
   );
 
   const startIndex = (currentPage - 1) * pageSize;
-  const paginatedData = filteredData.slice(startIndex, startIndex + pageSize);
+  const endIndex = startIndex + pageSize;
+  const paginatedData = filteredData.slice(startIndex, endIndex);
 
   const onSearch = (value) => setFilterData({ search: value });
 
@@ -259,8 +260,9 @@ export default function TableRelatorio() {
               />
             </CMS.TableBody>
             <CMS.TableFooter
-              postsData={filteredData}
+              totalItems={filteredData.length}
               pageSize={pageSize}
+              currentPage={currentPage}
               onPageChange={setCurrentPage}
             />
           </CMS.Table>
