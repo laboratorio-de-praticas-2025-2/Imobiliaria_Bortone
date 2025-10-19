@@ -270,6 +270,11 @@ export default function Page() {
     });
   }
 
+  // Paginação manual dos dados
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedAgendamentos = orderedAgendamentos.slice(startIndex, endIndex);
+
   const onSearch = (value) => {
     if (!value) {
       setAgendamentos(allAgendamentos);
@@ -314,7 +319,7 @@ export default function Page() {
             <CMS.TableBody table={true}>
               <Table
                 columns={columns}
-                dataSource={orderedAgendamentos}
+                dataSource={paginatedAgendamentos}
                 rowKey="id"
                 pagination={false}
                 className={styles.customTable}

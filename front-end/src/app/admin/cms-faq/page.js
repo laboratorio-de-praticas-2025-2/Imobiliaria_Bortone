@@ -181,6 +181,11 @@ export default function Page() {
     });
   }
 
+  // Paginação manual dos dados
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedAnswers = orderedAnswers.slice(startIndex, endIndex);
+
   const onSearch = (value) => {
     if (!value) {
       setAnswers(allAnswers);
@@ -228,7 +233,7 @@ export default function Page() {
             <CMS.TableBody table={true}>
               <Table
                 columns={columns}
-                dataSource={orderedAnswers}
+                dataSource={paginatedAnswers}
                 rowKey="id"
                 pagination={false}
                 className={styles.customTable}

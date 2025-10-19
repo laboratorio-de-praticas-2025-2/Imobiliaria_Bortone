@@ -195,16 +195,21 @@ if (filterData.order === "Ordem alfabetica") {
   orderedData.sort((a, b) => a.nome.localeCompare(b.nome));
 }
 
-// 3. Table com pagination={false}
+// 3. IMPORTANTE: Fatiar os dados manualmente para paginação
+const startIndex = (currentPage - 1) * pageSize;
+const endIndex = startIndex + pageSize;
+const paginatedData = orderedData.slice(startIndex, endIndex);
+
+// 4. Table com dados paginados e pagination={false}
 <Table
-  dataSource={orderedData}
+  dataSource={paginatedData}
   rowKey="id"
   pagination={false}
   className={styles.customTable}
   scroll={{ x: "max-content" }}
 />
 
-// 4. TableFooter customizado
+// 5. TableFooter customizado (usa total de dados ORDENADOS, não paginados)
 <CMS.TableFooter
   totalItems={orderedData.length}
   pageSize={pageSize}
@@ -212,6 +217,11 @@ if (filterData.order === "Ordem alfabetica") {
   onPageChange={setCurrentPage}
 />
 ```
+
+**⚠️ IMPORTANTE:** 
+- A `Table` recebe apenas os dados da página atual (`paginatedData`)
+- O `TableFooter` recebe o total de itens antes da paginação (`orderedData.length`)
+- Isso garante que a Table mostre apenas 10 itens, mas o TableFooter saiba quantas páginas criar
 
 ### Para Telas com Cards
 
@@ -407,6 +417,54 @@ Para cada tela, validar:
 4. ✅ **Visual inconsistente** - Algumas telas usavam paginação do Antd, outras TableFooter
 5. ✅ **Ordenação quebrava paginação** - ordenação era aplicada após slice
 6. ✅ **Navegação não funcionava** - Estado de página não era controlado corretamente
+7. ✅ **Table mostrava todos os dados** - Faltava o slice dos dados antes de passar para a Table
+
+## Problemas Comuns e Soluções
+
+### ❌ Problema: Table mostra todos os itens em uma página
+
+**Sintoma:** A tabela exibe 50 itens, mas o TableFooter diz "Exibindo 1-10 de 50"
+
+**Causa:** Table está recebendo todos os dados (`orderedData`) em vez dos dados paginados
+
+**Solução:**
+```javascript
+// ❌ ERRADO - Table recebe todos os dados
+<Table dataSource={orderedData} pagination={false} />
+
+// ✅ CORRETO - Table recebe apenas dados da página atual
+const paginatedData = orderedData.slice(startIndex, endIndex);
+<Table dataSource={paginatedData} pagination={false} />
+```
+
+### ❌ Problema: Paginação não muda os dados exibidos
+
+**Sintoma:** Clicar em "Próximo" muda o número da página mas os dados não mudam
+
+**Causa:** Table está recebendo dados que não mudam quando `currentPage` muda
+
+**Solução:**
+```javascript
+// ✅ O slice deve usar currentPage
+const startIndex = (currentPage - 1) * pageSize;
+const endIndex = startIndex + pageSize;
+const paginatedData = orderedData.slice(startIndex, endIndex);
+```
+
+### ❌ Problema: TableFooter mostra número errado de páginas
+
+**Sintoma:** TableFooter diz "Exibindo 1-10 de 10" quando há 50 registros
+
+**Causa:** `totalItems` está recebendo o tamanho dos dados paginados
+
+**Solução:**
+```javascript
+// ❌ ERRADO
+<CMS.TableFooter totalItems={paginatedData.length} />
+
+// ✅ CORRETO
+<CMS.TableFooter totalItems={orderedData.length} />
+```
 
 ## Melhorias Futuras
 

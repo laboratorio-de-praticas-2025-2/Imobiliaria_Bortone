@@ -139,6 +139,11 @@ export default function Page() {
     });
   }
 
+  // Paginação manual dos dados
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedUsers = orderedUsers.slice(startIndex, endIndex);
+
   const onSearch = (value) => {
     if (!value) {
       setUsers(allUsers);
@@ -200,7 +205,7 @@ export default function Page() {
             <CMS.TableBody table={true}>
               <Table
                 columns={columns}
-                dataSource={orderedUsers}
+                dataSource={paginatedUsers}
                 rowKey="id"
                 pagination={false}
                 className={styles.customTable}
