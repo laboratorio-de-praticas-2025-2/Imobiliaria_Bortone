@@ -118,12 +118,11 @@ header {
 }
 
 /* Classe para textos que vêm da API com formatação padronizada */
-.api-text {
-  font-size: 1rem;
+.api-text {  
   color: #010101;
   font-weight: 600;
   margin-left: 6px;
-  display: inline-block;
+  font-style: italic;
 }
 
 /* Legendas de gráficos/eixos */
