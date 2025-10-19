@@ -1,0 +1,2315 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../ChatSystemBugFixes/">
+      
+      
+      
+      <link rel="icon" href="../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>📄 Correção de Paginação - Imobiliaria Bortone - Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#correcao-da-paginacao-nas-telas-de-admin" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Imobiliaria Bortone - Documentação" class="md-header__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imobiliaria Bortone - Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              📄 Correção de Paginação
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Imobiliaria Bortone - Documentação" class="md-nav__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    Imobiliaria Bortone - Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RegrasGerais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EstruturaDePastas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estrutura de Pastas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Frontend
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Frontend
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/NextConfig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/middlwareIndexacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Middleware
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/ManualdeTags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual de Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/NETLIFY_SETUP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Setup Netlify
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/Documentacao_Contatos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contatos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Imagens
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Imagens
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MIGRATION_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ⭐ Migração Cloudinary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CloudinaryArchitecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🏗️ Arquitetura Cloudinary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/imagens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Imagens
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AnaliseArquiteturaImagens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise de Problemas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ProblemasImagensVercel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Problemas Vercel (Histórico)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    APIs Core
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            APIs Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/AlgoritmoDeRecomendacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/BancoDeDados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dashboard
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Agendamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agendamento de Visitação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/AgendamentoSMTP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidade do envio de e-mail
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Mapa
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Mapa
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaAPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaImplementacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Implementação da API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaResumo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resumo da Integração
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Chat
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Chat
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/ChatSuporte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chat Suporte
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WebSocket-Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Rodar o WebSocket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UserLevels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Níveis de Usuário
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ChatSystemBugFixes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relatório de Correção de Bugs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema Admin CMS
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema Admin CMS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    📄 Correção de Paginação
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    📄 Correção de Paginação
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#data-19102025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data: 19/10/2025
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problema-identificado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problema Identificado
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solucao-implementada" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solução Implementada
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solução Implementada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analise-da-implementacao-correta-cms-imoveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Análise da Implementação Correta (cms-imoveis)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#padrao-visual-unificado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Padrão Visual Unificado
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#correcoes-realizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Correções Realizadas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Correções Realizadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-cms-agendamentos-front-endsrcappadmincms-agendamentospagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. cms-agendamentos (/front-end/src/app/admin/cms-agendamentos/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-cms-usuarios-front-endsrcappadmincms-usuariospagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. cms-usuarios (/front-end/src/app/admin/cms-usuarios/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cms-faq-front-endsrcappadmincms-faqpagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. cms-faq (/front-end/src/app/admin/cms-faq/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cms-banner-front-endsrcappadmincms-bannerpagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. cms-banner (/front-end/src/app/admin/cms-banner/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-cms-publicacoes-front-endsrcappadmincms-publicacoespagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. cms-publicacoes (/front-end/src/app/admin/cms-publicacoes/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-cms-publicidades-front-endsrcappadmincms-publicidadespagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. cms-publicidades (/front-end/src/app/admin/cms-publicidades/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-relatorios-front-endsrcappadminrelatoriospagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. relatorios (/front-end/src/app/admin/relatorios/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#padroes-estabelecidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Padrões Estabelecidos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Padrões Estabelecidos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#para-telas-com-antd-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Para Telas com Antd Table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#para-telas-com-cards" class="md-nav__link">
+    <span class="md-ellipsis">
+      Para Telas com Cards
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#componente-tablefooter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Componente TableFooter
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Componente TableFooter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#props-aceitas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Props Aceitas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uso-correto" class="md-nav__link">
+    <span class="md-ellipsis">
+      Uso Correto
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visual-unificado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual Unificado
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquivos-modificados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Arquivos Modificados
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beneficios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefícios
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reset-de-pagina-ao-filtrar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reset de Página ao Filtrar
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-o-tablefooter-funciona" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como o TableFooter Funciona
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testes-recomendados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testes Recomendados
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cenarios-de-teste" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cenários de Teste
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cenários de Teste">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-navegacao-basica" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Navegação Básica
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-busca-com-paginacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Busca com Paginação
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-ordenacao-com-paginacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Ordenação com Paginação
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problemas-corrigidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problemas Corrigidos
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problemas-comuns-e-solucoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problemas Comuns e Soluções
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Problemas Comuns e Soluções">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problema-table-mostra-todos-os-itens-em-uma-pagina" class="md-nav__link">
+    <span class="md-ellipsis">
+      ❌ Problema: Table mostra todos os itens em uma página
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problema-paginacao-nao-muda-os-dados-exibidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      ❌ Problema: Paginação não muda os dados exibidos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problema-tablefooter-mostra-numero-errado-de-paginas" class="md-nav__link">
+    <span class="md-ellipsis">
+      ❌ Problema: TableFooter mostra número errado de páginas
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#melhorias-futuras" class="md-nav__link">
+    <span class="md-ellipsis">
+      Melhorias Futuras
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#data-19102025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data: 19/10/2025
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problema-identificado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problema Identificado
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solucao-implementada" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solução Implementada
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solução Implementada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analise-da-implementacao-correta-cms-imoveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Análise da Implementação Correta (cms-imoveis)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#padrao-visual-unificado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Padrão Visual Unificado
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#correcoes-realizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Correções Realizadas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Correções Realizadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-cms-agendamentos-front-endsrcappadmincms-agendamentospagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. cms-agendamentos (/front-end/src/app/admin/cms-agendamentos/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-cms-usuarios-front-endsrcappadmincms-usuariospagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. cms-usuarios (/front-end/src/app/admin/cms-usuarios/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cms-faq-front-endsrcappadmincms-faqpagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. cms-faq (/front-end/src/app/admin/cms-faq/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cms-banner-front-endsrcappadmincms-bannerpagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. cms-banner (/front-end/src/app/admin/cms-banner/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-cms-publicacoes-front-endsrcappadmincms-publicacoespagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. cms-publicacoes (/front-end/src/app/admin/cms-publicacoes/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-cms-publicidades-front-endsrcappadmincms-publicidadespagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. cms-publicidades (/front-end/src/app/admin/cms-publicidades/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-relatorios-front-endsrcappadminrelatoriospagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. relatorios (/front-end/src/app/admin/relatorios/page.js)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#padroes-estabelecidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Padrões Estabelecidos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Padrões Estabelecidos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#para-telas-com-antd-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Para Telas com Antd Table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#para-telas-com-cards" class="md-nav__link">
+    <span class="md-ellipsis">
+      Para Telas com Cards
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#componente-tablefooter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Componente TableFooter
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Componente TableFooter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#props-aceitas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Props Aceitas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uso-correto" class="md-nav__link">
+    <span class="md-ellipsis">
+      Uso Correto
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visual-unificado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual Unificado
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquivos-modificados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Arquivos Modificados
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beneficios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefícios
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reset-de-pagina-ao-filtrar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reset de Página ao Filtrar
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-o-tablefooter-funciona" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como o TableFooter Funciona
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testes-recomendados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testes Recomendados
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cenarios-de-teste" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cenários de Teste
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cenários de Teste">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-navegacao-basica" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Navegação Básica
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-busca-com-paginacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Busca com Paginação
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-ordenacao-com-paginacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Ordenação com Paginação
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problemas-corrigidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problemas Corrigidos
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problemas-comuns-e-solucoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problemas Comuns e Soluções
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Problemas Comuns e Soluções">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problema-table-mostra-todos-os-itens-em-uma-pagina" class="md-nav__link">
+    <span class="md-ellipsis">
+      ❌ Problema: Table mostra todos os itens em uma página
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problema-paginacao-nao-muda-os-dados-exibidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      ❌ Problema: Paginação não muda os dados exibidos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problema-tablefooter-mostra-numero-errado-de-paginas" class="md-nav__link">
+    <span class="md-ellipsis">
+      ❌ Problema: TableFooter mostra número errado de páginas
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#melhorias-futuras" class="md-nav__link">
+    <span class="md-ellipsis">
+      Melhorias Futuras
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="correcao-da-paginacao-nas-telas-de-admin">Correção da Paginação nas Telas de Admin</h1>
+<h2 id="data-19102025">Data: 19/10/2025</h2>
+<h2 id="problema-identificado">Problema Identificado</h2>
+<p>A paginação estava funcionando corretamente apenas na tela <code>cms-imoveis</code>. As demais telas de admin apresentavam problemas de paginação, onde:</p>
+<ol>
+<li>Os dados não eram paginados corretamente</li>
+<li>A navegação entre páginas não funcionava adequadamente</li>
+<li>Havia inconsistência na forma como o componente <code>TableFooter</code> era utilizado</li>
+<li>Props <code>currentPage</code> estava faltando em várias implementações</li>
+</ol>
+<h2 id="solucao-implementada">Solução Implementada</h2>
+<h3 id="analise-da-implementacao-correta-cms-imoveis">Análise da Implementação Correta (cms-imoveis)</h3>
+<p>A tela <code>cms-imoveis</code> utilizava o padrão correto:
+- Table do Antd com <code>pagination={false}</code> (paginação desabilitada)
+- Componente <code>TableFooter</code> customizado abaixo da table
+- Props corretas no <code>TableFooter</code>: <code>totalItems</code>, <code>currentPage</code>, <code>pageSize</code>, <code>onPageChange</code>
+- Estado <code>currentPage</code> controlado explicitamente</p>
+<h3 id="padrao-visual-unificado">Padrão Visual Unificado</h3>
+<p>Todas as telas agora seguem o <strong>mesmo design visual</strong> do cms-imoveis:
+- <strong>Table sem paginação integrada</strong> do Antd
+- <strong>TableFooter customizado</strong> com visual consistente
+- <strong>Mesma experiência de usuário</strong> em todas as telas</p>
+<h3 id="correcoes-realizadas">Correções Realizadas</h3>
+<h4 id="1-cms-agendamentos-front-endsrcappadmincms-agendamentospagejs">1. <strong>cms-agendamentos</strong> (<code>/front-end/src/app/admin/cms-agendamentos/page.js</code>)</h4>
+<p><strong>Antes:</strong>
+- Fatiava dados manualmente com <code>slice()</code>
+- Passava apenas <code>postsData</code> para o <code>TableFooter</code>
+- Faltava prop <code>currentPage</code> no <code>TableFooter</code></p>
+<p><strong>Depois:</strong>
+- Removido o fatiamento manual dos dados
+- Table passa todos os dados ordenados com <code>pagination={false}</code>
+- <code>TableFooter</code> com props corretas: <code>totalItems</code>, <code>currentPage</code>, <code>pageSize</code>, <code>onPageChange</code></p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Antes</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">paginatedAgendamentos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">orderedAgendamentos</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startIndex</span><span class="p">,</span><span class="w"> </span><span class="nx">endIndex</span><span class="p">);</span>
+
+<span class="o">&lt;</span><span class="nx">Table</span><span class="w"> </span><span class="nx">dataSource</span><span class="o">=</span><span class="p">{</span><span class="nx">paginatedAgendamentos</span><span class="p">}</span><span class="w"> </span><span class="nx">pagination</span><span class="o">=</span><span class="p">{</span><span class="kc">false</span><span class="p">}</span><span class="w"> </span><span class="o">/&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">CMS</span><span class="p">.</span><span class="nx">TableFooter</span>
+<span class="w">  </span><span class="nx">postsData</span><span class="o">=</span><span class="p">{</span><span class="nx">agendamentos</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">pageSize</span><span class="o">=</span><span class="p">{</span><span class="nx">pageSize</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">onPageChange</span><span class="o">=</span><span class="p">{</span><span class="nx">setCurrentPage</span><span class="p">}</span>
+<span class="err">/&gt;</span>
+
+<span class="c1">// Depois</span>
+<span class="c1">// Dados completos passados para a Table</span>
+<span class="o">&lt;</span><span class="nx">Table</span><span class="w"> </span><span class="nx">dataSource</span><span class="o">=</span><span class="p">{</span><span class="nx">orderedAgendamentos</span><span class="p">}</span><span class="w"> </span><span class="nx">pagination</span><span class="o">=</span><span class="p">{</span><span class="kc">false</span><span class="p">}</span><span class="w"> </span><span class="o">/&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">CMS</span><span class="p">.</span><span class="nx">TableFooter</span>
+<span class="w">  </span><span class="nx">totalItems</span><span class="o">=</span><span class="p">{</span><span class="nx">orderedAgendamentos</span><span class="p">.</span><span class="nx">length</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">pageSize</span><span class="o">=</span><span class="p">{</span><span class="nx">pageSize</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">currentPage</span><span class="o">=</span><span class="p">{</span><span class="nx">currentPage</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">onPageChange</span><span class="o">=</span><span class="p">{</span><span class="nx">setCurrentPage</span><span class="p">}</span>
+<span class="err">/&gt;</span>
+</code></pre></div>
+<h4 id="2-cms-usuarios-front-endsrcappadmincms-usuariospagejs">2. <strong>cms-usuarios</strong> (<code>/front-end/src/app/admin/cms-usuarios/page.js</code>)</h4>
+<p>Mesma correção aplicada:
+- Removido <code>paginatedUsers</code> 
+- Table usa <code>orderedUsers</code> completo com <code>pagination={false}</code>
+- <code>TableFooter</code> com props corretas</p>
+<h4 id="3-cms-faq-front-endsrcappadmincms-faqpagejs">3. <strong>cms-faq</strong> (<code>/front-end/src/app/admin/cms-faq/page.js</code>)</h4>
+<p>Mesma correção aplicada:
+- Removido <code>paginatedAnswers</code>
+- Table usa <code>orderedAnswers</code> completo com <code>pagination={false}</code>
+- <code>TableFooter</code> com props corretas</p>
+<h4 id="4-cms-banner-front-endsrcappadmincms-bannerpagejs">4. <strong>cms-banner</strong> (<code>/front-end/src/app/admin/cms-banner/page.js</code>)</h4>
+<p><strong>Usa Cards</strong> - mantém paginação manual mas com padronização:
+- Adicionada lógica de ordenação antes da paginação
+- Corrigido <code>TableFooter</code> para usar <code>totalItems</code> em vez de <code>postsData</code>
+- Adicionado prop <code>currentPage</code></p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Ordenação adicionada</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">orderedBanners</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[...</span><span class="nx">banners</span><span class="p">];</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">filterData</span><span class="p">.</span><span class="nx">order</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;Ordem alfabetica&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">orderedBanners</span><span class="p">.</span><span class="nx">sort</span><span class="p">((</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">titleA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">a</span><span class="p">.</span><span class="nx">titulo</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">titleB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">titulo</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">titleA</span><span class="p">.</span><span class="nx">localeCompare</span><span class="p">(</span><span class="nx">titleB</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">filterData</span><span class="p">.</span><span class="nx">order</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;Data de inclusão&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">orderedBanners</span><span class="p">.</span><span class="nx">sort</span><span class="p">((</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">aDate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">createdAt</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">a</span><span class="p">.</span><span class="nx">data_inclusao</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">bDate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">createdAt</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">data_inclusao</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">bDate</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">aDate</span><span class="p">;</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">}</span>
+
+<span class="c1">// Paginação manual</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">startIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">currentPage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">pageSize</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">endIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">startIndex</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">pageSize</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">paginatedBanners</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">orderedBanners</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startIndex</span><span class="p">,</span><span class="w"> </span><span class="nx">endIndex</span><span class="p">);</span>
+
+<span class="c1">// Props corretas no TableFooter</span>
+<span class="o">&lt;</span><span class="nx">CMS</span><span class="p">.</span><span class="nx">TableFooter</span>
+<span class="w">  </span><span class="nx">totalItems</span><span class="o">=</span><span class="p">{</span><span class="nx">orderedBanners</span><span class="p">.</span><span class="nx">length</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">pageSize</span><span class="o">=</span><span class="p">{</span><span class="nx">pageSize</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">currentPage</span><span class="o">=</span><span class="p">{</span><span class="nx">currentPage</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">onPageChange</span><span class="o">=</span><span class="p">{</span><span class="nx">setCurrentPage</span><span class="p">}</span>
+<span class="err">/&gt;</span>
+</code></pre></div>
+<h4 id="5-cms-publicacoes-front-endsrcappadmincms-publicacoespagejs">5. <strong>cms-publicacoes</strong> (<code>/front-end/src/app/admin/cms-publicacoes/page.js</code>)</h4>
+<p><strong>Usa Cards</strong> - similar ao cms-banner:
+- Removida função <code>getCurrentPageItems()</code>
+- Criada variável <code>paginatedPublicacoes</code> com ordenação e paginação
+- Corrigido <code>TableFooter</code> para usar <code>totalItems</code> e <code>currentPage</code></p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Ordenação e paginação consolidadas</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">orderedPublicacoes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[...</span><span class="nx">filteredPublicacoes</span><span class="p">];</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">filterData</span><span class="p">.</span><span class="nx">order</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">filterData</span><span class="p">.</span><span class="nx">order</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;Ordem alfabetica&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">orderedPublicacoes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">orderedPublicacoes</span><span class="p">.</span><span class="nx">sort</span><span class="p">((</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">a</span><span class="p">.</span><span class="nx">titulo</span><span class="p">.</span><span class="nx">localeCompare</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">titulo</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">filterData</span><span class="p">.</span><span class="nx">order</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;Data de publicação&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">orderedPublicacoes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">orderedPublicacoes</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span>
+<span class="w">      </span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">data_publicacao</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">data_publicacao</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">startIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">currentPage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">pagination</span><span class="p">.</span><span class="nx">itemsPerPage</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">endIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">startIndex</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">pagination</span><span class="p">.</span><span class="nx">itemsPerPage</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">paginatedPublicacoes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">orderedPublicacoes</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startIndex</span><span class="p">,</span><span class="w"> </span><span class="nx">endIndex</span><span class="p">);</span>
+</code></pre></div>
+<h4 id="6-cms-publicidades-front-endsrcappadmincms-publicidadespagejs">6. <strong>cms-publicidades</strong> (<code>/front-end/src/app/admin/cms-publicidades/page.js</code>)</h4>
+<p><strong>Usa Cards</strong> - similar ao cms-banner e cms-publicacoes:
+- Removida função <code>getCurrentPageItems()</code>
+- Criada variável <code>paginatedPublicidades</code> com ordenação e paginação
+- Corrigido <code>TableFooter</code> para usar <code>totalItems</code> e <code>currentPage</code></p>
+<h4 id="7-relatorios-front-endsrcappadminrelatoriospagejs">7. <strong>relatorios</strong> (<code>/front-end/src/app/admin/relatorios/page.js</code>)</h4>
+<p><strong>Usa Table customizada</strong> (RelatorioTable):
+- Corrigido cálculo de <code>endIndex</code> para usar <code>startIndex + pageSize</code>
+- Corrigido <code>TableFooter</code> para usar <code>totalItems</code> em vez de <code>postsData</code>
+- Adicionado prop <code>currentPage</code> ao <code>TableFooter</code></p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Antes</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">paginatedData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">filteredData</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startIndex</span><span class="p">,</span><span class="w"> </span><span class="nx">startIndex</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">pageSize</span><span class="p">);</span>
+
+<span class="o">&lt;</span><span class="nx">CMS</span><span class="p">.</span><span class="nx">TableFooter</span>
+<span class="w">  </span><span class="nx">postsData</span><span class="o">=</span><span class="p">{</span><span class="nx">filteredData</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">pageSize</span><span class="o">=</span><span class="p">{</span><span class="nx">pageSize</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">onPageChange</span><span class="o">=</span><span class="p">{</span><span class="nx">setCurrentPage</span><span class="p">}</span>
+<span class="err">/&gt;</span>
+
+<span class="c1">// Depois</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">endIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">startIndex</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">pageSize</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">paginatedData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">filteredData</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startIndex</span><span class="p">,</span><span class="w"> </span><span class="nx">endIndex</span><span class="p">);</span>
+
+<span class="o">&lt;</span><span class="nx">CMS</span><span class="p">.</span><span class="nx">TableFooter</span>
+<span class="w">  </span><span class="nx">totalItems</span><span class="o">=</span><span class="p">{</span><span class="nx">filteredData</span><span class="p">.</span><span class="nx">length</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">pageSize</span><span class="o">=</span><span class="p">{</span><span class="nx">pageSize</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">currentPage</span><span class="o">=</span><span class="p">{</span><span class="nx">currentPage</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">onPageChange</span><span class="o">=</span><span class="p">{</span><span class="nx">setCurrentPage</span><span class="p">}</span>
+<span class="err">/&gt;</span>
+</code></pre></div>
+<h2 id="padroes-estabelecidos">Padrões Estabelecidos</h2>
+<h3 id="para-telas-com-antd-table">Para Telas com Antd Table</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1. Estado</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">currentPage</span><span class="p">,</span><span class="w"> </span><span class="nx">setCurrentPage</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">pageSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10</span><span class="p">;</span>
+
+<span class="c1">// 2. Ordenar os dados</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">orderedData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[...</span><span class="nx">data</span><span class="p">];</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">filterData</span><span class="p">.</span><span class="nx">order</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;Ordem alfabetica&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">orderedData</span><span class="p">.</span><span class="nx">sort</span><span class="p">((</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">a</span><span class="p">.</span><span class="nx">nome</span><span class="p">.</span><span class="nx">localeCompare</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">nome</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="c1">// 3. IMPORTANTE: Fatiar os dados manualmente para paginação</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">startIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">currentPage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">pageSize</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">endIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">startIndex</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">pageSize</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">paginatedData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">orderedData</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startIndex</span><span class="p">,</span><span class="w"> </span><span class="nx">endIndex</span><span class="p">);</span>
+
+<span class="c1">// 4. Table com dados paginados e pagination={false}</span>
+<span class="o">&lt;</span><span class="nx">Table</span>
+<span class="w">  </span><span class="nx">dataSource</span><span class="o">=</span><span class="p">{</span><span class="nx">paginatedData</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">rowKey</span><span class="o">=</span><span class="s2">&quot;id&quot;</span>
+<span class="w">  </span><span class="nx">pagination</span><span class="o">=</span><span class="p">{</span><span class="kc">false</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="nx">styles</span><span class="p">.</span><span class="nx">customTable</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">scroll</span><span class="o">=</span><span class="p">{{</span><span class="w"> </span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;max-content&quot;</span><span class="w"> </span><span class="p">}}</span>
+<span class="err">/&gt;</span>
+
+<span class="c1">// 5. TableFooter customizado (usa total de dados ORDENADOS, não paginados)</span>
+<span class="o">&lt;</span><span class="nx">CMS</span><span class="p">.</span><span class="nx">TableFooter</span>
+<span class="w">  </span><span class="nx">totalItems</span><span class="o">=</span><span class="p">{</span><span class="nx">orderedData</span><span class="p">.</span><span class="nx">length</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">pageSize</span><span class="o">=</span><span class="p">{</span><span class="nx">pageSize</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">currentPage</span><span class="o">=</span><span class="p">{</span><span class="nx">currentPage</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">onPageChange</span><span class="o">=</span><span class="p">{</span><span class="nx">setCurrentPage</span><span class="p">}</span>
+<span class="err">/&gt;</span>
+</code></pre></div>
+<p><strong>⚠️ IMPORTANTE:</strong> 
+- A <code>Table</code> recebe apenas os dados da página atual (<code>paginatedData</code>)
+- O <code>TableFooter</code> recebe o total de itens antes da paginação (<code>orderedData.length</code>)
+- Isso garante que a Table mostre apenas 10 itens, mas o TableFooter saiba quantas páginas criar</p>
+<h3 id="para-telas-com-cards">Para Telas com Cards</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1. Estado</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">currentPage</span><span class="p">,</span><span class="w"> </span><span class="nx">setCurrentPage</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">pageSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">8</span><span class="p">;</span><span class="w"> </span><span class="c1">// ou 12</span>
+
+<span class="c1">// 2. Ordenar os dados</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">orderedData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[...</span><span class="nx">data</span><span class="p">];</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">filterData</span><span class="p">.</span><span class="nx">order</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;Ordem alfabetica&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">orderedData</span><span class="p">.</span><span class="nx">sort</span><span class="p">((</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">a</span><span class="p">.</span><span class="nx">titulo</span><span class="p">.</span><span class="nx">localeCompare</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">titulo</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="c1">// 3. Fatiar dados manualmente</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">startIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">currentPage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">pageSize</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">endIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">startIndex</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">pageSize</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">paginatedData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">orderedData</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startIndex</span><span class="p">,</span><span class="w"> </span><span class="nx">endIndex</span><span class="p">);</span>
+
+<span class="c1">// 4. Renderizar cards paginados</span>
+<span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2&quot;</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="p">{</span><span class="nx">paginatedData</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">item</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">Card</span><span class="w"> </span><span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="w"> </span><span class="nx">item</span><span class="o">=</span><span class="p">{</span><span class="nx">item</span><span class="p">}</span><span class="w"> </span><span class="o">/&gt;</span>
+<span class="w">  </span><span class="p">))}</span>
+<span class="o">&lt;</span><span class="err">/div&gt;</span>
+
+<span class="c1">// 5. TableFooter customizado</span>
+<span class="o">&lt;</span><span class="nx">CMS</span><span class="p">.</span><span class="nx">TableFooter</span>
+<span class="w">  </span><span class="nx">totalItems</span><span class="o">=</span><span class="p">{</span><span class="nx">orderedData</span><span class="p">.</span><span class="nx">length</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">pageSize</span><span class="o">=</span><span class="p">{</span><span class="nx">pageSize</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">currentPage</span><span class="o">=</span><span class="p">{</span><span class="nx">currentPage</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">onPageChange</span><span class="o">=</span><span class="p">{</span><span class="nx">setCurrentPage</span><span class="p">}</span>
+<span class="err">/&gt;</span>
+</code></pre></div>
+<h2 id="componente-tablefooter">Componente TableFooter</h2>
+<h3 id="props-aceitas">Props Aceitas</h3>
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">TableFooter</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">totalItems</span><span class="p">,</span><span class="w">   </span><span class="c1">// ✅ Número total de itens (RECOMENDADO)</span>
+<span class="w">  </span><span class="nx">postsData</span><span class="p">,</span><span class="w">    </span><span class="c1">// ⚠️ Array de dados (LEGADO - evitar usar)</span>
+<span class="w">  </span><span class="nx">pageSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">currentPage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">onPageChange</span><span class="p">,</span>
+<span class="p">})</span>
+</code></pre></div>
+<h3 id="uso-correto">Uso Correto</h3>
+<p><strong>✅ Recomendado:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">CMS</span><span class="p">.</span><span class="nx">TableFooter</span>
+<span class="w">  </span><span class="nx">totalItems</span><span class="o">=</span><span class="p">{</span><span class="nx">orderedData</span><span class="p">.</span><span class="nx">length</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">pageSize</span><span class="o">=</span><span class="p">{</span><span class="nx">pageSize</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">currentPage</span><span class="o">=</span><span class="p">{</span><span class="nx">currentPage</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">onPageChange</span><span class="o">=</span><span class="p">{</span><span class="nx">setCurrentPage</span><span class="p">}</span>
+<span class="err">/&gt;</span>
+</code></pre></div></p>
+<p><strong>❌ Evitar (props incompletos):</strong>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">CMS</span><span class="p">.</span><span class="nx">TableFooter</span>
+<span class="w">  </span><span class="nx">postsData</span><span class="o">=</span><span class="p">{</span><span class="nx">data</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">pageSize</span><span class="o">=</span><span class="p">{</span><span class="nx">pageSize</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">onPageChange</span><span class="o">=</span><span class="p">{</span><span class="nx">setCurrentPage</span><span class="p">}</span>
+<span class="w">  </span><span class="c1">// ❌ Falta currentPage</span>
+<span class="err">/&gt;</span>
+</code></pre></div></p>
+<h2 id="visual-unificado">Visual Unificado</h2>
+<p>Todas as telas agora usam o <strong>mesmo componente TableFooter</strong> que:</p>
+<p>✅ Mostra "Exibindo X - Y de Z registros"<br />
+✅ Botões "&lt; Anterior" e "Próximo &gt;"<br />
+✅ Números de página clicáveis<br />
+✅ Design consistente em todo o sistema<br />
+✅ Mesma experiência de usuário  </p>
+<h2 id="arquivos-modificados">Arquivos Modificados</h2>
+<ol>
+<li><code>/front-end/src/app/admin/cms-agendamentos/page.js</code></li>
+<li><code>/front-end/src/app/admin/cms-usuarios/page.js</code></li>
+<li><code>/front-end/src/app/admin/cms-faq/page.js</code></li>
+<li><code>/front-end/src/app/admin/cms-banner/page.js</code></li>
+<li><code>/front-end/src/app/admin/cms-publicacoes/page.js</code></li>
+<li><code>/front-end/src/app/admin/cms-publicidades/page.js</code></li>
+<li><code>/front-end/src/app/admin/relatorios/page.js</code></li>
+</ol>
+<h2 id="beneficios">Benefícios</h2>
+<ol>
+<li><strong>Consistência Visual</strong>: Todas as telas têm o mesmo design de paginação</li>
+<li><strong>Experiência Unificada</strong>: Usuário encontra o mesmo controle em todas as páginas</li>
+<li><strong>Manutenibilidade</strong>: Um único componente para manter e atualizar</li>
+<li><strong>Performance</strong>: Table do Antd gerencia a renderização eficientemente</li>
+<li><strong>Funcionalidade Completa</strong>: Paginação funcionando corretamente em todas as telas</li>
+</ol>
+<h2 id="reset-de-pagina-ao-filtrar">Reset de Página ao Filtrar</h2>
+<p>⚠️ <strong>Importante</strong>: Sempre resetar para página 1 ao aplicar filtros ou busca:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">onSearch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">setCurrentPage</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span><span class="w"> </span><span class="c1">// ← Essencial!</span>
+<span class="w">  </span><span class="nx">setFilterData</span><span class="p">((</span><span class="nx">prev</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">({</span>
+<span class="w">    </span><span class="p">...</span><span class="nx">prev</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">searchTerm</span><span class="o">:</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">  </span><span class="p">}));</span>
+<span class="p">};</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">handleSelectOrder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">setCurrentPage</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span><span class="w"> </span><span class="c1">// ← Essencial!</span>
+<span class="w">  </span><span class="nx">setFilterData</span><span class="p">((</span><span class="nx">prev</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">({</span>
+<span class="w">    </span><span class="p">...</span><span class="nx">prev</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">order</span><span class="o">:</span><span class="w"> </span><span class="nx">value</span><span class="p">,</span>
+<span class="w">  </span><span class="p">}));</span>
+<span class="p">};</span>
+</code></pre></div>
+<h2 id="como-o-tablefooter-funciona">Como o TableFooter Funciona</h2>
+<p>O componente <code>TableFooter</code> calcula internamente:</p>
+<ol>
+<li><strong>Range de itens</strong>: Calcula "Exibindo 1-10 de 50"</li>
+<li><strong>Total de páginas</strong>: <code>Math.ceil(totalItems / pageSize)</code></li>
+<li><strong>Renderização dos botões</strong>: Anterior/Próximo habilitados/desabilitados</li>
+<li><strong>Números de página</strong>: Renderiza botões clicáveis para cada página</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1">// Dentro do TableFooter</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">totalItems</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="nx">postsData</span><span class="o">?</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">calculateRange</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">currentPage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">pageSize</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">currentPage</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">pageSize</span><span class="p">,</span><span class="w"> </span><span class="nx">total</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">start</span><span class="p">,</span><span class="w"> </span><span class="nx">end</span><span class="w"> </span><span class="p">};</span>
+<span class="p">};</span>
+</code></pre></div>
+<h2 id="testes-recomendados">Testes Recomendados</h2>
+<p>Para cada tela, validar:</p>
+<ul>
+<li>[ ] Paginação funciona ao clicar em "Próximo" e "Anterior"</li>
+<li>[ ] Contagem de registros está correta (ex: "Exibindo 1-10 de 25 registros")</li>
+<li>[ ] Ao mudar de página, os registros corretos são exibidos</li>
+<li>[ ] Ordenação mantém a paginação funcionando</li>
+<li>[ ] Busca reseta para página 1 e mantém paginação</li>
+<li>[ ] Filtros avançados resetam para página 1</li>
+<li>[ ] Visual é consistente com cms-imoveis</li>
+<li>[ ] Navegação direta para página específica funciona</li>
+<li>[ ] Última página mostra quantidade correta de itens</li>
+<li>[ ] Botões Anterior/Próximo são desabilitados corretamente</li>
+</ul>
+<h2 id="cenarios-de-teste">Cenários de Teste</h2>
+<h3 id="1-navegacao-basica">1. Navegação Básica</h3>
+<div class="highlight"><pre><span></span><code>1. Acessar tela com mais de 10 registros
+2. Verificar que mostra &quot;Exibindo 1-10 de X registros&quot;
+3. Clicar em &quot;Próximo &gt;&quot;
+4. Verificar que mostra próxima página e atualiza contagem
+5. Clicar em &quot;&lt; Anterior&quot;
+6. Verificar que volta para primeira página
+</code></pre></div>
+<h3 id="2-busca-com-paginacao">2. Busca com Paginação</h3>
+<div class="highlight"><pre><span></span><code>1. Realizar busca que retorna múltiplas páginas
+2. Navegar entre páginas dos resultados
+3. Limpar busca
+4. Verificar que volta para todos os dados paginados
+5. Verificar que está na página 1 após limpar busca
+</code></pre></div>
+<h3 id="3-ordenacao-com-paginacao">3. Ordenação com Paginação</h3>
+<div class="highlight"><pre><span></span><code>1. Aplicar ordenação
+2. Verificar que reseta para página 1
+3. Navegar entre páginas
+4. Verificar que ordenação se mantém
+5. Mudar tipo de ordenação
+6. Verificar que reseta para página 1 novamente
+</code></pre></div>
+<h2 id="problemas-corrigidos">Problemas Corrigidos</h2>
+<ol>
+<li>✅ <strong>Paginação não funcionava</strong> - Table recebia dados fatiados incorretamente</li>
+<li>✅ <strong>Contagem incorreta</strong> - usava <code>postsData</code> em vez de <code>totalItems</code></li>
+<li>✅ <strong>Página atual não passada</strong> - faltava prop <code>currentPage</code> no TableFooter</li>
+<li>✅ <strong>Visual inconsistente</strong> - Algumas telas usavam paginação do Antd, outras TableFooter</li>
+<li>✅ <strong>Ordenação quebrava paginação</strong> - ordenação era aplicada após slice</li>
+<li>✅ <strong>Navegação não funcionava</strong> - Estado de página não era controlado corretamente</li>
+<li>✅ <strong>Table mostrava todos os dados</strong> - Faltava o slice dos dados antes de passar para a Table</li>
+</ol>
+<h2 id="problemas-comuns-e-solucoes">Problemas Comuns e Soluções</h2>
+<h3 id="problema-table-mostra-todos-os-itens-em-uma-pagina">❌ Problema: Table mostra todos os itens em uma página</h3>
+<p><strong>Sintoma:</strong> A tabela exibe 50 itens, mas o TableFooter diz "Exibindo 1-10 de 50"</p>
+<p><strong>Causa:</strong> Table está recebendo todos os dados (<code>orderedData</code>) em vez dos dados paginados</p>
+<p><strong>Solução:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1">// ❌ ERRADO - Table recebe todos os dados</span>
+<span class="o">&lt;</span><span class="nx">Table</span><span class="w"> </span><span class="nx">dataSource</span><span class="o">=</span><span class="p">{</span><span class="nx">orderedData</span><span class="p">}</span><span class="w"> </span><span class="nx">pagination</span><span class="o">=</span><span class="p">{</span><span class="kc">false</span><span class="p">}</span><span class="w"> </span><span class="o">/&gt;</span>
+
+<span class="c1">// ✅ CORRETO - Table recebe apenas dados da página atual</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">paginatedData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">orderedData</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startIndex</span><span class="p">,</span><span class="w"> </span><span class="nx">endIndex</span><span class="p">);</span>
+<span class="o">&lt;</span><span class="nx">Table</span><span class="w"> </span><span class="nx">dataSource</span><span class="o">=</span><span class="p">{</span><span class="nx">paginatedData</span><span class="p">}</span><span class="w"> </span><span class="nx">pagination</span><span class="o">=</span><span class="p">{</span><span class="kc">false</span><span class="p">}</span><span class="w"> </span><span class="o">/&gt;</span>
+</code></pre></div></p>
+<h3 id="problema-paginacao-nao-muda-os-dados-exibidos">❌ Problema: Paginação não muda os dados exibidos</h3>
+<p><strong>Sintoma:</strong> Clicar em "Próximo" muda o número da página mas os dados não mudam</p>
+<p><strong>Causa:</strong> Table está recebendo dados que não mudam quando <code>currentPage</code> muda</p>
+<p><strong>Solução:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1">// ✅ O slice deve usar currentPage</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">startIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">currentPage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">pageSize</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">endIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">startIndex</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">pageSize</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">paginatedData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">orderedData</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startIndex</span><span class="p">,</span><span class="w"> </span><span class="nx">endIndex</span><span class="p">);</span>
+</code></pre></div></p>
+<h3 id="problema-tablefooter-mostra-numero-errado-de-paginas">❌ Problema: TableFooter mostra número errado de páginas</h3>
+<p><strong>Sintoma:</strong> TableFooter diz "Exibindo 1-10 de 10" quando há 50 registros</p>
+<p><strong>Causa:</strong> <code>totalItems</code> está recebendo o tamanho dos dados paginados</p>
+<p><strong>Solução:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1">// ❌ ERRADO</span>
+<span class="o">&lt;</span><span class="nx">CMS</span><span class="p">.</span><span class="nx">TableFooter</span><span class="w"> </span><span class="nx">totalItems</span><span class="o">=</span><span class="p">{</span><span class="nx">paginatedData</span><span class="p">.</span><span class="nx">length</span><span class="p">}</span><span class="w"> </span><span class="o">/&gt;</span>
+
+<span class="c1">// ✅ CORRETO</span>
+<span class="o">&lt;</span><span class="nx">CMS</span><span class="p">.</span><span class="nx">TableFooter</span><span class="w"> </span><span class="nx">totalItems</span><span class="o">=</span><span class="p">{</span><span class="nx">orderedData</span><span class="p">.</span><span class="nx">length</span><span class="p">}</span><span class="w"> </span><span class="o">/&gt;</span>
+</code></pre></div></p>
+<h2 id="melhorias-futuras">Melhorias Futuras</h2>
+<ol>
+<li><strong>Server-Side Pagination</strong> - Implementar paginação server-side em todas as telas (como cms-imoveis)</li>
+<li><strong>Loading States</strong> - Adicionar indicadores de loading durante navegação</li>
+<li><strong>Testes Automatizados</strong> - Criar testes E2E para validar paginação</li>
+<li><strong>Acessibilidade</strong> - Melhorar navegação por teclado e leitores de tela</li>
+<li><strong>Performance</strong> - Implementar virtualização para listas muito grandes</li>
+</ol>
+<hr />
+<p><strong>Documentação criada em:</strong> 19/10/2025<br />
+<strong>Última atualização:</strong> 19/10/2025<br />
+<strong>Status:</strong> ✅ Completo</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
