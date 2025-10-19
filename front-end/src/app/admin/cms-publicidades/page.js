@@ -75,6 +75,7 @@ export default function CmsPublicidadePage() {
             totalPages: Math.ceil(publicidadesData.length / prev.itemsPerPage),
           }));
         }
+        
       }
     } catch (error) {
       console.error("Erro ao carregar publicidades:", error);
@@ -278,7 +279,7 @@ export default function CmsPublicidadePage() {
                       href_cms="publicidades"
                       header={true}
                       onDelete={() => deletePublicidade(publicidade.id)}
-                      onToggle={() => togglePublicidade(publicidade.id, publicidade.ativo === 1)}
+                      onToggle={() => togglePublicidade(publicidade.id, publicidade.ativo === 1 || publicidade.ativo === true)}
                     />
                   ))}
                 </div>

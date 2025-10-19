@@ -90,11 +90,14 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
     }
     setIsProcessing(true);
     console.log('🔄 Card: Iniciando toggle do item', item.id, 'Status atual:', item.ativo);
+    console.log('🔄 Card: Tipo do status atual:', typeof item.ativo, 'Valor:', item.ativo);
     try {
       await onToggle();
       console.log('✅ Card: Toggle concluído com sucesso');
+      // Não precisa de feedback adicional aqui, o estado já foi atualizado
     } catch (error) {
       console.error("❌ Card: Erro ao alternar status:", error);
+      // Reverter o estado em caso de erro
       alert('Erro ao alterar status: ' + (error.message || 'Erro desconhecido'));
     } finally {
       setIsProcessing(false);
@@ -137,10 +140,10 @@ export default function Card({ item, href_cms = "banner", header = false, onDele
 
         <div className="w-full flex justify-end gap-4 p-3 items-center">
           <div className="flex items-center gap-3">
-            <p className="text-gray-500">{item.ativo === 1 ? "Ativado" : "Desativado"}</p>
+            <p className="text-gray-500">{item.ativo === 1 || item.ativo === true ? "Ativado" : "Desativado"}</p>
             <ConfigProvider theme={{ token: { colorPrimary: "#7F92D4" } }}>
               <Switch
-                checked={item.ativo === 1}
+                checked={item.ativo === 1 || item.ativo === true}
                 onChange={handleToggle}
                 loading={isProcessing}
                 className="switch-cms"
