@@ -30,8 +30,9 @@ const nextConfig = {
   },
   
   images: {
-    // Otimização de imagens habilitada no Vercel (funciona melhor que no Netlify)
-    unoptimized: isDev, // Só desabilita em desenvolvimento
+    // ✅ CORREÇÃO: Desabilitar otimização do Next.js para Cloudinary
+    // O Cloudinary já faz otimização automática de imagens
+    unoptimized: true, // Desabilitar em todos os ambientes
     
     formats: ["image/avif", "image/webp"],
     
@@ -59,7 +60,8 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'res.cloudinary.com'
+        hostname: 'res.cloudinary.com',
+        pathname: '/**'
       }
     ],
     
