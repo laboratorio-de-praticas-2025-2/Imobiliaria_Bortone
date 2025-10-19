@@ -37,6 +37,34 @@ function isCloudinaryUrl(url) {
 }
 
 /**
+ * Remove transformações inválidas de URLs do Cloudinary
+ * Corrige URLs que foram salvas com transformações erradas
+ * @param {string} url - URL possivelmente com transformações
+ * @returns {string} URL limpa
+ */
+function cleanCloudinaryUrl(url) {
+  if (!url || !url.includes('cloudinary.com')) {
+    return url;
+  }
+  
+  // Detecta transformações entre /upload/ e o caminho do arquivo
+  // Exemplos de padrões a remover:
+  // /upload/w_800,h_600,c_fill,q_auto,f_auto/
+  // /upload/w_auto,h_auto,c_fill,q_auto,f_auto/
+  const transformRegex = /\/upload\/[^/]*(?:w_|h_|c_|q_|f_)[^/]*\//;
+  
+  if (transformRegex.test(url)) {
+    console.warn('⚠️ URL com transformações detectada, limpando:', url);
+    // Remove tudo entre /upload/ e o próximo /
+    const cleaned = url.replace(transformRegex, '/upload/');
+    console.log('✅ URL limpa:', cleaned);
+    return cleaned;
+  }
+  
+  return url;
+}
+
+/**
  * Constrói URL otimizada do Cloudinary
  * @param {string} publicId - Public ID da imagem no Cloudinary
  * @param {Object} options - Opções de transformação
@@ -106,8 +134,8 @@ export function buildImageUrl(imageUrl, type = 'default', options = {}) {
 
   // 1. PRIORIDADE: URLs do Cloudinary - retorna diretamente (sem transformações!)
   if (isCloudinaryUrl(cleanImageUrl)) {
-    // ✅ Retorna URL original do Cloudinary SEM modificações
-    return cleanImageUrl;
+    // ✅ Limpar transformações inválidas e retornar URL limpa
+    return cleanCloudinaryUrl(cleanImageUrl);
   }
 
   // 2. URLs absolutas externas (http/https/data:) - retorna diretamente
