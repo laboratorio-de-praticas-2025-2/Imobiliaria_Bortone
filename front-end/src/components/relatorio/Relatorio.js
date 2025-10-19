@@ -1,10 +1,5 @@
 import Image from "next/image";
-import { FaUserPlus, FaUserPen, FaUser, FaHouseChimney } from "react-icons/fa6";
 import "../../styles/relatorio.css";
-import { FaCheckSquare } from "react-icons/fa";
-import { BsFillBuildingFill } from "react-icons/bs";
-import { MdOutlineBedroomParent, MdTerrain } from "react-icons/md";
-import { PiCoinsFill } from "react-icons/pi";
 import LineGraph from "./LineGraph";
 import PizzaGraph from "./PizzaGraph";
 import logo from "@/../public/images/LogoAzul.svg";
@@ -12,9 +7,82 @@ import TableRelatorio from "@/components/relatorio/TableRelatorio.js";
 import React from "react";
 import dayjs from "dayjs";
 
-export default function Relatorio({ data, secoes = [], dateRange }) {
-  let pageNumber = 1;
+/* Helper functions para formatação padronizada de valores vindos da API */
+const formatCurrency = (value) => {
+  const num = Number(value);
+  if (!isFinite(num)) return "-";
+  return num.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+};
 
+const formatNumber = (value) => {
+  const num = Number(value);
+  if (!isFinite(num)) return "-";
+  return num.toLocaleString("pt-BR");
+};
+
+const formatPercent = (value) => {
+  const num = Number(value);
+  if (!isFinite(num)) return "-";
+  return `${num}%`;
+};
+
+const formatTitle = (value) => {
+  if (!value || typeof value !== "string") return "";
+
+  // Remove extensão .pdf (case-insensitive) e quaisquer espaços extras
+  let v = value.replace(/\.pdf$/i, "").trim();
+
+  // Substitui hífens e underlines por espaço
+  v = v.replace(/[-_]+/g, " ");
+
+  // Normaliza múltiplos espaços em um único espaço
+  v = v.replace(/\s+/g, " ").trim();
+
+  //Remove "Imobiliaria Bortone"
+  v = v.replace(/Imobiliaria Bortone/gi, "").trim();
+
+  // Corrige palavras que precisam de acento
+  const accentMap = {
+    relatorio: "Relatório",
+    estrategico: "Estratégico",
+    sumario: "Sumário",
+    geral: "Geral",
+    imoveis: "Imóveis",
+    jornada: "Jornada",
+    cliente: "Cliente",
+    desempenho: "Desempenho",
+    vendas: "Vendas",
+    locacoes: "Locações",
+    locacao: "Locação",
+  };
+
+  // Reconstroi com acentuação
+  v = v
+    .split(" ")
+    .map(
+      (w) =>
+        accentMap[w.toLowerCase()] ||
+        w[0].toUpperCase() + w.slice(1).toLowerCase()
+    )
+    .join(" ");
+
+  // Capitaliza cada palavra (exceto proposições muito curtas opcionalmente)
+  v = v
+    .split(" ")
+    .map((w) =>
+      w.length > 0 ? w[0].toUpperCase() + w.slice(1).toLowerCase() : w
+    )
+    .join(" ");
+
+  return v;
+};
+
+export default function Relatorio({
+  data,
+  secoes = [],
+  dateRange,
+  reportPdfTitle = "Relatório Estratégico",
+}) {
   // Se não vier array de seções ou vier vazio, renderiza todas as seções
   const todasSecoes = [
     "SUMARIO_EXECUTIVO",
@@ -27,6 +95,7 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
   const secoesParaRenderizar =
     secoes && secoes.length > 0 ? secoes : todasSecoes;
 
+  // Preparações de dados para gráficos (mesma lógica que antes)
   const desempenhoVendasDistribuicaoTipo = data?.desempenhoVendas
     ?.distribuicaoTipo
     ? {
@@ -101,7 +170,6 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
       }
     : { labels: [], datasets: [] };
 
-  // Inclui os dados como atributo para captura no PDF
   const dataAttribute = JSON.stringify(data);
 
   const currDate = new Date().toLocaleDateString("pt-BR", {
@@ -147,12 +215,12 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
     return <div>Carregando dados do relatório...</div>;
   }
 
-  // Definição das seções disponíveis com subtítulos
+  /* Cada seção traz o título centralizado em SECTIONS[...].title para evitar divergência entre conteúdo e título na prévia/geração. */
   const SECTIONS = {
     SUMARIO_EXECUTIVO: {
       title: "Sumário Executivo",
       subtitles: [],
-      render: () => (
+      render: (title) => (
         <div
           className="page flex flex-col justify-between"
           id="sumario-executivo"
@@ -166,40 +234,30 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
                 height={50}
               />
             </header>
-            <h2 className="main-title text-center mb-6">Sumário Executivo</h2>
+            <h2 className="main-title text-center mb-6">{title}</h2>
             <div className="mb-6">
-              <h3 className="font-bold text-lg mb-2">KPIs de Vendas:</h3>
+              <h3 className="!font-bold !text-lg !mb-2">KPIs de Vendas:</h3>
               <ul className="list-disc ml-8 mb-4">
                 <li className="!text-lg">
-                  <span className="font-semibold">
+                  <span>
                     Valor Geral de Vendas (VGV):
                   </span>{" "}
-                  <span className="text-sm">
-                    [
-                    {data?.sumarioExecutivo?.totalVendas
-                      ? Number(
-                          data?.sumarioExecutivo?.totalVendas
-                        ).toLocaleString("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        })
-                      : "..."}
-                    ]
+                  <span className="api-text">
+                    {formatCurrency(data?.sumarioExecutivo?.totalVendas)}
                   </span>
                 </li>
                 <li className="!text-lg">
-                  <span className="font-semibold">
+                  <span>
                     Quantidade Total de Vendas:
                   </span>{" "}
-                  <span className="text-sm">
-                    [{data?.sumarioExecutivo?.valorGeralVendas ?? "..."}]
+                  <span className="api-text">
+                    {formatNumber(data?.sumarioExecutivo?.valorGeralVendas)}
                   </span>
                 </li>
                 <li className="!text-lg">
-                  <span className="font-semibold">Ticket Médio por Venda:</span>{" "}
-                  <span className="text-sm">
+                  <span>Ticket Médio por Venda:</span>{" "}
+                  <span className="api-text">
                     {(() => {
-                      // CONVERTA EXPLICITAMENTE PARA NÚMEROS
                       const totalVendas =
                         Number(data?.sumarioExecutivo?.valorGeralVendas) || 0;
                       const valorGeral =
@@ -207,54 +265,49 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
                       const ticketMedio =
                         totalVendas > 0 ? valorGeral / totalVendas : 0;
 
-                      return ticketMedio.toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      });
+                      return ticketMedio
+                        ? ticketMedio.toLocaleString("pt-BR", {
+                            style: "currency",
+                            currency: "BRL",
+                          })
+                        : "-";
                     })()}
                   </span>
                 </li>
               </ul>
               <hr className="my-4 border-gray-400" />
-              <h3 className="font-bold text-lg mb-2">
+              <h3 className="!font-bold !text-lg !mb-2">
                 KPIs de Leads e Engajamento:
               </h3>
               <ul className="list-disc ml-8">
                 <li className="!text-lg">
-                  <span className="font-semibold">
+                  <span>
                     Novos Agendamentos Criados:
                   </span>{" "}
-                  <span className="text-sm">
-                    [{data?.sumarioExecutivo?.totalAgendamentosCriados ?? "..."}
-                    ]
+                  <span className="api-text">
+                    {formatNumber(
+                      data?.sumarioExecutivo?.totalAgendamentosCriados
+                    )}
                   </span>
                 </li>
                 <li className="!text-lg">
-                  <span className="font-semibold">
+                  <span>
                     Novos Usuários Cadastrados que realizaram agendamentos:
                   </span>{" "}
-                  <span className="text-sm">
-                    [
-                    {data?.sumarioExecutivo
-                      ?.totalAgendamentosCriadosPorNovosUsuarios ?? "..."}
-                    ]
+                  <span className="api-text">
+                    {formatNumber(
+                      data?.sumarioExecutivo
+                        ?.totalAgendamentosCriadosPorNovosUsuarios
+                    )}
                   </span>
                 </li>
               </ul>
             </div>
           </div>
-          {/* <footer className="flex justify-between items-center text-xs mt-8 px-2 pb-2">
-            <span>
-              Período Analisado:{" "}
-              {data?.periodoInicio && data?.periodoFim
-                ? `${data.periodoInicio} - ${data.periodoFim}`
-                : "01/01/2025 - 04/09/2025"}
-            </span>
-            <span className="font-bold">3</span>
-          </footer> */}
         </div>
       ),
     },
+
     JORNADA_CLIENTE: {
       title: "Jornada do Cliente",
       subtitles: [
@@ -262,7 +315,7 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
         "Relação - Novos Usuários e Agendamentos",
         "Tabela Detalhada de Agendamentos",
       ],
-      render: () => (
+      render: (title) => (
         <>
           <div className="page" id="jornada-cliente">
             <header>
@@ -274,42 +327,45 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
               />
             </header>
             <div className="text-center">
-              <h2 className="main-title">Jornada do Cliente:</h2>
+              <h2 className="main-title">{title}</h2>
             </div>
             <div>
               <h3 className="title">Resumo dos Dados:</h3>
               <ul className="list-disc ml-8 mb-4">
                 <li className="!text-lg">
-                  <span className="font-semibold">
+                  <span>
                     Usuários Cadastrados no Período:
                   </span>{" "}
-                  <span className="text-md">
-                    [{data?.jornadaCliente?.novosUsuarios ?? "..."}]
+                  <span className="api-text">
+                    {formatNumber(data?.jornadaCliente?.novosUsuarios)}
                   </span>
                 </li>
                 <li className="!text-lg">
-                  <span className="font-semibold">
+                  <span>
                     Agendamentos Criados por novos Usuários:
                   </span>{" "}
-                  <span className="text-md">
-                    [{data?.jornadaCliente?.agendamentosNovosUsuarios ?? "..."}]
+                  <span className="api-text">
+                    {formatNumber(
+                      data?.jornadaCliente?.agendamentosNovosUsuarios
+                    )}
                   </span>
                 </li>
                 <li className="!text-lg">
-                  <span className="font-semibold">
+                  <span>
                     Agendamentos Criados por Usuários Antigos:
                   </span>{" "}
-                  <span className="text-md">
-                    [{data?.jornadaCliente?.agendamentosAntigoUsuarios ?? "..."}
-                    ]
+                  <span className="api-text">
+                    {formatNumber(
+                      data?.jornadaCliente?.agendamentosAntigoUsuarios
+                    )}
                   </span>
                 </li>
                 <li className="!text-lg">
-                  <span className="font-semibold">
+                  <span>
                     Taxa de Conversão de Agendamentos por Novos Usuários:
                   </span>{" "}
-                  <span className="text-md">
-                    [{data?.jornadaCliente?.taxaConversao ?? "..."}]
+                  <span className="api-text">
+                    {formatPercent(data?.jornadaCliente?.taxaConversao)}
                   </span>
                 </li>
               </ul>
@@ -319,19 +375,25 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
                 Relação - Novos Usuários e Agendamentos:
               </h3>
               {data.jornadaCliente?.evolucaoMensalAgendamentoEUsuario ? (
-                <LineGraph
-                  label=""
-                  graphData={
-                    data.jornadaCliente.evolucaoMensalAgendamentoEUsuario
-                  }
-                />
+                <>
+                  <LineGraph
+                    label=""
+                    graphData={
+                      data.jornadaCliente.evolucaoMensalAgendamentoEUsuario
+                    }
+                  />
+                  <p className="chart-caption">
+                    Eixo X: Mês (MM/YYYY). Eixo Y: Contagem de usuários /
+                    agendamentos (unidades).
+                  </p>
+                </>
               ) : (
                 <p>Sem registro de Dados de Evolução Mensal.</p>
               )}
             </div>
           </div>
           <TableRelatorio
-            title="Tabela Detalhada de Agendamentos"
+            title={`${title}`}
             data={data?.jornadaCliente?.tabelaAgendamentos}
             headers={[
               { key: "id_agendamento", label: "ID Agendamento", align: "left" },
@@ -341,11 +403,12 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
               { key: "endereco", label: "Endereço do Imóvel" },
               { key: "tipo", label: "Tipo" },
             ]}
-            returnPages={true} // Isso fará o TableRelatorio retornar páginas completas
+            returnPages={true}
           />
         </>
       ),
     },
+
     ANALISE_ESTOQUE_IMOBILIARIO: {
       title: "Análise de Estoque Imobiliário",
       subtitles: [
@@ -354,7 +417,7 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
         "Registro Detalhado do Portfólio",
         "Insights e Ações",
       ],
-      render: () => (
+      render: (title) => (
         <>
           <div className="page" id="estoque-imobiliario">
             <header>
@@ -366,109 +429,116 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
               />
             </header>
             <div className="text-center">
-              <h2 className="main-title !m-0">
-                Análise de Estoque Imobiliário
-              </h2>
+              <h2 className="main-title !m-0">{title}</h2>
               <span>
                 Essa seção abrange análises além do intervalo de período
                 selecionado!
               </span>
             </div>
             <div>
-              <h3 className="title !m-0 !mt-2"> Resumo do Estoque:</h3>
+              <h3 className="title !m-0 !mt-2">Resumo do Estoque:</h3>
               <ul className="list-disc ml-8 mt-2">
                 <li className="!text-lg">
-                  <span className="font-semibold">Total de Imóveis:</span>{" "}
-                  <span className="text-md">
-                    [
-                    {data?.analiseEstoque?.estatisticas[0]?.total_imoveis ||
-                      "..."}
-                    ]
+                  <span>Total de Imóveis:</span>{" "}
+                  <span className="api-text">
+                    {formatNumber(
+                      data?.analiseEstoque?.estatisticas?.[0]?.total_imoveis
+                    )}
                   </span>
                 </li>
                 <li className="!text-lg">
-                  <span className="font-semibold">
+                  <span>
                     Total de Imóveis Disponíveis:
                   </span>{" "}
-                  <span className="text-md">
-                    [
-                    {data?.analiseEstoque?.estatisticas[0]
-                      ?.total_imoveis_disponiveis || "..."}
-                    ]
+                  <span className="api-text">
+                    {formatNumber(
+                      data?.analiseEstoque?.estatisticas?.[0]
+                        ?.total_imoveis_disponiveis
+                    )}
                   </span>
                 </li>
                 <li className="!text-lg">
-                  <span className="font-semibold">
+                  <span>
                     Total de Imóveis Locados:
                   </span>{" "}
-                  <span className="text-md">
-                    [
-                    {data?.analiseEstoque?.estatisticas[0]
-                      ?.total_imoveis_locados || "..."}
-                    ]
+                  <span className="api-text">
+                    {formatNumber(
+                      data?.analiseEstoque?.estatisticas?.[0]
+                        ?.total_imoveis_locados
+                    )}
                   </span>
                 </li>
                 <li className="!text-lg">
-                  <span className="font-semibold">
+                  <span>
                     Total de Imóveis Vendidos:
                   </span>{" "}
-                  <span className="text-md">
-                    [
-                    {data?.analiseEstoque?.estatisticas[0]
-                      ?.total_imoveis_vendidos || "..."}
-                    ]
+                  <span className="api-text">
+                    {formatNumber(
+                      data?.analiseEstoque?.estatisticas?.[0]
+                        ?.total_imoveis_vendidos
+                    )}
                   </span>
                 </li>
                 <li className="!text-lg">
-                  <span className="font-semibold">
+                  <span>
                     Imóveis com Preço Visível:
                   </span>{" "}
-                  <span className="text-md">
-                    [
-                    {data?.analiseEstoque?.estatisticas[0]
-                      ?.total_preco_visivel || "..."}
-                    ]
+                  <span className="api-text">
+                    {formatNumber(
+                      data?.analiseEstoque?.estatisticas?.[0]
+                        ?.total_preco_visivel
+                    )}
                   </span>
                 </li>
                 <li className="!text-lg">
-                  <span className="font-semibold">
+                  <span>
                     Imóveis com Preço Oculto:
                   </span>{" "}
-                  <span className="text-md">
-                    [
-                    {data?.analiseEstoque?.estatisticas[0]
-                      ?.total_preco_oculto || "..."}
-                    ]
+                  <span className="api-text">
+                    {formatNumber(
+                      data?.analiseEstoque?.estatisticas?.[0]
+                        ?.total_preco_oculto
+                    )}
                   </span>
                 </li>
                 <li className="!text-lg li-graph">
-                  <span className="font-semibold">
+                  <span>
                     Distribuição de imóveis por faixa de preço:
-                  </span>{" "}
+                  </span>
                   <div>
                     {estoqueImobiliarioDistribuicaoFaixaPreco ? (
-                      <PizzaGraph
-                        label={""}
-                        className={"!ms-12"}
-                        data={estoqueImobiliarioDistribuicaoFaixaPreco}
-                      />
+                      <>
+                        <PizzaGraph
+                          label={""}
+                          className={"!ms-12"}
+                          data={estoqueImobiliarioDistribuicaoFaixaPreco}
+                        />
+                        <p className="chart-caption">
+                          Legenda: faixas de preço (unidade: imóveis).
+                        </p>
+                      </>
                     ) : (
                       <p>Não há itens para exibir.</p>
                     )}
                   </div>
                 </li>
                 <li className="!text-lg li-graph">
-                  <span className="font-semibold">
+                  <span>
                     Distribuição de imóveis por tipo:
-                  </span>{" "}
+                  </span>
                   <br />
                   <div>
                     {estoqueImobiliarioDistribuicaoTipo ? (
-                      <PizzaGraph
-                        label={""}
-                        className={"!ms-12"}
-                        data={estoqueImobiliarioDistribuicaoTipo}
-                      />
+                      <>
+                        <PizzaGraph
+                          label={""}
+                          className={"!ms-12"}
+                          data={estoqueImobiliarioDistribuicaoTipo}
+                        />
+                        <p className="chart-caption">
+                          Legenda: tipos de imóvel (unidade: imóveis).
+                        </p>
+                      </>
                     ) : (
                       <p>Não há itens para exibir.</p>
                     )}
@@ -478,7 +548,7 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
             </div>
           </div>
           <TableRelatorio
-            title="Imóveis Mais Acessados no Site"
+            title={`${title}`}
             data={data?.analiseEstoque?.tabelaAcessos}
             headers={[
               { key: "id", label: "ID", align: "center" },
@@ -498,6 +568,7 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
         </>
       ),
     },
+
     DESEMPENHO_VENDAS: {
       title: "Desempenho de Vendas",
       subtitles: [
@@ -505,7 +576,7 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
         "Gráfico de Evolução Mensal das Vendas",
         "Tabela Detalhada de Vendas",
       ],
-      render: () => (
+      render: (title) => (
         <>
           <div className="page" id="desempenho-vendas">
             <header>
@@ -517,28 +588,33 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
               />
             </header>
             <div>
-              <h2 className="main-title">Desempenho de Vendas</h2>
-              <h3 className="title"> Resumo de Vendas:</h3>
+              <h2 className="main-title">{title}</h2>
+              <h3 className="title">Resumo de Vendas:</h3>
               <div>
                 <ul className="list-disc ml-8 mb-4">
-                  <li className="!text-lg">
-                    <span className="font-semibold">Total de Vendas:</span>{" "}
-                    <span className="text-md">
-                      [{data?.desempenhoVendas?.totalVendas || "..."}]
+                  <li className="!text-lg !flex !flex-row !items-center !justify-start">
+                    <span>Total de Vendas:</span>{" "}
+                    <span className="api-text">
+                      {formatNumber(data?.desempenhoVendas?.totalVendas)}
                     </span>
                   </li>
                   <li className="!text-lg li-graph">
-                    <span className="font-semibold">
+                    <span>
                       Distribuição das Vendas por Tipo:
-                    </span>{" "}
+                    </span>
                     <br />
                     <div>
                       {desempenhoVendasDistribuicaoTipo ? (
-                        <PizzaGraph
-                          label={""}
-                          className={"w-[450px] h-[300px] !ms-12"}
-                          data={desempenhoVendasDistribuicaoTipo}
-                        />
+                        <>
+                          <PizzaGraph
+                            label={""}
+                            className={"w-[450px] h-[300px] !ms-12"}
+                            data={desempenhoVendasDistribuicaoTipo}
+                          />
+                          <p className="chart-caption">
+                            Legenda: categorias de venda (unidade: vendas).
+                          </p>
+                        </>
                       ) : (
                         <p className="!ms-4">Não Houveram Vendas No período</p>
                       )}
@@ -548,19 +624,24 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
               </div>
             </div>
             <div>
-              <h3 className="title">Evolucao Mensal das Vendas:</h3>
+              <h3 className="title">Evolução Mensal das Vendas:</h3>
               {data.desempenhoVendas?.evolucaoMensal ? (
-                <LineGraph
-                  label=""
-                  graphData={data.desempenhoVendas.evolucaoMensal}
-                />
+                <>
+                  <LineGraph
+                    label=""
+                    graphData={data.desempenhoVendas.evolucaoMensal}
+                  />
+                  <p className="chart-caption">
+                    Eixo X: Mês (MM/YYYY). Eixo Y: Número de vendas (unidades).
+                  </p>
+                </>
               ) : (
                 <p>Sem registro de Dados de Evolução Mensal das Vendas.</p>
               )}
             </div>
           </div>
           <TableRelatorio
-            title="Tabela Detalhada de Vendas"
+            title={`${title}`}
             data={data?.desempenhoVendas?.tabelaVendas}
             headers={[
               { key: "id", label: "ID", align: "center" },
@@ -575,11 +656,7 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
                 key: "preco",
                 label: "Preço",
                 align: "right",
-                render: (value) =>
-                  `R$ ${Number(value).toLocaleString("pt-BR", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}`,
+                render: (value) => formatCurrency(value),
               },
               { key: "visibilidade_preco", label: "Visibilidade Preço" },
               {
@@ -594,6 +671,7 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
         </>
       ),
     },
+
     DESEMPENHO_LOCACOES: {
       title: "Desempenho de Locações",
       subtitles: [
@@ -601,7 +679,7 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
         "Gráfico de Evolução Mensal das Locações",
         "Tabela Detalhada de Locações",
       ],
-      render: () => (
+      render: (title) => (
         <>
           <div className="page" id="desempenho-locacoes">
             <header>
@@ -613,51 +691,61 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
               />
             </header>
             <div>
-              <h2 className="main-title">Desempenho de Locações</h2>
-              <h3 className="title"> Resumo de Locações:</h3>
+              <h2 className="main-title">{title}</h2>
+              <h3 className="title">Resumo de Locações:</h3>
               <div>
                 <ul className="list-disc ml-8 mb-4">
                   <li className="!text-lg">
-                    <span className="font-semibold">Total de Locações:</span>{" "}
-                    <span className="text-md">
-                      [{data?.desempenhoLocacoes?.totalLocacoes || "..."}]
+                    <span>Total de Locações:</span>{" "}
+                    <span className="api-text">
+                      {formatNumber(data?.desempenhoLocacoes?.totalLocacoes)}
                     </span>
                   </li>
                   <li className="!text-lg li-graph">
-                    <span className="font-semibold">
+                    <span>
                       Distribuição das Locações por Tipo:
-                    </span>{" "}
+                    </span>
                     <br />
                     <div>
                       {desempenhoLocacoesDistribuicaoTipo ? (
-                        <PizzaGraph
-                          label={""}
-                          className={"w-[450px] h-[300px] !ms-12"}
-                          data={desempenhoLocacoesDistribuicaoTipo}
-                        />
+                        <>
+                          <PizzaGraph
+                            label={""}
+                            className={"w-[450px] h-[300px] !ms-12"}
+                            data={desempenhoLocacoesDistribuicaoTipo}
+                          />
+                          <p className="chart-caption">
+                            Legenda: categorias de locação (unidade: locações).
+                          </p>
+                        </>
                       ) : (
                         <p>Não Houveram Locações No período</p>
                       )}
                     </div>
                   </li>
                 </ul>
-                <p className="label-item"></p>
               </div>
             </div>
             <div>
-              <h3 className="title">Evolucao Mensal das Locações:</h3>
+              <h3 className="title">Evolução Mensal das Locações:</h3>
               {data.desempenhoLocacoes?.evolucaoMensal ? (
-                <LineGraph
-                  label=""
-                  graphData={data.desempenhoLocacoes.evolucaoMensal}
-                />
+                <>
+                  <LineGraph
+                    label=""
+                    graphData={data.desempenhoLocacoes.evolucaoMensal}
+                  />
+                  <p className="chart-caption">
+                    Eixo X: Mês (MM/YYYY). Eixo Y: Número de locações
+                    (unidades).
+                  </p>
+                </>
               ) : (
                 <p>Sem registro de Dados de Evolução Mensal das Locações.</p>
               )}
             </div>
           </div>
           <TableRelatorio
-            title="Tabela Detalhada de Locações"
+            title={`${title}`}
             data={data?.desempenhoLocacoes?.tabelaLocacoes}
             headers={[
               { key: "id", label: "ID", align: "center" },
@@ -672,11 +760,7 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
                 key: "preco",
                 label: "Preço",
                 align: "right",
-                render: (value) =>
-                  `R$ ${Number(value).toLocaleString("pt-BR", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}`,
+                render: (value) => formatCurrency(value),
               },
               { key: "visibilidade_preco", label: "Visibilidade Preço" },
               {
@@ -753,15 +837,14 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
 
         <div>
           <h1 className="text-4xl md:text-5xl text-center leading-[2.8rem] !font-extrabold">
-            Relatório Estratégico
-            <br />
+            {formatTitle(reportPdfTitle)}
+            <br/>
             Imobiliária Bortone
           </h1>
 
           <div className="text-center mt-20 mb-2">
             <div className="!font-semibold text-base">Período Analisado</div>
             <div className="font-semibold text-lg">
-              {/* Ajuste para pegar o período do relatório, se disponível */}
               {dayjs(dateRange.startDate).format("DD/MM/YYYY")} -{" "}
               {dayjs(dateRange.endDate).format("DD/MM/YYYY")}
             </div>
@@ -786,13 +869,17 @@ export default function Relatorio({ data, secoes = [], dateRange }) {
           {generateSumario()}
         </div>
       </div>
-      {/* PÁGINAS */}
-      {/* Renderiza as seções selecionadas COM KEY */}
-      {secoesParaRenderizar.map((secaoKey) => (
-        <React.Fragment key={secaoKey}>
-          {SECTIONS[secaoKey]?.render()}
-        </React.Fragment>
-      ))}
+
+      {/* RENDERIZA AS SEÇÕES SOLICITADAS */}
+      {secoesParaRenderizar.map((secaoKey) => {
+        const secao = SECTIONS[secaoKey];
+        if (!secao) return null;
+        return (
+          <React.Fragment key={secaoKey}>
+            {secao.render(secao.title)}
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 }
