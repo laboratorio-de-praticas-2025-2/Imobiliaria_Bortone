@@ -396,7 +396,7 @@ export default function Relatorio({
             title={`${title}`}
             data={data?.jornadaCliente?.tabelaAgendamentos}
             headers={[
-              { key: "id_agendamento", label: "ID Agendamento", align: "left" },
+              { key: "id_agendamento", label: "ID Agendamento" },
               { key: "data_marcada", label: "Data Marcada" },
               { key: "data_cadastro_usuario", label: "Data Cadastro Usuário" },
               { key: "email", label: "Email" },
@@ -551,14 +551,13 @@ export default function Relatorio({
             title={`${title}`}
             data={data?.analiseEstoque?.tabelaAcessos}
             headers={[
-              { key: "id", label: "ID", align: "center" },
+              { key: "id", label: "ID" },
               { key: "quantidade_acessos", label: "Quantidade Acessos" },
               { key: "tipo", label: "Tipo" },
               { key: "visibilidade_preco", label: "Visibilidade Preço" },
               {
                 key: "area",
-                label: "Área",
-                align: "center",
+                label: "Área",                
                 render: (value) => (value ? `${value} m²` : "-"),
               },
               { key: "endereco", label: "Endereço" },
@@ -644,25 +643,22 @@ export default function Relatorio({
             title={`${title}`}
             data={data?.desempenhoVendas?.tabelaVendas}
             headers={[
-              { key: "id", label: "ID", align: "center" },
+              { key: "id", label: "ID" },
               {
                 key: "data_update_status",
-                label: "Data de Venda",
-                align: "center",
+                label: "Data de Venda",                
               },
               { key: "tipo", label: "Tipo do Imóvel" },
               { key: "endereco", label: "Endereco" },
               {
                 key: "preco",
-                label: "Preço",
-                align: "right",
+                label: "Preço",                
                 render: (value) => formatCurrency(value),
               },
               { key: "visibilidade_preco", label: "Visibilidade Preço" },
               {
                 key: "area",
-                label: "Área",
-                align: "right",
+                label: "Área",                
                 render: (value) => (value ? `${value} m²` : "-"),
               },
             ]}
@@ -748,25 +744,22 @@ export default function Relatorio({
             title={`${title}`}
             data={data?.desempenhoLocacoes?.tabelaLocacoes}
             headers={[
-              { key: "id", label: "ID", align: "center" },
+              { key: "id", label: "ID" },
               {
                 key: "data_update_status",
-                label: "Data de Locação",
-                align: "center",
+                label: "Data de Locação",                
               },
               { key: "tipo", label: "Tipo do Imóvel" },
               { key: "endereco", label: "Endereco" },
               {
                 key: "preco",
-                label: "Preço",
-                align: "right",
+                label: "Preço",                
                 render: (value) => formatCurrency(value),
               },
               { key: "visibilidade_preco", label: "Visibilidade Preço" },
               {
                 key: "area",
-                label: "Área",
-                align: "right",
+                label: "Área",                
                 render: (value) => (value ? `${value} m²` : "-"),
               },
             ]}
