@@ -81,7 +81,7 @@ export default function Relatorio({
   data,
   secoes = [],
   dateRange,
-  reportPdfTitle = "Relatório Estratégico",
+  reportCapaTitle = "Relatório Estratégico",
 }) {
   // Se não vier array de seções ou vier vazio, renderiza todas as seções
   const todasSecoes = [
@@ -837,7 +837,7 @@ export default function Relatorio({
 
         <div>
           <h1 className="text-4xl md:text-5xl text-center leading-[2.8rem] !font-extrabold">
-            {formatTitle(reportPdfTitle)}
+            {formatTitle(reportCapaTitle)}
             <br/>
             Imobiliária Bortone
           </h1>
