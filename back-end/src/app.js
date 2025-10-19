@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express from "express";
-import cors from "cors";
 import path from "path";
+import cors from "cors";
 import { fileURLToPath } from "url";
 import { createServer } from 'http';
 import initWebSocket from './config/websocket.js';
