@@ -104,8 +104,9 @@ export function buildImageUrl(imageUrl, type = 'default', options = {}) {
 
   const cleanImageUrl = imageUrl.trim();
 
-  // 1. PRIORIDADE: URLs do Cloudinary - retorna diretamente (já otimizadas)
+  // 1. PRIORIDADE: URLs do Cloudinary - retorna diretamente (sem transformações!)
   if (isCloudinaryUrl(cleanImageUrl)) {
+    // ✅ Retorna URL original do Cloudinary SEM modificações
     return cleanImageUrl;
   }
 
@@ -116,7 +117,7 @@ export function buildImageUrl(imageUrl, type = 'default', options = {}) {
     return cleanImageUrl;
   }
 
-  // 3. URLs relativas - tenta construir URL do Cloudinary primeiro
+  // 3. URLs relativas - retorna URL simples do Cloudinary SEM transformações
   if (cleanImageUrl.startsWith('/') || !cleanImageUrl.includes('/')) {
     // Extrair nome do arquivo
     const fileName = cleanImageUrl.startsWith('/') ? 
@@ -127,10 +128,9 @@ export function buildImageUrl(imageUrl, type = 'default', options = {}) {
     const folder = CLOUDINARY_FOLDERS[type] || CLOUDINARY_FOLDERS.default;
     const publicId = `${folder}/${fileName.replace(/\.[^/.]+$/, '')}`; // Remove extensão
 
-    // Construir URL do Cloudinary
-    const cloudinaryUrl = buildCloudinaryUrl(publicId, cloudinaryOptions);
+    // ✅ Construir URL SIMPLES do Cloudinary SEM transformações
+    const cloudinaryUrl = `${CLOUDINARY_CONFIG.baseUrl}/${CLOUDINARY_CONFIG.cloudName}/image/upload/${publicId}`;
     
-
     return cloudinaryUrl;
   }
 
@@ -180,15 +180,8 @@ function getImageFolder(type) {
  * @returns {Object} { src, handleError }
  */
 export function useCloudinaryImage(imageUrl, type = 'default') {
-  // Primeira tentativa: URL do Cloudinary ou construída
-  const primarySrc = buildImageUrl(imageUrl, type, {
-    cloudinaryOptions: {
-      width: 800,
-      height: 600,
-      quality: 'auto',
-      format: 'auto'
-    }
-  });
+  // ✅ URL do Cloudinary SEM transformações por padrão
+  const primarySrc = buildImageUrl(imageUrl, type);
 
   const handleError = (event) => {
     const img = event.target;
