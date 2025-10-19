@@ -1,6 +1,6 @@
 "use client";
 const SOCKET_URL =
-  process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4001";
+  process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000";
 
 
 
@@ -36,6 +36,7 @@ class SocketService {
       const io = socketModule.io || socketModule.default || socketModule;
 
       this.socket = io(SOCKET_URL, {
+        path: '/notifications',
         auth: token ? { token } : {},
         transports: ["polling", "websocket"],
         timeout: 20000,
