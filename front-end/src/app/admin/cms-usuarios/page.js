@@ -138,10 +138,6 @@ export default function Page() {
       return bDate - aDate;
     });
   }
-  // fatia os usuários conforme página
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const paginatedUsers = orderedUsers.slice(startIndex, endIndex);
 
   const onSearch = (value) => {
     if (!value) {
@@ -204,20 +200,21 @@ export default function Page() {
             <CMS.TableBody table={true}>
               <Table
                 columns={columns}
-                dataSource={paginatedUsers}
+                dataSource={orderedUsers}
                 rowKey="id"
-                pagination={false}
+                pagination={{
+                  current: currentPage,
+                  pageSize: pageSize,
+                  total: orderedUsers.length,
+                  onChange: setCurrentPage,
+                  showSizeChanger: false,
+                }}
                 className={styles.customTable}
                 scroll={{ x: 'max-content' }}
               />
             </CMS.TableBody>
 
-            {/* Paginador controlado */}
-            <CMS.TableFooter
-              postsData={users}
-              pageSize={pageSize}
-              onPageChange={setCurrentPage}
-            />
+            {/* Removido TableFooter duplicado - usando paginação integrada do Antd */}
           </CMS.Table>
         </CMS.Body>
       </div>

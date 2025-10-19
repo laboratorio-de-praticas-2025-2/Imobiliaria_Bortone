@@ -235,19 +235,24 @@ export default function CmsPublicidadePage() {
     setCurrentPage(newPage);
   };
 
-  const getCurrentPageItems = () => {
-    // Garantir que filteredPublicidades seja sempre um array
-    const publicidades = Array.isArray(filteredPublicidades)
-      ? filteredPublicidades
-      : [];
-
-    if (searchTerm.trim() !== "") {
-      const startIndex = (currentPage - 1) * pagination.itemsPerPage;
-      const endIndex = startIndex + pagination.itemsPerPage;
-      return publicidades.slice(startIndex, endIndex);
+  // Paginação e ordenação client-side dos dados filtrados
+  let orderedPublicidades = [...filteredPublicidades];
+  
+  if (filterData.order) {
+    if (filterData.order === "Ordem alfabetica") {
+      orderedPublicidades = orderedPublicidades.sort((a, b) => 
+        (a.titulo || "").localeCompare(b.titulo || "")
+      );
+    } else if (filterData.order === "Data de inclusão") {
+      orderedPublicidades = orderedPublicidades.sort(
+        (a, b) => new Date(b.data_criacao || 0) - new Date(a.data_criacao || 0)
+      );
     }
-    return publicidades;
-  };
+  }
+
+  const startIndex = (currentPage - 1) * pagination.itemsPerPage;
+  const endIndex = startIndex + pagination.itemsPerPage;
+  const paginatedPublicidades = orderedPublicidades.slice(startIndex, endIndex);
 
   return (
     <>
@@ -270,9 +275,9 @@ export default function CmsPublicidadePage() {
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                   <span className="ml-2">Carregando...</span>
                 </div>
-              ) : getCurrentPageItems().length > 0 ? (
+              ) : paginatedPublicidades.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-center">
-                  {getCurrentPageItems().map((publicidade) => (
+                  {paginatedPublicidades.map((publicidade) => (
                     <Card
                       key={publicidade.id}
                       item={publicidade}
@@ -314,10 +319,10 @@ export default function CmsPublicidadePage() {
 
             {/* Paginador controlado */}
             <CMS.TableFooter
-              postsData={pagination}
+              totalItems={orderedPublicidades.length}
               pageSize={pagination.itemsPerPage}
-              onPageChange={handlePageChange}
               currentPage={currentPage}
+              onPageChange={handlePageChange}
             />
           </CMS.Table>
         </CMS.Body>

@@ -167,11 +167,22 @@ export default function CmsBlogPage() {
     setCurrentPage(newPage);
   };
 
-  const getCurrentPageItems = () => {
-    const startIndex = (currentPage - 1) * pagination.itemsPerPage;
-    const endIndex = startIndex + pagination.itemsPerPage;
-    return filteredPublicacoes.slice(startIndex, endIndex);
-  };
+  // Paginação e ordenação dos dados filtrados
+  let orderedPublicacoes = [...filteredPublicacoes];
+  
+  if (filterData.order) {
+    if (filterData.order === "Ordem alfabetica") {
+      orderedPublicacoes = orderedPublicacoes.sort((a, b) => a.titulo.localeCompare(b.titulo));
+    } else if (filterData.order === "Data de publicação") {
+      orderedPublicacoes = orderedPublicacoes.sort(
+        (a, b) => new Date(b.data_publicacao) - new Date(a.data_publicacao)
+      );
+    }
+  }
+
+  const startIndex = (currentPage - 1) * pagination.itemsPerPage;
+  const endIndex = startIndex + pagination.itemsPerPage;
+  const paginatedPublicacoes = orderedPublicacoes.slice(startIndex, endIndex);
 
   const deletePost = async (id) => {
     if (!confirm("Deseja realmente excluir este artigo?")) return;
@@ -210,9 +221,9 @@ export default function CmsBlogPage() {
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                   <span className="ml-2">Carregando...</span>
                 </div>
-              ) : getCurrentPageItems().length > 0 ? (
+              ) : paginatedPublicacoes.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-center">
-                  {getCurrentPageItems().map((post) => (
+                  {paginatedPublicacoes.map((post) => (
                     <PostCard
                       key={post.id}
                       item={post}
@@ -250,12 +261,10 @@ export default function CmsBlogPage() {
             </CMS.TableBody>
 
             <CMS.TableFooter
-              postsData={filteredPublicacoes}
+              totalItems={orderedPublicacoes.length}
               pageSize={pagination.itemsPerPage}
               currentPage={currentPage}
               onPageChange={handlePageChange}
-              pagination={pagination}
-              isLoading={isLoading}
             />
           </CMS.Table>
         </CMS.Body>
