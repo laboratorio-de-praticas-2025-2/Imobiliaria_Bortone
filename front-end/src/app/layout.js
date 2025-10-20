@@ -78,9 +78,10 @@ export default function RootLayout({ children }) {
         `}</Script>
       </head>
       <body className="antialiased">
+        <NotificationProvider>
         {children}
         <ChatWrapper />
-        <NotificationProvider />
+        </NotificationProvider>
         {/* <SpeedInsights /> */}
       </body>
     </html>

@@ -83,8 +83,49 @@ export const uploadToNetlify = async (file, options = {}) => {
  * @param {string} descricao - Descrição da imagem
  * @returns {Promise<string>} URL da imagem
  */
-export const uploadImovelImage = async (file, imovelId = '1', descricao = 'Imagem do imóvel') => {
-  return uploadToNetlify(file, { type: 'imoveis', imovelId, descricao });
+export const uploadImovelImage = async (file, imovelId, descricao) => {
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
+  if (!cloudName || !uploadPreset) {
+    throw new Error('Configuração do Cloudinary não encontrada');
+  }
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', uploadPreset);
+  
+  // ✅ IMPORTANTE: folder sem barra no início
+  formData.append('folder', 'imobiliaria/imoveis');
+  
+  // ✅ IMPORTANTE: NÃO envie transformações aqui
+  // formData.append('transformation', '...'); // ❌ REMOVER
+
+  try {
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Erro do Cloudinary:', errorData);
+      throw new Error(errorData.error?.message || 'Erro ao fazer upload');
+    }
+
+    const data = await response.json();
+    
+    // ✅ Retorna a URL LIMPA sem transformações
+    console.log('✅ URL gerada:', data.secure_url);
+    return data.secure_url;
+    
+  } catch (error) {
+    console.error('Erro no upload para Cloudinary:', error);
+    throw error;
+  }
 };
 
 /**

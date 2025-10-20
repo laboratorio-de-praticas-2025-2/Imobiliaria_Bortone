@@ -63,7 +63,7 @@ export default function CriarImovelPage() {
 
       const imovelData = {
         usuario_id: user?.id || 1,
-        tipo: tipoSelecionado.toLowerCase(),
+        tipo: tipoSelecionado,
         status: statusSelecionado.toLowerCase(),
         cidade: citiesSelecionado,
         estado: statesMap[selectedState],
@@ -112,8 +112,8 @@ export default function CriarImovelPage() {
 
       const finalData = {
         ...imovelData,
-        ...(tipoSelecionado.toLowerCase() === "casa" ? specificData : {}),
-        ...(tipoSelecionado.toLowerCase() === "terreno" ? specificData : {}),
+        ...(tipoSelecionado === "Casa" ? specificData : {}),
+        ...(tipoSelecionado === "Terreno" ? specificData : {}),
       };
       
       

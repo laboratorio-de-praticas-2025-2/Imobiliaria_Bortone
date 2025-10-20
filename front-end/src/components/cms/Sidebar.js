@@ -26,7 +26,7 @@ export default function Sidebar() {
           <button onClick={() => setIsOpen(true)} className="cursor-pointer">
             <IoMenu size={30} className="md:text-white text-[var(--primary)]" />
           </button>
-          
+
           <Image
             src="/images/logo.svg"
             alt="Logo Bortone"
@@ -43,7 +43,9 @@ export default function Sidebar() {
           />
 
           {/* ======================= BOTÃO DO USUÁRIO (NOVA ABORDAGEM) ======================= */}
-          <div className="md:hidden ml-auto"> {/* A classe ml-auto força o alinhamento à direita */}
+          <div className="md:hidden ml-auto">
+            {" "}
+            {/* A classe ml-auto força o alinhamento à direita */}
             {isLoggedIn && ( // Usamos '&&' para simplificar, já que não há caso 'else'
               <div className="relative inline-block text-left">
                 <button
@@ -73,7 +75,11 @@ export default function Sidebar() {
                     <Link href={"/admin/dashboard"}>
                       <li
                         className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out
-                                  ${ userMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2" }`}
+                                  ${
+                                    userMenuOpen
+                                      ? "opacity-100 translate-y-0"
+                                      : "opacity-0 -translate-y-2"
+                                  }`}
                         style={{ color: "#304383", transitionDelay: delays[1] }}
                       >
                         CMS
@@ -83,12 +89,17 @@ export default function Sidebar() {
                   <li
                     onClick={handleLogout}
                     className={`px-4 py-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap text-center flex justify-center items-center transition-all duration-300 ease-out
-                              ${ userMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2" }`}
+                              ${
+                                userMenuOpen
+                                  ? "opacity-100 translate-y-0"
+                                  : "opacity-0 -translate-y-2"
+                              }`}
                     style={{
                       color: "#304383",
                       borderBottomLeftRadius: bottomRadius,
                       borderBottomRightRadius: bottomRadius,
-                      transitionDelay: user.nivel === "administrador" ? delays[2] : delays[1],
+                      transitionDelay:
+                        user.nivel === "administrador" ? delays[2] : delays[1],
                     }}
                   >
                     Sair
@@ -112,8 +123,9 @@ export default function Sidebar() {
       {/* Sidebar expandida */}
       {isOpen && (
         <div className="fixed top-0 left-0 h-full md:w-64 w-[80%] bg-white md:bg-gradient-to-b md:from-[#2E3F7C] md:to-[#0C1121] flex flex-col justify-between py-6 z-50 animate-slide-in md:border-r-0 border-r-[var(--secondary)] border-r-4">
-          <div>
-            <div className="flex justify-between items-center px-6">
+          <div className="flex flex-col h-full">
+            {/* Topo fixo */}
+            <div className="flex justify-between items-center px-6 shrink-0">
               <button onClick={() => setIsOpen(false)}>
                 <IoClose
                   size={35}
@@ -128,18 +140,24 @@ export default function Sidebar() {
                 />
               </button>
             </div>
-            <SidebarNav />
-          </div>
-          <div className="flex justify-center">
-            <Link href="/">
-              <Image
-                src="/images/logo.svg"
-                alt="Logo Bortone"
-                width={50}
-                height={50}
-                className="object-contain md:flex hidden"
-              />
-            </Link>
+
+            {/* Conteúdo rolável */}
+            <div className="flex-1 overflow-y-auto">
+              <SidebarNav />
+            </div>
+
+            {/* Rodapé fixo */}
+            <div className="flex justify-center mt-4 shrink-0">
+              <Link href="/">
+                <Image
+                  src="/images/logo.svg"
+                  alt="Logo Bortone"
+                  width={50}
+                  height={50}
+                  className="object-contain md:flex hidden"
+                />
+              </Link>
+            </div>
           </div>
         </div>
       )}

@@ -18,10 +18,34 @@
 .search-cms .ant-input-group-addon {
   display: none !important;
 }
+
+/* Paginação CMS */
+.custom-pagination-cms {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.custom-pagination-cms .ant-pagination-item {
+  border: none !important;
+  border-radius: 5px !important;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+}
+
 .custom-pagination-cms .ant-pagination-item a {
   font-weight: 600 !important;
   font-size: 17px !important;
   color: #181f3b !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 /* Item ativo */
@@ -33,22 +57,54 @@
 
 .custom-pagination-cms .ant-pagination-item-active a {
   color: #181f3b !important;
-  font-weight: 500 !important;
+  font-weight: 700 !important;
 }
 
 .custom-pagination-cms .ant-pagination-item:hover {
   border-radius: 5px !important;
+  background-color: #f9f9f9 !important;
 }
 
 .custom-pagination-cms .ant-pagination-next,
 .custom-pagination-cms .ant-pagination-prev {
   color: #181f3b !important;
   font-weight: 500 !important;
+  border: none !important;
+  background-color: transparent !important;
+  min-width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-pagination-cms .ant-pagination-next button,
+.custom-pagination-cms .ant-pagination-prev button {
+  border: none !important;
+  background-color: transparent !important;
+  color: #181f3b !important;
+  font-weight: 500 !important;
+}
+
+.custom-pagination-cms .ant-pagination-next:hover button,
+.custom-pagination-cms .ant-pagination-prev:hover button {
+  color: var(--primary) !important;
 }
 
 .custom-pagination-cms .ant-pagination-disabled {
-  color: #c1c1c1 !important;
+  opacity: 0.4;
 }
+
+.custom-pagination-cms .ant-pagination-disabled button {
+  color: #c1c1c1 !important;
+  cursor: not-allowed !important;
+}
+
+.custom-pagination-cms .ant-pagination-jump-next,
+.custom-pagination-cms .ant-pagination-jump-prev {
+  border: none !important;
+  background-color: transparent !important;
+}
+
 
 .custom-form-item {
   margin-bottom: 0 !important;
@@ -98,6 +154,12 @@
 
 /* Placeholder cinza */
 .custom-auto-input input::placeholder {
+  color: #a1a1aa !important;
+  font-weight: 500 !important;
+  font-size: 20px !important;
+}
+
+#basic_senha::placeholder  {
   color: #a1a1aa !important;
   font-weight: 500 !important;
   font-size: 20px !important;

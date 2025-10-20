@@ -126,11 +126,11 @@ export default function Agendamento() {
 
   // Preenchimento automático dos dados do usuário
   useEffect(() => {
-    if (user && form) {
+    if (user && form) {      
       form.setFieldsValue({
         nome: user.nome || '',
         email: user.email || '',
-        celular: user.celular || user.celular || '',
+        celular: user.celular || '',
       });
     }
   }, [user, form]);
