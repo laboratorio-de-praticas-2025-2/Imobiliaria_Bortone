@@ -29,16 +29,18 @@ export default function FormButton({
             !rounded-full !p-4 !h-[50px] ${className} ${isDisabled ? '!opacity-70 !cursor-not-allowed' : ''}`}
           {...props}
         >
-          {loading ? (
-            <>
-              <LoadingOutlined className="mr-2" />
-              Processando...
-            </>
-          ) : (
-            <>
-              {text} {icon}
-            </>
-          )}
+          <span className="flex items-center whitespace-nowrap gap-1">
+            {loading ? (
+              <>
+                <LoadingOutlined className="mr-2" />
+                Processando...
+              </>
+            ) : (
+              <>
+                {text} {icon}
+              </>
+            )}
+          </span>
         </Button>
       </Form.Item>
     </>

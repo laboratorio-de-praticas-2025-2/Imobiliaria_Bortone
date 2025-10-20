@@ -7,6 +7,7 @@ import TextField from "@/components/cms/form/fields/TextField";
 import PhoneField from "@/components/cms/form/fields/PhoneField";
 import FormButton from "@/components/cms/form/fields/Button";
 import TextAreaField from "@/components/cms/form/fields/TextAreaField";
+import CityAutocomplete from "@/components/cms/form/fields/CityAutocomplete";
 import { useEffect, useState } from "react";
 import { buildImageUrl } from "@/utils/imageUtils";
 import { useParams, useRouter } from "next/navigation";
@@ -224,16 +225,17 @@ export default function Agendamento() {
 
       <main className="sidebar-desk bg-[#0C1122] flex flex-col relative">
         <div className="flex flex-col md:flex-row flex-1">
-
           {/* Lado esquerdo (imóvel) */}
           <div className="w-full md:w-[30%] bg-gradient-to-b from-[#2E3F7C] pb-10 to-[#0C1121] text-white px-6 md:px-11 pt-10 md:pt-28 flex flex-col gap-5">
             <div>
               <img
-                src={src || '/404.png'}
+                src={src || "/404.png"}
                 alt="Imóvel"
                 className="object-cover w-full rounded-lg aspect-[6/3]"
                 loading="lazy"
-                onError={(e)=>{ e.currentTarget.src='/404.png'; }}
+                onError={(e) => {
+                  e.currentTarget.src = "/404.png";
+                }}
               />
             </div>
 
@@ -245,9 +247,15 @@ export default function Agendamento() {
                 <p className="mt-3 text-sm text-[var(--secondary)]">
                   Localização: {imovel.endereco}
                 </p>
-                <p className="text-sm text-[var(--secondary)]">Bairro: {imovel.bairro}</p>
-                <p className="text-sm text-[var(--secondary)]">Cidade: {imovel.cidade}</p>
-                <p className="text-sm text-[var(--secondary)]">Estado: {imovel.estado}</p>
+                <p className="text-sm text-[var(--secondary)]">
+                  Bairro: {imovel.bairro}
+                </p>
+                <p className="text-sm text-[var(--secondary)]">
+                  Cidade: {imovel.cidade}
+                </p>
+                <p className="text-sm text-[var(--secondary)]">
+                  Estado: {imovel.estado}
+                </p>
               </div>
 
               <div className="flex gap-6 text-sm">
@@ -277,8 +285,9 @@ export default function Agendamento() {
           {/* Lado direito (formulário) */}
           <div className="flex-1 bg-white px-6 md:px-24 flex flex-col justify-center pt-10 md:pt-15 items-center rounded-t-3xl md:rounded-none">
             <div className="w-full">
-              <h2 className="text-3xl !font-bold text-[#4C62AE] mb-6">Insira seus dados</h2>
-              
+              <h2 className="text-3xl !font-bold text-[#4C62AE] mb-6">
+                Insira seus dados
+              </h2>
 
               <Form
                 form={form}
@@ -287,7 +296,7 @@ export default function Agendamento() {
                   onFinish(values);
                 }}
                 onFinishFailed={(errorInfo) => {
-                  console.error('❌ Form onFinishFailed:', errorInfo);
+                  console.error("❌ Form onFinishFailed:", errorInfo);
                 }}
                 autoComplete="off"
                 requiredMark={true}
@@ -305,7 +314,7 @@ export default function Agendamento() {
                   <div className="flex flex-col md:flex-row gap-13">
                     <PhoneField
                       name="celular"
-                      label="celular"
+                      label="Celular"
                       placeholder="(11) 99999-9999"
                       mask={MASKS.phone}
                     />
@@ -319,12 +328,19 @@ export default function Agendamento() {
                     />
                   </div>
 
-                  <TextField
+                  <Form.Item
                     name="cidade_estado"
                     label="Cidade/Estado"
-                    placeholder="São Paulo/SP"
-                    className="!w-[100%]"
-                  />
+                    className="!w-full custom-form-item"
+                  >
+                    <CityAutocomplete
+                      placeholder=""
+                      onSelect={(value, option) => {
+                        console.log("Cidade selecionada:", value, option);
+                        form.setFieldsValue({ cidade_estado: value });
+                      }}
+                    />
+                  </Form.Item>
 
                   <TextAreaField
                     name="comentario"
@@ -335,9 +351,9 @@ export default function Agendamento() {
                   />
 
                   <div className="flex justify-start">
-                    <FormButton 
+                    <FormButton
                       text={submitting ? "Agendando..." : "Agendar Visita"}
-                      className="!flex" 
+                      className="!flex"
                       htmlType="submit"
                       loading={submitting}
                       disabled={submitting}
@@ -352,7 +368,6 @@ export default function Agendamento() {
               </Form>
             </div>
           </div>
-
         </div>
       </main>
     </>

@@ -27,3 +27,18 @@ export const statesMap = {
     "Sergipe": "SE",
     "Tocantins": "TO",
   };
+
+// Mapa reverso: Sigla -> Nome completo
+export const statesMapReverse = Object.fromEntries(
+  Object.entries(statesMap).map(([nome, sigla]) => [sigla, nome])
+);
+
+// Função para obter nome completo do estado a partir da sigla
+export const getStateName = (sigla) => {
+  return statesMapReverse[sigla] || sigla;
+};
+
+// Função para obter sigla do estado a partir do nome completo
+export const getStateAbbr = (nome) => {
+  return statesMap[nome] || nome;
+};
