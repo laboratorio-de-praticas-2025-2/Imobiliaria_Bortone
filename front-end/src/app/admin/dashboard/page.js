@@ -18,6 +18,19 @@ export default function Dashboard() {
   const [dados, setDados] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // Estados para o filtro de data
+  const [dataInicio, setDataInicio] = useState(() => {
+    const now = new Date();
+    const tresMesesAtras = new Date(now.getFullYear(), now.getMonth() - 3, 1);
+    // Garante formato YYYY-MM-DD
+    return tresMesesAtras.toISOString().split('T')[0];
+  });
+  const [dataFim, setDataFim] = useState(() => {
+    const now = new Date();
+    // Garante formato YYYY-MM-DD
+    return now.toISOString().split('T')[0];
+  });
 
   const LineGraph = dynamic(() => import("@/components/dash/LineGraph"), {
     ssr: false,
@@ -31,10 +44,23 @@ export default function Dashboard() {
 
   // Busca os dados da rota /Dashboard
   useEffect(() => {
+    // Validação: só busca dados se as datas estiverem definidas
+    if (!dataInicio || !dataFim) {
+      console.warn('Dashboard: Datas não definidas, aguardando...');
+      return;
+    }
+
+    // Validação: dataInicio não pode ser maior que dataFim
+    if (new Date(dataInicio) > new Date(dataFim)) {
+      setError('Data de início não pode ser maior que data fim');
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
-    getDashboardData()
+    getDashboardData(dataInicio, dataFim)
       .then((res) => {
         setDados(res);
       })
@@ -45,7 +71,7 @@ export default function Dashboard() {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [dataInicio, dataFim]); // Recarrega quando as datas mudam
 
   const semDados =
     !dados ||
@@ -130,6 +156,81 @@ export default function Dashboard() {
       <Sidebar />
       <div className="md:ml-20">
         <CMS.Body title={"Dashboard"} type="dashboard">
+          {/* Filtros de Data */}
+          <div className="bg-white rounded-lg shadow-md p-4 mb-6 mx-7 mt-7">
+            <h3 className="text-lg font-semibold text-gray-800 mb-3">Filtrar Período</h3>
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <div className="flex-1 w-full md:w-auto">
+                <label htmlFor="dataInicio" className="block text-sm font-medium text-gray-700 mb-1">
+                  Data Início
+                </label>
+                <input
+                  type="date"
+                  id="dataInicio"
+                  value={dataInicio}
+                  onChange={(e) => setDataInicio(e.target.value)}
+                  max={dataFim}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              <div className="flex-1 w-full md:w-auto">
+                <label htmlFor="dataFim" className="block text-sm font-medium text-gray-700 mb-1">
+                  Data Fim
+                </label>
+                <input
+                  type="date"
+                  id="dataFim"
+                  value={dataFim}
+                  onChange={(e) => setDataFim(e.target.value)}
+                  min={dataInicio}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              <div className="flex gap-2 w-full md:w-auto md:mt-6">
+                <button
+                  onClick={() => {
+                    const now = new Date();
+                    const umMesAtras = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                    setDataInicio(umMesAtras.toISOString().split('T')[0]);
+                    setDataFim(now.toISOString().split('T')[0]);
+                  }}
+                  className="flex-1 md:flex-none px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-sm font-medium"
+                >
+                  Último Mês
+                </button>
+                <button
+                  onClick={() => {
+                    const now = new Date();
+                    const tresMesesAtras = new Date(now.getFullYear(), now.getMonth() - 3, 1);
+                    setDataInicio(tresMesesAtras.toISOString().split('T')[0]);
+                    setDataFim(now.toISOString().split('T')[0]);
+                  }}
+                  className="flex-1 md:flex-none px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-sm font-medium"
+                >
+                  3 Meses
+                </button>
+                <button
+                  onClick={() => {
+                    const now = new Date();
+                    const seisMesesAtras = new Date(now.getFullYear(), now.getMonth() - 6, 1);
+                    setDataInicio(seisMesesAtras.toISOString().split('T')[0]);
+                    setDataFim(now.toISOString().split('T')[0]);
+                  }}
+                  className="flex-1 md:flex-none px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-sm font-medium"
+                >
+                  6 Meses
+                </button>
+              </div>
+            </div>
+            {/* Indicador do período selecionado */}
+            <div className="mt-3 text-sm text-gray-600">
+              📊 Exibindo dados de{' '}
+              <strong>{dataInicio ? new Date(dataInicio + 'T00:00:00').toLocaleDateString('pt-BR') : 'N/A'}</strong>
+              {' '}até{' '}
+              <strong>{dataFim ? new Date(dataFim + 'T00:00:00').toLocaleDateString('pt-BR') : 'N/A'}</strong>
+            </div>
+          </div>
+          
           {/* Estado de carregamento */}
           {loading ? (
             <div className="flex justify-center items-center h-[60vh]">
