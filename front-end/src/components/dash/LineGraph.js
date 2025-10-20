@@ -3,7 +3,7 @@ import { Spin } from "antd";
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 
-// ✅ Importa Chart.js normalmente e registra os módulos necessários
+// Importa Chart.js normalmente e registra os módulos necessários
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,13 +25,12 @@ ChartJS.register(
   Legend
 );
 
-// ✅ Importa o componente Line de forma dinâmica (sem SSR)
+// Importa o componente Line de forma dinâmica (sem SSR)
 const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
   ssr: false,
 });
 
-// agora com parametro dos dados
-export default function LineGraph({ alugueisPorMes, loading }) {
+export default function LineGraph({ lineGraphData, title, loading }) {
   const [isReady, setIsReady] = useState(false);
   const containerRef = useRef(null);
 
@@ -40,8 +39,9 @@ export default function LineGraph({ alugueisPorMes, loading }) {
       ? lineGraphData
       : [{ mes: "2024-01", Apartamento: 0, Casa: 0, Terreno: 0 }];
 
-  // Atualiza o gráfico apenas quando o container está pronto
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const checkReadiness = () => {
       if (containerRef.current && safeData?.length > 0) {
         const rect = containerRef.current.getBoundingClientRect();
@@ -65,13 +65,9 @@ export default function LineGraph({ alugueisPorMes, loading }) {
 
   useEffect(() => {
     setIsReady(false);
-  }, [alugueisPorMes]);
+  }, [lineGraphData]);
 
-  // Dados seguros
-  const safeAlugueisPorMes =
-    alugueisPorMes && alugueisPorMes.length > 0
-      ? alugueisPorMes
-      : [{ mes: "2024-01", Casa: 0, Apartamento: 0, Terreno: 0 }];
+  const safeAlugueisPorMes = safeData;
 
   // define os labels como nome do mes/ano
   const monthNames = [
@@ -99,7 +95,7 @@ export default function LineGraph({ alugueisPorMes, loading }) {
     }
   });
 
-  // dados do gráfico
+  // dados do gráfico - CORREÇÃO: use safeData
   const chartData = {
     labels,
     datasets: [
@@ -151,24 +147,23 @@ export default function LineGraph({ alugueisPorMes, loading }) {
         beginAtZero: true,
         max: graphCeiling,
         ticks: { stepSize },
-        grid: { color: "#000000" },
+        grid: { color: "#E5E5E5" }, // CORREÇÃO: cor mais suave
       },
-      x: { grid: { display: false } },
+      x: {
+        grid: { display: false },
+        ticks: {
+          maxTicksLimit: 6, // Limita número de labels no eixo X
+        },
+      },
     },
     plugins: {
       legend: {
         display: true,
-        position: "right",
+        position: "top",
         labels: {
-          boxHeight: 30,
-          boxWidth: 30,
-          generateLabels: (chart) =>
-            chart.data.datasets.map((dataset, i) => ({
-              text: dataset.label,
-              fillStyle: dataset.borderColor,
-              strokeStyle: dataset.borderColor,
-              hidden: !chart.isDatasetVisible(i),
-            })),
+          boxHeight: 12,
+          boxWidth: 12,
+          padding: 15,
         },
       },
     },
@@ -185,7 +180,7 @@ export default function LineGraph({ alugueisPorMes, loading }) {
             {loading ? (
               <Spin tip="Carregando gráfico..." />
             ) : isReady ? (
-              <Line data={data} options={options} />
+              <Line data={chartData} options={options} />
             ) : (
               <div className="flex items-center justify-center h-full">
                 <div className="text-gray-500">Carregando gráfico...</div>
