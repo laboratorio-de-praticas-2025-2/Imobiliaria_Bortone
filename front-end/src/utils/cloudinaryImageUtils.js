@@ -37,6 +37,34 @@ function isCloudinaryUrl(url) {
 }
 
 /**
+ * Remove transformações inválidas de URLs do Cloudinary
+ * Corrige URLs que foram salvas com transformações erradas
+ * @param {string} url - URL possivelmente com transformações
+ * @returns {string} URL limpa
+ */
+function cleanCloudinaryUrl(url) {
+  if (!url || !url.includes('cloudinary.com')) {
+    return url;
+  }
+  
+  // Detecta transformações entre /upload/ e o caminho do arquivo
+  // Exemplos de padrões a remover:
+  // /upload/w_800,h_600,c_fill,q_auto,f_auto/
+  // /upload/w_auto,h_auto,c_fill,q_auto,f_auto/
+  const transformRegex = /\/upload\/[^/]*(?:w_|h_|c_|q_|f_)[^/]*\//;
+  
+  if (transformRegex.test(url)) {
+    console.warn('⚠️ URL com transformações detectada, limpando:', url);
+    // Remove tudo entre /upload/ e o próximo /
+    const cleaned = url.replace(transformRegex, '/upload/');
+    console.log('✅ URL limpa:', cleaned);
+    return cleaned;
+  }
+  
+  return url;
+}
+
+/**
  * Constrói URL otimizada do Cloudinary
  * @param {string} publicId - Public ID da imagem no Cloudinary
  * @param {Object} options - Opções de transformação
@@ -104,9 +132,10 @@ export function buildImageUrl(imageUrl, type = 'default', options = {}) {
 
   const cleanImageUrl = imageUrl.trim();
 
-  // 1. PRIORIDADE: URLs do Cloudinary - retorna diretamente (já otimizadas)
+  // 1. PRIORIDADE: URLs do Cloudinary - retorna diretamente (sem transformações!)
   if (isCloudinaryUrl(cleanImageUrl)) {
-    return cleanImageUrl;
+    // ✅ Limpar transformações inválidas e retornar URL limpa
+    return cleanCloudinaryUrl(cleanImageUrl);
   }
 
   // 2. URLs absolutas externas (http/https/data:) - retorna diretamente
@@ -116,7 +145,7 @@ export function buildImageUrl(imageUrl, type = 'default', options = {}) {
     return cleanImageUrl;
   }
 
-  // 3. URLs relativas - tenta construir URL do Cloudinary primeiro
+  // 3. URLs relativas - retorna URL simples do Cloudinary SEM transformações
   if (cleanImageUrl.startsWith('/') || !cleanImageUrl.includes('/')) {
     // Extrair nome do arquivo
     const fileName = cleanImageUrl.startsWith('/') ? 
@@ -127,10 +156,9 @@ export function buildImageUrl(imageUrl, type = 'default', options = {}) {
     const folder = CLOUDINARY_FOLDERS[type] || CLOUDINARY_FOLDERS.default;
     const publicId = `${folder}/${fileName.replace(/\.[^/.]+$/, '')}`; // Remove extensão
 
-    // Construir URL do Cloudinary
-    const cloudinaryUrl = buildCloudinaryUrl(publicId, cloudinaryOptions);
+    // ✅ Construir URL SIMPLES do Cloudinary SEM transformações
+    const cloudinaryUrl = `${CLOUDINARY_CONFIG.baseUrl}/${CLOUDINARY_CONFIG.cloudName}/image/upload/${publicId}`;
     
-
     return cloudinaryUrl;
   }
 
@@ -180,15 +208,8 @@ function getImageFolder(type) {
  * @returns {Object} { src, handleError }
  */
 export function useCloudinaryImage(imageUrl, type = 'default') {
-  // Primeira tentativa: URL do Cloudinary ou construída
-  const primarySrc = buildImageUrl(imageUrl, type, {
-    cloudinaryOptions: {
-      width: 800,
-      height: 600,
-      quality: 'auto',
-      format: 'auto'
-    }
-  });
+  // ✅ URL do Cloudinary SEM transformações por padrão
+  const primarySrc = buildImageUrl(imageUrl, type);
 
   const handleError = (event) => {
     const img = event.target;

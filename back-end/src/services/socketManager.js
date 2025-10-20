@@ -1,27 +1,20 @@
 import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
-import { createServer } from 'http';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 dotenv.config({ path: fileURLToPath(new URL('../../.env', import.meta.url)) });
 
 class SocketManager {
-    constructor() {
+    constructor(httpServer) {
 
-        this.httpServer = createServer();
 
-        this.io = new Server(this.httpServer, {
-            // path: '/notifications/',
+        this.io = new Server(httpServer, {
+            path: '/notifications',
             cors: {
                 origin: process.env.FRONTEND_URL || "http://localhost:3000",
                 methods: ["GET", "POST"],
                 credentials: true
             }
-        });
-
-        const SOCKET_PORT = process.env.SOCKET_PORT || 4001;
-        this.httpServer.listen(SOCKET_PORT, () => {
-            console.log(`🔌 Socket.IO Server iniciado na porta ${SOCKET_PORT}`);
         });
 
         this.connectedUsers = new Map(); // userId -> socket

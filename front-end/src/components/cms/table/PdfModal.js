@@ -42,7 +42,7 @@ export default function PdfModal({
                 [&_.page:not(:first-child)]:invisible"
                 >
                   <div ref={componentToPrintRef}>
-                    <Relatorio data={reportData} secoes={record.secoes} dateRange={dateRange} />
+                    <Relatorio data={reportData} reportCapaTitle={record.nome} secoes={record.secoes} dateRange={dateRange} />
                   </div>
                 </div>
               </div>

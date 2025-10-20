@@ -88,9 +88,25 @@ export default function CmsBannerPage() {
     }
   };
 
+  // Ordenação e paginação
+  let orderedBanners = [...banners];
+  if (filterData.order === "Ordem alfabetica") {
+    orderedBanners.sort((a, b) => {
+      const titleA = a.titulo || "";
+      const titleB = b.titulo || "";
+      return titleA.localeCompare(titleB);
+    });
+  } else if (filterData.order === "Data de inclusão") {
+    orderedBanners.sort((a, b) => {
+      const aDate = new Date(a.createdAt || a.data_inclusao || 0);
+      const bDate = new Date(b.createdAt || b.data_inclusao || 0);
+      return bDate - aDate;
+    });
+  }
+
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedBanners = banners.slice(startIndex, endIndex);
+  const paginatedBanners = orderedBanners.slice(startIndex, endIndex);
 
   const onSearch = (value) => console.log("Search:", value);
   const handleSelectOrder = (value) => setFilterData(prev => ({ ...prev, order: value }));
@@ -138,8 +154,9 @@ export default function CmsBannerPage() {
               )}
             </CMS.TableBody>
             <CMS.TableFooter
-              postsData={banners}
+              totalItems={orderedBanners.length}
               pageSize={pageSize}
+              currentPage={currentPage}
               onPageChange={setCurrentPage}
             />
           </CMS.Table>

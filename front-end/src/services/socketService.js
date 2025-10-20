@@ -1,12 +1,15 @@
 "use client";
 const SOCKET_URL =
-  process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4001";
+  process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000";
+
+
 
 class SocketService {
   constructor() {
     this.socket = null;
     this.isConnected = false;
     this.eventHandlers = new Map();
+    this.shownNotifications = new Set();
   }
 
   async connect(tokenParam = null) {
@@ -33,6 +36,7 @@ class SocketService {
       const io = socketModule.io || socketModule.default || socketModule;
 
       this.socket = io(SOCKET_URL, {
+        path: '/notifications',
         auth: token ? { token } : {},
         transports: ["polling", "websocket"],
         timeout: 20000,
@@ -101,13 +105,26 @@ class SocketService {
   }
 }
 
-// ✅ ÚNICA INSTÂNCIA:
-const socketServiceInstance = new SocketService();
+// // ✅ ÚNICA INSTÂNCIA:
+// const socketServiceInstance = new SocketService();
 
-// ✅ Expor globalmente para debug:
+// // ✅ Expor globalmente para debug:
+// if (typeof window !== "undefined") {
+//   window.socketService = socketServiceInstance;
+// }
+
+// export default socketServiceInstance;
+
+const singletonSocketService =
+  typeof window !== "undefined"
+    ? (window.socketServiceInstance || (window.socketServiceInstance = new SocketService()))
+    : new SocketService(); // Cria uma instância normal no lado do servidor (que não conecta)
+
+// Exporta a instância única e a expõe para debug
 if (typeof window !== "undefined") {
-  window.socketService = socketServiceInstance;
+  window.socketService = singletonSocketService;
 }
+export default singletonSocketService;
 
-export default socketServiceInstance;
+
 

@@ -25,7 +25,7 @@ class NotificationService {
 
   // Função com a finalidade é acionar o SocketManager para o envio das notificações.
   async dispararAlertaNovoImovel(novoImovel, user) {
-     console.log('🔍 [DEBUG] Usuário que está cadastrando:', user);
+    console.log('🔍 [DEBUG] Usuário que está cadastrando:', user);
     console.log('🔍 [DEBUG] ID do usuário logado:', user?.id);
     const startTime = Date.now();
 
@@ -66,7 +66,7 @@ class NotificationService {
 
 
     const { tipo_negociacao, status } = novoImovel;
-    const preco = precoNumerico; 
+    const preco = precoNumerico;
     const area = areaNumerica;
     const latitude = latitudeNumerico;
     const longitude = longitudeNumerico;
@@ -116,6 +116,41 @@ class NotificationService {
         },
       });
 
+
+      ////////////
+      console.log('🔍 [DEBUG] Consulta RecomendacaoImovel executada!');
+      console.log('🔍 [DEBUG] Total de recomendações retornadas:', recomendacoes ? recomendacoes.length : 'Nenhum resultado (null/undefined)');
+
+      if (recomendacoes.length > 0) {
+        console.log('📋 [DEBUG] Exemplos de recomendações encontradas:');
+        recomendacoes.slice(0, 3).forEach((r, i) => {
+          console.log(`→ [${i + 1}] usuário_id=${r.usuario_id}, imovel_id=${r.imovel_id}, data_visita=${r.data_visita}`);
+        });
+      } else {
+        console.log('⚠️ [DEBUG] Nenhuma recomendação encontrada nos critérios de filtro.');
+      }
+
+
+      if (!recomendacoes || recomendacoes.length === 0) {
+  console.log('⚙️ [DEBUG] Nenhuma recomendação encontrada — SIMULANDO envio personalizado de teste');
+  const testUserIds = [user.id]; // envia pro próprio criador do imóvel
+  const resultados = sendToMultipleUsers(testUserIds, 'nova_recomendacao', {
+    type: 'personalized_recommendation',
+    title: 'Nova Recomendação Personalizada (teste)',
+    message: 'Simulação de envio direto via Socket.IO',
+    property: {
+      id: novoImovel.id,
+      tipo_negociacao: novoImovel.tipo_negociacao,
+      preco: novoImovel.preco,
+      area: novoImovel.area,
+      endereco: novoImovel.endereco
+    }
+  });
+  console.log('📤 [DEBUG] Resultado do envio simulado:', resultados);
+}
+
+
+      /////////////
 
       const imovelSorteado = await this._buscarImovelPopular();
 
@@ -183,62 +218,127 @@ class NotificationService {
 
   // Função para enviar notificações via Socket.IO - SEM REDUNDÂNCIAS
 
-  async _enviarNotificacoes(recomendacoes, novoImovel, imovelSorteado, user) {
-  
-    const notificacoesSent = {
-      recomendacoes: 0,
-      broadcast: false
-    };
+  // async _enviarNotificacoes(recomendacoes, novoImovel, imovelSorteado, user) {
 
-    try {
-      // 1. NOTIFICAÇÕES PERSONALIZADAS (baseadas em recomendações) - UMA SÓ VEZ
-      if (recomendacoes && recomendacoes.length > 0) {
-        const usuariosIds = [...new Set(recomendacoes.map(r => r.dataValues?.usuario_id || r.usuario_id))];
-            console.log('🔍 [DEBUG] UsuariosIds que deveriam receber:', usuariosIds);
-    console.log('🔍 [DEBUG] Seu ID (quem está cadastrando):', user?.id);
-    console.log('🔍 [DEBUG] Você está na lista de recomendações?', usuariosIds.includes(user?.id));
+  //   const notificacoesSent = {
+  //     recomendacoes: 0,
+  //     broadcast: false
+  //   };
 
-        console.log(`[NotificationService] Enviando recomendações personalizadas para ${usuariosIds.length} usuários: ${usuariosIds.join(', ')}`);
+  //   try {
+  //     // 1. NOTIFICAÇÕES PERSONALIZADAS (baseadas em recomendações) - UMA SÓ VEZ
+  //     if (recomendacoes && recomendacoes.length > 0) {
+  //       const usuariosIds = [...new Set(recomendacoes.map(r => r.dataValues?.usuario_id || r.usuario_id))];
+  //       console.log('🔍 [DEBUG] UsuariosIds que deveriam receber:', usuariosIds);
+  //       console.log('🔍 [DEBUG] Seu ID (quem está cadastrando):', user?.id);
+  //       console.log('🔍 [DEBUG] Você está na lista de recomendações?', usuariosIds.includes(user?.id));
+
+  //       console.log(`[NotificationService] Enviando recomendações personalizadas para ${usuariosIds.length} usuários: ${usuariosIds.join(', ')}`);
 
 
-         // ✅ ADICIONAR DEBUG:
-    console.log('🔍 [DEBUG] UsuariosIds extraídos:', usuariosIds);
-    console.log('🔍 [DEBUG] Dados da notificação personalizada:', {
+  //       // ✅ ADICIONAR DEBUG:
+  //       console.log('🔍 [DEBUG] UsuariosIds extraídos:', usuariosIds);
+  //       console.log('🔍 [DEBUG] Dados da notificação personalizada:', {
+  //         type: 'personalized_recommendation',
+  //         title: 'Nova Recomendação Personalizada',
+  //         message: 'Encontramos um imóvel que combina com seu perfil!',
+  //         property: {
+  //           id: novoImovel.id,
+  //           tipo_negociacao: novoImovel.tipo_negociacao,
+  //           preco: novoImovel.preco,
+  //           area: novoImovel.area,
+  //           endereco: novoImovel.endereco
+  //         }
+  //       });
+
+  //       const resultados = sendToMultipleUsers(usuariosIds, 'nova_recomendacao', {
+  //         type: 'personalized_recommendation',
+  //         title: 'Nova Recomendação Personalizada',
+  //         message: 'Encontramos um imóvel que combina com seu perfil!',
+  //         property: {
+  //           id: novoImovel.id,
+  //           tipo_negociacao: novoImovel.tipo_negociacao,
+  //           preco: novoImovel.preco,
+  //           area: novoImovel.area,
+  //           endereco: novoImovel.endereco,
+  //           imagens: novoImovel.imagens
+  //         }
+  //       });
+  //       console.log('🔍 [DEBUG] Resultados do sendToMultipleUsers:', resultados);
+  //       console.log('🔍 [DEBUG] Notificações enviadas com sucesso:', resultados?.filter(r => r.sent).length);
+
+  //       notificacoesSent.recomendacoes = resultados.filter(r => r.sent).length;
+  //     }
+
+  //     // 2. BROADCAST DE IMÓVEL POPULAR (para usuários sem histórico) - UMA SÓ VEZ
+  //     if (imovelSorteado) {
+
+  //       const broadcastResult = broadcastNotification('imovel_popular', {
+  //         type: 'popular_property',
+  //         title: 'Imóvel Popular em Destaque',
+  //         message: 'Confira este imóvel que está chamando atenção!',
+  //         property: {
+  //           id: imovelSorteado.id,
+  //           tipo_negociacao: imovelSorteado.tipo_negociacao,
+  //           preco: imovelSorteado.preco,
+  //           area: imovelSorteado.area,
+  //           endereco: imovelSorteado.endereco,
+  //           imagens: imovelSorteado.imagens
+  //         }
+  //       });
+
+  //       notificacoesSent.broadcast = broadcastResult;
+  //     } else {
+  //       console.log('ℹ️ Nenhum imóvel popular encontrado para broadcast');
+  //     }
+  //     return notificacoesSent;
+  //   } catch (error) {
+  //     console.error("❌ ERRO em _enviarNotificacoes:", error.message);
+  //     throw new Error("Erro ao enviar notificações em tempo real.");
+  //   }
+  // }
+
+async _enviarNotificacoes(recomendacoes, novoImovel, imovelSorteado, user) {
+  const notificacoesSent = {
+    recomendacoes: 0,
+    broadcast: false
+  };
+
+  try {
+    // 1. NOTIFICAÇÕES PERSONALIZADAS
+    let usuariosPersonalizados = [];
+    let usuariosPopular = [];
+    if (recomendacoes && recomendacoes.length > 0) {
+      usuariosPersonalizados = [...new Set(recomendacoes.map(r => r.dataValues?.usuario_id || r.usuario_id))];
+      const resultados = sendToMultipleUsers(usuariosPersonalizados, 'nova_recomendacao', {
         type: 'personalized_recommendation',
         title: 'Nova Recomendação Personalizada',
         message: 'Encontramos um imóvel que combina com seu perfil!',
         property: {
-            id: novoImovel.id,
-            tipo_negociacao: novoImovel.tipo_negociacao,
-            preco: novoImovel.preco,
-            area: novoImovel.area,
-            endereco: novoImovel.endereco
+          id: novoImovel.id,
+          tipo_negociacao: novoImovel.tipo_negociacao,
+          preco: novoImovel.preco,
+          area: novoImovel.area,
+          endereco: novoImovel.endereco,
+          imagens: novoImovel.imagens
         }
-    });
+      });
+      notificacoesSent.recomendacoes = resultados.filter(r => r.sent).length;
+    }
 
-        const resultados = sendToMultipleUsers(usuariosIds, 'nova_recomendacao', {
-          type: 'personalized_recommendation',
-          title: 'Nova Recomendação Personalizada',
-          message: 'Encontramos um imóvel que combina com seu perfil!',
-          property: {
-            id: novoImovel.id,
-            tipo_negociacao: novoImovel.tipo_negociacao,
-            preco: novoImovel.preco,
-            area: novoImovel.area,
-            endereco: novoImovel.endereco,
-            imagens: novoImovel.imagens
-          }
-        });
-          console.log('🔍 [DEBUG] Resultados do sendToMultipleUsers:', resultados);
-    console.log('🔍 [DEBUG] Notificações enviadas com sucesso:', resultados?.filter(r => r.sent).length);
+    // 2. BROADCAST DE IMÓVEL POPULAR (apenas para quem NÃO recebeu personalizada)
+    if (imovelSorteado) {
+      // Obtenha todos os usuários conectados
+      const { getConnectedUsers } = await import('../utils/socketHelper.js');
+      const todosConectados = getConnectedUsers();
 
-        notificacoesSent.recomendacoes = resultados.filter(r => r.sent).length;
-      }
+      // Filtre apenas quem NÃO recebeu personalizada
+      const usuariosPopular = todosConectados.filter(
+        id => !usuariosPersonalizados.includes(id)
+      );
 
-      // 2. BROADCAST DE IMÓVEL POPULAR (para usuários sem histórico) - UMA SÓ VEZ
-      if (imovelSorteado) {
-
-        const broadcastResult = broadcastNotification('imovel_popular', {
+      if (usuariosPopular.length > 0) {
+        const resultados = sendToMultipleUsers(usuariosPopular, 'imovel_popular', {
           type: 'popular_property',
           title: 'Imóvel Popular em Destaque',
           message: 'Confira este imóvel que está chamando atenção!',
@@ -251,17 +351,21 @@ class NotificationService {
             imagens: imovelSorteado.imagens
           }
         });
-
-        notificacoesSent.broadcast = broadcastResult;
+        notificacoesSent.broadcast = resultados.filter(r => r.sent).length;
       } else {
-            console.log('ℹ️ Nenhum imóvel popular encontrado para broadcast');
-        }
-        return notificacoesSent;
-    } catch (error) {
-      console.error("❌ ERRO em _enviarNotificacoes:", error.message);
-      throw new Error("Erro ao enviar notificações em tempo real.");
+        console.log('ℹ️ Nenhum usuário para receber broadcast de imóvel popular');
+      }
     }
+    console.log('🔔 Usuários que vão receber personalizada:', usuariosPersonalizados);
+console.log('🔔 Usuários que vão receber popular:', usuariosPopular);
+    return notificacoesSent;
+  } catch (error) {
+    console.error("❌ ERRO em _enviarNotificacoes:", error.message);
+    throw new Error("Erro ao enviar notificações em tempo real.");
   }
+}
+
+
 
   // Função para notificar alteração de preço
   async notificarAlteracaoPreco(imovelId, precoAntigo, precoNovo) {
