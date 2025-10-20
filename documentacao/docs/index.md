@@ -9,6 +9,7 @@ Bem-vindo à documentação completa do sistema Imobiliária Bortone. Este porta
 ## 🚀 Início Rápido
 
 ### Para Desenvolvedores
+- 🏗️ [**Arquitetura e Infraestrutura**](ArquiteturaInfraestrutura.md) - ⭐ **Visão completa da arquitetura (Render + Vercel + Cloudinary)**
 - 📋 [**Regras Gerais do Repositório**](RegrasGerais.md) - Fluxo de desenvolvimento, branches, commits e PRs
 - 🏗️ [**Estrutura de Pastas**](EstruturaDePastas.md) - Organização do projeto e arquitetura
 - 🔧 [**WebSocket Setup**](WebSocket-Setup.md) - Configuração do sistema de chat em tempo real
@@ -25,6 +26,7 @@ Bem-vindo à documentação completa do sistema Imobiliária Bortone. Este porta
 Documentação completa do frontend em Next.js, incluindo configurações, componentes e boas práticas.
 
 - **[Configurações do Next.js](frontend/NextConfig.md)** - Setup e configuração do framework
+- **[📦 Componentização](frontend/Componentizacao.md)** - ⭐ **Arquitetura de componentes e padrões de desenvolvimento**
 - **[Manual de Tags](frontend/ManualdeTags.md)** - Convenções de marcação e componentes
 - **[Middleware de Indexação](frontend/middlwareIndexacao.md)** - Sistema de middleware personalizado
 
@@ -34,6 +36,8 @@ Documentação técnica das APIs, serviços e funcionalidades do servidor.
 #### Core APIs
 - **[API de Imóveis](api/imoveis.md)** - Endpoints para gestão de propriedades
 - **[API de Imagens](api/imagens.md)** - ⚡ **Sistema Cloudinary** - Upload e gerenciamento
+- **[API de FAQ](api/FAQ.md)** - Endpoints do sistema de perguntas frequentes
+- **[FAQ - Gerenciamento CMS](api/FAQ-CMS.md)** - CRUD de FAQs no painel administrativo
 - **[Dashboard](api/dashboard.md)** - Métricas e relatórios administrativos
 - **[Banco de Dados](api/BancoDeDados.md)** - Estrutura e relacionamentos
 
