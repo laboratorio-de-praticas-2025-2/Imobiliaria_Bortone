@@ -87,7 +87,7 @@ export default function Body({ children, title, type, dataInicio, dataFim, onDat
                {/* Botões rápidos de período - apenas para dashboard */}
         {type === "dashboard" && onDataInicioChange && onDataFimChange && (
           <div className="flex items-center gap-2 mt-4 flex-wrap">
-            <span className="text-xs text-white/80 mr-2">Período:</span>
+            {/* <span className="text-xs text-white/80 mr-2">Período:</span> */}
             <button
               onClick={setUltimoMes}
               className="bg-white/10 hover:bg-white/20 text-white text-xs px-3 py-1.5 rounded-full transition-colors"
