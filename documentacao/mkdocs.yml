@@ -26,11 +26,14 @@ extra_css:
 
 nav:
   - Início: index.md
+  - "🏗️ Arquitetura e Infraestrutura": ArquiteturaInfraestrutura.md
+  - "✅ Verificação da Documentação": VerificacaoDocumentacao.md
   - Regras Gerais do Repositório: RegrasGerais.md
   - Estrutura de Pastas: EstruturaDePastas.md
   
   - Frontend:
     - Configurações do Next: frontend/NextConfig.md
+    - "📦 Componentização": frontend/Componentizacao.md
     - Middleware: frontend/middlwareIndexacao.md
     - Manual de Tags: frontend/ManualdeTags.md
     - Setup Netlify: frontend/NETLIFY_SETUP.md
@@ -49,6 +52,8 @@ nav:
     - Dashboard: api/dashboard.md
     - Agendamento de Visitação: api/Agendamento.md
     - Funcionalidade do envio de e-mail: api/AgendamentoSMTP.md
+    - FAQ (Perguntas Frequentes): api/FAQ.md
+    - FAQ - Gerenciamento CMS: api/FAQ-CMS.md
 
   - Sistema de Mapa:
     - API de Mapa: api/MapaAPI.md
