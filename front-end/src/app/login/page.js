@@ -32,7 +32,7 @@ export default function LoginPage() {
       senha: values.password
     };
 
-      try {
+    try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/user/login`,
         dados
@@ -69,21 +69,27 @@ export default function LoginPage() {
 
     } catch (error) {
       console.error(error);
-      
+
       const msg = error?.response?.data?.message?.toLowerCase?.() || '';
       const status = error?.response?.status;
-      
+
       const errorMessage = error?.response?.data?.message || 'Erro ao conectar com o servidor.';
-      
-      if (msg.includes('email') || status === 404 || msg.includes('não encontrado') || msg.includes('not found') || msg.includes('não existe') || msg.includes('não cadastrado')) {
+
+      const isCredentialError =
+        status === 401 || status === 403 || status === 404
+        msg.includes('email') ||
+        msg.includes('senha') ||
+        msg.includes('password') ||
+        msg.includes('credencial') ||
+        msg.includes('incorreto') ||
+        msg.includes('não encontrado') ||
+        msg.includes('not found') ||
+        msg.includes('não existe');
+
+      if (isCredentialError) {
         form.setFields([
-          { name: 'email', errors: ['Email inválido'] },
-          { name: 'password', errors: [] } 
-        ]);
-      } else if (status === 401 || status === 403 || msg.includes('credencial') || msg.includes('senha') || msg.includes('password') || msg.includes('incorreto')) {
-        form.setFields([
-          { name: 'email', errors: [] },
-          { name: 'password', errors: ['Senha inválida'] }
+          { name: 'email', errors: [''] },
+          { name: 'password', errors: ['Email ou senha inválidos'] }
         ]);
       } else {
         form.setFields([
@@ -91,6 +97,7 @@ export default function LoginPage() {
           { name: 'password', errors: [errorMessage] }
         ]);
       }
+
     } finally {
       setLoading(false);
     }
