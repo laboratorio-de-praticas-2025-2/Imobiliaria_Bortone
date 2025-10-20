@@ -2,12 +2,12 @@ export default function Body({ children, title, type }) {
   return (
     <div className="h-full">
       {/* Header com título e filtros */}
-      <div className="h-[30vh] w-full bg-[var(--secondary)] flex flex-col justify-center px-16 text-white font-bold">
+      <div className="h-[30vh] w-full bg-[var(--secondary)] flex flex-col justify-center sm:px-16 px-3 text-white font-bold">
         <div className="flex items-center justify-between w-full">
-          <p className="text-3xl">{title}</p>
+          <p className={`text-3xl ${type === "dashboard" ? "hidden sm:block" : ""}`}>{title}</p>
 
           {type === "dashboard" && (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center flex-col sm:flex-row gap-3">
               {/* Campo de pesquisa */}
               <div className="flex items-center bg-[#f5f7ff] rounded-full px-4 py-2 text-[var(--primary)]">
                 <svg
