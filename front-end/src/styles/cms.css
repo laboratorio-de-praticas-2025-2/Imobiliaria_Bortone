@@ -131,7 +131,35 @@
   font-size: 20px !important;
 }
 
-#basic_senha::placeholder {
+.custom-auto-input input{
+  border-radius: 6px !important;
+  border: 1px solid #304383 !important;
+  padding: 6px 12px !important;
+  font-size: 20px !important;
+}
+
+.custom-auto-input .ant-input-group-addon{
+  border-radius: 6px !important;
+  border: 1px solid #304383 !important;
+  font-size: 20px !important;
+}
+
+.custom-auto-input .ant-btn-variant-outlined{
+  border:none !important;
+}
+
+.custom-auto-input .ant-btn-variant-outlined{
+  margin-inline-end:0 !important; 
+}
+
+/* Placeholder cinza */
+.custom-auto-input input::placeholder {
+  color: #a1a1aa !important;
+  font-weight: 500 !important;
+  font-size: 20px !important;
+}
+
+#basic_senha::placeholder  {
   color: #a1a1aa !important;
   font-weight: 500 !important;
   font-size: 20px !important;
