@@ -25,13 +25,13 @@ export default function Header() {
               Confira Imóveis à partir de
               <p>R$ 250.000,00</p>
             </span>
-            <Button
+            {/* <Button
               variant="outlined"
               shape="round"
               className="btn-marcar-visita"
             >
               Agende uma visita
-            </Button>
+            </Button> */}
           </Flex>
         </Flex>
         <HeaderSlider />
