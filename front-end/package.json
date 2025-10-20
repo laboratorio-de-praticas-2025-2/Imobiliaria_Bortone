@@ -16,7 +16,7 @@
     "@ant-design/icons-svg": "^4.4.2",
     "@babel/runtime": "^7.28.4",
     "@vercel/speed-insights": "^1.2.0",
-    "antd": "^5.27.4",
+    "antd": "^5.27.6",
     "antd-style": "^3.7.1",
     "app-paths": "^0.0.2",
     "axios": "^1.12.2",
