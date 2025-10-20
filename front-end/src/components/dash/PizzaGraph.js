@@ -14,7 +14,7 @@ const Doughnut = dynamic(
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function RentalByRegion({
+export default function PizzaGraph({
   data,
   label,
   options,
@@ -22,21 +22,28 @@ export default function RentalByRegion({
   loading,
 }) {
   const [chartData, setChartData] = useState(null);
+  const [isClient, setIsClient] = useState(false);
   const containerRef = useRef(null);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Aguarda montagem e define dados válidos
   useEffect(() => {
-    if (!data || !data.datasets) return;
+    if (!isClient || !data || !data.datasets) return;
 
     const timer = setTimeout(() => {
       const hasValidData = data.datasets.some(
-        (d) => Array.isArray(d.data) && d.data.length > 0
+        (d) =>
+          Array.isArray(d.data) &&
+          d.data.length > 0 &&
+          d.data.some((val) => val > 0)
       );
 
       if (hasValidData) {
         setChartData(data);
       } else {
-        // Evita loop infinito mostrando "sem dados"
         setChartData({
           labels: ["Sem dados"],
           datasets: [
@@ -52,29 +59,45 @@ export default function RentalByRegion({
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [data]);
+  }, [data, isClient]);
 
   // Opções seguras para o gráfico
   const safeOptions = {
-    ...options,
     responsive: true,
     maintainAspectRatio: false,
     animation: {
       duration: 300,
     },
     plugins: {
-      ...options?.plugins,
       legend: {
-        ...options?.plugins?.legend,
-        display: !!(chartData?.labels?.length > 0),
+        position: "right",
+        labels: {
+          usePointStyle: false,
+          boxHeight: 18,
+          color: "black",
+          boxWidth: 18,
+        },
       },
     },
+    ...options,
   };
+
+  if (!isClient) {
+    return (
+      <div
+        className={`group h-full w-full flex items-center rounded-xl px-4 bg-[#EEF0F9] shadow-md ${className}`}
+      >
+        <div className="flex items-center justify-center w-full h-64">
+          <Spin tip="Carregando..." />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
       ref={containerRef}
-      className={`group h-full !w-full flex items-center rounded-xl px-4 !bg-[#EEF0F9] !shadow-md ${className}`}
+      className={`group h-full w-full flex items-center rounded-xl px-4 bg-[#EEF0F9] shadow-md ${className}`}
     >
       <div className="grid grid-col content-evenly w-full h-full">
         <span className="text-lg md:text-2xl font-bold lg:text-center text-[var(--primary)]">

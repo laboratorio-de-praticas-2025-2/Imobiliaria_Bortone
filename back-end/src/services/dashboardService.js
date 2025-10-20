@@ -1,110 +1,71 @@
-import sequelize from "../config/sequelize-config.js";
+import {
+  obterDadosAnaliseEstoque,
+  obterSumarioExecutivo,
+  obterDadosJornadaCliente,
+  obterDadosDesempenhoVendas,
+  obterDadosDesempenhoLocacoes,
+} from "../repositories/dadosRepository.js";
 
 class DashboardService {
-  async #executeQuery(query, errorMessage) {
+  async dashboardData(data_inicio, data_fim) {
     try {
-      return await sequelize.query(query, {
-        type: sequelize.QueryTypes.SELECT,
-        logging: false,
-      });
-    } catch (dbError) {
-      console.error(`${errorMessage}:`, {
-        message: dbError.message,
-        query: query.substring(0, 200) + "...", // Log parcial da query
-        stack: dbError.stack,
-      });
-
-      throw new Error(errorMessage);
-    }
-  }
-
-  // busca as estatisticas gerais dos imoveis (quantidade vendidos, disponiveis, alugados etc.) e de usuarios
-  async estatisticasImoveisUsuarios() {
-    const query = `SELECT * FROM estatisticasImoveisUsuarios;`;
-
-    // executa a query no BD usando sequelize
-    const errorMessage =
-      "Falha ao recuperar estatísticas de imóveis e usuários";
-    const results = await this.#executeQuery(query, errorMessage);
-    return results[0];
-  }
-  // busca as estatisticas de vendas nos ultimos 30 dias e a sua %
-  async estatisticasVendas() {
-    const query = `SELECT * FROM estatisticasVendas;`;
-
-    const errorMessage = "Falha ao recuperar estatísticas de vendas";
-
-    return await this.#executeQuery(query, errorMessage);
-  }
-  async alugueisPorMes() {
-    const query = `SELECT * from alugueisPorMes;`;
-
-    const errorMessage = "Falha ao recuperar estatísticas de aluguéis";
-
-    const results = await this.#executeQuery(query, errorMessage);
-
-    // agrupa os resultados por mes
-    try {
-      const mesesAgrupados = results.reduce((acc, row) => {
-        acc[row.mes] = acc[row.mes] || {
-          mes: row.mes,
-          Apartamento: 0,
-          Casa: 0,
-          Terreno: 0,
-        };
-        acc[row.mes][row.tipoImovel] = Number(row.total);
-        return acc;
-      }, {});
-
-      return Object.values(mesesAgrupados);
-    } catch (processingError) {
-      console.error("Erro no processamento de aluguéis:", processingError);
-      throw new Error("Falha no processamento dos dados de aluguéis");
-    }
-  }
-
-  // processa os dados para melhor apresentacao no front end
-
-  async dashboardData() {
-    try {
-      const [estatisticas, vendas, alugueis] = await Promise.all([
-        this.estatisticasImoveisUsuarios(),
-        this.estatisticasVendas(),
-        this.alugueisPorMes(),
+      const [sumario, estoque, clientes, vendas, locacoes] = await Promise.all([
+        obterSumarioExecutivo(data_inicio, data_fim),
+        obterDadosAnaliseEstoque(),
+        obterDadosJornadaCliente(data_inicio, data_fim),
+        obterDadosDesempenhoVendas(data_inicio, data_fim),
+        obterDadosDesempenhoLocacoes(data_inicio, data_fim),
       ]);
 
-      // faz com que todos os tipos aparecam, mesmo se estiverem com 0 vendas
-      const tiposImoveis = ["Apartamento", "Casa", "Terreno"];
-      const vendasRecentes = tiposImoveis.map((tipo) => {
-        const registro = vendas.find((v) => v.tipoImovel === tipo);
-        return {
-          tipo: tipo,
-          quantidade: registro ? Number(registro.quantidade) : 0,
-          porcentagem: registro ? Number(registro.porcentagem) : 0,
-        };
-      });
-
-      // estrutura os dados
       const processedData = {
-        imoveis: {
-          total: Number(estatisticas.totalImoveis),
-          porTipo: {
-            apartamentos: Number(estatisticas.totalApartamentos),
-            casas: Number(estatisticas.totalCasas),
-            terrenos: Number(estatisticas.totalTerrenos),
-          },
-          porNegociacao: {
-            venda: Number(estatisticas.totalVenda),
-            locacao: Number(estatisticas.totalLocacao),
-          },
+        sumarioExecutivo: {
+          totalVendas: Number(sumario.totalVendas || 0),
+          valorGeralVendas: Number(sumario.valorGeralVendas || 0),
+          totalAgendamentosCriados: Number(
+            sumario.totalAgendamentosCriados || 0
+          ),
+          totalAgendamentosCriadosPorNovosUsuarios: Number(
+            sumario.totalAgendamentosCriadosPorNovosUsuarios || 0
+          ),
         },
-        usuarios: {
-          total: Number(estatisticas.totalUsuarios),
-          administradores: Number(estatisticas.totalAdministradores),
-          visitantes: Number(estatisticas.totalVisitantes),
+        estoqueImobiliario: {
+          estatisticas: {
+            totalImoveis: estoque.estatisticas?.[0]?.total_imoveis || 0,
+            disponiveis:
+              estoque.estatisticas?.[0]?.total_imoveis_disponiveis || 0,
+            locados: estoque.estatisticas?.[0]?.total_imoveis_locados || 0,
+            vendidos: estoque.estatisticas?.[0]?.total_imoveis_vendidos || 0,
+            precoVisivel: estoque.estatisticas?.[0]?.total_preco_visivel || 0,
+            precoOculto: estoque.estatisticas?.[0]?.total_preco_oculto || 0,
+          },
+
+          distribuicaoPorTipo: estoque.distribuicaoPorTipo || [],
+
+          distribuicaoPorPreco: estoque.distribuicaoPorPreco || [],
         },
-        vendasRecentes,
-        alugueisPorMes: alugueis,
+
+        estatisticasUsuarios: {
+          novosUsuarios: Number(clientes.novosUsuarios || 0),
+          agendamentosNovosUsuarios: Number(
+            clientes.agendamentosNovosUsuarios || 0
+          ),
+          agendamentosAntigoUsuarios: Number(
+            clientes.agendamentosAntigoUsuarios || 0
+          ),
+          taxaConversao: Number(clientes.taxaConversao || 0),
+          evolucaoMensal: clientes.evolucaoMensalAgendamentoEUsuario || [],
+        },
+
+        desempenhoVendas: {
+          total: Number(vendas.totalVendas || 0),
+          distribuicaoPorTipo: vendas.distribuicaoTipo || [],
+          evolucaoMensal: vendas.evolucaoMensal || [],
+        },
+        desempenhoAlugueis: {
+          total: Number(locacoes.totalLocacoes || 0),
+          distribuicaoPorTipo: locacoes.distribuicaoTipo || 0,
+          evolucaoMensal: locacoes.evolucaoMensal || 0,
+        },
       };
 
       return processedData;
@@ -112,9 +73,8 @@ class DashboardService {
       console.error("Erro crítico no dashboardData:", {
         message: error.message,
         stack: error.stack,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
-      
       throw new Error("Erro na composição dos dados do dashboard");
     }
   }
