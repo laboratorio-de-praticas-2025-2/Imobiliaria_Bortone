@@ -86,10 +86,7 @@ export default function Body({ children, title, type, dataInicio, dataFim, onDat
               </div>
             </div>
           )}
-          {/* Barra de pesquisa e filtros */}
-        </div>
-
-        {/* Botões rápidos de período - apenas para dashboard */}
+          {/* Botões rápidos de período - apenas para dashboard */}
         {type === "dashboard" && onDataInicioChange && onDataFimChange && (
           <div className="flex items-center gap-2 mt-4 flex-wrap">
             <span className="text-xs text-white/80 mr-2">Período:</span>
@@ -116,6 +113,10 @@ export default function Body({ children, title, type, dataInicio, dataFim, onDat
             </button>
           </div>
         )}
+          {/* Barra de pesquisa e filtros */}
+        </div>
+
+        
       </div>
 
       {/* Conteúdo abaixo do cabeçalho */}
