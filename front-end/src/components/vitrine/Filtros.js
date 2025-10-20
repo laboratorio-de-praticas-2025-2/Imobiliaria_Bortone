@@ -9,6 +9,7 @@ import { useFilterData } from "@/context/FilterDataContext";
 const optionsBuy = ["Comprar", "Alugar"];
 const optionsRooms = ["1", "2", "3", "+4"];
 const optionsBathrooms = ["1", "2", "3", "+4"];
+const optionsVagas = ["0", "1", "2", "3+"];
 
 // Mapping for display vs backend values
 const buyDisplayMapping = {
@@ -29,12 +30,16 @@ export default function Filtros() {
       updateFilterData({ tipo_negociacao: backendValue });
     };
 
-    const handleSelectRooms = (option) => {
-      updateFilterData({ quartos: option === "Quartos" ? null : option });
-    };
+      const handleSelectRooms = (option) => {
+        updateFilterData({ quartos: option === "Quartos" ? null : option });
+      };
 
     const handleSelectBathrooms = (option) => {
       updateFilterData({ banheiros: option === "Banheiros" ? null : option });
+    };
+
+    const handleSelectVagas = (option) => {
+      updateFilterData({ vagas: option === "Vagas" ? null : option });
     };
 
     const handleCitySearch = (value) => {
@@ -66,6 +71,8 @@ export default function Filtros() {
                 options={optionsRooms}
                 placeholder={"Quartos"}
                 selected={filterData.quartos || "Quartos"}
+                // show label when a number is selected
+                displayValue={filterData.quartos ? `Quartos: ${filterData.quartos}` : undefined}
                 handleSelect={handleSelectRooms}
                 classname={"w-32"}
               />
@@ -73,7 +80,18 @@ export default function Filtros() {
                 options={optionsBathrooms}
                 placeholder={"Banheiros"}
                 selected={filterData.banheiros || "Banheiros"}
+                // show label when a number is selected
+                displayValue={filterData.banheiros ? `Banheiros: ${filterData.banheiros}` : undefined}
                 handleSelect={handleSelectBathrooms}
+                classname={"w-32"}
+              />
+              <DropdownFilter
+                options={optionsVagas}
+                placeholder={"Vagas"}
+                selected={filterData.vagas || "Vagas"}
+                // show label when a number is selected
+                displayValue={filterData.vagas ? `Vagas: ${filterData.vagas}` : undefined}
+                handleSelect={handleSelectVagas}
                 classname={"w-32"}
               />
             </Space>

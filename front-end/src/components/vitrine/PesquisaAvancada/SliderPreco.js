@@ -69,7 +69,7 @@ export default function SliderPreco({ value, onChange }) {
             range
             value={[minValue, maxValue]}
             min={150000}
-            max={600000}
+            max={1500000}
             step={10}
             tooltip={{ open: false }}
             onChange={handleSliderChange}
