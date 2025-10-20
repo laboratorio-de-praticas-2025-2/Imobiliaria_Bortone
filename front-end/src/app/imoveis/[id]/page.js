@@ -333,7 +333,6 @@ export default function Mapa() {
               <Link href={`/agendamento/${imovelAtual?.id || ''}`}>
                 <button className="btn1">Agendar visita</button>
               </Link>
-              <button className="btn2">Propor valor</button>
             </div>
             <div className="md:pl-[10%] flex md:hidden absolute bottom-10 pl-[4%]">
               <ShareButton />

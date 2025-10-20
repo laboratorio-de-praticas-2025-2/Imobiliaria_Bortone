@@ -96,7 +96,7 @@ export default function Dashboard() {
       {/* <DebugAuth /> */}
       <Sidebar />
       <div className="md:ml-20">
-        <CMS.Body title={"Dashboard"}>
+        <CMS.Body title={"Dashboard"} type="dashboard">
           {/* Estado de carregamento */}
           {loading ? (
             <div className="flex justify-center items-center h-[60vh]">

@@ -1,12 +1,11 @@
 "use client";
 import { Pagination } from "antd";
-import { useEffect } from "react";
 
 export default function TableFooter({
   postsData, // Pra compatibilidade com paginação client-side 
   totalItems, // Pra compatibilidade com paginação server-side
   pageSize = 10, //Default
-  currentPage,
+  currentPage = 1,
   onPageChange,
 }) {
   const total = totalItems ?? postsData?.length ?? 0;
@@ -15,17 +14,20 @@ export default function TableFooter({
     if (onPageChange) onPageChange(page);
   };
 
-  useEffect(() => {
-    if (onPageChange) {
-      onPageChange(1);
-    }
-  }, [total]);
+  // Removido o useEffect que resetava a página quando o total mudava
+  // pois isso estava causando conflitos com a navegação de páginas
 
   const calculateRange = () => {
     if (!total || total === 0) return { start: 0, end: 0 };
 
-    const start = (currentPage - 1) * pageSize + 1;
-    const calculatedEnd = currentPage * pageSize;
+    // Garantir que currentPage seja um número válido
+    const safeCurrentPage =
+      Number.isFinite(Number(currentPage)) && Number(currentPage) > 0
+        ? Number(currentPage)
+        : 1;
+
+    const start = (safeCurrentPage - 1) * pageSize + 1;
+    const calculatedEnd = safeCurrentPage * pageSize;
     const end = Math.min(calculatedEnd, total);
 
     return { start, end };
@@ -33,28 +35,34 @@ export default function TableFooter({
 
   const { start, end } = calculateRange();
 
+  // valor seguro para passar ao componente de paginação
+  const safeCurrentPage =
+    Number.isFinite(Number(currentPage)) && Number(currentPage) > 0
+      ? Number(currentPage)
+      : 1;
+
   return (
-    <div className="bg-white p-4 py- relative flex items-center md:flex-row flex-col">
+    <div className="bg-white p-4 relative flex items-center justify-between md:flex-row flex-col gap-4">
       {/* Paginação centralizada */}
-      <div className="md:absolute md:left-1/2 md:-translate-x-1/2">
+      <div className="md:absolute md:left-1/2 md:-translate-x-1/2 order-2 md:order-1">
         <Pagination
           className="custom-pagination-cms"
-          current={currentPage}
+          current={safeCurrentPage}
           pageSize={pageSize}
           total={total}
           onChange={handleChange}
           showSizeChanger={false}
           itemRender={(_, type, originalElement) => {
-            if (type === "prev") return <span>&lt; Anterior</span>;
-            if (type === "next") return <span>Próximo &gt;</span>;
+            if (type === "prev") return <span>‹ Anterior</span>;
+            if (type === "next") return <span>Próximo ›</span>;
             return originalElement;
           }}
         />
       </div>
 
       {/* Texto alinhado à direita */}
-      <div className="md:ml-auto">
-        <p className="text-sm text-gray-600">
+      <div className="md:ml-auto order-1 md:order-2">
+        <p className="text-sm text-gray-600 whitespace-nowrap">
           Exibindo {total > 0 ? start : 0} - {end} de {total}{" "}
           registros
         </p>

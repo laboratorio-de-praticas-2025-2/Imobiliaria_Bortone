@@ -123,6 +123,9 @@ export default function TableRelatorio({
             </tbody>
           </table>
         </div>
+        <div className="text-xs text-gray-500 mt-2 w-full max-w-4xl text-right">
+          Total de registros: {data.length}
+        </div>
       </div>
     );
 

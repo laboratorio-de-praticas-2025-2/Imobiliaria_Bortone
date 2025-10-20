@@ -51,7 +51,7 @@ class ReportController {
           ],
         },
         {
-          nome: "Relatório Estratégico de Estoque",
+          nome: "Relatório Estratégico de Imóveis",
           pdfNome: "Relatorio-Estrategico-Imoveis-Imobiliaria-Bortone",
           secoes: [REPORTS_SECOES.ANALISE_ESTOQUE],
         },
@@ -71,7 +71,7 @@ class ReportController {
           secoes: [REPORTS_SECOES.DESEMPENHO_LOCACOES],
         },
         {
-          nome: "Relatório Estratégico - Resumo Executivo",
+          nome: "Relatório Estratégico - Sumário Executivo",
           pdfNome:
             "Relatorio-Estrategico-Sumario-Executivo-Imobiliaria-Bortone",
           secoes: [REPORTS_SECOES.SUMARIO_EXECUTIVO],

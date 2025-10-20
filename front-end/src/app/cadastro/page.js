@@ -13,6 +13,7 @@ export default function CadastroPage() {
   useSEO(getSEOConfig("/cadastro"));
 
   const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
   const router = useRouter();
 
   const onFinish = async (values) => {
@@ -37,23 +38,43 @@ export default function CadastroPage() {
     } catch (error) {
       console.error("❌ Erro ao cadastrar:", error);
 
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        message.error(error.response.data.message);
-      } else {
-        message.error(
-          "Não foi possível conectar ao servidor. Tente novamente."
-        );
-      }
-    } finally {
-      setLoading(false);
-    }
+  // Pega a mensagem de erro padrão
+  const errorMessage = error?.response?.data?.message || "Não foi possível conectar ao servidor. Tente novamente.";
+      
+  // Verificar se email já é cadastrado
+  const msg = error?.response?.data?.message?.toLowerCase?.() || '';
+  const status = error?.response?.status;
+  const isEmailAlreadyExists = status === 409 || status === 400 ||
+    msg.includes('email') || msg.includes('já existe') || msg.includes('already exists') || msg.includes('cadastrado') || msg.includes('duplicado');
+  
+  if (isEmailAlreadyExists) {
+    // Erro específico do email
+    form.setFields([
+      { name: 'email', errors: ['Email já cadastrado'] },
+      { name: 'name', errors: [] },
+      { name: 'password', errors: [] }
+    ]);
+  } else {
+    form.setFields([
+      { name: 'name', errors: [errorMessage] },
+      { name: 'email', errors: [] },
+      { name: 'password', errors: [] }
+    ]);
+  }
+} finally {
+  setLoading(false);
+}
   };
 
   const onFinishFailed = (errorInfo) => {
+  };
+
+  const handleSubmit = () => {
+    form.setFields([
+      { name: 'name', errors: [] },    
+      { name: 'email', errors: [] },
+      { name: 'password', errors: [] }  
+    ]);
   };
   
   return (
@@ -65,6 +86,7 @@ export default function CadastroPage() {
         </h1>
         <Flex vertical className="login-form-container">
           <Form
+            form={form}
             name="cadastro"
             autoComplete="off"
             onFinish={onFinish}
@@ -98,6 +120,7 @@ export default function CadastroPage() {
               >
                 <Input.Password placeholder="Digite sua senha:" />
               </Form.Item>
+
               <Form.Item>
                 <Flex vertical align="center" gap="small">
                   <Button
@@ -105,6 +128,7 @@ export default function CadastroPage() {
                     htmlType="submit"
                     className="login-button"
                     loading={loading}
+                    onClick={handleSubmit}
                   >
                     Entrar
                   </Button>

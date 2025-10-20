@@ -179,27 +179,33 @@ export default function ChatModal({ onClose, isLoggedIn }) {
   const getWebSocketUrl = () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      if (apiUrl) return apiUrl.replace(/^http/, "ws");
+      if (apiUrl) {
+        const baseUrl = apiUrl.replace(/^http/, "ws").replace(/\/$/, '');
+        return `${baseUrl}/chat`; // ✅ ADICIONADO
+      }
+
+
 
       if (typeof window !== "undefined") {
         const { protocol, hostname, port } = window.location;
         const wsProtocol = protocol === "https:" ? "wss:" : "ws:";
         if (hostname === "localhost" || hostname === "127.0.0.1")
-          return `${wsProtocol}//${hostname}:4000`;
+          return `${wsProtocol}//${hostname}:4000/chat`;
         if (hostname.includes(".vercel.app")) {
           const backendUrl =
             process.env.NEXT_PUBLIC_API_URL ||
             "https://imobiliaria-bortone.onrender.com";
-          return backendUrl.replace(/^http/, "ws");
+         const baseUrl = backendUrl.replace(/^http/, "ws").replace(/\/$/, '');
+          return `${baseUrl}/chat`; // ✅ ADICIONADO
         }
         if (hostname.includes(".onrender.com"))
-          return `${wsProtocol}//${hostname}`;
-        return `${wsProtocol}//${hostname}${port ? `:${port}` : ""}`;
+          return `${wsProtocol}//${hostname}/chat`;
+        return `${wsProtocol}//${hostname}${port ? `:${port}` : ""}/chat`;
       }
-      return "ws://localhost:4000";
+      return "ws://localhost:4000/chat";
     } catch (error) {
       console.error("❌ Erro ao construir URL do WebSocket:", error);
-      return "ws://localhost:4000";
+      return "ws://localhost:4000/chat";
     }
   };
 

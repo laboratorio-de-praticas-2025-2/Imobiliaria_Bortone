@@ -14,7 +14,7 @@ export default function initWebSocket(server) {
     "https://imobiliaria-bortone-",
   ];
 
-  const wss = new WebSocketServer({ server });
+  const wss = new WebSocketServer({ server, path: '/chat' });
   wss.on("connection", (ws, req) => {
     const origin = req.headers.origin;
     console.log(`🔌 Nova conexão WebSocket - Origin: ${origin}`);
