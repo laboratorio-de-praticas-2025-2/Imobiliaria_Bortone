@@ -8,21 +8,30 @@ import ReactDOMServer from "react-dom/server";
 
 export default function ContatoMapa() {
   useEffect(() => {
+    // Coordenadas do marcador
+    const coordinates = [-24.49660419803683, -47.844100896162836];
+    
     // Garante que não haja uma instância de mapa existente no elemento antes de inicializar.
     const container = L.DomUtil.get("leaflet-map");
     if (container != null) {
       container._leaflet_id = null;
     }
 
-    const map = L.map("leaflet-map").setView([-24.491917, -47.848722], 16);
+    // Inicializa o mapa com as coordenadas corretas e zoom 16
+    const map = L.map("leaflet-map", {
+      center: coordinates,
+      zoom: 16,
+      zoomControl: true,
+    });
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <Link href="https://www.openstreetmap.org/copyright">OpenStreetMap</Link> contributors',
+      maxZoom: 19,
     }).addTo(map);
 
     const iconHtml = ReactDOMServer.renderToString(
-      <FaMapMarkerAlt size={38} color="#C0392B" />
+      <FaMapMarkerAlt size={38} color="#4c62ae" />
     );
 
     const customIcon = L.divIcon({
@@ -32,7 +41,13 @@ export default function ContatoMapa() {
       iconAnchor: [19, 38],
     });
 
-    L.marker([-24.491917, -47.848722], { icon: customIcon }).addTo(map);
+    L.marker(coordinates, { icon: customIcon }).addTo(map);
+
+    // Força a atualização do mapa após renderização
+    setTimeout(() => {
+      map.invalidateSize();
+      map.setView(coordinates, 16);
+    }, 100);
 
     return () => {
       map.remove();
