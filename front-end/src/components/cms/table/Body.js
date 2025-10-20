@@ -37,7 +37,7 @@ export default function Body({ children, title, type, dataInicio, dataFim, onDat
           {type === "dashboard" && (
             <div className="flex items-center flex-col sm:flex-row gap-3 w-full sm:w-auto">
               {/* Campo de pesquisa */}
-              <div className="flex items-center bg-[#f5f7ff] rounded-full px-4 py-2 text-[var(--primary)] w-full sm:w-auto">
+              {/* <div className="flex items-center bg-[#f5f7ff] rounded-full px-4 py-2 text-[var(--primary)] w-full sm:w-auto">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-4 w-4 mr-2"
@@ -57,7 +57,7 @@ export default function Body({ children, title, type, dataInicio, dataFim, onDat
                   placeholder="Pesquisa"
                   className="bg-transparent outline-none text-[var(--primary)] placeholder-[var(--primary)] text-sm w-full"
                 />
-              </div>
+              </div> */}
 
               {/* Inputs de data com funcionalidade */}
               <div className="flex items-center gap-2 text-[var(--primary)] w-full sm:w-auto flex-wrap">
@@ -114,11 +114,6 @@ export default function Body({ children, title, type, dataInicio, dataFim, onDat
             >
               6 Meses
             </button>
-            {dataInicio && dataFim && (
-              <span className="text-xs text-white/70 ml-2">
-                📊 {new Date(dataInicio + 'T00:00:00').toLocaleDateString('pt-BR')} até {new Date(dataFim + 'T00:00:00').toLocaleDateString('pt-BR')}
-              </span>
-            )}
           </div>
         )}
       </div>
