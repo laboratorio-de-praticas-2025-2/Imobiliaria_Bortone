@@ -316,63 +316,66 @@ export default function CriarImovelPage() {
             <div className=" flex flex-col sm:flex-row w-full gap-6">
               {/* Coluna do Formulário */}
               <div className="sm:w-[35%] flex flex-col gap-6 items-start ">
-                <div className=" flex flex-row gap-2 !w-full">
-                  <FormAntd.Item
-                    label={"Tipo"}
-                    rules={[
-                      { required: true, message: "Este campo é obrigatório!" },
-                    ]}
-                    className={`custom-form-item  required !w-full`}
-                    labelCol={{ span: 24 }}
-                  >
-                    {/* substitua o DropdownField de "Tipo" pelo handler novo */}
-                    <DropdownField
-                      placeholder="Tipo"
-                      label="Tipo"
-                      options={options}
-                      selected={tipoSelecionado}
-                      setSelected={setTipoSelecionado}
-                      handleSelect={handleTipoSelect}
-                      width={"w-full"}
-                      classname="bg-white hover:bg-[#EEF0F9] w-full "
-                    />
-                  </FormAntd.Item>
+                <div className="flex flex-col gap-2 items-center w-full">
 
-                  <FormAntd.Item
-                    label={"Status"}
-                    rules={[
-                      { required: true, message: "Este campo é obrigatório!" },
-                    ]}
-                    className={`custom-form-item  required !w-full`}
-                    labelCol={{ span: 24 }}
-                  >
-                    <DropdownField
-                      placeholder="Status"
-                      options={status}
-                      selected={statusSelecionado}
-                      setSelected={setstatusSelecionado}
-                      handleSelect={(option) => setstatusSelecionado(option)}
-                      width={"w-full"}
-                      classname="bg-white hover:bg-[#EEF0F9] w-fit "
-                    />
-                  </FormAntd.Item>
-
-                  <FormAntd.Item
-                    name="mostrar_preco"
-                    label={"Mostrar Preço?"}
-                    rules={[
-                      { required: true, message: "Este campo é obrigatório!" },
-                    ]}
-                    className={`custom-form-item  required !w-full`}
-                    labelCol={{ span: 24 }}
-                  >
-                    <RadioFieldImovel
-                      options={[
-                        { label: "Sim", value: "sim" },
-                        { label: "Não", value: "nao" },
+                  <div className=" flex flex-row gap-2 !w-full">
+                    <FormAntd.Item
+                      label={"Tipo"}
+                      rules={[
+                        { required: true, message: "Este campo é obrigatório!" },
                       ]}
-                    />
-                  </FormAntd.Item>
+                      className={`custom-form-item  required !w-full`}
+                      labelCol={{ span: 24 }}
+                    >
+                      {/* substitua o DropdownField de "Tipo" pelo handler novo */}
+                      <DropdownField
+                        placeholder="Tipo"
+                        label="Tipo"
+                        options={options}
+                        selected={tipoSelecionado}
+                        setSelected={setTipoSelecionado}
+                        handleSelect={handleTipoSelect}
+                        width={"w-full"}
+                        classname="bg-white hover:bg-[#EEF0F9] w-full "
+                      />
+                    </FormAntd.Item>
+
+                    <FormAntd.Item
+                      label={"Status"}
+                      rules={[
+                        { required: true, message: "Este campo é obrigatório!" },
+                      ]}
+                      className={`custom-form-item  required !w-full`}
+                      labelCol={{ span: 24 }}
+                    >
+                      <DropdownField
+                        placeholder="Status"
+                        options={status}
+                        selected={statusSelecionado}
+                        setSelected={setstatusSelecionado}
+                        handleSelect={(option) => setstatusSelecionado(option)}
+                        width={"w-full"}
+                        classname="bg-white hover:bg-[#EEF0F9] w-fit "
+                      />
+                    </FormAntd.Item>
+
+                  </div>
+                    <FormAntd.Item
+                      name="mostrar_preco"
+                      label={"Mostrar Preço?"}
+                      rules={[
+                        { required: true, message: "Este campo é obrigatório!" },
+                      ]}
+                      className={`custom-form-item  required !w-full`}
+                      labelCol={{ span: 24 }}
+                    >
+                      <RadioFieldImovel
+                        options={[
+                          { label: "Sim", value: "sim" },
+                          { label: "Não", value: "nao" },
+                        ]}
+                      />
+                    </FormAntd.Item>
                 </div>
                 <UploadImovel
                   className={"!w-full"}
@@ -446,7 +449,7 @@ export default function CriarImovelPage() {
                 <div className=" flex flex-row gap-2 !w-full">
                   <FormAntd.Item
                     name="possui_muro"
-                    label={"Imóvel Murado?"}
+                    label={"Murado?"}
                     rules={[
                       { required: true, message: "Este campo é obrigatório!" },
                     ]}

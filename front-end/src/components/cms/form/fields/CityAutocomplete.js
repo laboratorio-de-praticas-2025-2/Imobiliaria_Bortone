@@ -100,14 +100,17 @@ export default function CityAutocomplete({
       onSelect={handleSelect}
       placeholder={placeholder}
       disabled={disabled}
-      style={{ width: '100%', ...style }}
-      notFoundContent={loading ? <Spin size="small" /> : 'Nenhuma cidade encontrada'}
+      style={{ width: "100%", ...style }}
+      notFoundContent={
+        loading ? <Spin size="small" /> : "Nenhuma cidade encontrada"
+      }
       filterOption={false} // Desabilita filtro local, usa apenas resultados da API
     >
-      <Input.Search 
+      <Input.Search
         placeholder={placeholder}
         loading={loading}
         enterButton={false}
+        className="custom-auto-input"
       />
     </AutoComplete>
   );

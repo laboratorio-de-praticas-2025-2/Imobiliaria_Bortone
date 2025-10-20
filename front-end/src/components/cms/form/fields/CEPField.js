@@ -60,8 +60,9 @@ export default function CEPField({
       disabled={disabled}
       loading={loading}
       maxLength={9}
-      style={{ width: '100%', ...style }}
+      style={{ width: "100%", ...style }}
       addonAfter={loading ? "Buscando..." : null}
+      className="custom-input"
     />
   );
 }
