@@ -25,16 +25,16 @@ export default function PesquisaAvancadaModal() {
     const filtros = {
       tipo: selectedTipo,
       status: tipoNegocio === "Comprar" ? "disponível" : "aluguel",
-      precoMin: preco[0],
-      precoMax: preco[1],
+      minPreco: preco[0],
+      maxPreco: preco[1],
       ...(selectedTipo === "Casa" && {
         quartos: selectedQuartos,
         banheiros: selectedBanheiros,
         vagas: selectedVagas,
       }),
       ...(selectedTipo === "Terreno" && {
-        areaMin: area[0],
-        areaMax: area[1],
+        minArea: area[0],
+        maxArea: area[1],
       }),
     };
     updateFilterData(filtros);
@@ -56,16 +56,16 @@ export default function PesquisaAvancadaModal() {
       const filtros = {
         tipo: selectedTipo,
         status: tipoNegocio === "Comprar" ? "disponível" : "aluguel",
-        precoMin: preco[0],
-        precoMax: preco[1],
+        minPreco: preco[0],
+        maxPreco: preco[1],
         ...(selectedTipo === "Casa" && {
           quartos: selectedQuartos,
           banheiros: selectedBanheiros,
           vagas: selectedVagas,
         }),
         ...(selectedTipo === "Terreno" && {
-          areaMin: area[0],
-          areaMax: area[1],
+          minArea: area[0],
+          maxArea: area[1],
         }),
       };
       updateFilterData(filtros);
