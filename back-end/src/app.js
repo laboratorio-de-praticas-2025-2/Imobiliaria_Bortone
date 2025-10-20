@@ -69,7 +69,6 @@ socketManager.io.on("connection_error", (err) => {
 
 
 // Rotas
-
 app.use("/api/socket", socketRoutes);
 app.use('/banner', bannerRoutes);
 app.use('/user', userRoutes);

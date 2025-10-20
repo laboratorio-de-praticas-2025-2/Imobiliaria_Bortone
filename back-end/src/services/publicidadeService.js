@@ -19,7 +19,6 @@ class PublicidadeService {
 
   async updatePublicidade(idPublicidade, dadosUpdatePublicidade) {
     try {
- 
       const updatePublicidade = await PublicidadeModel.findByPk(idPublicidade);
       if (!updatePublicidade) {
         return null;
@@ -28,7 +27,10 @@ class PublicidadeService {
       updatePublicidade.titulo = dadosUpdatePublicidade.titulo ?? updatePublicidade.titulo;
       updatePublicidade.conteudo = dadosUpdatePublicidade.conteudo ?? updatePublicidade.conteudo;
       updatePublicidade.usuario_id = dadosUpdatePublicidade.usuario_id ?? updatePublicidade.usuario_id;
-      updatePublicidade.ativo = dadosUpdatePublicidade.ativo ?? updatePublicidade.ativo;
+      
+      if (dadosUpdatePublicidade.ativo !== undefined) {
+        updatePublicidade.ativo = dadosUpdatePublicidade.ativo;
+      }
       
       if (dadosUpdatePublicidade.url_imagem !== undefined) {
         updatePublicidade.url_imagem = dadosUpdatePublicidade.url_imagem;
@@ -38,6 +40,7 @@ class PublicidadeService {
 
       return updatePublicidade;
     } catch (error) {
+      console.error('Erro ao atualizar publicidade:', error);
       throw error;
     }
   }
@@ -114,8 +117,14 @@ class PublicidadeService {
       const totalPages = Math.ceil(totalItems / limit);
       const publicidades = result.rows;
 
+      // Garantir que os dados sejam serializados corretamente
+      const publicidadesSerializadas = publicidades.map(pub => ({
+        ...pub.dataValues,
+        ativo: Boolean(pub.ativo) // Forçar conversão para boolean
+      }));
+
       return {
-        data: publicidades,
+        data: publicidadesSerializadas,
         pagination: {
           currentPage: page,
           totalPages: totalPages,

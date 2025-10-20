@@ -152,6 +152,16 @@ export default function EditarPublicidadePage() {
               ) : publicidade?.url_imagem ? (
                 <div className="w-[100%] md:h-[25vh] h-[13vh] bg-gray-200 rounded-3xl ">
                   <Image
+                    src={publicidade.url_imagem.startsWith('/') ? publicidade.url_imagem : `/images/publicidadeImages/${publicidade.url_imagem}`}
+                    alt="Imagem atual"
+                    width={400}
+                    height={320}
+                    className="h-full w-full object-cover rounded-3xl"
+                  />
+                </div>
+              ) : publicidade?.url_imagem ? (
+                <div className="w-[100%] md:h-[25vh] h-[13vh] bg-gray-200 rounded-3xl ">
+                  <Image
                     src={buildImageUrl(publicidade.url_imagem, 'publicidade', '/images/casa.png')}
                     alt="Imagem atual"
                     width={400}

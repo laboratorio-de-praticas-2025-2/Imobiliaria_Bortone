@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react';
 import PublicidadeImage from '@/components/PublicidadeImage';
 import { apiClient } from '@/utils/apiClient';
 
-export default function PublicidadeCarousel() {
+export default function PublicidadeCarousel({ startIndex = 0 }) {
   const [publicidades, setPublicidades] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(startIndex);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,6 +15,11 @@ export default function PublicidadeCarousel() {
 
         const publicidadesAtivas = response.data.data.filter(pub => pub.ativo === true);
         setPublicidades(publicidadesAtivas);
+        
+        // Ajustar o índice inicial se for maior que o número de publicidades
+        const adjustedIndex = Math.min(startIndex, publicidadesAtivas.length - 1);
+        setCurrentIndex(Math.max(0, adjustedIndex));
+        
         setLoading(false);
       } catch (error) {
         // Silenciar logs de erro para publicidades
