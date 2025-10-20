@@ -1,0 +1,2606 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../VerificacaoDocumentacao/">
+      
+      
+      <link rel="icon" href="../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>🏗️ Arquitetura e Infraestrutura - Imobiliaria Bortone - Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#arquitetura-e-infraestrutura-do-sistema" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Imobiliaria Bortone - Documentação" class="md-header__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imobiliaria Bortone - Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              🏗️ Arquitetura e Infraestrutura
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Imobiliaria Bortone - Documentação" class="md-nav__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    Imobiliaria Bortone - Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    🏗️ Arquitetura e Infraestrutura
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    🏗️ Arquitetura e Infraestrutura
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visão Geral
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagrama-da-arquitetura" class="md-nav__link">
+    <span class="md-ellipsis">
+      🏗️ Diagrama da Arquitetura
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ambientes-de-hospedagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      🌐 Ambientes de Hospedagem
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🌐 Ambientes de Hospedagem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-frontend-vercel" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Frontend - Vercel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-backend-render" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Backend - Render
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-imagens-cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Imagens - Cloudinary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-banco-de-dados-alwaysdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Banco de Dados - AlwaysData
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 Fluxo de Dados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Fluxo de Dados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-upload-de-imagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Upload de Imagem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-autenticacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Autenticação
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-chat-em-tempo-real" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Chat em Tempo Real
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔐 Segurança
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔐 Segurança">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frontend-vercel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frontend (Vercel)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-render" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend (Render)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#banco-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Banco de Dados
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloudinary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoramento" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Monitoramento
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Monitoramento">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vercel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vercel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#render" class="md-nav__link">
+    <span class="md-ellipsis">
+      Render
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudinary_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloudinary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Deploy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Deploy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frontend-vercel_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frontend (Vercel)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-render_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend (Render)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracao-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Configuração Local
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Configuração Local">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-clonar-repositorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Clonar Repositório
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-configurar-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Configurar Backend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-configurar-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configurar Frontend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-acessar-aplicacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Acessar Aplicação
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencias-principais" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 Dependências Principais
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Dependências Principais">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frontend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      🆘 Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🆘 Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#erro-imagens-nao-carregam" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro: Imagens não carregam
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erro-api-nao-responde" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro: API não responde
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erro-websocket-desconecta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro: WebSocket desconecta
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erro-upload-falha" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro: Upload falha
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentacao-relacionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Documentação Relacionada
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checklist-de-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ Checklist de Deploy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ Checklist de Deploy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#antes-do-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Antes do Deploy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pos-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pós Deploy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../VerificacaoDocumentacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ✅ Verificação da Documentação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RegrasGerais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EstruturaDePastas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estrutura de Pastas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Frontend
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Frontend
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/NextConfig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/Componentizacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Componentização
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/middlwareIndexacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Middleware
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/ManualdeTags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual de Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/NETLIFY_SETUP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Setup Netlify
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/Documentacao_Contatos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contatos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Imagens
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Imagens
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MIGRATION_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ⭐ Migração Cloudinary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CloudinaryArchitecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🏗️ Arquitetura Cloudinary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/imagens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Imagens
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AnaliseArquiteturaImagens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise de Problemas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ProblemasImagensVercel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Problemas Vercel (Histórico)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    APIs Core
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            APIs Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/AlgoritmoDeRecomendacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/BancoDeDados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dashboard
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Agendamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agendamento de Visitação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/AgendamentoSMTP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidade do envio de e-mail
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ (Perguntas Frequentes)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/FAQ-CMS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ - Gerenciamento CMS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Mapa
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Mapa
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaAPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaImplementacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Implementação da API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MapaResumo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resumo da Integração
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Chat
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Chat
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/ChatSuporte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chat Suporte
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WebSocket-Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Rodar o WebSocket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UserLevels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Níveis de Usuário
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ChatSystemBugFixes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relatório de Correção de Bugs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visão Geral
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagrama-da-arquitetura" class="md-nav__link">
+    <span class="md-ellipsis">
+      🏗️ Diagrama da Arquitetura
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ambientes-de-hospedagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      🌐 Ambientes de Hospedagem
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🌐 Ambientes de Hospedagem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-frontend-vercel" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Frontend - Vercel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-backend-render" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Backend - Render
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-imagens-cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Imagens - Cloudinary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-banco-de-dados-alwaysdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Banco de Dados - AlwaysData
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 Fluxo de Dados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Fluxo de Dados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-upload-de-imagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Upload de Imagem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-autenticacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Autenticação
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-chat-em-tempo-real" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Chat em Tempo Real
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔐 Segurança
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔐 Segurança">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frontend-vercel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frontend (Vercel)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-render" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend (Render)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#banco-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Banco de Dados
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloudinary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoramento" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Monitoramento
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Monitoramento">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vercel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vercel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#render" class="md-nav__link">
+    <span class="md-ellipsis">
+      Render
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudinary_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloudinary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Deploy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Deploy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frontend-vercel_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frontend (Vercel)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-render_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend (Render)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracao-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Configuração Local
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Configuração Local">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-clonar-repositorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Clonar Repositório
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-configurar-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Configurar Backend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-configurar-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configurar Frontend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-acessar-aplicacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Acessar Aplicação
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencias-principais" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 Dependências Principais
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Dependências Principais">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frontend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      🆘 Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🆘 Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#erro-imagens-nao-carregam" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro: Imagens não carregam
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erro-api-nao-responde" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro: API não responde
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erro-websocket-desconecta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro: WebSocket desconecta
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erro-upload-falha" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro: Upload falha
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentacao-relacionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Documentação Relacionada
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checklist-de-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ Checklist de Deploy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ Checklist de Deploy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#antes-do-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Antes do Deploy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pos-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pós Deploy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="arquitetura-e-infraestrutura-do-sistema">Arquitetura e Infraestrutura do Sistema</h1>
+<h2 id="visao-geral">Visão Geral</h2>
+<p>Este documento descreve a arquitetura completa do sistema Imobiliária Bortone, detalhando a infraestrutura de hospedagem, fluxo de dados e integração entre os componentes.</p>
+<hr />
+<h2 id="diagrama-da-arquitetura">🏗️ Diagrama da Arquitetura</h2>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────────────────────────────┐
+│                         USUÁRIOS                                 │
+│                    (Navegador Web)                              │
+└────────────────┬────────────────────────┬───────────────────────┘
+                 │                        │
+                 │                        │
+┌────────────────▼──────────┐  ┌─────────▼──────────────────────┐
+│                            │  │                                 │
+│    FRONTEND (Next.js)      │  │     CDN DE IMAGENS             │
+│    📍 Vercel               │  │     📍 Cloudinary              │
+│                            │  │                                 │
+│  - Interface do Usuário    │  │  - Armazenamento de Imagens    │
+│  - Páginas públicas        │  │  - Otimização automática       │
+│  - CMS/Admin               │  │  - Transformações dinâmicas    │
+│  - Upload direto de imgs   │  │  - CDN global                  │
+│                            │  │                                 │
+└────────────────┬───────────┘  └────────────────────────────────┘
+                 │
+                 │ API REST / WebSocket
+                 │
+┌────────────────▼────────────────────────────────────────────────┐
+│                                                                  │
+│              BACKEND (Node.js + Express)                        │
+│              📍 Render                                          │
+│                                                                  │
+│  - API REST                                                     │
+│  - Autenticação JWT                                             │
+│  - WebSocket (Chat)                                             │
+│  - Lógica de negócio                                            │
+│  - Integração com serviços                                      │
+│                                                                  │
+└────────────────┬───────────────────────────────────────────────┘
+                 │
+                 │ SQL Queries
+                 │
+┌────────────────▼───────────────────────────────────────────────┐
+│                                                                 │
+│              BANCO DE DADOS (MySQL)                            │
+│              📍 AlwaysData                                     │
+│                                                                 │
+│  - Imóveis                                                     │
+│  - Usuários                                                    │
+│  - Agendamentos                                                │
+│  - Chat/Mensagens                                              │
+│  - Blog/FAQ                                                    │
+│  - Referências de imagens                                      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<hr />
+<h2 id="ambientes-de-hospedagem">🌐 Ambientes de Hospedagem</h2>
+<h3 id="1-frontend-vercel">1. Frontend - Vercel</h3>
+<p><strong>Plataforma:</strong> <a href="https://vercel.com">Vercel</a></p>
+<p><strong>Tecnologias:</strong>
+- Next.js 14 (App Router)
+- React 18
+- TailwindCSS</p>
+<p><strong>Características:</strong>
+- ✅ Deploy automático via GitHub
+- ✅ Edge Functions
+- ✅ CDN global
+- ✅ HTTPS automático
+- ✅ Preview deployments para PRs
+- ✅ Variáveis de ambiente seguras</p>
+<p><strong>URL de Produção:</strong>
+- Principal: <code>https://seu-dominio.vercel.app</code>
+- Custom domain: <code>https://www.imobiliariabortone.com.br</code> (se configurado)</p>
+<p><strong>Estrutura de Rotas:</strong>
+<div class="highlight"><pre><span></span><code>/                     # Home
+/imoveis             # Vitrine de imóveis
+/imovel/[id]         # Detalhes do imóvel
+/admin               # Painel administrativo (CMS)
+/admin/imoveis       # Gerenciar imóveis
+/admin/agendamentos  # Gerenciar agendamentos
+/admin/faq           # Gerenciar FAQ
+/admin/blog          # Gerenciar blog
+/faq                 # FAQ público
+/blog                # Blog público
+/contato             # Formulário de contato
+/login               # Autenticação
+</code></pre></div></p>
+<p><strong>Variáveis de Ambiente:</strong>
+<div class="highlight"><pre><span></span><code>NEXT_PUBLIC_API_URL=https://sua-api.onrender.com
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dajy4w5wi
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=imobiliaria-bortone-upload
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your-key
+NEXT_PUBLIC_WEBSOCKET_URL=wss://sua-api.onrender.com
+</code></pre></div></p>
+<hr />
+<h3 id="2-backend-render">2. Backend - Render</h3>
+<p><strong>Plataforma:</strong> <a href="https://render.com">Render</a></p>
+<p><strong>Tecnologias:</strong>
+- Node.js 20+
+- Express.js
+- Socket.IO (WebSocket)
+- Sequelize ORM</p>
+<p><strong>Características:</strong>
+- ✅ Deploy automático via GitHub
+- ✅ Auto-scaling
+- ✅ HTTPS automático
+- ✅ WebSocket support
+- ✅ Health checks
+- ✅ Variáveis de ambiente seguras</p>
+<p><strong>URL de Produção:</strong>
+- API: <code>https://sua-api.onrender.com</code>
+- WebSocket: <code>wss://sua-api.onrender.com</code></p>
+<p><strong>Endpoints Principais:</strong>
+<div class="highlight"><pre><span></span><code>GET  /api/imoveis              # Listar imóveis
+POST /api/imoveis              # Criar imóvel
+GET  /api/imoveis/:id          # Detalhes do imóvel
+PUT  /api/imoveis/:id          # Atualizar imóvel
+DELETE /api/imoveis/:id        # Deletar imóvel
+
+POST /api/auth/login           # Login
+POST /api/auth/register        # Registro
+POST /api/auth/refresh         # Refresh token
+
+GET  /api/agendamentos         # Listar agendamentos
+POST /api/agendamentos         # Criar agendamento
+
+GET  /api/faq                  # Listar FAQs
+POST /api/faq                  # Criar FAQ
+
+GET  /api/blog                 # Listar posts
+POST /api/blog                 # Criar post
+
+WS   /socket.io                # WebSocket (Chat)
+</code></pre></div></p>
+<p><strong>Variáveis de Ambiente:</strong>
+<div class="highlight"><pre><span></span><code>DATABASE_URL=mysql://user:pass@host/database
+JWT_SECRET=your-jwt-secret
+JWT_REFRESH_SECRET=your-refresh-secret
+PORT=4000
+NODE_ENV=production
+CLOUDINARY_CLOUD_NAME=dajy4w5wi
+CLOUDINARY_API_KEY=your-key
+CLOUDINARY_API_SECRET=your-secret
+GOOGLE_MAPS_API_KEY=your-key
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email
+SMTP_PASS=your-password
+</code></pre></div></p>
+<p><strong>⚠️ Importante - Storage Efêmero:</strong>
+- O Render usa storage efêmero (arquivos são perdidos a cada deploy)
+- <strong>NUNCA</strong> armazenar uploads localmente no Render
+- <strong>SEMPRE</strong> usar Cloudinary para imagens/arquivos</p>
+<hr />
+<h3 id="3-imagens-cloudinary">3. Imagens - Cloudinary</h3>
+<p><strong>Plataforma:</strong> <a href="https://cloudinary.com">Cloudinary</a></p>
+<p><strong>Características:</strong>
+- ✅ CDN global
+- ✅ Otimização automática
+- ✅ Transformações em tempo real
+- ✅ Armazenamento permanente
+- ✅ Upload direto do frontend
+- ✅ Suporte a vídeos</p>
+<p><strong>Estrutura de Pastas:</strong>
+<div class="highlight"><pre><span></span><code>cloudinary://
+└── imobiliaria/
+    ├── imoveis/        # Imagens de imóveis
+    ├── banners/        # Banners da home
+    ├── blog/           # Imagens do blog
+    └── publicidade/    # Imagens publicitárias
+</code></pre></div></p>
+<p><strong>Upload Preset:</strong>
+- Nome: <code>imobiliaria-bortone-upload</code>
+- Modo: Unsigned (permite upload sem autenticação backend)
+- Transformações: Quality auto, Format auto</p>
+<p><strong>URLs de Exemplo:</strong>
+<div class="highlight"><pre><span></span><code>https://res.cloudinary.com/dajy4w5wi/image/upload/v1759123456/imobiliaria/imoveis/imovel_123.jpg
+https://res.cloudinary.com/dajy4w5wi/image/upload/c_fill,w_800,h_600/imobiliaria/imoveis/imovel_123.jpg
+</code></pre></div></p>
+<p><strong>Transformações Comuns:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1">// Redimensionar mantendo proporção</span>
+<span class="sr">/c_scale,w_800/</span>
+
+<span class="c1">// Crop inteligente</span>
+<span class="sr">/c_fill,w_800,h_600,g_auto/</span>
+
+<span class="c1">// Otimização automática</span>
+<span class="sr">/q_auto,f_auto/</span>
+
+<span class="c1">// Thumbnail</span>
+<span class="sr">/c_thumb,w_200,h_200/</span>
+</code></pre></div></p>
+<hr />
+<h3 id="4-banco-de-dados-alwaysdata">4. Banco de Dados - AlwaysData</h3>
+<p><strong>Plataforma:</strong> <a href="https://www.alwaysdata.com">AlwaysData</a></p>
+<p><strong>Tecnologia:</strong> MySQL 8.0</p>
+<p><strong>Características:</strong>
+- ✅ Backups automáticos
+- ✅ PHPMyAdmin incluído
+- ✅ SSL/TLS
+- ✅ Conexões remotas
+- ✅ Alta disponibilidade</p>
+<p><strong>Acesso:</strong>
+- PHPMyAdmin: <code>https://phpmyadmin.alwaysdata.com/</code>
+- Host: <code>mysql-host.alwaysdata.net</code>
+- Porta: <code>3306</code>
+- Database: <code>imobiliaria_bortone</code></p>
+<p><strong>Tabelas Principais:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Imóveis</span>
+<span class="n">imoveis</span>
+<span class="n">imagens_imovel</span>
+<span class="n">casas</span>
+<span class="n">terrenos</span>
+
+<span class="c1">-- Usuários</span>
+<span class="n">usuarios</span>
+
+<span class="c1">-- Agendamentos</span>
+<span class="n">agendamentos</span>
+
+<span class="c1">-- Blog</span>
+<span class="n">blog_posts</span>
+
+<span class="c1">-- FAQ</span>
+<span class="n">faqs</span>
+
+<span class="c1">-- Chat</span>
+<span class="n">chat_messages</span>
+<span class="n">chat_rooms</span>
+
+<span class="c1">-- Sistema</span>
+<span class="n">banner_index</span>
+<span class="n">publicidade</span>
+</code></pre></div></p>
+<hr />
+<h2 id="fluxo-de-dados">🔄 Fluxo de Dados</h2>
+<h3 id="1-upload-de-imagem">1. Upload de Imagem</h3>
+<div class="highlight"><pre><span></span><code>┌──────────┐                ┌──────────┐                ┌──────────┐
+│ Frontend │                │Cloudinary│                │ Backend  │
+│ (Vercel) │                │          │                │ (Render) │
+└────┬─────┘                └────┬─────┘                └────┬─────┘
+     │                           │                           │
+     │ 1. User selects file      │                           │
+     │                           │                           │
+     │ 2. Upload to Cloudinary   │                           │
+     ├──────────────────────────►│                           │
+     │                           │                           │
+     │ 3. Return image URL       │                           │
+     │◄──────────────────────────┤                           │
+     │                           │                           │
+     │ 4. Save URL + metadata                                │
+     ├───────────────────────────────────────────────────────►│
+     │                           │                           │
+     │                           │                      5. Store in DB
+     │                           │                           │
+     │ 6. Success response       │                           │
+     │◄───────────────────────────────────────────────────────┤
+     │                           │                           │
+</code></pre></div>
+<p><strong>Detalhes:</strong>
+1. Usuário seleciona arquivo no frontend
+2. Frontend faz upload direto para Cloudinary (sem passar pelo backend)
+3. Cloudinary retorna URL da imagem
+4. Frontend envia URL + metadados para o backend
+5. Backend salva referência no banco de dados
+6. Backend confirma sucesso</p>
+<p><strong>Benefícios:</strong>
+- ✅ Reduz carga no backend (Render)
+- ✅ Upload mais rápido (direto para CDN)
+- ✅ Não depende de storage efêmero
+- ✅ Imagens permanecem após deploys</p>
+<hr />
+<h3 id="2-autenticacao">2. Autenticação</h3>
+<div class="highlight"><pre><span></span><code>┌──────────┐                                    ┌──────────┐
+│ Frontend │                                    │ Backend  │
+│ (Vercel) │                                    │ (Render) │
+└────┬─────┘                                    └────┬─────┘
+     │                                               │
+     │ 1. POST /api/auth/login                       │
+     │   { email, password }                         │
+     ├──────────────────────────────────────────────►│
+     │                                               │
+     │                                          2. Validate
+     │                                          3. Generate JWT
+     │                                               │
+     │ 4. { token, refreshToken, user }              │
+     │◄──────────────────────────────────────────────┤
+     │                                               │
+     │ 5. Store in localStorage/cookies              │
+     │                                               │
+     │ 6. GET /api/imoveis                           │
+     │   Authorization: Bearer {token}               │
+     ├──────────────────────────────────────────────►│
+     │                                               │
+     │                                          7. Verify JWT
+     │                                          8. Return data
+     │                                               │
+     │ 9. Response                                   │
+     │◄──────────────────────────────────────────────┤
+     │                                               │
+</code></pre></div>
+<hr />
+<h3 id="3-chat-em-tempo-real">3. Chat em Tempo Real</h3>
+<div class="highlight"><pre><span></span><code>┌──────────┐                                    ┌──────────┐
+│ Frontend │                                    │ Backend  │
+│ (Vercel) │                                    │ (Render) │
+└────┬─────┘                                    └────┬─────┘
+     │                                               │
+     │ 1. Connect WebSocket                          │
+     │   wss://api.onrender.com                      │
+     ├──────────────────────────────────────────────►│
+     │                                               │
+     │ 2. Connection established                     │
+     │◄──────────────────────────────────────────────┤
+     │                                               │
+     │ 3. Emit &#39;message&#39;                             │
+     │   { room, text, user }                        │
+     ├──────────────────────────────────────────────►│
+     │                                               │
+     │                                          4. Validate
+     │                                          5. Save to DB
+     │                                          6. Broadcast
+     │                                               │
+     │ 7. Receive &#39;message&#39;                          │
+     │   { id, room, text, user, timestamp }         │
+     │◄──────────────────────────────────────────────┤
+     │                                               │
+</code></pre></div>
+<hr />
+<h2 id="seguranca">🔐 Segurança</h2>
+<h3 id="frontend-vercel">Frontend (Vercel)</h3>
+<ul>
+<li>✅ HTTPS obrigatório</li>
+<li>✅ CORS configurado</li>
+<li>✅ Content Security Policy</li>
+<li>✅ XSS protection</li>
+<li>✅ Variáveis de ambiente públicas prefixadas com <code>NEXT_PUBLIC_</code></li>
+</ul>
+<h3 id="backend-render">Backend (Render)</h3>
+<ul>
+<li>✅ HTTPS obrigatório</li>
+<li>✅ Helmet.js para headers de segurança</li>
+<li>✅ Rate limiting</li>
+<li>✅ JWT para autenticação</li>
+<li>✅ Bcrypt para senhas</li>
+<li>✅ SQL injection protection (Sequelize ORM)</li>
+<li>✅ Validação de entrada</li>
+<li>✅ CORS restrito</li>
+</ul>
+<h3 id="banco-de-dados">Banco de Dados</h3>
+<ul>
+<li>✅ Conexões SSL/TLS</li>
+<li>✅ Usuários com privilégios limitados</li>
+<li>✅ Backups automáticos</li>
+<li>✅ Firewall configurado</li>
+</ul>
+<h3 id="cloudinary">Cloudinary</h3>
+<ul>
+<li>✅ Upload preset seguro</li>
+<li>✅ Transformações validadas</li>
+<li>✅ Limite de tamanho de arquivo</li>
+<li>✅ Moderação de conteúdo (opcional)</li>
+</ul>
+<hr />
+<h2 id="monitoramento">📊 Monitoramento</h2>
+<h3 id="vercel">Vercel</h3>
+<ul>
+<li>Analytics integrado</li>
+<li>Web Vitals</li>
+<li>Log de builds</li>
+<li>Deploy previews</li>
+</ul>
+<h3 id="render">Render</h3>
+<ul>
+<li>Logs em tempo real</li>
+<li>Métricas de CPU/RAM</li>
+<li>Health checks</li>
+<li>Alertas de downtime</li>
+</ul>
+<h3 id="cloudinary_1">Cloudinary</h3>
+<ul>
+<li>Usage dashboard</li>
+<li>Bandwidth monitoring</li>
+<li>Storage limits</li>
+<li>Transformation credits</li>
+</ul>
+<hr />
+<h2 id="deploy">🚀 Deploy</h2>
+<h3 id="frontend-vercel_1">Frontend (Vercel)</h3>
+<p><strong>Automático via GitHub:</strong>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main
+<span class="c1"># Vercel detecta e faz deploy automaticamente</span>
+</code></pre></div></p>
+<p><strong>Manual via CLI:</strong>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>vercel
+<span class="nb">cd</span><span class="w"> </span>front-end
+vercel<span class="w"> </span>--prod
+</code></pre></div></p>
+<h3 id="backend-render_1">Backend (Render)</h3>
+<p><strong>Automático via GitHub:</strong>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main
+<span class="c1"># Render detecta e faz deploy automaticamente</span>
+</code></pre></div></p>
+<p><strong>Build Command:</strong>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install
+</code></pre></div></p>
+<p><strong>Start Command:</strong>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>start
+</code></pre></div></p>
+<hr />
+<h2 id="configuracao-local">🔧 Configuração Local</h2>
+<h3 id="1-clonar-repositorio">1. Clonar Repositório</h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/laboratorio-de-praticas-2025-2/Imobiliaria_Bortone.git
+<span class="nb">cd</span><span class="w"> </span>Imobiliaria_Bortone
+</code></pre></div>
+<h3 id="2-configurar-backend">2. Configurar Backend</h3>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>back-end
+npm<span class="w"> </span>install
+
+<span class="c1"># Criar .env</span>
+cp<span class="w"> </span>.env.example<span class="w"> </span>.env
+<span class="c1"># Editar .env com suas credenciais</span>
+
+npm<span class="w"> </span>run<span class="w"> </span>dev
+</code></pre></div>
+<h3 id="3-configurar-frontend">3. Configurar Frontend</h3>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>front-end
+npm<span class="w"> </span>install
+
+<span class="c1"># Criar .env.local</span>
+cp<span class="w"> </span>.env.example<span class="w"> </span>.env.local
+<span class="c1"># Editar .env.local com suas credenciais</span>
+
+npm<span class="w"> </span>run<span class="w"> </span>dev
+</code></pre></div>
+<h3 id="4-acessar-aplicacao">4. Acessar Aplicação</h3>
+<ul>
+<li>Frontend: <code>http://localhost:3000</code></li>
+<li>Backend: <code>http://localhost:4000</code></li>
+</ul>
+<hr />
+<h2 id="dependencias-principais">📦 Dependências Principais</h2>
+<h3 id="frontend">Frontend</h3>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;next&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^14.0.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;react&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^18.0.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tailwindcss&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^3.0.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;socket.io-client&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^4.0.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;axios&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^1.0.0&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="backend">Backend</h3>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;express&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^4.18.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;sequelize&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^6.35.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;mysql2&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^3.6.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;socket.io&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^4.0.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;jsonwebtoken&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^9.0.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;bcrypt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^5.1.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;cloudinary&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^1.41.0&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="troubleshooting">🆘 Troubleshooting</h2>
+<h3 id="erro-imagens-nao-carregam">Erro: Imagens não carregam</h3>
+<p><strong>Causa:</strong> URL do Cloudinary incorreta ou imagem não existe</p>
+<p><strong>Solução:</strong>
+1. Verificar se a imagem existe no Cloudinary
+2. Verificar formato da URL
+3. Verificar variáveis de ambiente <code>NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME</code></p>
+<h3 id="erro-api-nao-responde">Erro: API não responde</h3>
+<p><strong>Causa:</strong> Backend (Render) dormindo ou fora do ar</p>
+<p><strong>Solução:</strong>
+1. Render free tier dorme após 15min de inatividade
+2. Primeira requisição pode demorar ~30s (cold start)
+3. Considerar upgrade para plano pago para evitar sleep</p>
+<h3 id="erro-websocket-desconecta">Erro: WebSocket desconecta</h3>
+<p><strong>Causa:</strong> Timeout de conexão ou servidor reiniciando</p>
+<p><strong>Solução:</strong>
+1. Implementar reconexão automática no frontend
+2. Verificar logs do Render
+3. Aumentar timeout de ping/pong</p>
+<h3 id="erro-upload-falha">Erro: Upload falha</h3>
+<p><strong>Causa:</strong> Upload preset inválido ou credenciais incorretas</p>
+<p><strong>Solução:</strong>
+1. Verificar upload preset no Cloudinary
+2. Verificar variáveis de ambiente
+3. Verificar limite de tamanho de arquivo</p>
+<hr />
+<h2 id="documentacao-relacionada">📚 Documentação Relacionada</h2>
+<ul>
+<li><a href="../CloudinaryArchitecture/">Arquitetura Cloudinary</a></li>
+<li><a href="../MIGRATION_SUMMARY/">Migração de Imagens</a></li>
+<li><a href="../api/imagens/">API de Imagens</a></li>
+<li><a href="../frontend/Componentizacao/">Componentização Frontend</a></li>
+<li><a href="../WebSocket-Setup/">WebSocket Setup</a></li>
+</ul>
+<hr />
+<h2 id="checklist-de-deploy">✅ Checklist de Deploy</h2>
+<h3 id="antes-do-deploy">Antes do Deploy</h3>
+<ul>
+<li>[ ] Variáveis de ambiente configuradas</li>
+<li>[ ] Banco de dados migrado</li>
+<li>[ ] Cloudinary configurado</li>
+<li>[ ] Testes passando</li>
+<li>[ ] Build local funcionando</li>
+</ul>
+<h3 id="pos-deploy">Pós Deploy</h3>
+<ul>
+<li>[ ] Health check do backend</li>
+<li>[ ] Frontend carregando corretamente</li>
+<li>[ ] Imagens carregando do Cloudinary</li>
+<li>[ ] WebSocket funcionando</li>
+<li>[ ] Autenticação funcionando</li>
+<li>[ ] Integração com Google Maps</li>
+</ul>
+<hr />
+<p><strong>Última atualização:</strong> Outubro 2025</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

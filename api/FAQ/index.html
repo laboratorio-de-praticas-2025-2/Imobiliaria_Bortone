@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../Agendamento/">
+        <link rel="prev" href="../AgendamentoSMTP/">
       
       
-        <link rel="next" href="../FAQ/">
+        <link rel="next" href="../FAQ-CMS/">
       
       
       <link rel="icon" href="../../assets/favicon.ico">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Funcionalidade do envio de e-mail - Imobiliaria Bortone - Documentação</title>
+        <title>FAQ (Perguntas Frequentes) - Imobiliaria Bortone - Documentação</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#modulo-smtp-agendamento-de-visitas" class="md-skip">
+        <a href="#documentacao-faq-sistema-imobiliario-bortone" class="md-skip">
           Ir para o conteúdo
         </a>
       
@@ -109,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Funcionalidade do envio de e-mail
+              FAQ (Perguntas Frequentes)
             
           </span>
         </div>
@@ -798,6 +798,29 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../AgendamentoSMTP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidade do envio de e-mail
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -815,7 +838,7 @@
   
   
   <span class="md-ellipsis">
-    Funcionalidade do envio de e-mail
+    FAQ (Perguntas Frequentes)
     
   </span>
   
@@ -828,7 +851,7 @@
   
   
   <span class="md-ellipsis">
-    Funcionalidade do envio de e-mail
+    FAQ (Perguntas Frequentes)
     
   </span>
   
@@ -851,192 +874,252 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#glossario" class="md-nav__link">
+  <a href="#visao-geral" class="md-nav__link">
     <span class="md-ellipsis">
-      Glossário
+      Visão Geral
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#descricao" class="md-nav__link">
+  <a href="#api-endpoints" class="md-nav__link">
     <span class="md-ellipsis">
-      Descrição
+      API Endpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-apifaq" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET /api/faq
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#objetivo" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#get-apifaqid" class="md-nav__link">
     <span class="md-ellipsis">
-      Objetivo
+      GET /api/faq/:id
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apifaq" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /api/faq
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#put-apifaqid" class="md-nav__link">
+    <span class="md-ellipsis">
+      PUT /api/faq/:id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apifaqid" class="md-nav__link">
+    <span class="md-ellipsis">
+      DELETE /api/faq/:id
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#middleware-de-validacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Middleware de Validação
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Middleware de Validação">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validacao-de-pergunta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validação de Pergunta
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-de-resposta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validação de Resposta
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-de-categoria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validação de Categoria
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tratamento-de-erros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tratamento de Erros
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tratamento de Erros">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#erro-400-bad-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro 400 - Bad Request
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erro-404-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro 404 - Not Found
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erro-500-internal-server-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro 500 - Internal Server Error
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#guia-de-uso-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Guia de Uso - Frontend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Guia de Uso - Frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#como-acessar-a-aba-faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como Acessar a Aba FAQ
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como Acessar a Aba FAQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-navegacao-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Navegação Principal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-link-direto" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Link Direto
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#como-fazer-uma-pergunta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como Fazer uma Pergunta
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como Fazer uma Pergunta">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#para-usuarios-comuns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Para Usuários Comuns:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#para-administradores" class="md-nav__link">
+    <span class="md-ellipsis">
+      Para Administradores:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#estrutura-de-arquivos" class="md-nav__link">
     <span class="md-ellipsis">
-      Estrutura de arquivos
+      Estrutura de Arquivos
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuracao-do-servidor-smtp" class="md-nav__link">
+  <a href="#notas-adicionais" class="md-nav__link">
     <span class="md-ellipsis">
-      Configuração do Servidor SMTP
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuração do Servidor SMTP">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#explicacao-sobre-variaveis-de-ambiente" class="md-nav__link">
-    <span class="md-ellipsis">
-      Explicação sobre variáveis de ambiente
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fluxo-de-envio-de-e-mails" class="md-nav__link">
-    <span class="md-ellipsis">
-      Fluxo de Envio de E-mails
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Fluxo de Envio de E-mails">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#requisicoes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Requisições
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Requisições">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#rota-post-schedule" class="md-nav__link">
-    <span class="md-ellipsis">
-      Rota POST /schedule
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Rota POST /schedule">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#resposta-sucesso-200" class="md-nav__link">
-    <span class="md-ellipsis">
-      Resposta sucesso (200)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#resposta-erro-400" class="md-nav__link">
-    <span class="md-ellipsis">
-      Resposta erro (400)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#rota-post-send" class="md-nav__link">
-    <span class="md-ellipsis">
-      Rota POST /send
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Rota POST /send">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#resposta-sucesso-200_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      Resposta sucesso (200)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#validacoes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Validações
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#montagem-de-mensagem-por-meio-do-mime" class="md-nav__link">
-    <span class="md-ellipsis">
-      Montagem de mensagem por meio do MIME
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#seguranca" class="md-nav__link">
-    <span class="md-ellipsis">
-      Segurança
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exemplo-de-uso-no-frontend" class="md-nav__link">
-    <span class="md-ellipsis">
-      Exemplo de uso no Frontend
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#limitacoes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Limitações
+      Notas Adicionais
     </span>
   </a>
   
@@ -1046,29 +1129,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../FAQ/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    FAQ (Perguntas Frequentes)
-    
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -1382,192 +1442,252 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#glossario" class="md-nav__link">
+  <a href="#visao-geral" class="md-nav__link">
     <span class="md-ellipsis">
-      Glossário
+      Visão Geral
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#descricao" class="md-nav__link">
+  <a href="#api-endpoints" class="md-nav__link">
     <span class="md-ellipsis">
-      Descrição
+      API Endpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-apifaq" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET /api/faq
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#objetivo" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#get-apifaqid" class="md-nav__link">
     <span class="md-ellipsis">
-      Objetivo
+      GET /api/faq/:id
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apifaq" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST /api/faq
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#put-apifaqid" class="md-nav__link">
+    <span class="md-ellipsis">
+      PUT /api/faq/:id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apifaqid" class="md-nav__link">
+    <span class="md-ellipsis">
+      DELETE /api/faq/:id
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#middleware-de-validacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Middleware de Validação
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Middleware de Validação">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validacao-de-pergunta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validação de Pergunta
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-de-resposta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validação de Resposta
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-de-categoria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validação de Categoria
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tratamento-de-erros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tratamento de Erros
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tratamento de Erros">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#erro-400-bad-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro 400 - Bad Request
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erro-404-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro 404 - Not Found
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erro-500-internal-server-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erro 500 - Internal Server Error
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#guia-de-uso-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Guia de Uso - Frontend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Guia de Uso - Frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#como-acessar-a-aba-faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como Acessar a Aba FAQ
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como Acessar a Aba FAQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-navegacao-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Navegação Principal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-link-direto" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Link Direto
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#como-fazer-uma-pergunta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como Fazer uma Pergunta
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como Fazer uma Pergunta">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#para-usuarios-comuns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Para Usuários Comuns:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#para-administradores" class="md-nav__link">
+    <span class="md-ellipsis">
+      Para Administradores:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#estrutura-de-arquivos" class="md-nav__link">
     <span class="md-ellipsis">
-      Estrutura de arquivos
+      Estrutura de Arquivos
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuracao-do-servidor-smtp" class="md-nav__link">
+  <a href="#notas-adicionais" class="md-nav__link">
     <span class="md-ellipsis">
-      Configuração do Servidor SMTP
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuração do Servidor SMTP">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#explicacao-sobre-variaveis-de-ambiente" class="md-nav__link">
-    <span class="md-ellipsis">
-      Explicação sobre variáveis de ambiente
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fluxo-de-envio-de-e-mails" class="md-nav__link">
-    <span class="md-ellipsis">
-      Fluxo de Envio de E-mails
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Fluxo de Envio de E-mails">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#requisicoes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Requisições
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Requisições">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#rota-post-schedule" class="md-nav__link">
-    <span class="md-ellipsis">
-      Rota POST /schedule
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Rota POST /schedule">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#resposta-sucesso-200" class="md-nav__link">
-    <span class="md-ellipsis">
-      Resposta sucesso (200)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#resposta-erro-400" class="md-nav__link">
-    <span class="md-ellipsis">
-      Resposta erro (400)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#rota-post-send" class="md-nav__link">
-    <span class="md-ellipsis">
-      Rota POST /send
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Rota POST /send">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#resposta-sucesso-200_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      Resposta sucesso (200)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#validacoes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Validações
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#montagem-de-mensagem-por-meio-do-mime" class="md-nav__link">
-    <span class="md-ellipsis">
-      Montagem de mensagem por meio do MIME
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#seguranca" class="md-nav__link">
-    <span class="md-ellipsis">
-      Segurança
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exemplo-de-uso-no-frontend" class="md-nav__link">
-    <span class="md-ellipsis">
-      Exemplo de uso no Frontend
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#limitacoes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Limitações
+      Notas Adicionais
     </span>
   </a>
   
@@ -1589,239 +1709,417 @@
 
 
 
-<h1 id="modulo-smtp-agendamento-de-visitas">Módulo SMTP – Agendamento de Visitas</h1>
-<h2 id="glossario">Glossário</h2>
-<ul>
-<li><strong>SMTP (Simple Mail Transfer Protocol):</strong> protocolo para envio de e-mail entre servidores.</li>
-<li><strong>TCP:</strong> protocolo que garante que os dados cheguem completos, na ordem certa e sem erros entre dois dispositivos.</li>
-<li><strong>TLS:</strong> protocolo que criptografa e protege a comunicação sobre o TCP, garantindo segurança e integridade dos dados.</li>
-<li><strong>Socket:</strong> um ponto de conexão entre dois computadores na rede que permite enviar e receber dados.</li>
-<li><strong>HELO/EHLO:</strong> comandos de identificação; <code>EHLO</code> pede extensões (STARTTLS, AUTH, etc.).</li>
-<li><strong>STARTTLS:</strong> comando que solicita upgrade da conexão para TLS sobre a mesma socket.</li>
-<li><strong>SMTPS:</strong> TLS direto (porta 465).</li>
-<li><strong>AUTH PLAIN / AUTH LOGIN:</strong> métodos de autenticação (base64).</li>
-<li><strong>MIME:</strong> Multipurpose Internet Mail Extensions — formato para mensagens com várias partes (text, html, attachments).</li>
-<li><strong>multipart/alternative:</strong> partes alternativas (por ex., plain text e HTML).</li>
-<li><strong>multipart/mixed:</strong> estrutura que pode conter alternativas + anexos.</li>
-<li><strong>CRLF:</strong> <code>\r\n</code> — fim de linha no SMTP (obrigatório).</li>
-<li><strong>dot-stuffing:</strong> duplicar leading <code>.</code> em linhas do corpo antes de enviar (por RFC).</li>
-<li><strong>Message-ID:</strong> identificador único do e-mail.</li>
-<li><strong>SPF/DKIM/DMARC:</strong> mecanismos para autenticação de e-mail (evitam spoofing e melhoram entrega).</li>
-<li><strong>Base64:</strong> codificação usada para anexos binários em SMTP.</li>
-<li><strong>Rate limiting:</strong> limitar número de requisições por IP/endpoint para mitigar abuso.</li>
-<li><strong>Whitelist / Blacklist:</strong> IPs explicitamente permitidos/negados.</li>
-</ul>
+<h1 id="documentacao-faq-sistema-imobiliario-bortone">Documentação FAQ - Sistema Imobiliário Bortone</h1>
+<h2 id="visao-geral">Visão Geral</h2>
+<p>Sistema de Perguntas Frequentes (FAQ) integrado ao projeto imobiliário, permitindo gerenciamento e consulta de dúvidas comuns dos usuários.</p>
 <hr />
-<h2 id="descricao">Descrição</h2>
-<p>O módulo de Agendamento implementa um sistema de envio de e-mails baseado no protocolo SMTP sem depender de bibliotecas externas. Ele garante que tanto o cliente quanto a equipe interna recebam confirmações e notificações sobre o agendamento.
-A implementação usa net/tls para abrir sockets TCP/TLS e implementa manualmente os comandos SMTP, autenticação (PLAIN/LOGIN) e construção de mensagens MIME (texto, HTML, anexos).</p>
-<hr />
-<h2 id="objetivo">Objetivo</h2>
-<ul>
-<li>Enviar confirmação de agendamento ao usuário (cliente) e notificar a imobiliária.</li>
-<li>Implementar validações e proteção contra abuso (rate limit, blacklist/whitelist, bloqueio de domínios temporários).</li>
-<li>Registrar logs de auditoria para rastreabilidade.</li>
-</ul>
-<hr />
-<h2 id="estrutura-de-arquivos">Estrutura de arquivos</h2>
-<ul>
-<li>
-<p>agendamentoController.js → Valida entrada HTTP, normaliza dados, permite integração com mapaService para buscar detalhes do imóvel e chama serviços.</p>
-</li>
-<li>
-<p>agendamentoRoute.js → Define middlewares (headers de segurança, validação de content-type e payload size), rotas: /send, /schedule, /:id, /agendar, /property-notification.</p>
-</li>
-<li>
-<p>agendamentoService.js → Implementa SMTP client, validações de anexos, construção MIME, rate limiting, blacklist/whitelist.</p>
-</li>
-</ul>
-<hr />
-<h2 id="configuracao-do-servidor-smtp">Configuração do Servidor SMTP</h2>
-<p>Antes de rodar o módulo, é necessário configurar as variáveis de ambiente:</p>
-<div class="highlight"><pre><span></span><code>- SMTP_HOST=mail.example.com     
-- SMTP_PORT=587                     
-- SMTP_SECURE=false                 
-- SMTP_USER=usuario                 
-- SMTP_PASS=senha             
-- SMTP_HELO=localhost             
-- MAIL_FROM_EMPRESA=noreply@ex.com 
-- MAIL_TO_EMPRESA=agendamentos@...
-- NODE_ENV=development|production
+<h2 id="api-endpoints">API Endpoints</h2>
+<h3 id="get-apifaq">GET /api/faq</h3>
+<p><strong>Descrição:</strong> Lista todas as perguntas frequentes com filtros opcionais.</p>
+<p><strong>Método:</strong> <code>GET</code></p>
+<p><strong>URL:</strong> <code>/api/faq</code></p>
+<p><strong>Parâmetros:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parâmetro</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>categoria</code></td>
+<td>query</td>
+<td>Não</td>
+<td>Filtrar por categoria (ex: "vendas", "locacao", "financiamento")</td>
+</tr>
+<tr>
+<td><code>busca</code></td>
+<td>query</td>
+<td>Não</td>
+<td>Buscar por palavra-chave na pergunta ou resposta</td>
+</tr>
+<tr>
+<td><code>pagina</code></td>
+<td>query</td>
+<td>Não</td>
+<td>Número da página para paginação</td>
+</tr>
+<tr>
+<td><code>limite</code></td>
+<td>query</td>
+<td>Não</td>
+<td>Número de itens por página (padrão: 10)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exemplo de Requisição:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nx">GET</span><span class="w"> </span><span class="o">/</span><span class="nx">api</span><span class="o">/</span><span class="nx">faq</span><span class="o">?</span><span class="nx">categoria</span><span class="o">=</span><span class="nx">vendas</span><span class="o">&amp;</span><span class="nx">busca</span><span class="o">=</span><span class="nx">documentos</span><span class="o">&amp;</span><span class="nx">pagina</span><span class="o">=</span><span class="mf">1</span><span class="o">&amp;</span><span class="nx">limite</span><span class="o">=</span><span class="mf">5</span>
 </code></pre></div>
-<h3 id="explicacao-sobre-variaveis-de-ambiente">Explicação sobre variáveis de ambiente</h3>
-<ul>
-<li>SMTP_HOST — Endereço do servidor SMTP (ex: smtp.gmail.com).</li>
-<li>SMTP_PORT — Porta do servidor (587 para TLS, 465 para SSL).</li>
-<li>SMTP_SECURE — Define se a conexão deve usar SSL/TLS.</li>
-<li>SMTP_USER — E-mail usado para autenticação.</li>
-<li>SMTP_PASS — Senha ou token de acesso do e-mail. A senha é gerada por meio da autenticação de dois fatores.</li>
-<li>SMTP_HELO — Valor usado em EHLO/HELO. Default é "localhost".</li>
-<li>MAIL_FROM_EMPRESA — E-mail obrigatório para envios automáticos (sendScheduleConfirmation).</li>
-<li>MAIL_TO_EMPRESA — E-mail interno opcional; default é "agendamentos@imobiliaria-bortone.com.br".</li>
-<li>NODE_ENV — Define o ambiente da aplicação e controla a exposição de detalhes de erro (development ou production).</li>
-</ul>
-<p>Observação: Nunca commitar credenciais no repositório.</p>
+<p><strong>Exemplo de Resposta (200):</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;pagina&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;limite&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;itens&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;pergunta&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Quais documentos são necessários para compra?&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;resposta&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Para comprar um imóvel você precisa de: RG, CPF, comprovante de renda...&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;categoria&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vendas&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;dataCriacao&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2024-01-15T10:30:00Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;ativo&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Códigos de Status:</strong> 200, 400, 500</p>
+<p><strong>Autenticação:</strong> Não requer</p>
 <hr />
-<h2 id="fluxo-de-envio-de-e-mails">Fluxo de Envio de E-mails</h2>
-<ol>
-<li><strong>Requisição HTTP</strong> chega no controller (ex.: /schedule).</li>
-<li><strong>Controller</strong> valida e normaliza input (regex de e-mail, tamanhos, trims).</li>
-<li><strong>Controller</strong> aplica lógica específica (ex.: busca imovel por ID via mapaService e mescla endereço).</li>
-<li><strong>Verificação de segurança</strong>, Controller checa rate limit: agendamentoService.checkRateLimit(clientIP, route):<ul>
-<li>Limite de 5 agendamentos por minuto por IP.</li>
-<li>Bloqueio de IPs em blacklist.</li>
-<li>Bloqueio de domínios suspeitos (ex: Mailinator, TempMail).</li>
-</ul>
-</li>
-<li><strong>Controller</strong> chama agendamentoService.sendScheduleConfirmation({ appointment }).</li>
-<li><strong>sendScheduleConfirmation</strong> monta textos e HTML (usuário e empresa), cria SMTPClient com host/port/secure/user/pass/helo.</li>
-<li><strong>SMTPClient.send()</strong> abre socket (plain TCP ou TLS), aguarda banner (220), envia EHLO, verifica STARTTLS e, se disponível + desejado, faz upgrade TLS.</li>
-<li><strong>Autentica</strong> (AUTH PLAIN ou AUTH LOGIN) se user/pass informados.</li>
-<li><strong>Realiza a troca de comandos SMTP</strong> (<code>EHLO/HELO</code>, <code>AUTH</code>, <code>MAIL FROM</code>, <code>RCPT TO</code>, <code>DATA</code>, <code>QUIT</code>).</li>
-<li><strong>Constrói mensagem MIME</strong> via buildMime(...), aplica dot-stuffing, escreve o corpo e finaliza com .\r\n.</li>
-<li><strong>Construção da mensagem MIME</strong>:<ul>
-<li>Apenas texto <strong>OU</strong></li>
-<li>Texto + HTML (multipart/alternative) <strong>OU</strong></li>
-<li>Texto + HTML + Anexos (multipart/mixed).</li>
-</ul>
-</li>
-<li><strong>Lê</strong> a resposta (250) e encerra com QUIT.</li>
-<li><strong>Envio da mensagem</strong> e retorno da resposta JSON para o cliente.</li>
-</ol>
+<h3 id="get-apifaqid">GET /api/faq/:id</h3>
+<p><strong>Descrição:</strong> Busca uma pergunta específica por ID.</p>
+<p><strong>Método:</strong> <code>GET</code></p>
+<p><strong>URL:</strong> <code>/api/faq/:id</code></p>
+<p><strong>Parâmetros:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parâmetro</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>path</td>
+<td>Sim</td>
+<td>ID da pergunta</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exemplo de Requisição:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nx">GET</span><span class="w"> </span><span class="o">/</span><span class="nx">api</span><span class="o">/</span><span class="nx">faq</span><span class="o">/</span><span class="mf">1</span>
+</code></pre></div>
+<p><strong>Exemplo de Resposta (200):</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;pergunta&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Quais documentos são necessários para compra?&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;resposta&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Para comprar um imóvel você precisa de: RG, CPF, comprovante de renda, comprovante de estado civil...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;categoria&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vendas&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;dataCriacao&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2024-01-15T10:30:00Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;ativo&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Códigos de Status:</strong> 200, 404, 500</p>
+<p><strong>Autenticação:</strong> Não requer</p>
 <hr />
-<h3 id="requisicoes">Requisições</h3>
-<h4 id="rota-post-schedule">Rota POST /schedule</h4>
-<p>Recebe dados de agendamento, aplica rate limit, busca dados do imóvel (se id) e envia 2 e-mails (usuário + empresa).</p>
-<div class="highlight"><pre><span></span><code>{
-  &quot;name&quot;: &quot;Tiago Rodrigues&quot;,
-  &quot;email&quot;: &quot;tiago@example.com&quot;,
-  &quot;phone&quot;: &quot;11999999999&quot;,
-  &quot;propertyId&quot;: &quot;123&quot;,
-  &quot;propertyAddress&quot;: &quot;Rua das Flores, 100&quot;,
-  &quot;notes&quot;: &quot;Prefiro horário da manhã&quot;,
-  &quot;visitPeriod&quot;: &quot;Manhã&quot;
-}
-</code></pre></div>
-<h6 id="resposta-sucesso-200">Resposta sucesso (200)</h6>
-<div class="highlight"><pre><span></span><code>{ &quot;success&quot;: true, &quot;message&quot;: &quot;Agendamento confirmado e e-mails enviados com sucesso&quot; }
-</code></pre></div>
-<h6 id="resposta-erro-400">Resposta erro (400)</h6>
-<div class="highlight"><pre><span></span><code>{ &quot;error&quot;: &quot;Erro ao processar agendamento&quot;}
-</code></pre></div>
-<h4 id="rota-post-send">Rota POST /send</h4>
-<p>Envio direto de e-mail (teste).</p>
-<div class="highlight"><pre><span></span><code>{
-  &quot;host&quot;: &quot;smtp.servidor.com&quot;,
-  &quot;port&quot;: 587,
-  &quot;secure&quot;: false,
-  &quot;user&quot;: &quot;usuario&quot;,
-  &quot;pass&quot;: &quot;senha&quot;,
-  &quot;from&quot;: &quot;noreply@imobiliaria.com&quot;,
-  &quot;to&quot;: &quot;cliente@example.com&quot;,
-  &quot;subject&quot;: &quot;Teste&quot;,
-  &quot;text&quot;: &quot;Mensagem em texto&quot;,
-  &quot;html&quot;: &quot;&lt;b&gt;Mensagem HTML&lt;/b&gt;&quot;,
-  &quot;attachments&quot;: [
-    { &quot;filename&quot;: &quot;doc.pdf&quot;, &quot;contentBase64&quot;: &quot;JVBERi0x...&quot;, &quot;contentType&quot;: &quot;application/pdf&quot; }
-  ]
-}
-</code></pre></div>
-<h5 id="resposta-sucesso-200_1">Resposta sucesso (200)</h5>
-<div class="highlight"><pre><span></span><code>{ &quot;success&quot;: true, &quot;message&quot;: &quot;Email enviado com sucesso&quot;, &quot;data&quot;: { &quot;ok&quot;: true, &quot;message&quot;: &quot;Enviado&quot; } }
-</code></pre></div>
-<hr />
-<h3 id="validacoes">Validações</h3>
-<ul>
-<li><strong>E-mail</strong> → Regex robusta + bloqueio de domínios temporários.</li>
-<li><strong>Porta SMTP</strong> → Deve estar entre 1 e 65535.</li>
-<li><strong>Secure (TLS)</strong> → Obrigatoriamente booleano.</li>
-<li><strong>Subject</strong> → Máximo 200 caracteres.</li>
-<li><strong>Texto</strong> → Máximo 10.000 caracteres.</li>
-<li><strong>HTML</strong> → Máximo 20.000 caracteres.</li>
-<li><strong>Anexos</strong> →<ul>
-<li>Tamanho máx. 10MB.</li>
-<li>Tipos permitidos: <code>.jpeg, .png, .gif, .webp, .pdf, .txt, .doc, .docx, .xls, .xlsx</code>.</li>
-<li>Nome máx. 255 caracteres (sem caracteres perigosos como <code>&lt;, &gt;, :, /, \\</code>).</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h2 id="montagem-de-mensagem-por-meio-do-mime">Montagem de mensagem por meio do MIME</h2>
-<p>A função <code>buildMime()</code> implementa a construção de e-mail para três cenários:</p>
-<ol>
-<li><strong>Apenas texto (sem HTML, sem anexos)</strong><ul>
-<li><code>Content-Type: text/plain; charset="utf-8"</code></li>
-<li>Corpo: texto truncado para <code>LIMITS.textBody</code>.</li>
-</ul>
-</li>
-<li><strong>Texto + HTML (sem anexos)</strong><ul>
-<li><code>Content-Type: multipart/alternative; boundary="alt_..."</code></li>
-<li>Parte 1: <code>text/plain</code></li>
-<li>Parte 2: <code>text/html</code></li>
-<li>Fecha <code>-alt_...--</code></li>
-</ul>
-</li>
-<li>
-<p><strong>Com anexos</strong></p>
-<ul>
-<li><code>Content-Type: multipart/mixed; boundary="mix_..."</code></li>
-<li>Primeiro part: <code>multipart/alternative</code> (se houver HTML) ou <code>text/plain</code></li>
-<li>
-<p>Em seguida: cada anexo com:</p>
-<div class="highlight"><pre><span></span><code>--mix_...
-Content-Type: &lt;contentType&gt;; name=&quot;filename&quot;
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename=&quot;filename&quot;
+<h3 id="post-apifaq">POST /api/faq</h3>
+<p><strong>Descrição:</strong> Cria uma nova pergunta frequente.</p>
+<p><strong>Método:</strong> <code>POST</code></p>
+<p><strong>URL:</strong> <code>/api/faq</code></p>
+<p><strong>Body (JSON):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pergunta</code></td>
+<td>string</td>
+<td>Sim</td>
+<td>Texto da pergunta</td>
+</tr>
+<tr>
+<td><code>resposta</code></td>
+<td>string</td>
+<td>Sim</td>
+<td>Texto da resposta</td>
+</tr>
+<tr>
+<td><code>categoria</code></td>
+<td>string</td>
+<td>Sim</td>
+<td>Categoria da pergunta</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exemplo de Requisição:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nx">POST</span><span class="w"> </span><span class="o">/</span><span class="nx">api</span><span class="o">/</span><span class="nx">faq</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span><span class="w"> </span><span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
 
-&lt;base64 content&gt;
+<span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;pergunta&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Como funciona o financiamento imobiliário?&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;resposta&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;O financiamento imobiliário é um empréstimo específico...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;categoria&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;financiamento&quot;</span>
+<span class="p">}</span>
 </code></pre></div>
-</li>
-<li>
-<p>Fecha <code>-mix_...--</code></p>
-</li>
-</ul>
-</li>
-</ol>
-<p><strong>Observações técnicas:</strong></p>
+<p><strong>Exemplo de Resposta (201):</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;pergunta&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Como funciona o financiamento imobiliário?&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;resposta&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;O financiamento imobiliário é um empréstimo específico...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;categoria&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;financiamento&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;dataCriacao&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2024-09-13T14:25:00Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;ativo&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Códigos de Status:</strong> 201, 400, 500</p>
+<p><strong>Autenticação:</strong> Requer token de administrador</p>
+<hr />
+<h3 id="put-apifaqid">PUT /api/faq/:id</h3>
+<p><strong>Descrição:</strong> Atualiza uma pergunta existente.</p>
+<p><strong>Método:</strong> <code>PUT</code></p>
+<p><strong>URL:</strong> <code>/api/faq/:id</code></p>
+<p><strong>Parâmetros:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parâmetro</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>path</td>
+<td>Sim</td>
+<td>ID da pergunta</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body (JSON):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pergunta</code></td>
+<td>string</td>
+<td>Não</td>
+<td>Nova pergunta</td>
+</tr>
+<tr>
+<td><code>resposta</code></td>
+<td>string</td>
+<td>Não</td>
+<td>Nova resposta</td>
+</tr>
+<tr>
+<td><code>categoria</code></td>
+<td>string</td>
+<td>Não</td>
+<td>Nova categoria</td>
+</tr>
+<tr>
+<td><code>ativo</code></td>
+<td>boolean</td>
+<td>Não</td>
+<td>Status ativo/inativo</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exemplo de Requisição:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nx">PUT</span><span class="w"> </span><span class="o">/</span><span class="nx">api</span><span class="o">/</span><span class="nx">faq</span><span class="o">/</span><span class="mf">1</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span><span class="w"> </span><span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;resposta&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Resposta atualizada com mais detalhes...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;ativo&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Códigos de Status:</strong> 200, 400, 404, 500</p>
+<p><strong>Autenticação:</strong> Requer token de administrador</p>
+<hr />
+<h3 id="delete-apifaqid">DELETE /api/faq/:id</h3>
+<p><strong>Descrição:</strong> Remove uma pergunta frequente.</p>
+<p><strong>Método:</strong> <code>DELETE</code></p>
+<p><strong>URL:</strong> <code>/api/faq/:id</code></p>
+<p><strong>Parâmetros:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parâmetro</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>path</td>
+<td>Sim</td>
+<td>ID da pergunta</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Códigos de Status:</strong> 204, 404, 500</p>
+<p><strong>Autenticação:</strong> Requer token de administrador</p>
+<hr />
+<h2 id="middleware-de-validacao">Middleware de Validação</h2>
+<h3 id="validacao-de-pergunta">Validação de Pergunta</h3>
+<p><strong>Localização:</strong> <code>back-end/src/middleware/faq-validation.js</code></p>
+<p><strong>Regras:</strong></p>
 <ul>
-<li><strong>Headers importantes:</strong> sempre incluir From, To, Cc (opcional), Subject, Date, Message-ID e MIME-Version: 1.0.</li>
-<li><strong>Dot-stuffing:</strong> se uma linha do corpo começar com ., duplicar o ponto (. → ..) antes de enviar.</li>
-<li><strong>Fim de linha:</strong> todas as linhas devem terminar com \r\n (CRLF), como exige o padrão SMTP.</li>
-<li><strong>Encoding:</strong>
-   Anexos → base64
-   Texto e HTML → 7bit (UTF-8). Se o conteúdo tiver caracteres especiais, pode usar quoted-printable.</li>
+<li>✅ Campo obrigatório para criação/atualização</li>
+<li>✅ Mínimo de 10 caracteres</li>
+<li>✅ Máximo de 500 caracteres</li>
+<li>✅ Não pode conter apenas espaços em branco</li>
+</ul>
+<h3 id="validacao-de-resposta">Validação de Resposta</h3>
+<p><strong>Regras:</strong></p>
+<ul>
+<li>✅ Campo obrigatório para criação/atualização</li>
+<li>✅ Mínimo de 20 caracteres</li>
+<li>✅ Máximo de 2000 caracteres</li>
+<li>✅ Não pode conter apenas espaços em branco</li>
+</ul>
+<h3 id="validacao-de-categoria">Validação de Categoria</h3>
+<p><strong>Categorias permitidas:</strong></p>
+<ul>
+<li><code>vendas</code></li>
+<li><code>locacao</code> </li>
+<li><code>financiamento</code></li>
+<li><code>documentacao</code></li>
+<li><code>visitas</code></li>
+<li><code>geral</code></li>
 </ul>
 <hr />
-<h2 id="seguranca">Segurança</h2>
+<h2 id="tratamento-de-erros">Tratamento de Erros</h2>
+<h3 id="erro-400-bad-request">Erro 400 - Bad Request</h3>
+<p><strong>Retornado quando:</strong></p>
 <ul>
-<li>Uso de <strong>TLS/SSL</strong> para conexão segura com o servidor SMTP.</li>
-<li>Armazenamento seguro de credenciais via <strong>variáveis de ambiente</strong>.</li>
-<li><strong>Proteção contra spam:</strong> limite de disparos por evento configurado no sistema.</li>
-<li><strong>Rate limiting</strong>de 5 requisições/minuto por IP.</li>
-<li><strong>Whitelist de IPs:</strong> <code>127.0.0.1</code>, <code>::1</code>.</li>
-<li><strong>Blacklist dinâmica</strong>, IPs suspeitos podem ser bloqueados temporariamente.</li>
-<li>Limite de tamanho de <strong>payload e anexos</strong>.</li>
-<li><strong>Logs de auditoria</strong>, todas as requisições logadas com IP, User-Agent, rota e horário.</li>
-<li><strong>Headers de segurança:</strong> <code>X-Content-Type-Options</code>, <code>X-Frame-Options</code>, <code>X-XSS-Protection</code>, <code>Content-Security-Policy</code>.</li>
-<li><strong>Sanitização</strong>, uma prevenção contra injeção de headers e XSS em e-mails HTML.</li>
+<li>Dados de entrada inválidos</li>
+<li>Campos obrigatórios ausentes</li>
+<li>Formato de dados incorreto</li>
+</ul>
+<p><strong>Exemplo de Resposta:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;erro&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dados inválidos&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;detalhes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;Campo &#39;pergunta&#39; é obrigatório&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;Campo &#39;categoria&#39; deve ser um dos valores permitidos&quot;</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="erro-404-not-found">Erro 404 - Not Found</h3>
+<p><strong>Retornado quando:</strong></p>
+<ul>
+<li>Pergunta não encontrada pelo ID</li>
+<li>Rota não existente</li>
+</ul>
+<p><strong>Exemplo de Resposta:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;erro&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pergunta não encontrada&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;detalhes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Não foi possível encontrar uma pergunta com o ID fornecido&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="erro-500-internal-server-error">Erro 500 - Internal Server Error</h3>
+<p><strong>Retornado quando:</strong></p>
+<ul>
+<li>Erro interno do servidor</li>
+<li>Falha na conexão com banco de dados</li>
+<li>Erro não tratado</li>
+</ul>
+<p><strong>Exemplo de Resposta:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;erro&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Erro interno do servidor&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;detalhes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ocorreu um erro inesperado. Tente novamente mais tarde.&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="guia-de-uso-frontend">Guia de Uso - Frontend</h2>
+<h3 id="como-acessar-a-aba-faq">Como Acessar a Aba FAQ</h3>
+<h4 id="1-navegacao-principal">1. Navegação Principal</h4>
+<ul>
+<li>Acesse o menu principal do site</li>
+<li>Clique em "Ajuda" ou "FAQ"</li>
+<li>Você será redirecionado para <code>/faq</code></li>
+</ul>
+<h4 id="2-link-direto">2. Link Direto</h4>
+<ul>
+<li>Use a URL direta do frontend (Vercel): <code>https://seu-dominio.vercel.app/faq</code></li>
+</ul>
+<h3 id="como-fazer-uma-pergunta">Como Fazer uma Pergunta</h3>
+<h4 id="para-usuarios-comuns">Para Usuários Comuns:</h4>
+<p><strong>1. Buscar Pergunta Existente</strong></p>
+<ul>
+<li>Use a barra de busca no topo da página</li>
+<li>Digite palavras-chave relacionadas à sua dúvida</li>
+<li>Verifique se sua pergunta já foi respondida</li>
+</ul>
+<p><strong>2. Solicitar Nova Pergunta</strong></p>
+<ul>
+<li>Se não encontrar resposta, clique em "Enviar Pergunta"</li>
+<li>Preencha o formulário de contato</li>
+<li>Sua pergunta será analisada e pode ser adicionada ao FAQ</li>
+</ul>
+<h4 id="para-administradores">Para Administradores:</h4>
+<p><strong>1. Acesso ao Painel</strong></p>
+<ul>
+<li>Faça login como administrador</li>
+<li>Acesse <code>/admin/faq</code></li>
+</ul>
+<p><strong>2. Criar Pergunta</strong></p>
+<ul>
+<li>Clique em "Nova Pergunta"</li>
+<li>Preencha os campos obrigatórios</li>
+<li>Selecione a categoria apropriada</li>
+<li>Salve a pergunta</li>
 </ul>
 <hr />
-<h2 id="exemplo-de-uso-no-frontend">Exemplo de uso no Frontend</h2>
-<p>Ao finalizar o agendamento no frontend:</p>
-<ol>
-<li>O usuário preenche os dados do agendamento.</li>
-<li>O frontend envia a requisição ao backend.</li>
-<li>O backend dispara os e-mails configurados.</li>
-<li>O cliente recebe a confirmação diretamente na caixa de entrada.</li>
-<li>A imobiliária recebe o e-mail de solicitação de agendamento do cliente</li>
-</ol>
+<h2 id="estrutura-de-arquivos">Estrutura de Arquivos</h2>
+<div class="highlight"><pre><span></span><code>back-end/src/
+├── routes/
+│   └── faq.js              # Rotas do FAQ
+├── middleware/
+│   └── faq-validation.js   # Validações
+├── controllers/
+│   └── faq-controller.js   # Lógica de negócio
+└── models/
+    └── faq-model.js        # Modelo de dados
+
+front-end/src/
+├── pages/
+│   └── FAQ.js              # Página principal do FAQ
+├── components/
+│   ├── FaqItem.js          # Item individual de FAQ
+│   ├── FaqSearch.js        # Componente de busca
+│   └── FaqCategories.js    # Filtro de categorias
+└── services/
+    └── faq-service.js      # Serviços de API
+</code></pre></div>
 <hr />
-<h2 id="limitacoes">Limitações</h2>
-<ul>
-<li>Implementar SMTP por conta própria exige atenção e manutenção.</li>
-<li>Não possui fila de envio automática. Se o serviço cair, os e-mails podem ser perdidos.</li>
-<li>Anexos grandes ficam na memória como base64</li>
-</ul>
+<h2 id="notas-adicionais">Notas Adicionais</h2>
+<div class="admonition info">
+<p class="admonition-title">Informação</p>
+<p>O sistema de FAQ é projetado para ser facilmente expansível. Novas categorias podem ser adicionadas conforme necessário.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Atenção</p>
+<p>Apenas administradores podem criar, editar ou remover perguntas do FAQ. Usuários comuns têm acesso apenas de leitura.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Dica</p>
+<p>Use a busca por palavras-chave para encontrar respostas mais rapidamente. O sistema busca tanto nas perguntas quanto nas respostas.</p>
+</div>
 
 
 

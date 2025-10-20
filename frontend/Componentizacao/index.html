@@ -1,0 +1,3118 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../NextConfig/">
+      
+      
+        <link rel="next" href="../middlwareIndexacao/">
+      
+      
+      <link rel="icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>📦 Componentização - Imobiliaria Bortone - Documentação</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#documentacao-de-componentizacao-do-frontend" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-header__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Imobiliaria Bortone - Documentação
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              📦 Componentização
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Imobiliaria Bortone - Documentação" class="md-nav__button md-logo" aria-label="Imobiliaria Bortone - Documentação" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    Imobiliaria Bortone - Documentação
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ArquiteturaInfraestrutura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🏗️ Arquitetura e Infraestrutura
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../VerificacaoDocumentacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ✅ Verificação da Documentação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RegrasGerais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Regras Gerais do Repositório
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../EstruturaDePastas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estrutura de Pastas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Frontend
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Frontend
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../NextConfig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configurações do Next
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    📦 Componentização
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Componentização
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visão Geral
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura-de-componentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      🏗️ Arquitetura de Componentes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🏗️ Arquitetura de Componentes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estrutura-de-diretorios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura de Diretórios
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#categorias-de-componentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 Categorias de Componentes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Categorias de Componentes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-componentes-de-autenticacao-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Componentes de Autenticação (auth/)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Componentes de Autenticação (auth/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#protectedroutejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      ProtectedRoute.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adminroutejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      AdminRoute.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conditionalauthjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      ConditionalAuth.js
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-componentes-cmsadmin-cms" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Componentes CMS/Admin (cms/)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Componentes CMS/Admin (cms/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sidebarjs-sidebarnavjs-sidebarlinksjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sidebar.js, SidebarNav.js, SidebarLinks.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cardjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Card.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confirmmodaljs" class="md-nav__link">
+    <span class="md-ellipsis">
+      ConfirmModal.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#faqmodaljs" class="md-nav__link">
+    <span class="md-ellipsis">
+      FaqModal.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#componentes-de-formulario-cmsform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Componentes de Formulário (cms/form/)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#componentes-de-tabela-cmstable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Componentes de Tabela (cms/table/)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-componentes-de-vitrine-vitrine" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Componentes de Vitrine (vitrine/)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Componentes de Vitrine (vitrine/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gridimoveisjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      GridImoveis.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imovelcardjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      ImovelCard.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtrosjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filtros.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imagecarrousseljs" class="md-nav__link">
+    <span class="md-ellipsis">
+      ImageCarroussel.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pesquisaavancada" class="md-nav__link">
+    <span class="md-ellipsis">
+      PesquisaAvancada/
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-componentes-de-home-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Componentes de Home (home/)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Componentes de Home (home/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#homenavbarjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      HomeNavbar.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#headersliderjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      HeaderSlider.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriedadesselecionadasjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      PropriedadesSelecionadas.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicidadecarouseljs" class="md-nav__link">
+    <span class="md-ellipsis">
+      PublicidadeCarousel.js
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-componentes-ui-reutilizaveis-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Componentes UI Reutilizáveis (ui/)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Componentes UI Reutilizáveis (ui/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cloudinaryimagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      CloudinaryImage.js
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-componentes-de-chat-chat" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Componentes de Chat (chat/)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-componentes-de-mapa-mapa" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Componentes de Mapa (mapa/)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-componentes-seo-seo" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Componentes SEO (SEO/)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#padroes-de-componentizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎨 Padrões de Componentização
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎨 Padrões de Componentização">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-componentes-funcionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Componentes Funcionais
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-componentes-client-vs-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Componentes Client vs Server
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-composicao-de-componentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Composição de Componentes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-props-destructuring" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Props Destructuring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-proptypes-ou-typescript" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. PropTypes ou TypeScript
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 Fluxo de Dados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Fluxo de Dados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-props-down-events-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Props Down, Events Up
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-context-para-estado-global" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Context para Estado Global
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-custom-hooks-para-logica-reutilizavel" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Custom Hooks para Lógica Reutilizável
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gerenciamento-de-imagens" class="md-nav__link">
+    <span class="md-ellipsis">
+      🖼️ Gerenciamento de Imagens
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🖼️ Gerenciamento de Imagens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#integracao-com-cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integração com Cloudinary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#responsividade" class="md-nav__link">
+    <span class="md-ellipsis">
+      📱 Responsividade
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📱 Responsividade">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mobile-first-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mobile-First Approach
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breakpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Breakpoints
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testes-de-componentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧪 Testes de Componentes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧪 Testes de Componentes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estrutura-de-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura de Testes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boas-praticas" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Boas Práticas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Boas Práticas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-nomenclatura" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Nomenclatura
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-organizacao-de-imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Organização de Imports
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-acessibilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Acessibilidade
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proximos-passos" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Próximos Passos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Próximos Passos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#melhorias-futuras" class="md-nav__link">
+    <span class="md-ellipsis">
+      Melhorias Futuras
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Referências
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentacao-relacionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔗 Documentação Relacionada
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../middlwareIndexacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Middleware
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ManualdeTags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manual de Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../NETLIFY_SETUP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Setup Netlify
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Documentacao_Contatos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contatos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Imagens
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Imagens
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MIGRATION_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ⭐ Migração Cloudinary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CloudinaryArchitecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🏗️ Arquitetura Cloudinary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/imagens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Imagens
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AnaliseArquiteturaImagens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise de Problemas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ProblemasImagensVercel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Problemas Vercel (Histórico)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    APIs Core
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            APIs Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/AlgoritmoDeRecomendacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algoritmo de Recomendação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/BancoDeDados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Banco de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dashboard
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/Agendamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agendamento de Visitação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/AgendamentoSMTP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidade do envio de e-mail
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ (Perguntas Frequentes)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/FAQ-CMS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ - Gerenciamento CMS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Mapa
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Mapa
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/MapaAPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/MapaImplementacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Implementação da API de Mapa
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/MapaResumo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resumo da Integração
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Chat
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Sistema de Chat
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/ChatSuporte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chat Suporte
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../WebSocket-Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Rodar o WebSocket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../UserLevels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Níveis de Usuário
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ChatSystemBugFixes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relatório de Correção de Bugs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visão Geral
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura-de-componentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      🏗️ Arquitetura de Componentes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🏗️ Arquitetura de Componentes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estrutura-de-diretorios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura de Diretórios
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#categorias-de-componentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 Categorias de Componentes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Categorias de Componentes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-componentes-de-autenticacao-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Componentes de Autenticação (auth/)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Componentes de Autenticação (auth/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#protectedroutejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      ProtectedRoute.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adminroutejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      AdminRoute.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conditionalauthjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      ConditionalAuth.js
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-componentes-cmsadmin-cms" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Componentes CMS/Admin (cms/)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Componentes CMS/Admin (cms/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sidebarjs-sidebarnavjs-sidebarlinksjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sidebar.js, SidebarNav.js, SidebarLinks.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cardjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Card.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confirmmodaljs" class="md-nav__link">
+    <span class="md-ellipsis">
+      ConfirmModal.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#faqmodaljs" class="md-nav__link">
+    <span class="md-ellipsis">
+      FaqModal.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#componentes-de-formulario-cmsform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Componentes de Formulário (cms/form/)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#componentes-de-tabela-cmstable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Componentes de Tabela (cms/table/)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-componentes-de-vitrine-vitrine" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Componentes de Vitrine (vitrine/)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Componentes de Vitrine (vitrine/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gridimoveisjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      GridImoveis.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imovelcardjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      ImovelCard.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtrosjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filtros.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imagecarrousseljs" class="md-nav__link">
+    <span class="md-ellipsis">
+      ImageCarroussel.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pesquisaavancada" class="md-nav__link">
+    <span class="md-ellipsis">
+      PesquisaAvancada/
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-componentes-de-home-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Componentes de Home (home/)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Componentes de Home (home/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#homenavbarjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      HomeNavbar.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#headersliderjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      HeaderSlider.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriedadesselecionadasjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      PropriedadesSelecionadas.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicidadecarouseljs" class="md-nav__link">
+    <span class="md-ellipsis">
+      PublicidadeCarousel.js
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-componentes-ui-reutilizaveis-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Componentes UI Reutilizáveis (ui/)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Componentes UI Reutilizáveis (ui/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cloudinaryimagejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      CloudinaryImage.js
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-componentes-de-chat-chat" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Componentes de Chat (chat/)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-componentes-de-mapa-mapa" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Componentes de Mapa (mapa/)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-componentes-seo-seo" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Componentes SEO (SEO/)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#padroes-de-componentizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎨 Padrões de Componentização
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎨 Padrões de Componentização">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-componentes-funcionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Componentes Funcionais
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-componentes-client-vs-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Componentes Client vs Server
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-composicao-de-componentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Composição de Componentes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-props-destructuring" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Props Destructuring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-proptypes-ou-typescript" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. PropTypes ou TypeScript
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 Fluxo de Dados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Fluxo de Dados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-props-down-events-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Props Down, Events Up
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-context-para-estado-global" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Context para Estado Global
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-custom-hooks-para-logica-reutilizavel" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Custom Hooks para Lógica Reutilizável
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gerenciamento-de-imagens" class="md-nav__link">
+    <span class="md-ellipsis">
+      🖼️ Gerenciamento de Imagens
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🖼️ Gerenciamento de Imagens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#integracao-com-cloudinary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integração com Cloudinary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#responsividade" class="md-nav__link">
+    <span class="md-ellipsis">
+      📱 Responsividade
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📱 Responsividade">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mobile-first-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mobile-First Approach
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breakpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Breakpoints
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testes-de-componentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧪 Testes de Componentes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧪 Testes de Componentes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estrutura-de-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura de Testes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boas-praticas" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Boas Práticas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Boas Práticas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-nomenclatura" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Nomenclatura
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-organizacao-de-imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Organização de Imports
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-acessibilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Acessibilidade
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proximos-passos" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Próximos Passos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Próximos Passos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#melhorias-futuras" class="md-nav__link">
+    <span class="md-ellipsis">
+      Melhorias Futuras
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Referências
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentacao-relacionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔗 Documentação Relacionada
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="documentacao-de-componentizacao-do-frontend">Documentação de Componentização do Frontend</h1>
+<h2 id="visao-geral">Visão Geral</h2>
+<p>Esta documentação descreve a estrutura de componentização do frontend da Imobiliária Bortone, desenvolvido em <strong>Next.js 14</strong> com <strong>App Router</strong>. O projeto utiliza uma arquitetura modular baseada em componentes reutilizáveis, seguindo as melhores práticas de React e Next.js.</p>
+<hr />
+<h2 id="arquitetura-de-componentes">🏗️ Arquitetura de Componentes</h2>
+<h3 id="estrutura-de-diretorios">Estrutura de Diretórios</h3>
+<div class="highlight"><pre><span></span><code>front-end/src/components/
+├── auth/                    # Componentes de autenticação
+│   ├── AdminRoute.js       # HOC para rotas administrativas
+│   ├── ConditionalAuth.js  # Autenticação condicional
+│   └── ProtectedRoute.js   # HOC para rotas protegidas
+│
+├── blog/                    # Componentes do blog
+│   └── [componentes de blog]
+│
+├── chat/                    # Sistema de chat
+│   └── [componentes de chat]
+│
+├── cms/                     # Componentes do CMS (Admin)
+│   ├── Card.js             # Card reutilizável do dashboard
+│   ├── ConfirmModal.js     # Modal de confirmação
+│   ├── DropdownFilterPublicidade.js
+│   ├── FaqModal.js         # Modal para gerenciar FAQs
+│   ├── PostCard.js         # Card para posts do blog
+│   ├── Sidebar.js          # Barra lateral do admin
+│   ├── SidebarLinks.js     # Links da sidebar
+│   ├── SidebarNav.js       # Navegação da sidebar
+│   ├── form/               # Componentes de formulário
+│   └── table/              # Componentes de tabela
+│
+├── Contato/                 # Componentes de contato
+│   └── [formulários de contato]
+│
+├── dash/                    # Dashboard
+│   └── [componentes do dashboard]
+│
+├── faq/                     # FAQ público
+│   └── [componentes de FAQ]
+│
+├── home/                    # Página inicial
+│   ├── Header.js           # Cabeçalho principal
+│   ├── HeaderSlider.js     # Slider do cabeçalho
+│   ├── HomeFooter.js       # Rodapé da home
+│   ├── HomeNavbar.js       # Navegação da home
+│   ├── ImovelCard.js       # Card de imóvel
+│   ├── PropriedadesSelecionadas.js
+│   └── PublicidadeCarousel.js
+│
+├── mapa/                    # Componentes de mapa
+│   └── [componentes do Google Maps]
+│
+├── notifications/           # Sistema de notificações
+│   └── [componentes de notificação]
+│
+├── relatorio/              # Relatórios
+│   └── [componentes de relatório]
+│
+├── SEO/                    # Componentes de SEO
+│   └── [meta tags, structured data]
+│
+├── simulacao/              # Simulador de financiamento
+│   └── [componentes de simulação]
+│
+├── ui/                     # Componentes UI reutilizáveis
+│   └── CloudinaryImage.js # Componente de imagem otimizada
+│
+├── vitrine/                # Vitrine de imóveis
+│   ├── DropdownFilter.js  # Filtro dropdown
+│   ├── Filtros.js         # Sistema de filtros
+│   ├── GridImoveis.js     # Grid de imóveis
+│   ├── GridImoveisFooter.js
+│   ├── ImageCarroussel.js # Carrossel de imagens
+│   ├── ImovelCard.js      # Card de imóvel na vitrine
+│   ├── LocationInput.js   # Input de localização
+│   └── PesquisaAvancada/  # Busca avançada
+│
+├── DebugAuth.js            # Componente de debug
+├── Popup.js                # Popup genérico
+├── PublicidadeImage.js     # Imagem de publicidade
+└── SplashScreen.js         # Tela de carregamento
+</code></pre></div>
+<hr />
+<h2 id="categorias-de-componentes">📦 Categorias de Componentes</h2>
+<h3 id="1-componentes-de-autenticacao-auth">1. Componentes de Autenticação (<code>auth/</code>)</h3>
+<h4 id="protectedroutejs"><code>ProtectedRoute.js</code></h4>
+<p><strong>Propósito:</strong> Higher-Order Component (HOC) para proteger rotas que requerem autenticação.</p>
+<p><strong>Funcionalidades:</strong>
+- Verifica se o usuário está autenticado
+- Redireciona para login se não autenticado
+- Suporta níveis de acesso (admin, operador, cliente)</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">ProtectedRoute</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/components/auth/ProtectedRoute&#39;</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">MinhaRota</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">ProtectedRoute</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="nx">ConteudoProtegido</span><span class="w"> </span><span class="o">/&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="err">/ProtectedRoute&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h4 id="adminroutejs"><code>AdminRoute.js</code></h4>
+<p><strong>Propósito:</strong> HOC específico para rotas administrativas.</p>
+<p><strong>Funcionalidades:</strong>
+- Verifica se o usuário tem permissões de administrador
+- Redireciona usuários não autorizados
+- Integrado com sistema de níveis de usuário</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">AdminRoute</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/components/auth/AdminRoute&#39;</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">PainelAdmin</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">AdminRoute</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="nx">DashboardAdmin</span><span class="w"> </span><span class="o">/&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="err">/AdminRoute&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h4 id="conditionalauthjs"><code>ConditionalAuth.js</code></h4>
+<p><strong>Propósito:</strong> Renderiza componentes diferentes baseado no estado de autenticação.</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">ConditionalAuth</span>
+<span class="w">  </span><span class="nx">authenticated</span><span class="o">=</span><span class="p">{</span><span class="o">&lt;</span><span class="nx">ComponenteAutenticado</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">unauthenticated</span><span class="o">=</span><span class="p">{</span><span class="o">&lt;</span><span class="nx">ComponentePublico</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">}</span>
+<span class="err">/&gt;</span>
+</code></pre></div></p>
+<hr />
+<h3 id="2-componentes-cmsadmin-cms">2. Componentes CMS/Admin (<code>cms/</code>)</h3>
+<h4 id="sidebarjs-sidebarnavjs-sidebarlinksjs"><code>Sidebar.js</code>, <code>SidebarNav.js</code>, <code>SidebarLinks.js</code></h4>
+<p><strong>Propósito:</strong> Sistema de navegação lateral do painel administrativo.</p>
+<p><strong>Funcionalidades:</strong>
+- Menu lateral colapsável
+- Links organizados por categoria
+- Indicador de rota ativa
+- Responsivo para mobile</p>
+<p><strong>Estrutura:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">Sidebar</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="nx">SidebarNav</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">SidebarLinks</span><span class="w"> </span><span class="nx">links</span><span class="o">=</span><span class="p">{</span><span class="nx">adminLinks</span><span class="p">}</span><span class="w"> </span><span class="o">/&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="err">/SidebarNav&gt;</span>
+<span class="o">&lt;</span><span class="err">/Sidebar&gt;</span>
+</code></pre></div></p>
+<h4 id="cardjs"><code>Card.js</code></h4>
+<p><strong>Propósito:</strong> Card reutilizável para dashboard e listagens.</p>
+<p><strong>Props:</strong>
+- <code>title</code>: Título do card
+- <code>subtitle</code>: Subtítulo ou descrição
+- <code>icon</code>: Ícone do card
+- <code>children</code>: Conteúdo interno
+- <code>actions</code>: Botões de ação</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">Card</span><span class="w"> </span>
+<span class="w">  </span><span class="nx">title</span><span class="o">=</span><span class="s2">&quot;Total de Imóveis&quot;</span><span class="w"> </span>
+<span class="w">  </span><span class="nx">subtitle</span><span class="o">=</span><span class="s2">&quot;150 propriedades&quot;</span>
+<span class="w">  </span><span class="nx">icon</span><span class="o">=</span><span class="p">{</span><span class="o">&lt;</span><span class="nx">HomeIcon</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">}</span>
+<span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="nx">ConteudoDoCard</span><span class="w"> </span><span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="err">/Card&gt;</span>
+</code></pre></div></p>
+<h4 id="confirmmodaljs"><code>ConfirmModal.js</code></h4>
+<p><strong>Propósito:</strong> Modal de confirmação para ações destrutivas.</p>
+<p><strong>Props:</strong>
+- <code>isOpen</code>: Controla visibilidade
+- <code>onConfirm</code>: Callback de confirmação
+- <code>onCancel</code>: Callback de cancelamento
+- <code>title</code>: Título do modal
+- <code>message</code>: Mensagem de confirmação
+- <code>confirmText</code>: Texto do botão confirmar
+- <code>cancelText</code>: Texto do botão cancelar
+- <code>variant</code>: 'danger' | 'warning' | 'info'</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">ConfirmModal</span>
+<span class="w">  </span><span class="nx">isOpen</span><span class="o">=</span><span class="p">{</span><span class="nx">showModal</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">onConfirm</span><span class="o">=</span><span class="p">{</span><span class="nx">handleDelete</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">onCancel</span><span class="o">=</span><span class="p">{()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">setShowModal</span><span class="p">(</span><span class="kc">false</span><span class="p">)}</span>
+<span class="w">  </span><span class="nx">title</span><span class="o">=</span><span class="s2">&quot;Confirmar Exclusão&quot;</span>
+<span class="w">  </span><span class="nx">message</span><span class="o">=</span><span class="s2">&quot;Tem certeza que deseja excluir este imóvel?&quot;</span>
+<span class="w">  </span><span class="nx">confirmText</span><span class="o">=</span><span class="s2">&quot;Excluir&quot;</span>
+<span class="w">  </span><span class="nx">variant</span><span class="o">=</span><span class="s2">&quot;danger&quot;</span>
+<span class="err">/&gt;</span>
+</code></pre></div></p>
+<h4 id="faqmodaljs"><code>FaqModal.js</code></h4>
+<p><strong>Propósito:</strong> Modal para criar/editar FAQs no CMS.</p>
+<p><strong>Funcionalidades:</strong>
+- Formulário de pergunta e resposta
+- Seleção de categoria
+- Toggle de status (ativo/inativo)
+- Validação de campos</p>
+<h4 id="componentes-de-formulario-cmsform">Componentes de Formulário (<code>cms/form/</code>)</h4>
+<p>Componentes reutilizáveis para formulários administrativos:
+- Input de texto
+- Textarea
+- Select/Dropdown
+- Checkbox/Radio
+- Upload de arquivos
+- Editor de texto rico (WYSIWYG)</p>
+<h4 id="componentes-de-tabela-cmstable">Componentes de Tabela (<code>cms/table/</code>)</h4>
+<p>Componentes para tabelas administrativas:
+- Tabela com paginação
+- Ordenação de colunas
+- Filtros inline
+- Ações por linha (editar, deletar)
+- Seleção múltipla</p>
+<hr />
+<h3 id="3-componentes-de-vitrine-vitrine">3. Componentes de Vitrine (<code>vitrine/</code>)</h3>
+<h4 id="gridimoveisjs"><code>GridImoveis.js</code></h4>
+<p><strong>Propósito:</strong> Grid responsivo de imóveis.</p>
+<p><strong>Funcionalidades:</strong>
+- Layout em grid responsivo
+- Suporte a paginação
+- Loading states
+- Empty states</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">GridImoveis</span><span class="w"> </span>
+<span class="w">  </span><span class="nx">imoveis</span><span class="o">=</span><span class="p">{</span><span class="nx">imoveis</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">loading</span><span class="o">=</span><span class="p">{</span><span class="nx">isLoading</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">onPageChange</span><span class="o">=</span><span class="p">{</span><span class="nx">handlePageChange</span><span class="p">}</span>
+<span class="err">/&gt;</span>
+</code></pre></div></p>
+<h4 id="imovelcardjs"><code>ImovelCard.js</code></h4>
+<p><strong>Propósito:</strong> Card individual de imóvel na vitrine.</p>
+<p><strong>Props:</strong>
+- <code>imovel</code>: Objeto com dados do imóvel
+- <code>onClick</code>: Callback ao clicar
+- <code>showActions</code>: Mostra ações (favoritar, compartilhar)
+- <code>variant</code>: 'default' | 'compact' | 'featured'</p>
+<p><strong>Estrutura do Card:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">ImovelCard</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="nx">ImageCarroussel</span><span class="w"> </span><span class="nx">images</span><span class="o">=</span><span class="p">{</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">imagens</span><span class="p">}</span><span class="w"> </span><span class="o">/&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="nx">CardBody</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">Title</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">titulo</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/Title&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">Location</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">localizacao</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/Location&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">Price</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">preco</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/Price&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">Features</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="nx">Feature</span><span class="w"> </span><span class="nx">icon</span><span class="o">=</span><span class="p">{</span><span class="o">&lt;</span><span class="nx">BedIcon</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">}</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">quartos</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/Feature&gt;</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="nx">Feature</span><span class="w"> </span><span class="nx">icon</span><span class="o">=</span><span class="p">{</span><span class="o">&lt;</span><span class="nx">BathIcon</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">}</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">banheiros</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/Feature&gt;</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="nx">Feature</span><span class="w"> </span><span class="nx">icon</span><span class="o">=</span><span class="p">{</span><span class="o">&lt;</span><span class="nx">AreaIcon</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">}</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">imovel</span><span class="p">.</span><span class="nx">area</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/Feature&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="err">/Features&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="err">/CardBody&gt;</span>
+<span class="o">&lt;</span><span class="err">/ImovelCard&gt;</span>
+</code></pre></div></p>
+<h4 id="filtrosjs"><code>Filtros.js</code></h4>
+<p><strong>Propósito:</strong> Sistema de filtros para busca de imóveis.</p>
+<p><strong>Funcionalidades:</strong>
+- Filtro por tipo (casa, apartamento, terreno)
+- Filtro por faixa de preço
+- Filtro por localização
+- Filtro por características (quartos, banheiros, área)
+- Reset de filtros</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">Filtros</span>
+<span class="w">  </span><span class="nx">onFilterChange</span><span class="o">=</span><span class="p">{</span><span class="nx">handleFilterChange</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">initialFilters</span><span class="o">=</span><span class="p">{</span><span class="nx">filters</span><span class="p">}</span>
+<span class="err">/&gt;</span>
+</code></pre></div></p>
+<h4 id="imagecarrousseljs"><code>ImageCarroussel.js</code></h4>
+<p><strong>Propósito:</strong> Carrossel de imagens de imóveis.</p>
+<p><strong>Funcionalidades:</strong>
+- Navegação por setas
+- Indicadores de página
+- Swipe em mobile
+- Lightbox para visualização ampliada
+- Lazy loading de imagens</p>
+<h4 id="pesquisaavancada"><code>PesquisaAvancada/</code></h4>
+<p><strong>Propósito:</strong> Componentes de busca avançada de imóveis.</p>
+<p><strong>Funcionalidades:</strong>
+- Múltiplos critérios de busca
+- Filtros combinados
+- Salvamento de buscas
+- Sugestões de busca</p>
+<hr />
+<h3 id="4-componentes-de-home-home">4. Componentes de Home (<code>home/</code>)</h3>
+<h4 id="homenavbarjs"><code>HomeNavbar.js</code></h4>
+<p><strong>Propósito:</strong> Barra de navegação principal do site.</p>
+<p><strong>Funcionalidades:</strong>
+- Logo da imobiliária
+- Menu de navegação
+- Botões de login/cadastro
+- Menu mobile (hamburger)
+- Indicador de rota ativa</p>
+<h4 id="headersliderjs"><code>HeaderSlider.js</code></h4>
+<p><strong>Propósito:</strong> Slider de destaque na home.</p>
+<p><strong>Funcionalidades:</strong>
+- Carrossel automático
+- Imagens de banners
+- Call-to-actions
+- Navegação manual</p>
+<h4 id="propriedadesselecionadasjs"><code>PropriedadesSelecionadas.js</code></h4>
+<p><strong>Propósito:</strong> Seção de imóveis em destaque na home.</p>
+<p><strong>Funcionalidades:</strong>
+- Exibe imóveis selecionados
+- Carrossel de propriedades
+- Link para vitrine completa</p>
+<h4 id="publicidadecarouseljs"><code>PublicidadeCarousel.js</code></h4>
+<p><strong>Propósito:</strong> Carrossel de publicidade.</p>
+<p><strong>Funcionalidades:</strong>
+- Banners publicitários rotativos
+- Links externos
+- Tracking de cliques</p>
+<hr />
+<h3 id="5-componentes-ui-reutilizaveis-ui">5. Componentes UI Reutilizáveis (<code>ui/</code>)</h3>
+<h4 id="cloudinaryimagejs"><code>CloudinaryImage.js</code></h4>
+<p><strong>Propósito:</strong> Componente otimizado para imagens do Cloudinary.</p>
+<p><strong>Funcionalidades:</strong>
+- Otimização automática de imagens
+- Lazy loading
+- Placeholder blur
+- Responsive images
+- Transformações dinâmicas</p>
+<p><strong>Props:</strong>
+- <code>src</code>: URL da imagem no Cloudinary
+- <code>alt</code>: Texto alternativo
+- <code>width</code>: Largura
+- <code>height</code>: Altura
+- <code>quality</code>: Qualidade (1-100)
+- <code>transform</code>: Transformações customizadas</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">CloudinaryImage</span>
+<span class="w">  </span><span class="nx">src</span><span class="o">=</span><span class="s2">&quot;imobiliaria/imoveis/imovel_123.jpg&quot;</span>
+<span class="w">  </span><span class="nx">alt</span><span class="o">=</span><span class="s2">&quot;Casa em São Paulo&quot;</span>
+<span class="w">  </span><span class="nx">width</span><span class="o">=</span><span class="p">{</span><span class="mf">800</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">height</span><span class="o">=</span><span class="p">{</span><span class="mf">600</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">quality</span><span class="o">=</span><span class="p">{</span><span class="mf">80</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">transform</span><span class="o">=</span><span class="p">{{</span><span class="w"> </span><span class="nx">crop</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;fill&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">gravity</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;auto&#39;</span><span class="w"> </span><span class="p">}}</span>
+<span class="err">/&gt;</span>
+</code></pre></div></p>
+<p><strong>Benefícios:</strong>
+- ✅ Carregamento otimizado
+- ✅ Formato automático (WebP, AVIF)
+- ✅ CDN global (Cloudinary)
+- ✅ Redimensionamento dinâmico</p>
+<hr />
+<h3 id="6-componentes-de-chat-chat">6. Componentes de Chat (<code>chat/</code>)</h3>
+<p><strong>Funcionalidades:</strong>
+- Chat em tempo real (WebSocket)
+- Interface de conversação
+- Indicadores de digitação
+- Notificações de mensagens
+- Histórico de conversas</p>
+<hr />
+<h3 id="7-componentes-de-mapa-mapa">7. Componentes de Mapa (<code>mapa/</code>)</h3>
+<p><strong>Funcionalidades:</strong>
+- Integração com Google Maps API
+- Marcadores de imóveis
+- InfoWindows personalizadas
+- Filtros no mapa
+- Clustering de marcadores</p>
+<hr />
+<h3 id="8-componentes-seo-seo">8. Componentes SEO (<code>SEO/</code>)</h3>
+<p><strong>Funcionalidades:</strong>
+- Meta tags dinâmicas
+- Open Graph
+- Twitter Cards
+- Schema.org (JSON-LD)
+- Canonical URLs</p>
+<p><strong>Uso:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">SEO</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/components/SEO&#39;</span><span class="p">;</span>
+
+<span class="o">&lt;</span><span class="nx">SEO</span>
+<span class="w">  </span><span class="nx">title</span><span class="o">=</span><span class="s2">&quot;Casa 3 Quartos - São Paulo&quot;</span>
+<span class="w">  </span><span class="nx">description</span><span class="o">=</span><span class="s2">&quot;Bela casa com 3 quartos...&quot;</span>
+<span class="w">  </span><span class="nx">image</span><span class="o">=</span><span class="s2">&quot;https://...&quot;</span>
+<span class="w">  </span><span class="nx">type</span><span class="o">=</span><span class="s2">&quot;product&quot;</span>
+<span class="err">/&gt;</span>
+</code></pre></div></p>
+<hr />
+<h2 id="padroes-de-componentizacao">🎨 Padrões de Componentização</h2>
+<h3 id="1-componentes-funcionais">1. Componentes Funcionais</h3>
+<p>Todos os componentes utilizam a sintaxe de componentes funcionais com Hooks:</p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useState</span><span class="p">,</span><span class="w"> </span><span class="nx">useEffect</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;react&#39;</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">MeuComponente</span><span class="p">({</span><span class="w"> </span><span class="nx">prop1</span><span class="p">,</span><span class="w"> </span><span class="nx">prop2</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">state</span><span class="p">,</span><span class="w"> </span><span class="nx">setState</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="nx">initialValue</span><span class="p">);</span>
+
+<span class="w">  </span><span class="nx">useEffect</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Side effects</span>
+<span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="p">[</span><span class="nx">dependencies</span><span class="p">]);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="p">{</span><span class="cm">/* JSX */</span><span class="p">}</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="err">/div&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="2-componentes-client-vs-server">2. Componentes Client vs Server</h3>
+<p><strong>Server Components (padrão no Next.js 14):</strong>
+<div class="highlight"><pre><span></span><code><span class="c1">// app/page.js</span>
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">Page</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetchData</span><span class="p">();</span><span class="w"> </span><span class="c1">// Fetch no servidor</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">Component</span><span class="w"> </span><span class="nx">data</span><span class="o">=</span><span class="p">{</span><span class="nx">data</span><span class="p">}</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Client Components (com interatividade):</strong>
+<div class="highlight"><pre><span></span><code><span class="s1">&#39;use client&#39;</span><span class="p">;</span><span class="w"> </span><span class="c1">// Diretiva obrigatória</span>
+
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useState</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;react&#39;</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">InteractiveComponent</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">count</span><span class="p">,</span><span class="w"> </span><span class="nx">setCount</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">button</span><span class="w"> </span><span class="nx">onClick</span><span class="o">=</span><span class="p">{()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">setCount</span><span class="p">(</span><span class="nx">count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">)}</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">count</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/button&gt;;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="3-composicao-de-componentes">3. Composição de Componentes</h3>
+<p>Preferência por composição ao invés de herança:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// ❌ Evitar herança</span>
+<span class="kd">class</span><span class="w"> </span><span class="nx">ImovelCard</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">BaseCard</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
+
+<span class="c1">// ✅ Usar composição</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">ImovelCard</span><span class="p">({</span><span class="w"> </span><span class="nx">children</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">props</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">Card</span><span class="w"> </span><span class="p">{...</span><span class="nx">props</span><span class="p">}</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="p">{</span><span class="nx">children</span><span class="p">}</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="err">/Card&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="4-props-destructuring">4. Props Destructuring</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// ✅ Bom</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">Component</span><span class="p">({</span><span class="w"> </span><span class="nx">title</span><span class="p">,</span><span class="w"> </span><span class="nx">description</span><span class="p">,</span><span class="w"> </span><span class="nx">onClick</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">onClick</span><span class="p">}</span><span class="o">&gt;</span><span class="p">...</span><span class="o">&lt;</span><span class="err">/div&gt;;</span>
+<span class="p">}</span>
+
+<span class="c1">// ❌ Evitar</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">Component</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">onClick</span><span class="p">}</span><span class="o">&gt;</span><span class="p">...</span><span class="o">&lt;</span><span class="err">/div&gt;;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="5-proptypes-ou-typescript">5. PropTypes ou TypeScript</h3>
+<p>Para validação de tipos (se usando TypeScript):</p>
+<div class="highlight"><pre><span></span><code><span class="kd">interface</span><span class="w"> </span><span class="nx">ComponentProps</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">count?</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">onAction</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">void</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">Component</span><span class="p">({</span><span class="w"> </span><span class="nx">title</span><span class="p">,</span><span class="w"> </span><span class="nx">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="nx">onAction</span><span class="w"> </span><span class="p">}</span><span class="o">:</span><span class="w"> </span><span class="nx">ComponentProps</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="fluxo-de-dados">🔄 Fluxo de Dados</h2>
+<h3 id="1-props-down-events-up">1. Props Down, Events Up</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Parent</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">Parent</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">setValue</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">Child</span><span class="w"> </span>
+<span class="w">      </span><span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">value</span><span class="p">}</span><span class="w"> </span>
+<span class="w">      </span><span class="nx">onChange</span><span class="o">=</span><span class="p">{(</span><span class="nx">newValue</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">setValue</span><span class="p">(</span><span class="nx">newValue</span><span class="p">)}</span><span class="w"> </span>
+<span class="w">    </span><span class="o">/&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Child</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">Child</span><span class="p">({</span><span class="w"> </span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">onChange</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">input</span><span class="w"> </span>
+<span class="w">      </span><span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">value</span><span class="p">}</span><span class="w"> </span>
+<span class="w">      </span><span class="nx">onChange</span><span class="o">=</span><span class="p">{(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">onChange</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)}</span><span class="w"> </span>
+<span class="w">    </span><span class="o">/&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="2-context-para-estado-global">2. Context para Estado Global</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// contexts/AuthContext.js</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">createContext</span><span class="p">,</span><span class="w"> </span><span class="nx">useContext</span><span class="p">,</span><span class="w"> </span><span class="nx">useState</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;react&#39;</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">AuthContext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">createContext</span><span class="p">();</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">AuthProvider</span><span class="p">({</span><span class="w"> </span><span class="nx">children</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">user</span><span class="p">,</span><span class="w"> </span><span class="nx">setUser</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">AuthContext</span><span class="p">.</span><span class="nx">Provider</span><span class="w"> </span><span class="nx">value</span><span class="o">=</span><span class="p">{{</span><span class="w"> </span><span class="nx">user</span><span class="p">,</span><span class="w"> </span><span class="nx">setUser</span><span class="w"> </span><span class="p">}}</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="p">{</span><span class="nx">children</span><span class="p">}</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="err">/AuthContext.Provider&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">useAuth</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">useContext</span><span class="p">(</span><span class="nx">AuthContext</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="3-custom-hooks-para-logica-reutilizavel">3. Custom Hooks para Lógica Reutilizável</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// hooks/useImoveis.js</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">useImoveis</span><span class="p">(</span><span class="nx">filters</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">imoveis</span><span class="p">,</span><span class="w"> </span><span class="nx">setImoveis</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">([]);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">loading</span><span class="p">,</span><span class="w"> </span><span class="nx">setLoading</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+
+<span class="w">  </span><span class="nx">useEffect</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">fetchImoveis</span><span class="p">(</span><span class="nx">filters</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">setImoveis</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="w">      </span><span class="nx">setLoading</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="p">[</span><span class="nx">filters</span><span class="p">]);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">imoveis</span><span class="p">,</span><span class="w"> </span><span class="nx">loading</span><span class="w"> </span><span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="gerenciamento-de-imagens">🖼️ Gerenciamento de Imagens</h2>
+<h3 id="integracao-com-cloudinary">Integração com Cloudinary</h3>
+<p>Todas as imagens do sistema utilizam o Cloudinary para:</p>
+<ul>
+<li>✅ Upload direto do frontend</li>
+<li>✅ Otimização automática</li>
+<li>✅ CDN global</li>
+<li>✅ Transformações dinâmicas</li>
+<li>✅ Armazenamento permanente</li>
+</ul>
+<p><strong>Componente Principal:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">CloudinaryImage</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/components/ui/CloudinaryImage&#39;</span><span class="p">;</span>
+
+<span class="o">&lt;</span><span class="nx">CloudinaryImage</span>
+<span class="w">  </span><span class="nx">src</span><span class="o">=</span><span class="s2">&quot;imobiliaria/imoveis/foto.jpg&quot;</span>
+<span class="w">  </span><span class="nx">alt</span><span class="o">=</span><span class="s2">&quot;Descrição&quot;</span>
+<span class="w">  </span><span class="nx">width</span><span class="o">=</span><span class="p">{</span><span class="mf">800</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">height</span><span class="o">=</span><span class="p">{</span><span class="mf">600</span><span class="p">}</span>
+<span class="err">/&gt;</span>
+</code></pre></div></p>
+<p><strong>Serviço de Upload:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">uploadImovelImage</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/services/netlifyUploadService&#39;</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">uploadImovelImage</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="nx">imovelId</span><span class="p">);</span>
+</code></pre></div></p>
+<hr />
+<h2 id="responsividade">📱 Responsividade</h2>
+<h3 id="mobile-first-approach">Mobile-First Approach</h3>
+<p>Todos os componentes são desenvolvidos com abordagem mobile-first:</p>
+<div class="highlight"><pre><span></span><code><span class="c">/* Mobile (padrão) */</span>
+<span class="p">.</span><span class="nc">component</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">rem</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* Tablet */</span>
+<span class="p">@</span><span class="k">media</span><span class="w"> </span><span class="o">(</span><span class="nt">min-width</span><span class="o">:</span><span class="w"> </span><span class="nt">768px</span><span class="o">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">.</span><span class="nc">component</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="kt">rem</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">/* Desktop */</span>
+<span class="p">@</span><span class="k">media</span><span class="w"> </span><span class="o">(</span><span class="nt">min-width</span><span class="o">:</span><span class="w"> </span><span class="nt">1024px</span><span class="o">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">.</span><span class="nc">component</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="kt">rem</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="breakpoints">Breakpoints</h3>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">breakpoints</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">sm</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;640px&#39;</span><span class="p">,</span><span class="w">   </span><span class="c1">// Mobile grande</span>
+<span class="w">  </span><span class="nx">md</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;768px&#39;</span><span class="p">,</span><span class="w">   </span><span class="c1">// Tablet</span>
+<span class="w">  </span><span class="nx">lg</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;1024px&#39;</span><span class="p">,</span><span class="w">  </span><span class="c1">// Desktop</span>
+<span class="w">  </span><span class="nx">xl</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;1280px&#39;</span><span class="p">,</span><span class="w">  </span><span class="c1">// Desktop grande</span>
+<span class="w">  </span><span class="s1">&#39;2xl&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;1536px&#39;</span><span class="w"> </span><span class="c1">// Ultra-wide</span>
+<span class="p">};</span>
+</code></pre></div>
+<hr />
+<h2 id="testes-de-componentes">🧪 Testes de Componentes</h2>
+<h3 id="estrutura-de-testes">Estrutura de Testes</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// __tests__/ImovelCard.test.js</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">render</span><span class="p">,</span><span class="w"> </span><span class="nx">screen</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@testing-library/react&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">ImovelCard</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/components/vitrine/ImovelCard&#39;</span><span class="p">;</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;ImovelCard&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">&#39;renderiza o título do imóvel&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">ImovelCard</span><span class="w"> </span><span class="nx">imovel</span><span class="o">=</span><span class="p">{</span><span class="nx">mockImovel</span><span class="p">}</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">screen</span><span class="p">.</span><span class="nx">getByText</span><span class="p">(</span><span class="s1">&#39;Casa em São Paulo&#39;</span><span class="p">)).</span><span class="nx">toBeInTheDocument</span><span class="p">();</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<hr />
+<h2 id="boas-praticas">🎯 Boas Práticas</h2>
+<h3 id="1-nomenclatura">1. Nomenclatura</h3>
+<ul>
+<li>✅ Componentes em PascalCase: <code>ImovelCard.js</code></li>
+<li>✅ Hooks em camelCase: <code>useImoveis.js</code></li>
+<li>✅ Utilitários em camelCase: <code>formatPrice.js</code></li>
+</ul>
+<h3 id="2-organizacao-de-imports">2. Organização de Imports</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1. Imports do React/Next</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useState</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">Link</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;next/link&#39;</span><span class="p">;</span>
+
+<span class="c1">// 2. Imports de bibliotecas externas</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">axios</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;axios&#39;</span><span class="p">;</span>
+
+<span class="c1">// 3. Imports de componentes</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">ImovelCard</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/components/vitrine/ImovelCard&#39;</span><span class="p">;</span>
+
+<span class="c1">// 4. Imports de utilitários</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">formatPrice</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@/utils/format&#39;</span><span class="p">;</span>
+
+<span class="c1">// 5. Imports de estilos</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">styles</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;./styles.module.css&#39;</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="3-performance">3. Performance</h3>
+<ul>
+<li>✅ Usar <code>React.memo()</code> para componentes puros</li>
+<li>✅ Lazy loading de componentes pesados</li>
+<li>✅ Debounce em inputs de busca</li>
+<li>✅ Virtualização de listas longas</li>
+</ul>
+<h3 id="4-acessibilidade">4. Acessibilidade</h3>
+<ul>
+<li>✅ Usar tags semânticas HTML</li>
+<li>✅ Atributos ARIA quando necessário</li>
+<li>✅ Suporte a navegação por teclado</li>
+<li>✅ Contraste adequado de cores</li>
+</ul>
+<hr />
+<h2 id="proximos-passos">🚀 Próximos Passos</h2>
+<h3 id="melhorias-futuras">Melhorias Futuras</h3>
+<ol>
+<li><strong>Migração para TypeScript</strong></li>
+<li>Type safety completo</li>
+<li>Melhor autocomplete</li>
+<li>
+<p>Menos bugs em produção</p>
+</li>
+<li>
+<p><strong>Storybook</strong></p>
+</li>
+<li>Documentação visual de componentes</li>
+<li>Testes de UI isolados</li>
+<li>
+<p>Design system</p>
+</li>
+<li>
+<p><strong>Component Library</strong></p>
+</li>
+<li>Biblioteca de componentes reutilizáveis</li>
+<li>Temas customizáveis</li>
+<li>
+<p>Tokens de design</p>
+</li>
+<li>
+<p><strong>Testes E2E</strong></p>
+</li>
+<li>Cypress ou Playwright</li>
+<li>Testes de fluxos completos</li>
+<li>CI/CD integrado</li>
+</ol>
+<hr />
+<h2 id="referencias">📚 Referências</h2>
+<ul>
+<li><a href="https://nextjs.org/docs">Documentação Next.js</a></li>
+<li><a href="https://react.dev/learn">React Best Practices</a></li>
+<li><a href="https://cloudinary.com/documentation/react_integration">Cloudinary React SDK</a></li>
+<li><a href="https://www.w3.org/WAI/ARIA/apg/">Componentes Acessíveis</a></li>
+</ul>
+<hr />
+<h2 id="documentacao-relacionada">🔗 Documentação Relacionada</h2>
+<ul>
+<li><a href="../../CloudinaryArchitecture/">Arquitetura Cloudinary</a></li>
+<li><a href="../NextConfig/">Configuração Next.js</a></li>
+<li><a href="../../api/imagens/">API de Imagens</a></li>
+<li><a href="../../api/ChatSuporte/">Sistema de Chat</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
