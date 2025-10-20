@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express from "express";
-import cors from "cors";
 import path from "path";
+import cors from "cors";
 import { fileURLToPath } from "url";
 import { createServer } from 'http';
 import initWebSocket from './config/websocket.js';
@@ -33,6 +33,15 @@ import simuladorRoutes from "./routes/simuladorRoutes.js";
 
 const app = express();
 
+// ----------------------
+// Middlewares
+// ----------------------
+app.use(cors()); // Habilita CORS para todas as origens
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+// Servir arquivos estáticos
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -40,32 +49,27 @@ const __dirname = path.dirname(__filename);
 const server = createServer(app);
 
 // Inicializar SocketManager
-const socketManager = new SocketManager();
+const socketManager = new SocketManager(server);
+// Inicializar WebSocket
+initWebSocket(server);
 
-socketManager.io.engine.on("connection_error", (err) => {
+// Tornar socketManager disponível globalmente
+app.set('socketManager', socketManager);
+setSocketManager(socketManager);
+
+socketManager.io.on("connection_error", (err) => {
   console.log("🚨 Socket connection error:", err.req?.url || 'URL não disponível');
   console.log("🚨 Socket error code:", err.code);
   console.log("🚨 Socket error message:", err.message);
   console.log("🚨 Socket error context:", err.context);
 });
 
-// Tornar socketManager disponível globalmente
-app.set('socketManager', socketManager);
-setSocketManager(socketManager);
 
-// ----------------------
-// Middlewares
-// ----------------------
-app.use(cors()); // Habilita CORS para todas as origens
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
-// Servir arquivos estáticos
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
 
 // Rotas
 
-app.use('/', recomendacaoRouter);
 app.use("/api/socket", socketRoutes);
 app.use('/banner', bannerRoutes);
 app.use('/user', userRoutes);
@@ -84,10 +88,10 @@ app.use('/simulador', simuladorRoutes);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use('/images', express.static(path.join(__dirname, '../../front-end/public/images')));
-app.use(errorHandler);
 
-// Inicializar WebSocket
-initWebSocket(server);
+app.use('/', recomendacaoRouter);
+
+app.use(errorHandler);
 
 
 // ----------------------
