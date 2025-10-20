@@ -12,7 +12,6 @@ export default function CmsPublicidadePage() {
   const [filteredPublicidades, setFilteredPublicidades] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterData, setFilterData] = useState({});
-
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -76,6 +75,7 @@ export default function CmsPublicidadePage() {
             totalPages: Math.ceil(publicidadesData.length / prev.itemsPerPage),
           }));
         }
+        
       }
     } catch (error) {
       console.error("Erro ao carregar publicidades:", error);
@@ -260,7 +260,7 @@ export default function CmsPublicidadePage() {
       <div className="md:ml-20">
         <CMS.Body title={"Publicidades"}>
           <CMS.Table>
-            <CMS.TableHeader
+            <CMS.TableHeaderPublicidade
               buttonText="Nova Publicidade"
               buttonIcon={<RiStickyNoteAddLine />}
               onSearch={onSearch}
@@ -284,7 +284,7 @@ export default function CmsPublicidadePage() {
                       href_cms="publicidades"
                       header={true}
                       onDelete={() => deletePublicidade(publicidade.id)}
-                      onToggle={() => togglePublicidade(publicidade.id, publicidade.ativo === 1)}
+                      onToggle={() => togglePublicidade(publicidade.id, publicidade.ativo === 1 || publicidade.ativo === true)}
                     />
                   ))}
                 </div>

@@ -33,6 +33,13 @@ const PublicidadeModel = sequelize.define(
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
+      get() {
+        const value = this.getDataValue('ativo');
+        return Boolean(value);
+      },
+      set(value) {
+        this.setDataValue('ativo', Boolean(value));
+      }
     },
   },
   {

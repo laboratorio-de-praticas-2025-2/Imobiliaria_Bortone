@@ -30,7 +30,6 @@ export const createPublicidade = async (req, res) => {
     return res.status(201).json(novaPublicidade);
   } catch (error) {
     console.error("Erro ao criar publicidade:", error);
-
     return res.status(500).json({ error: "Erro interno no servidor" });
   }
 };
@@ -78,8 +77,6 @@ export const getPublicidadeById = async (req, res) => {
 
 export const updatePublicidade = async (req, res) => {
   try {
-
-    
     const { id } = req.params;
     const { titulo, conteudo, usuario_id, ativo, url_imagem } = req.body;
     
@@ -116,7 +113,6 @@ export const updatePublicidade = async (req, res) => {
     if (url_imagem !== undefined) {
       updateData.url_imagem = url_imagem;
     }
-    
     
     const publicidadeAtualizada = await publicidadeService.updatePublicidade(Number(id), updateData);
 
