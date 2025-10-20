@@ -18,6 +18,19 @@ export default function Dashboard() {
   const [dados, setDados] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // Estados para o filtro de data
+  const [dataInicio, setDataInicio] = useState(() => {
+    const now = new Date();
+    const tresMesesAtras = new Date(now.getFullYear(), now.getMonth() - 3, 1);
+    // Garante formato YYYY-MM-DD
+    return tresMesesAtras.toISOString().split('T')[0];
+  });
+  const [dataFim, setDataFim] = useState(() => {
+    const now = new Date();
+    // Garante formato YYYY-MM-DD
+    return now.toISOString().split('T')[0];
+  });
 
   const LineGraph = dynamic(() => import("@/components/dash/LineGraph"), {
     ssr: false,
@@ -31,10 +44,23 @@ export default function Dashboard() {
 
   // Busca os dados da rota /Dashboard
   useEffect(() => {
+    // Validação: só busca dados se as datas estiverem definidas
+    if (!dataInicio || !dataFim) {
+      console.warn('Dashboard: Datas não definidas, aguardando...');
+      return;
+    }
+
+    // Validação: dataInicio não pode ser maior que dataFim
+    if (new Date(dataInicio) > new Date(dataFim)) {
+      setError('Data de início não pode ser maior que data fim');
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
-    getDashboardData()
+    getDashboardData(dataInicio, dataFim)
       .then((res) => {
         setDados(res);
       })
@@ -45,7 +71,7 @@ export default function Dashboard() {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [dataInicio, dataFim]); // Recarrega quando as datas mudam
 
   const semDados =
     !dados ||
@@ -129,7 +155,14 @@ export default function Dashboard() {
       {/* <DebugAuth /> */}
       <Sidebar />
       <div className="md:ml-20">
-        <CMS.Body title={"Dashboard"} type="dashboard">
+        <CMS.Body 
+          title={"Dashboard"} 
+          type="dashboard"
+          dataInicio={dataInicio}
+          dataFim={dataFim}
+          onDataInicioChange={setDataInicio}
+          onDataFimChange={setDataFim}
+        >
           {/* Estado de carregamento */}
           {loading ? (
             <div className="flex justify-center items-center h-[60vh]">
