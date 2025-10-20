@@ -240,6 +240,12 @@ function RequestFormContent() {
             <div className="mt-4 p-4 bg-gray-50 rounded-lg border w-3xs">
               <h3 className="font-bold text-[var(--primary)] mb-3 text-center">Resultado da Simulação:</h3>
                 <div className="space-y-2">
+                   <p className="text-sm">
+                      <strong>Valor do Imóvel:</strong> 
+                      <span className="text-[var(--primary)] font-bold ml-2">
+                        {formatCurrency(valorImovel)}
+                      </span>
+                    </p>
                   <p className="text-sm">
                     <strong>Valor Financiado:</strong> 
                     <span className="text-[var(--primary)] font-bold ml-2">

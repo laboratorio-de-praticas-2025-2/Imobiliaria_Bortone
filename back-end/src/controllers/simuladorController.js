@@ -76,7 +76,7 @@ export const calcularSimulacao = async (req, res) => {
         parcelaComJuros = principal * (i * fator) / (fator - 1);
       }
       const totalParcelasComJuros = parcelaComJuros * parcelasNum;
-      const totalComJuros = totalParcelasComJuros + entradaNum;
+      const totalComJuros = totalParcelasComJuros;
       return res.json({
         sucesso: true,
         tipo,
@@ -139,7 +139,7 @@ export const calcularSimulacao = async (req, res) => {
         parcelaComJuros = principal * (i * fator) / (fator - 1);
       }
       const totalParcelasComJuros = parcelaComJuros * parcelasNum;
-      const totalComJuros = totalParcelasComJuros + entradaNum;
+      const totalComJuros = totalParcelasComJuros;
       return res.json({
         sucesso: true,
         tipo,
