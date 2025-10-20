@@ -12,7 +12,9 @@ export default function DropdownFilter({
   handleSelect,
   setSelected,
   classP,
-  width
+  width,
+  // optional override for what is shown on the button
+  displayValue
 }) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -37,7 +39,7 @@ export default function DropdownFilter({
         onClick={() => setOpen(!open)}
         className={`flex items-center justify-between rounded-full bg-[#EEF0F9] px-4 py-2 !text-[var(--primary)] font-medium focus:outline-none cursor-pointer hover:bg-[#E0E3F1] transition-colors ${classname}`}
       >
-        <p className={`${classP} !mr-2`}>{selected}</p>
+        <p className={`${classP} !mr-2`}>{displayValue ?? selected}</p>
         {setSelected && selected !== placeholder ? (
           <HiX
             className="h-4 w-4 text-[var(--primary)] cursor-pointer"

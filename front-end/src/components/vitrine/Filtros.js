@@ -29,9 +29,9 @@ export default function Filtros() {
       updateFilterData({ tipo_negociacao: backendValue });
     };
 
-    const handleSelectRooms = (option) => {
-      updateFilterData({ quartos: option === "Quartos" ? null : option });
-    };
+      const handleSelectRooms = (option) => {
+        updateFilterData({ quartos: option === "Quartos" ? null : option });
+      };
 
     const handleSelectBathrooms = (option) => {
       updateFilterData({ banheiros: option === "Banheiros" ? null : option });
@@ -66,6 +66,8 @@ export default function Filtros() {
                 options={optionsRooms}
                 placeholder={"Quartos"}
                 selected={filterData.quartos || "Quartos"}
+                // show label when a number is selected
+                displayValue={filterData.quartos ? `Quartos: ${filterData.quartos}` : undefined}
                 handleSelect={handleSelectRooms}
                 classname={"w-32"}
               />
@@ -73,6 +75,8 @@ export default function Filtros() {
                 options={optionsBathrooms}
                 placeholder={"Banheiros"}
                 selected={filterData.banheiros || "Banheiros"}
+                // show label when a number is selected
+                displayValue={filterData.banheiros ? `Banheiros: ${filterData.banheiros}` : undefined}
                 handleSelect={handleSelectBathrooms}
                 classname={"w-32"}
               />
