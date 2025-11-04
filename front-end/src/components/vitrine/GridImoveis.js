@@ -53,7 +53,7 @@ export default function GridImoveis({ imoveis, pagination, onPageChange }) {
   return (
     <div className="w-full">
       {/* Grid */}
-      <div className="grid gap-6 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid gap-6 sm:gap-6 md:gap-8 lg:gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
         {currentItems.map((imovel, index) => (
           <div key={`${imovel.id}-${index}`}>
             <Link href="/imoveis/[id]" as={`/imoveis/${imovel.id}`}>

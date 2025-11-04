@@ -114,7 +114,7 @@ export default function MapView({ imoveis, alwaysShowCard = true }) {
       }}
     >
       <MapContainer
-        center={[-23.5, -46.6]}
+        center={[-24.4962684, -47.8634119]}
         zoom={13}
         scrollWheelZoom={true}
         zoomControl={false}
