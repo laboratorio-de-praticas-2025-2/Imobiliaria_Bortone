@@ -3,7 +3,7 @@ const url =
   process.env.NEXT_PUBLIC_API_URL || "https://imobiliaria-bortone.onrender.com";
 
 // Pega os dados de um relatório específico
-export async function getRelatorioData(secoes = [], data_inicio = null, data_fim = null) {
+export async function getRelatorioData(secoes = [], data_inicio = null, data_fim = null, ordenacao = "data_desc") {
 
   const params = new URLSearchParams();
   if (data_inicio && data_fim) {
@@ -16,6 +16,10 @@ export async function getRelatorioData(secoes = [], data_inicio = null, data_fim
   } else if (typeof secoes === 'string' && secoes) {    
     params.append('secoes', secoes);
   }  
+
+  if (ordenacao) {
+    params.append('ordenacao', ordenacao);
+  }
 
   const fullUrl = `${url}/relatorios?${params.toString()}`;
 
