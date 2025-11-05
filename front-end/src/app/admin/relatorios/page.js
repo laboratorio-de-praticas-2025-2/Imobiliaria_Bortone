@@ -55,7 +55,6 @@ export default function TableRelatorio() {
     startDate: null,
     endDate: null,
   });
-
   const pageSize = 5;
   const componentToPrintRef = useRef();
 
@@ -110,15 +109,15 @@ export default function TableRelatorio() {
     setDateRangeModalVisible(true);
   };
 
-  // Confirma as datas e abre o PDF
-  const handleDateRangeConfirm = async (startDate, endDate, record) => {
+  // Confirma as datas e ordenação e abre o PDF
+  const handleDateRangeConfirm = async (startDate, endDate, sortOption) => {
     setSelectedDates({ startDate, endDate });
     setDateRangeModalVisible(false);
     setLoading(true);
     setPdfReady(false);
 
     try {
-      const res = await getRelatorioData(record.secoes, startDate, endDate);
+      const res = await getRelatorioData(selectedRecord.secoes, startDate, endDate, sortOption);
       setReportData(res);
       setRecord(selectedRecord);
       setPdfReady(true);
@@ -216,8 +215,8 @@ export default function TableRelatorio() {
           <DateRangeModal
             visible={dateRangeModalVisible}
             onCancel={handleDateRangeCancel}
-            onConfirm={(start, end) =>
-              handleDateRangeConfirm(start, end, selectedRecord)
+            onConfirm={(start, end, sortOption) =>
+              handleDateRangeConfirm(start, end, sortOption)
             }
           />
           <PdfModal
