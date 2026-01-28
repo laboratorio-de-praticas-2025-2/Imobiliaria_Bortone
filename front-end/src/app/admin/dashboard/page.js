@@ -239,7 +239,7 @@ export default function Dashboard() {
                       <Card
                         name={"taxa_conversao"}
                         label={"Taxa de conversão"}
-                        value={`${dados.estatisticasUsuarios.taxaConversao}%`}
+                        value={`${parseFloat(dados.estatisticasUsuarios.taxaConversao).toFixed(2)}%`}
                         labelCol={{ span: 24 }}
                         icon={
                           <FaUserPen className="text-[var(--primary)] text-5xl md:text-3xl lg:text-5xl group-hover:text-white transition-colors" />

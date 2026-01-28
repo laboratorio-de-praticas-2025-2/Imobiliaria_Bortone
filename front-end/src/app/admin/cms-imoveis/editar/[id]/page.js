@@ -73,7 +73,7 @@ export default function EditarImovelPage({ params }) {
     "Sergipe",
     "Tocantins",
   ];
-  const options = ["Casa", "Terreno"];
+  const options = ["Casa", "Terreno", "Apartamento"];
   const status = ["Disponível", "Indisponível", "Vendido", "Locado"];
   const cities = [
     "Apiaí",

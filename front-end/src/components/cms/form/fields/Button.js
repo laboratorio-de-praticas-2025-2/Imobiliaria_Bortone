@@ -1,5 +1,4 @@
 import { Button, Form } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
 
 export default function FormButton({
   text,
@@ -30,16 +29,7 @@ export default function FormButton({
           {...props}
         >
           <span className="flex items-center whitespace-nowrap gap-1">
-            {loading ? (
-              <>
-                <LoadingOutlined className="mr-2" />
-                Processando...
-              </>
-            ) : (
-              <>
-                {text} {icon}
-              </>
-            )}
+            {text} {icon}
           </span>
         </Button>
       </Form.Item>

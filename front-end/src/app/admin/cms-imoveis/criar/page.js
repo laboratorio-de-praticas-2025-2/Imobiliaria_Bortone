@@ -83,7 +83,7 @@ export default function CriarImovelPage() {
 
       let specificData = {};
 
-      if (tipoSelecionado.toLowerCase() === "casa") {
+      if (tipoSelecionado.toLowerCase() === "casa" || tipoSelecionado.toLowerCase() === "apartamento") {
         // Validações para casa
         if (selectedBedrooms === "Quantidade") {
           alert("Selecione a quantidade de quartos");
@@ -114,6 +114,7 @@ export default function CriarImovelPage() {
         ...imovelData,
         ...(tipoSelecionado === "Casa" ? specificData : {}),
         ...(tipoSelecionado === "Terreno" ? specificData : {}),
+        ...(tipoSelecionado === "Apartamento" ? specificData : {}),
       };
       
       
@@ -266,7 +267,7 @@ export default function CriarImovelPage() {
     "Tocantins",
   ];
 
-  const options = ["Casa", "Terreno"];
+  const options = ["Casa", "Terreno", "Apartamento"];
   const status = ["Disponivel", "Indisponivel", "Vendido", "Locado"];
   const cities = [
     "Apiaí",

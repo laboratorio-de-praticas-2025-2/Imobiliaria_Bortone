@@ -24,10 +24,14 @@ class ReportController {
           REPORTS_SECOES.DESEMPENHO_LOCACOES,
         ].join(",");
       const secoesValues = secoesParam.split(",");
+      
+      const ordenacao = req.query.ordenacao || "data_desc";
+      
       const dadosRelatorio = await ReportService.buscarDadosParaRelatorio(
         secoesValues,
         dataInicio,
-        dataFimAjustada
+        dataFimAjustada,
+        ordenacao
       );
       res.json(dadosRelatorio);
     } catch (error) {

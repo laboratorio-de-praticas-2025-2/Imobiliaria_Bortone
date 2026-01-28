@@ -1,5 +1,7 @@
 import * as recomendacaoImovelService from '../services/recomendacaoImovelService.js';
-import  Imovel from '../models/Imovel.js';
+import Imovel from '../models/Imovel.js';
+import Casa from '../models/Casa.js';
+import ImagemImovel from '../models/ImagemImovel.js';
 
 export const createRecomendacaoImovel = async (req, res) => {
   const { usuario_id, imovel_id, data_visita } = req.body;
@@ -33,8 +35,23 @@ export const getRecomendacoes = async (req, res) => {
     } else {
       // Últimos inseridos no banco
       recomendacoes = await Imovel.findAll({
+        where: { status: 'disponivel' },
         order: [['id', 'DESC']],
-        limit: limit ? parseInt(limit) : 20
+        limit: limit ? parseInt(limit) : 20,
+        include: [
+          {
+            model: Casa,
+            as: 'casa',
+            attributes: ['quartos', 'banheiros', 'vagas', 'possui_piscina', 'possui_jardim'],
+            required: false,
+          },
+          {
+            model: ImagemImovel,
+            as: 'imagem_imovel',
+            attributes: ['id', 'url_imagem'],
+            required: false,
+          },
+        ],
       });
     }
 

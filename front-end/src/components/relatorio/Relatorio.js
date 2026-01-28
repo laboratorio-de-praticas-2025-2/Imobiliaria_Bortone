@@ -645,7 +645,7 @@ export default function Relatorio({
             headers={[
               { key: "id", label: "ID" },
               {
-                key: "data_update_status",
+                key: "data_update_status_str",
                 label: "Data de Venda",                
               },
               { key: "tipo", label: "Tipo do Imóvel" },
@@ -746,7 +746,7 @@ export default function Relatorio({
             headers={[
               { key: "id", label: "ID" },
               {
-                key: "data_update_status",
+                key: "data_update_status_str",
                 label: "Data de Locação",                
               },
               { key: "tipo", label: "Tipo do Imóvel" },

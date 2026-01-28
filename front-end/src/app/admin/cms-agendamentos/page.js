@@ -4,7 +4,8 @@ import Sidebar from "@/components/cms/Sidebar";
 import CMS from "@/components/cms/table";
 import SplashScreen from "@/components/SplashScreen";
 import { useEffect, useState } from "react";
-import { IoMdTrash } from "react-icons/io";
+import { IoMdTrash, IoMdCheckmark } from "react-icons/io";
+import { message } from "antd";
 import ConfirmModal from "@/components/cms/ConfirmModal";
 import { createStyles } from "antd-style";
 import { apiClient } from "@/utils/apiClient";
@@ -61,6 +62,23 @@ export default function Page() {
   const onDelete = (id) => {
     setDeleteId(id);
     setIsConfirmModalVisible(true);
+  };
+
+  const onConclude = async (id) => {
+    try {
+      setLoading(true);
+      const resp = await apiClient.patch(`/agendamentos/${id}`, { concluido: true });
+      const updated = resp.data || resp.data?.data || resp.data;
+      // Update lists with the returned record when possible, otherwise set concluido flag locally
+      setAgendamentos((prev) => prev.map((a) => (a.id === id ? { ...a, ...(updated || {}), concluido: 1 } : a)));
+      setAllAgendamentos((prev) => prev.map((a) => (a.id === id ? { ...a, ...(updated || {}), concluido: 1 } : a)));
+      message.success("Agendamento marcado como concluído.");
+    } catch (err) {
+      console.error("Erro ao marcar agendamento como concluído:", err);
+      message.error("Falha ao marcar agendamento como concluído.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onConfirmDelete = async () => {
@@ -131,6 +149,15 @@ export default function Page() {
       key: "acoes",
       render: (_, record) => (
         <div className="flex gap-4">
+          {/* Concluir (apenas se não estiver concluído) */}
+          {!(record.concluido === 1 || record.concluido === true) && (
+            <button onClick={() => onConclude(record.id)} title="Marcar como concluído">
+              <IoMdCheckmark
+                size={20}
+                className="text-green-600 hover:text-green-800 transition-colors cursor-pointer"
+              />
+            </button>
+          )}
           <button onClick={() => onDelete(record.id)}>
             <IoMdTrash
               size={22}
