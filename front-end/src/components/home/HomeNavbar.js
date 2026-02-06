@@ -113,7 +113,7 @@ export default function HomeNavbar({ className }) {
         {/* Botões lado a lado */}
         <div className="flex items-center gap-2 relative">
           {/* Botão "Contate-nos" */}
-          <button className="pl-5">
+          {/* <button className="pl-5">
             <Link
               href="https://wa.me/5513996720645" // substitua pelo número
               target="_blank"
@@ -126,7 +126,7 @@ export default function HomeNavbar({ className }) {
             >
               Contate-nos
             </Link>
-          </button>
+          </button> */}
 
           {/* Botão do usuário */}
           {isLoggedIn ? (
@@ -330,7 +330,7 @@ export default function HomeNavbar({ className }) {
           </Flex>
 
           {/* Botão "Contate-nos" - Mobile */}
-          <Link
+          {/* <Link
             href="https://wa.me/5513996720645" // substitua pelo número
             target="_blank"
             rel="noopener noreferrer"
@@ -341,7 +341,7 @@ export default function HomeNavbar({ className }) {
             style={{ height: "40px" }}
           >
             Contate-nos
-          </Link>
+          </Link> */}
         </div>
 
         <div className="flex flex-col p-6 gap-6">

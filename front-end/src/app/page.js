@@ -100,8 +100,8 @@ export default function Home() {
         </div>
 
         <div className="flex-shrink-0 w-full md:w-[20%]">
-          <div className="pt-10">
-            <PublicidadeCarousel startIndex={0} />
+          <div className="pt-10 min-h-[600px]">
+            <PublicidadeCarousel startIndex={0} tipo="vertical" />
           </div>
         </div>
       </div>

@@ -21,7 +21,63 @@ class ReportService {
       throw new Error(errorMessage);
     }
   }
-  async buscarDadosParaRelatorio(secoes, data_inicio, data_fim) {
+  #mapearOrdenacao(ordenacao, tipoTabela) {    
+    const mapOrdenacao = {
+      data_desc: {   
+        vendas: "ORDER BY imoveis.data_update_status DESC",
+        locacoes: "ORDER BY imoveis.data_update_status DESC", 
+        agendamentos: "ORDER BY A.data_create DESC",
+        acessos: "ORDER BY quantidade_acessos DESC"
+      },
+      data_asc: {
+        vendas: "ORDER BY imoveis.data_update_status ASC",
+        locacoes: "ORDER BY imoveis.data_update_status ASC",
+        agendamentos: "ORDER BY A.data_create ASC", 
+        acessos: "ORDER BY quantidade_acessos DESC"
+      },
+      preco_desc: {
+        vendas: "ORDER BY preco DESC",
+        locacoes: "ORDER BY preco DESC",
+        agendamentos: "ORDER BY A.data_create DESC",
+        acessos: "ORDER BY COALESCE(I.preco, 0) DESC"
+      },
+      preco_asc: {
+        vendas: "ORDER BY preco ASC", 
+        locacoes: "ORDER BY preco ASC",
+        agendamentos: "ORDER BY A.data_create DESC",
+        acessos: "ORDER BY COALESCE(I.preco, 0) ASC"
+      },
+      area_desc: {
+        vendas: "ORDER BY area DESC",
+        locacoes: "ORDER BY area DESC", 
+        agendamentos: "ORDER BY A.data_create DESC",
+        acessos: "ORDER BY I.area DESC"
+      },
+      area_asc: {
+        vendas: "ORDER BY area ASC",
+        locacoes: "ORDER BY area ASC",
+        agendamentos: "ORDER BY A.data_create DESC", 
+        acessos: "ORDER BY I.area ASC"
+      },
+      acessos_desc: {
+        vendas: "ORDER BY data_update_status DESC",
+        locacoes: "ORDER BY data_update_status DESC",
+        agendamentos: "ORDER BY A.data_create DESC",
+        acessos: "ORDER BY quantidade_acessos DESC"
+      },
+      acessos_asc: {
+        vendas: "ORDER BY data_update_status DESC", 
+        locacoes: "ORDER BY data_update_status DESC",
+        agendamentos: "ORDER BY A.data_create DESC",
+        acessos: "ORDER BY quantidade_acessos ASC"
+      }
+    };
+
+    const result = mapOrdenacao[ordenacao]?.[tipoTabela] || "ORDER BY data_update_status DESC NULLS LAST";
+    return result;
+  }
+
+  async buscarDadosParaRelatorio(secoes, data_inicio, data_fim, ordenacao = "data_desc") {
     try {
       let dadosRelatorio = {};
 
@@ -34,21 +90,23 @@ class ReportService {
       if (secoes.includes(REPORTS_SECOES.JORNADA_CLIENTE)) {
         dadosRelatorio.jornadaCliente = await this.obterDadosJornadaCliente(
           data_inicio,
-          data_fim
+          data_fim,
+          ordenacao
         );
       }
       if (secoes.includes(REPORTS_SECOES.ANALISE_ESTOQUE)) {
-        dadosRelatorio.analiseEstoque = await this.obterDadosAnaliseEstoque();
+        dadosRelatorio.analiseEstoque = await this.obterDadosAnaliseEstoque(ordenacao);
       }
       if (secoes.includes(REPORTS_SECOES.DESEMPENHO_VENDAS)) {
         dadosRelatorio.desempenhoVendas = await this.obterDadosDesempenhoVendas(
           data_inicio,
-          data_fim
+          data_fim,
+          ordenacao
         );
       }
       if (secoes.includes(REPORTS_SECOES.DESEMPENHO_LOCACOES)) {
-        dadosRelatorio.desempenhoLocacoes =
-          await this.obterDadosDesempenhoLocacoes(data_inicio, data_fim);
+          dadosRelatorio.desempenhoLocacoes =
+          await this.obterDadosDesempenhoLocacoes(data_inicio, data_fim, ordenacao);
       }
 
       return dadosRelatorio;
@@ -109,7 +167,7 @@ class ReportService {
     };
   }
 
-  async obterDadosAnaliseEstoque() {
+  async obterDadosAnaliseEstoque(ordenacao = "data_desc") {
     const QUERY_ESTATISTICAS_IMOVEIS = `SELECT COUNT(*) AS total_imoveis,
       SUM(IF(status = 'disponivel', 1, 0)) AS total_imoveis_disponiveis,
       SUM(IF(status = 'locado', 1, 0)) AS total_imoveis_locados,
@@ -122,6 +180,7 @@ class ReportService {
 
     const QUERY_DISTRIBUICAO_IMOVEIS_TIPO = `SELECT * FROM estatisticasImoveisDistribuicaoPorTipo;`;
 
+    const orderByClause = this.#mapearOrdenacao(ordenacao, "acessos");
     const QUERY_TABELA_IMOVEIS_ACESSOS = `SELECT I.id, COUNT(RI.id) AS quantidade_acessos, I.tipo, I.preco, CASE WHEN I.visibilidade_preco = 1 THEN 'Visível' ELSE 'Oculto' END AS visibilidade_preco, I.area,
       I.endereco
       FROM imoveis I
@@ -129,7 +188,7 @@ class ReportService {
             recomendacao_imovel RI ON RI.imovel_id = I.id
         GROUP BY
             I.id, I.tipo, I.endereco
-        ORDER BY quantidade_acessos DESC;`;
+        ${orderByClause}`;
 
     const ERROR_MESSAGE = "Falha ao recuperar dados de imóveis para relatório";
 
@@ -178,7 +237,7 @@ class ReportService {
     return estoqueImobiliario;
   }
 
-  async obterDadosJornadaCliente(data_inicio, data_fim) {
+  async obterDadosJornadaCliente(data_inicio, data_fim, ordenacao = "data_desc") {
     const ERROR_MESSAGE = "Falha ao recuperar dados da jornada do cliente";
     const QUERY_TOTAL_USUARIOS_CADASTRADOS = `SELECT COUNT(*) AS total FROM usuario WHERE data_cadastro BETWEEN :data_inicio AND :data_fim;`;
 
@@ -195,6 +254,7 @@ class ReportService {
       WHERE A.data_create >= :data_inicio AND A.data_create <= :data_fim;
     `;
 
+    const orderByClause = this.#mapearOrdenacao(ordenacao, "agendamentos");
     const QUERY_TABELA_AGENDAMENTOS = `SELECT A.id AS id_agendamento, TO_CHAR(A.data_create, 'DD/MM/YYYY HH24:MI') AS data_create, TO_CHAR(A.data_marcada, 'DD/MM/YYYY HH24:MI') AS data_marcada, U.email, 
     TO_CHAR(U.data_cadastro, 'DD/MM/YYYY') AS data_cadastro_usuario, I.tipo, I.endereco  
       FROM agendamentos A 
@@ -202,7 +262,8 @@ class ReportService {
 	        ON U.id = A.id_usuario 
         INNER JOIN imoveis I
 	        ON I.id = A.id_imovel	
-      WHERE A.data_create BETWEEN :data_inicio AND :data_fim;`;
+      WHERE A.data_create BETWEEN :data_inicio AND :data_fim
+      ${orderByClause}`;
 
     const QUERY_EVOLUCAO_MENSAL_AGENDAMENTOS_E_USUARIOS = `CALL estatisticasAgendamentosEUsuariosMes(:data_inicio, :data_fim);`;
 
@@ -253,13 +314,14 @@ class ReportService {
     };
   }
 
-  async obterDadosDesempenhoVendas(data_inicio, data_fim) {
+  async obterDadosDesempenhoVendas(data_inicio, data_fim, ordenacao = "data_desc") {
     const ERROR_MESSAGE = "Falha ao recuperar dados de vendas para relatório";
 
     const QUERY_TOTAL = `SELECT count(*) AS total FROM imoveis WHERE status = 'vendido' AND data_update_status >= :data_inicio AND data_update_status <= :data_fim;`;
     const QUERY_DISTRIBUICAO_TIPO = `CALL estatisticasVendasIntervalo(:data_inicio, :data_fim);`;
     const QUERY_EVOLUCAO_MENSAL = `CALL estatisticasVendasMes(:data_inicio, :data_fim);`;
-    const QUERY_REGISTRO_DADOS = `SELECT id, TO_CHAR(data_update_status, 'DD/MM/YYYY') AS data_update_status, endereco, tipo, preco, CASE WHEN visibilidade_preco = 1 THEN 'Visível' ELSE 'Oculto' END AS visibilidade_preco, area FROM imoveis WHERE STATUS = 'vendido' AND data_update_status BETWEEN :data_inicio AND :data_fim ORDER BY data_update_status DESC;`;
+    const orderByClause = this.#mapearOrdenacao(ordenacao, "vendas");
+    const QUERY_REGISTRO_DADOS = `SELECT id, TO_CHAR(data_update_status, 'DD/MM/YYYY') AS data_update_status_str, endereco, tipo, preco, CASE WHEN visibilidade_preco = 1 THEN 'Visível' ELSE 'Oculto' END AS visibilidade_preco, area FROM imoveis WHERE STATUS = 'vendido' AND data_update_status BETWEEN :data_inicio AND :data_fim ${orderByClause}`;
 
     const [
       total,
@@ -317,13 +379,14 @@ class ReportService {
     };
   }
 
-  async obterDadosDesempenhoLocacoes(data_inicio, data_fim) {
+  async obterDadosDesempenhoLocacoes(data_inicio, data_fim, ordenacao = "data_desc") {
     const ERROR_MESSAGE = "Falha ao recuperar dados de locações para relatório";
 
     const QUERY_TOTAL = `SELECT count(*) AS total FROM imoveis WHERE status = 'locado' AND data_update_status >= :data_inicio AND data_update_status <= :data_fim;`;
     const QUERY_DISTRIBUICAO_TIPO = `CALL estatisticasLocacoesIntervalo(:data_inicio, :data_fim);`;
     const QUERY_EVOLUCAO_MENSAL = `CALL estatisticasLocacoesMes(:data_inicio, :data_fim);`;
-    const QUERY_REGISTRO_DADOS = `SELECT id, TO_CHAR(data_update_status, 'DD/MM/YYYY') AS data_update_status, endereco, tipo, preco , CASE WHEN visibilidade_preco = 1 THEN 'Visível' ELSE 'Oculto' END AS visibilidade_preco, area FROM imoveis WHERE STATUS = 'locado' AND data_update_status BETWEEN :data_inicio AND :data_fim ORDER BY data_update_status DESC;`;
+    const orderByClause = this.#mapearOrdenacao(ordenacao, "locacoes");
+    const QUERY_REGISTRO_DADOS = `SELECT id, TO_CHAR(data_update_status, 'DD/MM/YYYY') AS data_update_status_str, endereco, tipo, preco , CASE WHEN visibilidade_preco = 1 THEN 'Visível' ELSE 'Oculto' END AS visibilidade_preco, area FROM imoveis WHERE STATUS = 'locado' AND data_update_status BETWEEN :data_inicio AND :data_fim ${orderByClause}`;
 
     const [
       total,

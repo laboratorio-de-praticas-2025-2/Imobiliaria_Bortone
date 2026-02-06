@@ -1,7 +1,7 @@
 // components/cms/table/DateRangeModal.jsx
 import { useState } from "react";
-import { Modal, DatePicker, Button, Space, Alert } from "antd";
-import { CalendarOutlined } from "@ant-design/icons";
+import { Modal, DatePicker, Button, Space, Alert, Select } from "antd";
+import { CalendarOutlined, SortAscendingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import 'dayjs/locale/pt-br'; // Importa a localização do dayjs
 import ptBR from 'antd/locale/pt_BR';
@@ -11,10 +11,12 @@ import { ConfigProvider } from "antd/lib";
 dayjs.locale('pt-br');
 
 const { RangePicker } = DatePicker;
+const { Option } = Select;
 
 export default function DateRangeModal({ visible, onCancel, onConfirm }) {
   const [dateRange, setDateRange] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [sortOption, setSortOption] = useState("data_desc");
 
   const handleConfirm = async () => {
     if (!dateRange || dateRange.length !== 2) {
@@ -27,7 +29,7 @@ export default function DateRangeModal({ visible, onCancel, onConfirm }) {
       const startDate = dateRange[0].startOf("month").format("YYYY-MM-DD");
       const endDate = dateRange[1].endOf("month").format("YYYY-MM-DD");
 
-      await onConfirm(startDate, endDate);
+      await onConfirm(startDate, endDate, sortOption);
     } finally {
       setLoading(false);
     }
@@ -38,13 +40,24 @@ export default function DateRangeModal({ visible, onCancel, onConfirm }) {
     return current && current > dayjs().endOf("day");
   };
 
+  const sortOptions = [
+    { value: "data_desc", label: "Data (mais recentes primeiro)" },
+    { value: "data_asc", label: "Data (mais antigas primeiro)" },
+    { value: "preco_desc", label: "Preço (maior para menor)" },
+    { value: "preco_asc", label: "Preço (menor para maior)" },
+    { value: "area_desc", label: "Área (maior para menor)" },
+    { value: "area_asc", label: "Área (menor para maior)" },
+    { value: "acessos_desc", label: "Mais acessados primeiro" },
+    { value: "acessos_asc", label: "Menos acessados primeiro" },
+  ];
+
   return (
     <ConfigProvider locale={ptBR}>
       <Modal
         title={
           <Space>
             <CalendarOutlined />
-            Selecione o Período do Relatório
+            Configurar Relatório
           </Space>
         }
         open={visible}
@@ -63,27 +76,52 @@ export default function DateRangeModal({ visible, onCancel, onConfirm }) {
             Gerar Relatório
           </Button>,
         ]}
-        width={500}
+        width={600}
       >
         <div style={{ padding: "20px 0" }}>
           <Alert
-            message="Selecione o intervalo de meses"
-            description="O relatório será gerado considerando o primeiro dia do mês inicial até o último dia do mês final."
+            message="Configure o período e ordenação do relatório"
+            description="O relatório será gerado considerando o primeiro dia do mês inicial até o último dia do mês final, com a ordenação aplicada às tabelas."
             type="info"
             showIcon
             style={{ marginBottom: 20 }}
           />
 
-          <RangePicker
-            picker="month"
-            format="MMM/YYYY"
-            value={dateRange}
-            onChange={setDateRange}
-            disabledDate={disabledDate}
-            style={{ width: "100%" }}
-            size="large"
-            placeholder={["Mês inicial", "Mês final"]}
-          />
+          <div style={{ marginBottom: 20 }}>
+            <label style={{ display: "block", marginBottom: 8, fontWeight: "bold" }}>
+              Período do Relatório:
+            </label>
+            <RangePicker
+              picker="month"
+              format="MMM/YYYY"
+              value={dateRange}
+              onChange={setDateRange}
+              disabledDate={disabledDate}
+              style={{ width: "100%" }}
+              size="large"
+              placeholder={["Mês inicial", "Mês final"]}
+            />
+          </div>
+
+          <div style={{ marginBottom: 20 }}>
+            <label style={{ display: "block", marginBottom: 8, fontWeight: "bold" }}>
+              <SortAscendingOutlined style={{ marginRight: 8 }} />
+              Ordenação das Tabelas:
+            </label>
+            <Select
+              value={sortOption}
+              onChange={setSortOption}
+              style={{ width: "100%" }}
+              size="large"
+              placeholder="Selecione a ordenação"
+            >
+              {sortOptions.map(option => (
+                <Option key={option.value} value={option.value}>
+                  {option.label}
+                </Option>
+              ))}
+            </Select>
+          </div>
 
           {dateRange && dateRange.length === 2 && (
             <div
@@ -94,11 +132,11 @@ export default function DateRangeModal({ visible, onCancel, onConfirm }) {
                 borderRadius: 6,
               }}
             >
-              <strong>Período selecionado:</strong>
+              <strong>Configuração selecionada:</strong>
               <br />
-              De: {dateRange[0].startOf("month").format("DD/MM/YYYY")}
+              <strong>Período:</strong> {dateRange[0].startOf("month").format("DD/MM/YYYY")} até {dateRange[1].endOf("month").format("DD/MM/YYYY")}
               <br />
-              Até: {dateRange[1].endOf("month").format("DD/MM/YYYY")}
+              <strong>Ordenação:</strong> {sortOptions.find(opt => opt.value === sortOption)?.label}
             </div>
           )}
         </div>

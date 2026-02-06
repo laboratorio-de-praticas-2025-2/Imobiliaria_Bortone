@@ -3,10 +3,34 @@ import { useState, useEffect } from 'react';
 import PublicidadeImage from '@/components/PublicidadeImage';
 import { apiClient } from '@/utils/apiClient';
 
-export default function PublicidadeCarousel({ startIndex = 0 }) {
+const getImageOrientation = (url) => {
+  return new Promise((resolve) => {
+    const img = new window.Image();
+    img.src = url;
+    img.onload = () => {
+      // Se a altura for maior que a largura, é vertical
+      resolve(img.height > img.width ? 'vertical' : 'horizontal');
+    };
+    img.onerror = () => resolve('error');
+  });
+};
+
+export default function PublicidadeCarousel({ startIndex = 0, tipo = 'horizontal' }) {
   const [publicidades, setPublicidades] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(startIndex);
   const [loading, setLoading] = useState(true);
+
+  const getImageOrientation = (url) => {
+    return new Promise((resolve) => {
+      const img = new window.Image();
+      img.src = url;
+      img.onload = () => {
+        // Se a altura for maior que a largura, é vertical
+        resolve(img.height > img.width ? 'vertical' : 'horizontal');
+      };
+      img.onerror = () => resolve('error');
+    });
+  };
 
   useEffect(() => {
     const fetchPublicidadesAtivas = async () => {
@@ -14,12 +38,21 @@ export default function PublicidadeCarousel({ startIndex = 0 }) {
         const response = await apiClient.get('/publicidade');
 
         const publicidadesAtivas = response.data.data.filter(pub => pub.ativo === true);
-        setPublicidades(publicidadesAtivas);
+        
+        const filtradasComOrientacao = await Promise.all(
+          publicidadesAtivas.map(async (pub) => {
+            const orientacao = await getImageOrientation(pub.url_imagem);
+            return { ...pub, orientacaoReal: orientacao}
+          })
+        );
+
+        const final = filtradasComOrientacao.filter(pub => pub.orientacaoReal === tipo);
         
         // Ajustar o índice inicial se for maior que o número de publicidades
-        const adjustedIndex = Math.min(startIndex, publicidadesAtivas.length - 1);
+        const adjustedIndex = Math.min(startIndex, final.length - 1);
         setCurrentIndex(Math.max(0, adjustedIndex));
         
+        setPublicidades(final); 
         setLoading(false);
       } catch (error) {
         // Silenciar logs de erro para publicidades
@@ -29,7 +62,7 @@ export default function PublicidadeCarousel({ startIndex = 0 }) {
     };
 
     fetchPublicidadesAtivas();
-  }, []);
+  }, [tipo, startIndex]);
 
 
   useEffect(() => {
@@ -71,7 +104,7 @@ export default function PublicidadeCarousel({ startIndex = 0 }) {
                  alt={currentPublicidade.titulo || 'Publicidade'}
                  width={500}
                  height={350}
-                 className="max-w-full max-h-96 object-contain rounded-lg border-2 border-gray-200"
+                 className="max-w-full object-contain rounded-lg border-2 border-gray-200"
                />
              </div>
            </div>
